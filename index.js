@@ -53,15 +53,13 @@ app.use(function(req, res, next) {
   next();
 });
 //Mail sending
-const transporter = nodemailer.createTransport(smtpTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
   auth: {
       user: 'aquatecinnovative1@gmail.com',
       pass: 'aquatec@321'
   }
-}));
+});
 // Routes
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
