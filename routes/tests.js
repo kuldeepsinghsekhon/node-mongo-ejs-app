@@ -24,6 +24,6 @@ var mailOptions = {
     }
   });
 // Mailtest
-router.get('/mailtest', forwardAuthenticated, (req, res) => res.render('mailtest'));
+router.get('/mailtest', forwardAuthenticated, (req, res) => res.send('mailtest'));
 
 module.exports = router;
