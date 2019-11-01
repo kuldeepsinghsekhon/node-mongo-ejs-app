@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
-
+const nodemailer = require('nodemailer');
 const app = express();
 
 // Passport Config
@@ -52,11 +52,20 @@ app.use(function(req, res, next) {
   res.locals.error = req.flash('error');
   next();
 });
-
+//Mail sending
+const transporter = nodemailer.createTransport(smtpTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+      user: 'aquatecinnovative1@gmail.com',
+      pass: 'aquatec@321'
+  }
+}));
 // Routes
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
-
+app.use('/users', require('./routes/tests.js'));
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
