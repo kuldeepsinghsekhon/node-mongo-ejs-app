@@ -3,7 +3,9 @@ const router = express.Router();
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
         user: 'aquatecinnovative1@gmail.com',
         pass: 'aquatec@321'
