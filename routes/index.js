@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     host: 'in-v3.mailjet.com',
     port: 587,
-    secure: true,
+    requireTLS: true,
     auth: {
         user: 'a63f9f06d525f9ec6270729a89704cfe',
         pass: '34a8564fc34463f7563679c4efc34bee'
