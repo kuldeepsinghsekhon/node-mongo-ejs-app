@@ -3,12 +3,12 @@ const router = express.Router();
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
+    host: 'in-v3.mailjet.com',
+    port: 587,
     secure: true,
     auth: {
-        user: 'aquatecinnovative1@gmail.com',
-        pass: 'aquatec@321'
+        user: 'a63f9f06d525f9ec6270729a89704cfe',
+        pass: '34a8564fc34463f7563679c4efc34bee'
     }
   });
 var mailOptions = {
