@@ -5,8 +5,11 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
 const nodemailer = require('nodemailer');
-const app = express();
 
+const app = express();
+const fileUpload = require('express-fileupload');
+app.use(fileUpload());
+const path = require('path');
 // Passport Config
 require('./config/passport')(passport);
 
@@ -23,6 +26,9 @@ mongoose
   .catch(err => console.log(err));
 
 // EJS
+//app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')))
+.set('views', path.join(__dirname, 'views'));
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
