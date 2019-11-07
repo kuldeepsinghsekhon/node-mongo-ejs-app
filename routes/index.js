@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 const router = express.Router();
@@ -8,15 +9,25 @@ const nodemailer = require('nodemailer');
 const Product = require('../models/Product');
 var faker = require('faker');
 const path = require('path');
+const fs = require('fs');
+//var now  = require('performance-now');
+
+
+//const hrTime = process.now('nano') ;
+
 router.get('/admin/add-product', function(req, res, next) {
     res.render('pages/admin/add-product',{layout:'admin-layout'});
-    console.log(__dirname);
+    console.log(appRoot);
+    //console.log(now());
+    var t=Date.now();
+        
+    console.log(t);
    
 })
 
 router.post('/admin/add-product', function(req, res, next) {
     var product = new Product();
-
+    var imgname='ss';
     product.category = req.body.category_name;
     product.name = req.body.product_name;
     product.price = req.body.product_price;
@@ -24,18 +35,36 @@ router.post('/admin/add-product', function(req, res, next) {
     if (!req.files || Object.keys(req.files).length=== 0) {
       return res.status(400).send('No files were uploaded.');
     }
+    
+    product.save(function(err,product) {
 
-    let productImage1 = req.files.productImage;
-
-    productImage1.mv('C:/Users/admin/Desktop/heroku/node-js-getting-started/public/filename.jpg', function(err) { 
-      if (err) throw err
-      //return res.status(500).send(err);
-      //res.send('File uploaded!');}
+        if (err){
+          throw err
+        } else{
+              console.log(product);
+              var imgpath=appRoot+'\\public\\uploads\\products\\'+product.id;
+              var mask=777;
+                fs.mkdir(imgpath, mask, function(err) {
+                  if (err) {
+                      if (err.code == 'EEXIST') console.log(null); // ignore the error if the folder already exists
+                      else console.log(err); // something else went wrong
+                  } else console.log(null); // successfully created folder
+              });
+              if (!req.files || Object.keys(req.files).length=== 0) {
+                return res.status(400).send('No files were uploaded.');
+              }
+              let productImage1 = req.files.productImage;
+               imgname=Date.now()+path.extname(req.files.productImage.name);
+              productImage1.mv(imgpath+'\\'+imgname, function(err) { 
+                console.log(imgpath+imgname);
+                if (err) throw err
+                //return res.status(500).send(err);
+                //res.send('File uploaded!');}
+              });        
+        }
+       
     });
-    product.save(function(err) {
-        if (err) throw err
-        res.redirect('/admin/add-product');
-    });
+    res.redirect('/admin/add-product');
 });
 
 const transporter = nodemailer.createTransport({

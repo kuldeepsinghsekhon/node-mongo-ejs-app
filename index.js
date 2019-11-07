@@ -10,6 +10,7 @@ const app = express();
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 const path = require('path');
+global.appRoot = path.resolve(__dirname);
 // Passport Config
 require('./config/passport')(passport);
 
