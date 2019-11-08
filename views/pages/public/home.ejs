@@ -1,0 +1,332 @@
+<div class="banner_sec">
+        <div class="container">
+           <div class="row">
+              <div class="col-md-8">
+                 <div class="left_img">
+                   <a href=""> <img src="/assets/images/banner.jpg"></a>
+                 </div>
+              </div>
+              <div class="col-md-4">
+                 <div class="right_img">
+                   <a href=""> <img src="/assets/images/banner-1.jpg"></a>
+                 </div>
+                 <div class="right_img">
+                   <a href=""> <img src="/assets/images/banner-2.jpg"></a>
+                 </div>
+                 <div class="right_img">
+                  <a href="">  <img src="/assets/images/banner-3.jpg"></a>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+     <div class="info-boxes-container">
+        <div class="container">
+           <div class="info-box">
+              <i class="fa fa-truck"></i>
+              <div class="info-box-content">
+                 <h4>FREE SHIPPING &amp; RETURN</h4>
+                 <p>Free shipping on all orders over $99.</p>
+              </div>
+              <!-- End .info-box-content -->
+           </div>
+           <!-- End .info-box -->
+           <div class="info-box">
+              <i class="fa fa-dollar-sign"></i>
+              <div class="info-box-content">
+                 <h4>MONEY BACK GUARANTEE</h4>
+                 <p>100% money back guarantee</p>
+              </div>
+              <!-- End .info-box-content -->
+           </div>
+           <!-- End .info-box -->
+           <div class="info-box">
+              <i class="fa fa-life-ring"></i>
+              <div class="info-box-content">
+                 <h4>ONLINE SUPPORT 24/7</h4>
+                 <p>Lorem ipsum dolor sit amet.</p>
+              </div>
+              <!-- End .info-box-content -->
+           </div>
+           <!-- End .info-box -->
+        </div>
+        <!-- End .container -->
+     </div>
+     <div class="container">
+        <div class="row">
+           <div class="col-lg-9">
+              <div class="home-product-tabs">
+                 <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                       <a class="nav-link" id="featured-products-tab" data-toggle="tab" href="#featured-products" role="tab" aria-controls="featured-products" aria-selected="false">Featured Products</a>
+                    </li>
+                    <li class="nav-item">
+                       <a class="nav-link active show" id="latest-products-tab" data-toggle="tab" href="#latest-products" role="tab" aria-controls="latest-products" aria-selected="true">Latest Products</a>
+                    </li>
+                 </ul>
+                 <div class="tab-content">
+                    <div class="tab-pane fade" id="featured-products" role="tabpanel" aria-labelledby="featured-products-tab">
+                       <div class="row row-sm">
+                           <% for (var i = 0; i < products.length; i++) { %>
+                          <div class="col-6 col-md-4">
+                             <div class="product">
+                                <figure class="product-image-container">
+                                   <a href="product.html" class="product-image">
+                                   <img src="/uploads/products/<%= products[i].image %>" alt="product">
+                                   </a>
+                                   <a href="ajax/product-quick-view.html" class="btn-quickview">Quick View</a>
+                                </figure>
+                                <div class="product-details">
+                                   <div class="ratings-container">
+                                      <div class="product-ratings">
+                                         <i class="fa fa-star" aria-hidden="true"></i>
+                                         <i class="fa fa-star" aria-hidden="true"></i>
+                                         <i class="fa fa-star" aria-hidden="true"></i>
+                                         <i class="fa fa-star" aria-hidden="true"></i>
+                                         <i class="fa fa-star" aria-hidden="true"></i>
+                                         <!-- End .ratings -->
+                                      </div>
+                                      <!-- End .product-ratings -->
+                                   </div>
+                                   <!-- End .product-container -->
+                                   <h2 class="product-title">
+                                      <a href="product.html"> <%= products[i].name %></a>
+                                   </h2>
+                                   <div class="price-box">
+                                      <span class="product-price">$<%= products[i].price %></span>
+                                   </div>
+                                   <!-- End .price-box -->
+                                   <div class="product-action">
+                                      <a href="product.html" class="paction add-cart" title="Add to Cart">
+                                      <span>Add to Cart</span>
+                                      </a>
+                                   </div>
+                                   <!-- End .product-action -->
+                                </div>
+                                <!-- End .product-details -->
+                             </div>
+                             <!-- End .product -->
+                          </div>
+                          <% } %>
+                          <!-- End .col-md-4 -->
+                         
+                          <!-- End .col-md-4 -->
+                       </div>
+                       <!-- End .row -->
+                    </div>
+                    <!-- End .tab-pane -->
+                    <div class="tab-pane fade active show" id="latest-products" role="tabpanel" aria-labelledby="latest-products-tab">
+                       <div class="row row-sm">
+                           <% for (var i = 0; i < products.length; i++) { %>
+                              <div class="col-6 col-md-4">
+                                 <div class="product">
+                                    <figure class="product-image-container">
+                                       <a href="product.html" class="product-image">
+                                       <img src="/uploads/products/<%= products[i].image %>" alt="product">
+                                       </a>
+                                       <a href="ajax/product-quick-view.html" class="btn-quickview">Quick View</a>
+                                    </figure>
+                                    <div class="product-details">
+                                       <div class="ratings-container">
+                                          <div class="product-ratings">
+                                             <i class="fa fa-star" aria-hidden="true"></i>
+                                             <i class="fa fa-star" aria-hidden="true"></i>
+                                             <i class="fa fa-star" aria-hidden="true"></i>
+                                             <i class="fa fa-star" aria-hidden="true"></i>
+                                             <i class="fa fa-star" aria-hidden="true"></i>
+                                             <!-- End .ratings -->
+                                          </div>
+                                          <!-- End .product-ratings -->
+                                       </div>
+                                       <!-- End .product-container -->
+                                       <h2 class="product-title">
+                                          <a href="product.html"> <%= products[i].name %></a>
+                                       </h2>
+                                       <div class="price-box">
+                                          <span class="product-price">$<%= products[i].price %></span>
+                                       </div>
+                                       <!-- End .price-box -->
+                                       <div class="product-action">
+                                          <a href="product.html" class="paction add-cart" title="Add to Cart">
+                                          <span>Add to Cart</span>
+                                          </a>
+                                       </div>
+                                       <!-- End .product-action -->
+                                    </div>
+                                    <!-- End .product-details -->
+                                 </div>
+                                 <!-- End .product -->
+                              </div>
+                              <% } %>
+                          <!-- End .col-md-4 -->
+
+                          <!-- End .col-md-4 -->
+                       </div>
+                       <!-- End .row -->
+                    </div>
+                    <!-- End .tab-pane -->
+                 </div>
+                 <!-- End .tab-content -->
+              </div>
+              <!-- End .home-product-tabs -->
+              <div class="banners-group">
+                 <div class="row">
+                    <div class="col-md-4">
+                       <div class="banner banner-image">
+                          <a href="#">
+                          <img src="/assets/images/banner-4.jpg" alt="banner">
+                          </a>
+                       </div>
+                       <!-- End .banner -->
+                       <div class="banner banner-image">
+                          <a href="#">
+                          <img src="/assets/images/banner-5.jpg" alt="banner">
+                          </a>
+                       </div>
+                       <!-- End .banner -->
+                    </div>
+                    <!-- End .col-md-4 -->
+                    <div class="col-md-8">
+                       <div class="banner banner-image">
+                          <a href="#">
+                          <img src="/assets/images/banner-6.jpg" alt="banner">
+                          </a>
+                       </div>
+                       <!-- End .banner -->
+                    </div>
+                    <!-- End .col-md-4 -->
+                 </div>
+                 <!-- End .row -->
+              </div>
+              <!-- End .banners-group -->
+           </div>
+           <!-- End .col-lg-9 -->
+           <aside class="sidebar-home col-lg-3">
+              <div class="widget widget-cats">
+                 <h3 class="widget-title">Categories</h3>
+                 <ul class="catAccordion">
+                    <li class="">
+                       <a href="category.html">Fashion</a> 
+                       <button class="accordion-btn collapsed" type="button" data-toggle="collapse" data-target="#accordion-ul-1" aria-expanded="false" aria-controls="accordion-ul-1"></button>
+                       <ul class="collapse" id="accordion-ul-1" style="">
+                          <li><a href="#">WOMEN CLOTHES</a></li>
+                          <li><a href="#">MEN CLOTHES</a></li>
+                          <li><a href="#">HOES</a></li>
+                          <li><a href="#">Accessories</a></li>
+                       </ul>
+                    </li>
+                    <li>
+                       <a href="category.html">Electronics </a>
+                       <button class="accordion-btn collapsed" type="button" data-toggle="collapse" data-target="#accordion-ul-2" aria-expanded="false" aria-controls="accordion-ul-2"></button>
+                       <ul class="collapse" id="accordion-ul-2">
+                          <li><a href="#">Computers</a></li>
+                          <li><a href="#">Mobile Phones</a></li>
+                          <li><a href="#">Laptops</a></li>
+                          <li><a href="#">Tablets</a></li>
+                       </ul>
+                    </li>
+                    <li>
+                       <a href="category.html">Gifts</a>
+                    </li>
+                    <li>
+                       <a href="category.html">Home &amp; Garden</a>
+                    </li>
+                    <li>
+                       <a href="category.html">Music</a>
+                    </li>
+                    <li>
+                       <a href="category.html">Motors</a>
+                       <button class="accordion-btn collapsed" type="button" data-toggle="collapse" data-target="#accordion-ul-3" aria-expanded="false" aria-controls="accordion-ul-3"></button>
+                       <ul class="collapse" id="accordion-ul-3">
+                          <li><a href="#">Sub Category</a></li>
+                          <li><a href="#">Sub Category</a></li>
+                          <li><a href="#">Sub Category</a></li>
+                          <li><a href="#">Sub Category</a></li>
+                       </ul>
+                    </li>
+                    <li>
+                       <a href="category.html">Clothes</a>
+                       <button class="accordion-btn collapsed" type="button" data-toggle="collapse" data-target="#accordion-ul-4" aria-expanded="false" aria-controls="accordion-ul-4"></button>
+                       <ul class="collapse" id="accordion-ul-4">
+                          <li><a href="#">Sub Category</a></li>
+                          <li><a href="#">Sub Category</a></li>
+                          <li><a href="#">Sub Category</a></li>
+                          <li><a href="#">Sub Category</a></li>
+                       </ul>
+                    </li>
+                 </ul>
+              </div>
+              <div class="widget">
+                 <div class="banner banner-image">
+                    <a href="#">
+                    <img src="/assets/images/banner-sidebar-2.jpg" alt="banner">
+                    </a>
+                 </div>
+                 <!-- End .banner -->
+              </div>
+              <!-- End .widget -->
+              <div class="widget">
+                 <h3 class="widget-title">From Our Blog</h3>
+                 <article class="entry">
+                    <div class="entry-media">
+                       <a href="single.html">
+                       <img src="/assets/images/sidebar-post-1.jpg" alt="Post">
+                       </a>
+                       <div class="entry-date">
+                          10
+                          <span>Dec</span>
+                       </div>
+                       <!-- End .entry-date -->
+                    </div>
+                    <!-- End .entry-media -->
+                    <div class="entry-body">
+                       <h2 class="entry-title">
+                          <a href="single.html">Fashion News</a>
+                       </h2>
+                       <div class="entry-content">
+                          <p>Lorem Ipsum is simply dummy of the printing and typese ind. Lorem ipsum...</p>
+                          <a href="single.html" class="read-more">(READ MORE)</a>
+                       </div>
+                       <!-- End .entry-content -->
+                    </div>
+                    <!-- End .entry-body -->
+                 </article>
+                 <!-- End .entry -->
+              </div>
+              <!-- End .widget -->
+              <div class="widget widget-block">
+                 <h3 class="widget-title">CUSTOM HTML BLOCK</h3>
+                 <p>Lorem Ipsum is simply text of the printing and typesetting industry. Lorem Ipsum has beenindustry.</p>
+              </div>
+              <!-- End .widget -->
+           </aside>
+           <!-- End .col-lg-3 -->    
+        </div>
+        <!-- End .row -->
+     </div>
+     <div class="page-content page-container" id="page-content">
+        <div class="padding">
+           <div class="row container-fluid">
+              <div class="col-lg-12 grid-margin stretch-card">
+                 <div class="card">
+                    <div class="card-body">
+                       <div class="owl-carousel">
+                          <div class="item"><a href=""> <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1557204140/banner_12.jpg" alt="image" /></a> </div>
+                          <div class="item"><a href=""> <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1557204172/banner_2.jpg" alt="image" /></a>  </div>
+                          <div class="item"><a href=""> <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1557204663/park-4174278_640.jpg" alt="image" /></a>  </div>
+                          <div class="item"><a href=""> <img src="http://www.urbanui.com/fily/template/images/carousel/banner_2.jpg" alt="image" /> </a> </div>
+                          <div class="item"><a href=""> <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1557204172/banner_2.jpg" alt="image" /></a>  </div>
+                          <div class="item"> <a href=""><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1557204663/park-4174278_640.jpg" alt="image" /></a>  </div>
+                          <div class="item"><a href=""> <img src="http://www.urbanui.com/fily/template/images/carousel/banner_2.jpg" alt="image" /></a>  </div>
+                          <div class="item"><a href=""> <img src="http://www.urbanui.com/fily/template/images/carousel/banner_2.jpg" alt="image" /> </a> </div>
+                          <div class="item"><a href=""> <img src="http://www.urbanui.com/fily/template/images/carousel/banner_2.jpg" alt="image" /> </a> </div>
+                          <div class="item"><a href=""> <img src="http://www.urbanui.com/fily/template/images/carousel/banner_2.jpg" alt="image" /></a>  </div>
+                          <div class="item"> <a href=""><img src="http://www.urbanui.com/fily/template/images/carousel/banner_2.jpg" alt="image" /></a>  </div>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+     

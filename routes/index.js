@@ -4,68 +4,15 @@ const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 const router = express.Router();
+const passport = require('passport');
+const bcrypt = require('bcryptjs');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const nodemailer = require('nodemailer');
 const Product = require('../models/Product');
+const User = require('../models/User');
 var faker = require('faker');
 const path = require('path');
 const fs = require('fs');
-//var now  = require('performance-now');
-
-
-//const hrTime = process.now('nano') ;
-
-router.get('/admin/add-product', function(req, res, next) {
-    res.render('pages/admin/add-product',{layout:'admin-layout'});
-    console.log(appRoot);
-    //console.log(now());
-    var t=Date.now();
-        
-    console.log(t);
-   
-})
-
-router.post('/admin/add-product', function(req, res, next) {
-    var product = new Product();
-    var imgname='ss';
-    product.category = req.body.category_name;
-    product.name = req.body.product_name;
-    product.price = req.body.product_price;
-    product.cover = faker.image.image();
-    if (!req.files || Object.keys(req.files).length=== 0) {
-      return res.status(400).send('No files were uploaded.');
-    }
-    
-    product.save(function(err,product) {
-
-        if (err){
-          throw err
-        } else{
-              console.log(product);
-              var imgpath=appRoot+'\\public\\uploads\\products\\'+product.id;
-              var mask=777;
-                fs.mkdir(imgpath, mask, function(err) {
-                  if (err) {
-                      if (err.code == 'EEXIST') console.log(null); // ignore the error if the folder already exists
-                      else console.log(err); // something else went wrong
-                  } else console.log(null); // successfully created folder
-              });
-              if (!req.files || Object.keys(req.files).length=== 0) {
-                return res.status(400).send('No files were uploaded.');
-              }
-              let productImage1 = req.files.productImage;
-               imgname=Date.now()+path.extname(req.files.productImage.name);
-              productImage1.mv(imgpath+'\\'+imgname, function(err) { 
-                console.log(imgpath+imgname);
-                if (err) throw err
-                //return res.status(500).send(err);
-                //res.send('File uploaded!');}
-              });        
-        }
-       
-    });
-    res.redirect('/admin/add-product');
-});
 
 const transporter = nodemailer.createTransport({
     host: 'in-v3.mailjet.com',
@@ -85,11 +32,8 @@ var mailOptions = {
   
 
 // Welcome Page
-router.get('/', forwardAuthenticated, (req, res) => res.render('welcome',{ layout: 'layout' }));
-router.get('/admin/', ensureAuthenticated, (req, res) => res.render('pages/admin/dashboard',{ layout:'admin-layout' }));
-router.get('/admin/users', ensureAuthenticated, (req, res) => res.render('pages/admin/users',{ layout:'admin-layout' }));
-//router.get('/admin/template-products', ensureAuthenticated, (req, res) => res.render('pages/admin/template-products',{ layout:'admin-layout' }));
-router.get('/admin/template-products/:page', function(req, res, next) {
+//router.get('/',  (req, res) => res.render('pages/public/home',{ layout: 'layout' }));
+router.get('/', function(req, res, next) {
   var perPage = 9;
   var page = req.params.page || 1;
 
@@ -100,31 +44,103 @@ router.get('/admin/template-products/:page', function(req, res, next) {
       .exec(function(err, products) {
           Product.count().exec(function(err, count) {
               if (err) return next(err)
-              res.render('pages/admin/template-products', {
+              res.render('pages/public/home', {
                   products: products,
                   current: page,
                   pages: Math.ceil(count / perPage),
-                  layout:'admin-layout'
+                  layout:'layout'
               })
           })
       })
 });
+// Login Page
+router.get('/sign-in', forwardAuthenticated, (req, res) => res.render('pages/public/sign-in',{layout:'login-layout'}));
 
-router.get('/generate-fake-data', function(req, res, next) {
-  for (var i = 0; i < 90; i++) {
-      var product = new Product()
+// Register Page
+router.get('/sign-up', forwardAuthenticated, (req, res) => res.render('pages/public/sign-up',{layout:'login-layout'}));
 
-      product.category = faker.commerce.department()
-      product.name = faker.commerce.productName()
-      product.price = faker.commerce.price()
-      product.cover = faker.image.image()
+// Register
+router.post('/sign-up', (req, res) => {
+  const { name, email, password, password2 } = req.body;
+  let errors = [];
 
-      product.save(function(err) {
-          if (err) throw err
-      })
+  if (!name || !email || !password || !password2) {
+    errors.push({ msg: 'Please enter all fields' });
   }
-  res.redirect('/add-product')
-})
+
+  if (password != password2) {
+    errors.push({ msg: 'Passwords do not match' });
+  }
+
+  if (password.length < 6) {
+    errors.push({ msg: 'Password must be at least 6 characters' });
+  }
+
+  if (errors.length > 0) {
+    res.render('pages/public/sign-up', {
+      errors,
+      name,
+      email,
+      password,
+      password2
+    });
+  } else {
+    User.findOne({ email: email }).then(user => {
+      if (user) {
+        errors.push({ msg: 'Email already exists' });
+        res.render('pages/public/sign-up', {
+          errors,
+          name,
+          email,
+          password,
+          password2
+        });
+      } else {
+        const newUser = new User({
+          name,
+          email,
+          password
+        });
+
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) throw err;
+            newUser.password = hash;
+            newUser
+              .save()
+              .then(user => {
+                req.flash(
+                  'success_msg',
+                  'You are now registered and can log in'
+                );
+                res.redirect('/sign-in');
+              })
+              .catch(err => console.log(err));
+          });
+        });
+      }
+    });
+  }
+});
+
+// Login
+router.post('/sign-in', (req, res, next) => {
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/sign-in',
+    failureFlash: true
+  })(req, res, next);
+});
+
+// Logout
+router.get('/logout', (req, res) => {
+  req.logout();
+  req.flash('success_msg', 'You are logged out');
+  res.redirect('/sign-in');
+});
+
+module.exports = router;
+
 router.get('/mailtest', forwardAuthenticated, (req, res) =>{
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
@@ -136,10 +152,6 @@ router.get('/mailtest', forwardAuthenticated, (req, res) =>{
   res.render('mailtest');
 } );
 // Dashboard
-router.get('/dashboard', ensureAuthenticated, (req, res) =>
-  res.render('dashboard', {
-    user: req.user
-  })
-);
+
 
 module.exports = router;
