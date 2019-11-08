@@ -3,6 +3,7 @@ const router = express.Router();
 const path = require('path');
 const fs = require('fs');
 const Product = require('../models/Product');
+const User = require('../models/User');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const fileUpload = require('express-fileupload');
 const app = express();
@@ -84,5 +85,24 @@ router.get('/template-products/:page', function(req, res, next) {
             })
         })
   });
+  router.get('/users/:page', function(req, res, next) {
+    var perPage = 9;
+    var page = req.params.page || 1;
   
+    User
+        .find({})
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .exec(function(err, users) {
+            User.count().exec(function(err, count) {
+                if (err) return next(err)
+                res.render('pages/admin/users', {
+                    users: users,
+                    current: page,
+                    pages: Math.ceil(count / perPage),
+                    layout:'admin-layout'
+                })
+            })
+        })
+  });
 module.exports = router;

@@ -99,7 +99,8 @@ router.post('/sign-up', (req, res) => {
         const newUser = new User({
           name,
           email,
-          password
+          password,
+          default-user-image.png
         });
 
         bcrypt.genSalt(10, (err, salt) => {
