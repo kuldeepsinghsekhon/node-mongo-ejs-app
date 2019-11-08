@@ -62,28 +62,28 @@
                     <% if (pages > 0) { %>
                       <ul class="pagination text-center">
                           <% if (current == 1) { %>
-                              <li class="disabled"><a>First</a></li>
+                              <li class=" page-item disabled"><a class="page-link">First</a></li>
                           <% } else { %>
-                              <li><a href="/admin/template-products/1">First</a></li>
+                              <li class="page-item"><a class="page-link" href="/admin/template-products/1">First</a></li>
                           <% } %>
                           <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
                           <% if (i !== 1) { %>
-                              <li class="disabled"><a>...</a></li>
+                              <li class="page-item disabled"><a class="page-link">...</a></li>
                           <% } %>
                           <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
                               <% if (i == current) { %>
-                                  <li class="active"><a><%= i %></a></li>
+                                  <li class="page-item active"><a class="page-link"><%= i %></a></li>
                               <% } else { %>
-                                  <li><a href="/admin/template-products/<%= i %>"><%= i %></a></li>
+                                  <li  class="page-item"><a class="page-link" href="/admin/template-products/<%= i %>"><%= i %></a></li>
                               <% } %>
                               <% if (i == Number(current) + 4 && i < pages) { %>
-                                  <li class="disabled"><a>...</a></li>
+                                  <li class="page-item disabled"><a class="page-link">...</a></li>
                               <% } %>
                           <% } %>
                           <% if (current == pages) { %>
-                              <li class="disabled"><a>Last</a></li>
+                              <li class="page-item disabled"><a class="page-link">Last</a></li>
                           <% } else { %>
-                              <li><a href="/admin/template-products/<%= pages %>">Last</a></li>
+                              <li class="page-item" ><a class="page-link" href="/admin/template-products/<%= pages %>">Last</a></li>
                           <% } %>
                       </ul>
                   <% } %>
