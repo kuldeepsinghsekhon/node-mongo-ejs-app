@@ -100,7 +100,7 @@ router.post('/sign-up', (req, res) => {
           name,
           email,
           password,
-          default-user-image.png
+         
         });
 
         bcrypt.genSalt(10, (err, salt) => {
