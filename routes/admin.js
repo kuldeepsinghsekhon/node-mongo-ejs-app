@@ -28,7 +28,7 @@ router.post('/add-product', function(req, res, next) {
     product.sku = req.body.product_sku;
     product.price = req.body.product_price; 
 
-    var imgpath=appRoot+'\\public\\uploads\\products\\';
+    var imgpath=appRoot+'//public//uploads//products//';
     var mask=777;
       fs.mkdir(imgpath, mask, function(err) {
         if (err) {
@@ -42,7 +42,7 @@ router.post('/add-product', function(req, res, next) {
     }else{
       let productImage1 = req.files.productImage;
       imgname=Date.now()+path.extname(req.files.productImage.name);
-      productImage1.mv(imgpath+'\\'+imgname, function(err) { 
+      productImage1.mv(imgpath+'//'+imgname, function(err) { 
         if (err) throw err
         //return res.status(500).send(err);
         //res.send('File uploaded!');}
