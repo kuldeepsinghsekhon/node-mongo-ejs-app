@@ -93,7 +93,15 @@ router.post('/sign-up', (req, res) => {
                   'success_msg',
                   'You are now registered and can log in'
                 );
-                res.redirect('/sign-in');
+               
+                  if(req.session.oldUrl){
+                    var oldUrl=req.session.oldUrl;
+                    req.session.oldUrl=null;
+                    res.redirect(oldUrl);
+                  }else{
+                    res.redirect('/sign-in');
+                  }    
+               
               })
               .catch(err => console.log(err));
           });
@@ -106,13 +114,17 @@ router.post('/sign-up', (req, res) => {
 router.get('/sign-in', forwardAuthenticated, (req, res) => res.render('pages/public/sign-in',{layout:'login-layout'}));
 
 // Login
-router.post('/sign-in', (req, res, next) => {
-  passport.authenticate('local', {
-    successRedirect: '/',
+router.post('/sign-in', passport.authenticate('local', {
     failureRedirect: '/sign-in',
-    failureFlash: true
-  })(req, res, next);
-});
+    failureFlash: true}),function(req, res, next){
+      if(req.session.oldUrl){
+        var oldUrl=req.session.oldUrl;
+        req.session.oldUrl=null;
+        res.redirect(oldUrl);
+      }else{
+        res.redirect('/');
+      }    
+    });
 
 // Logout
 router.get('/logout', (req, res) => {
