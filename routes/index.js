@@ -93,15 +93,7 @@ router.post('/sign-up', (req, res) => {
                   'success_msg',
                   'You are now registered and can log in'
                 );
-               
-                  if(req.session.oldUrl){
-                    var oldUrl=req.session.oldUrl;
-                    req.session.oldUrl=null;
-                    res.redirect(oldUrl);
-                  }else{
-                    res.redirect('/sign-in');
-                  }    
-               
+                res.redirect('/sign-in');
               })
               .catch(err => console.log(err));
           });
@@ -114,17 +106,13 @@ router.post('/sign-up', (req, res) => {
 router.get('/sign-in', forwardAuthenticated, (req, res) => res.render('pages/public/sign-in',{layout:'login-layout'}));
 
 // Login
-router.post('/sign-in', passport.authenticate('local', {
+router.post('/sign-in', (req, res, next) => {
+  passport.authenticate('local', {
+    successRedirect: '/',
     failureRedirect: '/sign-in',
-    failureFlash: true}),function(req, res, next){
-      if(req.session.oldUrl){
-        var oldUrl=req.session.oldUrl;
-        req.session.oldUrl=null;
-        res.redirect(oldUrl);
-      }else{
-        res.redirect('/');
-      }    
-    });
+    failureFlash: true
+  })(req, res, next);
+});
 
 // Logout
 router.get('/logout', (req, res) => {
@@ -141,7 +129,7 @@ router.get('/add-to-cart/:id', (req, res,next) => {
     }
     cart.add(product,product.id);
     req.session.cart=cart;
-    //console.log(  req.session.cart);
+    console.log(  req.session.cart);
     res.redirect('/products');
   })
 });
@@ -153,6 +141,6 @@ router.get('/add-to-cart/:id', (req, res,next) => {
     var cart= new Cart(req.session.cart);
     var products =cart.generateArray();
     res.render('pages/users/shopping-cart',{ products:products,totalQty:cart.totalQty,totalPrice:cart.totalPrice })
-   // console.log(products);
+    console.log(products);
   });
 module.exports = router;
