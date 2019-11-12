@@ -1,0 +1,11 @@
+<h1>Shopping cart</h1>
+<% if (products) { %>
+    <h3> <%= totalQty %></h3>
+    <h3><%=totalPrice %></h3>
+
+
+<% for (var i = 0; i < products.length; i++) { %>
+    <h3> <%= products[i].item.name %>|<%= products[i].qty %>| <%= products[i].item.price %>|<%= products[i].price %></h3>
+
+    <% } %>
+    <% } %>

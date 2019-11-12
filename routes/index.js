@@ -7,36 +7,17 @@ const router = express.Router();
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
-const nodemailer = require('nodemailer');
 const Product = require('../models/Product');
 const User = require('../models/User');
+const Cart = require('../models/Cart');
 var faker = require('faker');
 const path = require('path');
 const fs = require('fs');
-
-const transporter = nodemailer.createTransport({
-    host: 'in-v3.mailjet.com',
-    port: 587,
-    requireTLS: true,
-    auth: {
-        user: 'a63f9f06d525f9ec6270729a89704cfe',
-        pass: '34a8564fc34463f7563679c4efc34bee'
-    }
-  });
-var mailOptions = {
-    from: 'aquatecinnovative1@gmail.com',
-    to: 'sekhon.game@gmail.com',
-    subject: 'Sending Email using Node.js',
-    text: 'That was easy!'
-  };
-  
-
 // Welcome Page
 //router.get('/',  (req, res) => res.render('pages/public/home',{ layout: 'layout' }));
 router.get('/', function(req, res, next) {
   var perPage = 9;
   var page = req.params.page || 1;
-
   Product
       .find({})
       .skip((perPage * page) - perPage)
@@ -53,8 +34,6 @@ router.get('/', function(req, res, next) {
           })
       })
 });
-// Login Page
-router.get('/sign-in', forwardAuthenticated, (req, res) => res.render('pages/public/sign-in',{layout:'login-layout'}));
 
 // Register Page
 router.get('/sign-up', forwardAuthenticated, (req, res) => res.render('pages/public/sign-up',{layout:'login-layout'}));
@@ -114,7 +93,15 @@ router.post('/sign-up', (req, res) => {
                   'success_msg',
                   'You are now registered and can log in'
                 );
-                res.redirect('/sign-in');
+               
+                  if(req.session.oldUrl){
+                    var oldUrl=req.session.oldUrl;
+                    req.session.oldUrl=null;
+                    res.redirect(oldUrl);
+                  }else{
+                    res.redirect('/sign-in');
+                  }    
+               
               })
               .catch(err => console.log(err));
           });
@@ -123,15 +110,21 @@ router.post('/sign-up', (req, res) => {
     });
   }
 });
+// Login Page
+router.get('/sign-in', forwardAuthenticated, (req, res) => res.render('pages/public/sign-in',{layout:'login-layout'}));
 
 // Login
-router.post('/sign-in', (req, res, next) => {
-  passport.authenticate('local', {
-    successRedirect: '/',
+router.post('/sign-in', passport.authenticate('local', {
     failureRedirect: '/sign-in',
-    failureFlash: true
-  })(req, res, next);
-});
+    failureFlash: true}),function(req, res, next){
+      if(req.session.oldUrl){
+        var oldUrl=req.session.oldUrl;
+        req.session.oldUrl=null;
+        res.redirect(oldUrl);
+      }else{
+        res.redirect('/');
+      }    
+    });
 
 // Logout
 router.get('/logout', (req, res) => {
@@ -139,20 +132,27 @@ router.get('/logout', (req, res) => {
   req.flash('success_msg', 'You are logged out');
   res.redirect('/sign-in');
 });
-
-module.exports = router;
-
-router.get('/mailtest', forwardAuthenticated, (req, res) =>{
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
+router.get('/add-to-cart/:id', (req, res,next) => {
+  var cart= new Cart(req.session.cart?req.session.cart:{});
+  var productId=req.params.id;
+  Product.findById(productId,function(err,product){
+    if(err){
+        return res.redirect('/');
     }
+    cart.add(product,product.id);
+    req.session.cart=cart;
+    console.log(  req.session.cart);
+    res.redirect('/products');
+  })
+});
+  router.get('/shopping-cart', 
+ function (req, res,next){
+    if(!req.session.cart){
+      res.render('pages/users/shopping-cart',{  products:{} });
+    }
+    var cart= new Cart(req.session.cart);
+    var products =cart.generateArray();
+    res.render('pages/users/shopping-cart',{ products:products,totalQty:cart.totalQty,totalPrice:cart.totalPrice })
+    console.log(products);
   });
-  res.render('mailtest');
-} );
-// Dashboard
-
-
 module.exports = router;
