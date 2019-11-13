@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+   <head>
+         <title>Bootstrap Example</title>
+         <meta charset="utf-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1">
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+         <link rel="stylesheet" href="/assets/js/min.js">
+         <link rel="stylesheet" href="/assets/css/style.css">
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+         <link href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.css" rel="stylesheet" />
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.js"></script>
+        <script src=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+      </head>
+  <body>
+      <% include ./partials/nav %>
+     
+              
+              <%- body %>
+		
+    <% include ./partials/footer %>
+    <script>
+        $(document).ready(function() {
+        
+        $(".owl-carousel").owlCarousel({
+        
+        autoPlay: 3000,
+        items : 4,
+        itemsDesktop : [1199,3],
+        itemsDesktopSmall : [979,3],
+        center: true,
+        nav:true,
+        loop:true,
+        responsive: {
+        600: {
+        items: 4
+        }
+        }
+        });        
+        });
+     </script>
+     <script>
+        $(document).on("scroll", function(){
+          if
+             ($(document).scrollTop() > 86){
+            $("#tks").addClass("fixed");
+          }
+          else
+          {
+            $("#tks").removeClass("fixed");
+          }
+        });
+        
+     </script>
+  </body>
+</html>

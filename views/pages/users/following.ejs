@@ -1,0 +1,88 @@
+<div class="tabs ">
+        <div class="container-fluid">
+          <div class="row">
+              <% include ../../partials/user_dashboard_nav %>   
+              <div class="col-xl-9">
+                  <div class="tab-content">     
+
+                    
+                    <div  id="tab_e">
+                                <div class="row">
+                                   <div class="col-xs-12 sneakers">
+                                      <div id="sneakers-tabs">
+                                         <ul role="tablist" class="nav nav-tabs">
+                                            <li role="presentation" class="collection-tab active disabled"><a id="sneakers-tabs-tab-collection" role="tab" aria-controls="sneakers-tabs-pane-collection" tabindex="-1" aria-selected="true" href="#" style="pointer-events: none;">Portfolio</a></li>
+                                            <li role="presentation" class="pull-right view-toggle grid"><a id="sneakers-tabs-tab-grid" role="tab" aria-controls="sneakers-tabs-pane-grid" tabindex="-1" aria-selected="false" href="#"><img alt="" src="//stockx-assets.imgix.net/svg/icons/grid-gray.svg?auto=compress,format"></a></li>
+                                            <li role="presentation" class="pull-right view-toggle list disabled"><a id="sneakers-tabs-tab-list" role="tab" aria-controls="sneakers-tabs-pane-list" tabindex="-1" aria-selected="false" href="#" style="pointer-events: none;"><img alt="" src="//stockx-assets.imgix.net/svg/icons/list-black.svg?auto=compress,format"></a></li>
+                                         </ul>
+                                         <div class="tab-content">
+                                            <div id="sneakers-tabs-pane-collection" aria-labelledby="sneakers-tabs-tab-collection" role="tabpanel" aria-hidden="false" class="tab-pane active">
+                                               <div class="table-parent">
+                                                  <table id="sticky-header" class="sticky c-pi-tbl table collection" style="width: 1069px;">
+                                                     <thead class="c-pi-thd">
+                                                        <tr>
+                                                           <th class="c-td-img  sortable">Name</th>
+                                                           <th class="c-td-cond  sortable">Condition</th>
+                                                           <th class="c-td-dt  sortable"><span class="visible-xs-inline visible-sm-inline">Purchase Date</span><span class="hidden-xs hidden-sm">Purchase Date</span></th>
+                                                           <th class="c-td-amt  sortable"><span class="visible-xs-inline visible-sm-inline">Purchase Price</span><span class="hidden-xs hidden-sm">Purchase Price</span></th>
+                                                           <th class="c-td-mkt dropdown sortable"><span class="visible-xs-inline visible-sm-inline">Market Value</span><span class="hidden-xs hidden-sm">Market Value</span></th>
+                                                           <th class="c-td-gl  sortable"><span class="visible-xs-inline visible-sm-inline">Gain/Loss</span><span class="hidden-xs hidden-sm">Gain/Loss</span></th>
+                                                        </tr>
+                                                     </thead>
+                                                  </table>
+                                                  <table id="master-table" class="c-pi-tbl master collection table">
+                                                     <thead class="c-pi-thd">
+                                                        <tr>
+                                                           <th class="c-td-img  sortable">Name</th>
+                                                           <th class="c-td-cond  sortable">Condition</th>
+                                                           <th class="c-td-dt  sortable"><span class="visible-xs-inline visible-sm-inline">Purchase Date</span><span class="hidden-xs hidden-sm">Purchase Date</span></th>
+                                                           <th class="c-td-amt  sortable"><span class="visible-xs-inline visible-sm-inline">Purchase Price</span><span class="hidden-xs hidden-sm">Purchase Price</span></th>
+                                                           <th class="c-td-mkt dropdown sortable"><span class="visible-xs-inline visible-sm-inline">Market Value</span><span class="hidden-xs hidden-sm">Market Value</span></th>
+                                                           <th class="c-td-gl  sortable"><span class="visible-xs-inline visible-sm-inline">Gain/Loss</span><span class="hidden-xs hidden-sm">Gain/Loss</span></th>
+                                                        </tr>
+                                                     </thead>
+                                                     <tfoot class="sticky-footer c-pi-tft collection static" id="sticky-footer" style="width: 1069px;">
+                                                        <tr class="c-totals">
+                                                           <td class="c-td-img"><span class="total-spacer">Totals: </span>1 Items</td>
+                                                           <td class="c-td-cond"></td>
+                                                           <td class="c-td-dt"></td>
+                                                           <td class="c-td-amt">$333</td>
+                                                           <td class="c-td-mkt">$256</td>
+                                                           <td class="c-td-gl red">-$77<span class="hidden-xs hidden-sm">(-23%)</span></td>
+                                                        </tr>
+                                                     </tfoot>
+                                                     <tbody>
+                                                        <tr class="c-c-row">
+                                                           <td class="c-td-img ">
+                                                              <div class="c-img-container"><a href="/adidas-yeezy-500-soft-vision"><img alt="Soft Vision" src="https://stockx.imgix.net/adidas-Yeezy-500-Soft-Vision-Product.jpg?fit=fill&amp;bg=FFFFFF&amp;w=140&amp;h=100&amp;auto=format,compress&amp;trim=color&amp;q=90&amp;dpr=2&amp;updated_at=1572553513" class=""></a></div>
+                                                              <div class="name"><a href="/adidas-yeezy-500-soft-vision"><span>adidas Yeezy 500</span><span>Soft Vision</span><span class="size">U.S. Men's Size: 9</span></a></div>
+                                                           </td>
+                                                           <td class="c-td-cond ">Deadstock</td>
+                                                           <td class="c-td-dt ">12/31/2017</td>
+                                                           <td class="c-td-amt ">$333</td>
+                                                           <td class="c-td-mkt dropdown">$247<span class="fa fa-chevron-down hidden-lg"></span></td>
+                                                           <td class="c-td-gl red ">-$86<span class="hidden-xs hidden-sm">(-26%)</span><span class="fa fa-chevron-down hidden-lg"></span></td>
+                                                        </tr>
+                                                     </tbody>
+                                                  </table>
+                                               </div>
+                                            </div>
+                                            <div id="sneakers-tabs-pane-grid" aria-labelledby="sneakers-tabs-tab-grid" role="tabpanel" aria-hidden="true" class="tab-pane"></div>
+                                            <div id="sneakers-tabs-pane-list" aria-labelledby="sneakers-tabs-tab-list" role="tabpanel" aria-hidden="true" class="tab-pane"></div>
+                                         </div>
+                                      </div>
+                                   </div>
+                                </div>
+        
+        
+        
+        
+                                </div>
+
+                              </div>
+                           </div>
+
+                            </div>
+                        </div>
+                      </div>
+                                
