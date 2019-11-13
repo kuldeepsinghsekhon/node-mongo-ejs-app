@@ -1,82 +1,131 @@
-<div class="tabs ">
-      <div class="container-fluid">
-        <div class="row">
-            <% include ../../partials/user_dashboard_nav %>   
 
-            <div class="col-xl-9">
-                  <div class="">
-                     <div class=" active" id="tab_a">
-                        <div class="buyer-stats">
-                        <div class="stat">
-                          <div><img src="images/buying1.png"></div>
-                          <div>
-                            <h3>purchasing</h3>
-                            <h2>--</h2>
-                          </div>
-                        </div>
-                        <div class="stat">
-                          <div><img src="images/buying2.png"></div>
-                          <div>
-                            <h3>purchasing (#)</h3>
-                            <h2>--</h2>
-                          </div>
-                        </div>
-                     </div>
-                     
-                  <div id="selling-tabs " class="sl_tab">
-                     <ul role="tablist" class="nav nav-tabs">
-                       <li role="presentation" class="active"><a id="selling-tabs-tab-current" role="tab" aria-controls="selling-tabs-pane-current" aria-selected="true" ><span>current</span></a></li>
-                       <li role="presentation" class=""><a id="selling-tabs-tab-pending" role="tab" aria-controls="selling-tabs-pane-pending" tabindex="-1" aria-selected="false"><span>pending</span></a></li>
-                       <li role="presentation" class=""><a id="selling-tabs-tab-history" role="tab" aria-controls="selling-tabs-pane-history" tabindex="-1" aria-selected="false" ><span>history</span></a></li>
-                     </ul>
-                     <div class="tab-content">
-                       <div id="selling-tabs-pane-current" aria-labelledby="selling-tabs-tab-current" role="tabpanel" aria-hidden="false" class="tab-pane active">
-                         <div class="current-bids">
-                           <div class="collection-header header-current pagingCollectionTable__ActionBar-d8ww1c-4 iSIVdG">
-                              <form class="form-inline searchForm pagingCollectionTable__SearchForm-d8ww1c-0 eJUxod">
-                                <div class="form-group">
-                                  <div class="pagingCollectionTable__SearchBar-d8ww1c-1 gRvpGB"><input type="submit" class="pagingCollectionTable__SubmitButton-d8ww1c-3 QsRlz" value="Search"><input class="form-control searchInput" type="text" placeholder="Search name" value=""></div>
-                                </div>
-                              </form>
-                           </div>
-                           <div class="portfolio-item-table" style="position: relative;">
-                              <table class="table">
-                                <thead>
-                                  <tr class="headers">
-                                    <th class="col-md-3 col-sm-5 col-xs-5 sortable undefined">Item </th>
-                                    <th class="col-sm-2 col-xs-4 sortable undefined">Bid Price </th>
-                                    <th class="col-lg-2 hidden-md hidden-sm hide-xs sortable undefined">Highest Bid </th>
-                                    <th class="col-md-2 hidden-sm hide-xs sortable undefined">Lowest Ask </th>
-                                    <th class="col-md-2 col-sm-2 col-xs-3 sortable undefined">Expires </th>
-                                    <th class="col-sm-1 actions col-xs-1 undefined"> </th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td colspan="6" class="no-pis"><em>No Results.</em></td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                           </div>
+            <div class="tabs ">
+                <div class="container-fluid">
+                  <div class="row">
+ 
+                
+                      <% include ../../partials/user_dashboard_nav %>  
+
+
+              				
+				<div class="col-xl-9">
+            <div class="tab-content">
+  
+            
+              <div class="" id="tab_b">
+                          <div class="dashboard-grid-page selling" id="page-content-wrapper">
+                              <div class="buyer-stats">
+                                  <div class="stat">
+                                   <div><img src="/assets/images/buying1.png"></div>
+                                   <div>
+                                    <h3>purchasing</h3>
+                                    <h2>--</h2>
+                                   </div>
+                                  </div>
+                                  <div class="stat">
+                                   <div><img src="/assets/images/buying2.png"></div>
+                                   <div>
+                                    <h3>purchasing (#)</h3>
+                                    <h2>--</h2>
+                                   </div>
+                                  </div>
+                               </div>
+               <div id="selling-tabs">
+                  <ul class="nav nav-tabs" role="tablist">
+                      <li class="nav-item">
+                         <a class="nav-link active" id="featured-products-tab" data-toggle="tab" href="#products_1" role="tab" aria-controls="featured-products" aria-selected="true">Current</a>
+                      </li>
+                      <li class="nav-item">
+                         <a class="nav-link show" id="latest-products-tab" data-toggle="tab" href="#products_2" role="tab" aria-controls="latest-products" aria-selected="false"> Pending</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link show" id="latest-products-tab" data-toggle="tab" href="#products_3" role="tab" aria-controls="latest-products" aria-selected="false">History</a>
+                       </li>
+                   </ul>
+
+
+
+                <div class="tab-content">
+                    <div class="tab-pane fade active show" id="products_1" role="tabpanel" aria-labelledby="featured-products-tab">
+
+                        <div class="sales-history">
+                            <div class="collection-header header-history pagingCollectionTable__ActionBar-d8ww1c-4 iSIVdG">
+                             <form class="form-inline searchForm pagingCollectionTable__SearchForm-d8ww1c-0 eJUxod">
+                              <div class="form-group">
+                               <div class="pagingCollectionTable__SearchBar-d8ww1c-1 gRvpGB"><input type="submit" class="pagingCollectionTable__SubmitButton-d8ww1c-3 QsRlz" value="Search"><input class="form-control searchInput" type="text" placeholder="Search name, order #" value=""></div>
+                              </div>
+                             </form>
+                             <button class="sales-report btn btn-danger btn-flat">Request Export</button>
+                            </div>
+                            <div class="portfolio-item-table" style="position: relative;">
+                             <table class="table">
+                              <thead>
+                               <tr class="headers">
+                                  <th class="col-lg-3 col-sm-4 col-xs-6 sortable undefined">Item </th>
+                                  <th class="col-lg-2 hidden-md hidden-sm hide-xs undefined">Order Number </th>
+                                  <th class="col-lg-2 col-sm-2 col-xs-3 sortable  dropdown">Sale Date </th>
+                                  <th class="col-sm-1 col-xs-2 sortable undefined">Price </th>
+                                  <th class="col-lg-2 col-sm-3 col-xs-2 hide-xs sortable undefined">Status </th>
+                               </tr>
+                              </thead>
+                              <tbody>
+                               <tr>
+                                  <td colspan="5" class="no-pis"><em>No Results.</em></td>
+                               </tr>
+                              </tbody>
+                             </table>
+                            </div>
                          </div>
+
+                    </div>
+
+
+
+                 <div class="tab-pane " id="products_2" role="tabpanel" aria-labelledby="featured-products-tab">
+                  <div class="sales-history">
+                     <div class="collection-header header-history pagingCollectionTable__ActionBar-d8ww1c-4 iSIVdG">
+                      <form class="form-inline searchForm pagingCollectionTable__SearchForm-d8ww1c-0 eJUxod">
+                       <div class="form-group">
+                        <div class="pagingCollectionTable__SearchBar-d8ww1c-1 gRvpGB"><input type="submit" class="pagingCollectionTable__SubmitButton-d8ww1c-3 QsRlz" value="Search"><input class="form-control searchInput" type="text" placeholder="Search name, order #" value=""></div>
                        </div>
-                       <div id="selling-tabs-pane-pending" aria-labelledby="selling-tabs-tab-pending" role="tabpanel" aria-hidden="true" class="tab-pane">
-                       
-                       </div>
-                       <div id="selling-tabs-pane-history" aria-labelledby="selling-tabs-tab-history" role="tabpanel" aria-hidden="true" class="tab-pane">
-                       
-                       
-                       </div>
+                      </form>
+                      <button class="sales-report btn btn-danger btn-flat">Request Export</button>
+                     </div>
+                     <div class="portfolio-item-table" style="position: relative;">
+                      <table class="table">
+                       <thead>
+                        <tr class="headers">
+                           <th class="col-lg-3 col-sm-4 col-xs-6 sortable undefined">Item </th>
+                           <th class="col-lg-2 hidden-md hidden-sm hide-xs undefined">Order Number </th>
+                           <th class="col-lg-2 col-sm-2 col-xs-3 sortable  dropdown">Sale Date </th>
+                           <th class="col-sm-1 col-xs-2 sortable undefined">Price </th>
+                           <th class="col-lg-2 col-sm-3 col-xs-2 hide-xs sortable undefined">Status </th>
+                        </tr>
+                       </thead>
+                       <tbody>
+                        <tr>
+                           <td colspan="5" class="no-pis"><em>No Results.</em></td>
+                        </tr>
+                       </tbody>
+                      </table>
                      </div>
                   </div>
-                     
-                     
-                  
-              
-                  </div>
+                 </div>
+
+
+                 <div class="tab-pane " id="products_3" role="tabpanel" aria-labelledby="featured-products-tab"></div>
+                      
+
+                </div>
                </div>
-                  
-               
+            </div>
+              </div>
+              
+                    
+  
+            </div>
+          </div>
+             
 
          </div>         
       </div>

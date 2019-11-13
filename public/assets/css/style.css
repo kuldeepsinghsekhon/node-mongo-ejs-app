@@ -3113,19 +3113,7 @@ color:
 	padding: 20px 0;
 	font-size: 14pt;
 }
-.tabs li {
-	background-color: #f5f5f5;
-	text-align: center;
-	height: 100%;
-	width: 100%;
-	padding: 20px 0;
-}
-.tabs li.active {
-	background-color: #fff;
-}
-.tabs li.active a {
-	color: #000;
-}
+
 .tab.tvs {
 	background: #eee;
 	padding: 20px;
@@ -4393,7 +4381,7 @@ padding: 0 30px;
     margin-bottom: 40px;
 
 }
-.nav-link {
+.pl_cn .nav-link {
 	-webkit-box-flex: 1;
 	-ms-flex-positive: 1;
 	flex-grow: 1;
@@ -4407,7 +4395,7 @@ padding: 0 30px;
 	border-radius: 30px!important;
 	color:#000;
 }
-.nav-link.active {
+.pl_cn .nav-link.active {
 	color: #fff;
 	background: #509e2f !important;
 	border: 1px solid #509e2f;
@@ -4741,7 +4729,7 @@ input, input.form-control, select, select.form-control, textarea, textarea.form-
 
 
 
-Type a message
+
 
 }
  .affirm-product-modal {
@@ -4764,4 +4752,181 @@ Type a message
 .nxt_btn .btn {
 	padding: 8px 27px;
 	font-size: 20px;
+}
+/* payment page css */
+
+
+.split-pane {
+	min-height: calc(100vh - 90px);
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-flow: row nowrap;
+	flex-flow: row nowrap;
+}
+
+
+
+.buysell-header .pane-header {
+	text-align: center;
+}
+
+.pane .pane-header {
+	padding: 30px 0 0;
+}
+.buysell-header .pane-header h1 {
+	font-weight: 600;
+	font-size: 28px;
+}
+.buysell-header .pane-header .market-summary {
+	font-size: 16px;
+	margin-bottom: 10px;
+}
+.buysell-header .header-image {
+	width: 80%;
+	margin: auto;
+	padding-top: 30px;
+}
+.image-container img {
+	max-width: 100%;
+}
+
+
+.pane.forty {
+	width: 40%;
+	min-width: 500px;
+}
+
+.pane {
+	padding: 0 30px 50px;
+}
+.payment-selection, .seller-payment-form {
+	padding: 30px 0 50px;
+}
+.payment-selection .selection-title, .seller-payment-form .selection-title {
+	font-size: 45px;
+	font-weight: 700;
+	line-height: 1.2;
+}
+.payment-selection .selection-subtitle, .seller-payment-form .selection-subtitle {
+	font-size: 20px;
+	font-weight: 600;
+	margin-bottom: 40px;
+	color: #7c7c7c;
+}
+.gqxTWB {
+	border-radius: 4px;
+	border: 1px solid rgb(224, 224, 224);
+	background-color: rgb(255, 255, 255);
+	text-align: center;
+	letter-spacing: 0px;
+	font-family: "proxima-nova", sans-serif;
+	font-weight: 500;
+	padding: 12px 18px;
+	box-shadow: none;
+	width: 100%;
+	margin: 10px 0px;
+}
+.fJklpk {
+	margin: 5px;
+	height: 35px;
+}
+
+
+
+
+
+/* Size selection css */
+
+
+.size-select-grid {
+	padding-top: 30px;
+}
+
+
+.jqmgAU {
+	font-size: 28px;
+	font-weight: 500;
+	line-height: 1.2;
+	padding-bottom: 16px;
+	margin: 0px;
+}
+.efPZCS {
+	display: flex;
+	-moz-box-pack: justify;
+	justify-content: space-between;
+	font-size: 14px;
+	font-weight: 600;
+	margin-bottom: 13px;
+	height: 40px;
+}
+.icWnhq {
+	height: 17px;
+	margin-right: 8px;
+	color: rgb(80, 158, 47);
+	font-weight: 700;
+	cursor: pointer;
+}
+.size-select-grid .grid-tiles {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-flow: row wrap;
+	flex-flow: row wrap;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+.size-select-grid .grid-tile {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	cursor: pointer;
+	font-size: 16px;
+	width: 23%;
+	height: 70px;
+	margin: 4px;
+}
+.size-select-grid .grid-tile .tile-inner {
+	background: #fff;
+	border: 1px solid #e5e7ea;
+	text-align: center;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-flow: column;
+	flex-flow: column;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	width: 94px;
+	height: 70px;
+}.size-select-grid .grid-tile .tile-value {
+	color: #000;
+	font-weight: 700;
+	
+}
+.size-select-grid .grid-tile.buy-tile .tile-subvalue {
+	color: #509e2f;
+}
+.size-select-grid .grid-tile.buy-tile:hover .tile-inner {
+	background: #f0f9ef;
 }

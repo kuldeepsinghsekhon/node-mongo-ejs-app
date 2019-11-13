@@ -20,7 +20,7 @@ router.get('/selling', function(req, res, next) {
                     users: users,
                     current: page,
                     pages: Math.ceil(count / perPage),
-                    layout:'user-dashboard-layout'
+                    layout:'layout'
                 })
             })
         })
@@ -40,7 +40,7 @@ router.get('/selling', function(req, res, next) {
                     users: users,
                     current: page,
                     pages: Math.ceil(count / perPage),
-                    layout:'user-dashboard-layout'
+                    layout:'layout'
                 })
             })
         })
@@ -60,7 +60,7 @@ router.get('/selling', function(req, res, next) {
                     users: users,
                     current: page,
                     pages: Math.ceil(count / perPage),
-                    layout:'user-dashboard-layout'
+                    layout:'layout'
                 })
             })
         })
@@ -80,7 +80,7 @@ router.get('/profile', function(req, res, next) {
                     users: users,
                     current: page,
                     pages: Math.ceil(count / perPage),
-                    layout:'user-dashboard-layout'
+                    layout:'layout'
                 })
             })
         })
@@ -100,7 +100,7 @@ router.get('/profile', function(req, res, next) {
                     users: users,
                     current: page,
                     pages: Math.ceil(count / perPage),
-                    layout:'user-dashboard-layout'
+                    layout:'layout'
                 })
             })
         })
@@ -120,7 +120,7 @@ router.get('/profile', function(req, res, next) {
                     users: users,
                     current: page,
                     pages: Math.ceil(count / perPage),
-                    layout:'user-dashboard-layout'
+                    layout:'layout'
                 })
             })
         })

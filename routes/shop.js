@@ -24,6 +24,12 @@ function (req, res,next){
    res.render('pages/users/shopping-cart',{ products:products,totalQty:cart.totalQty,totalPrice:cart.totalPrice })
    //console.log(products);
  });
+ router.get('/payment-method', 
+ function (req, res,next){
+   
+    res.render('pages/public/payment-method')
+    //console.log(products);
+  });
  router.get('/checkout', 
  function (req, res,next){
     if(!req.session.cart){
