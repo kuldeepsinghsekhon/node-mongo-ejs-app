@@ -8,7 +8,6 @@ module.exports = function Cart(oldCart) {
             this.totalPrice += this.items[key].qty * this.items[key].item.price;
         }
     }
-
     this.add = function (item, id) {
         var storedItem = this.items[id];
         if (!storedItem) {
