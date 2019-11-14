@@ -20,6 +20,7 @@ function (req, res,next){
      res.render('pages/users/shopping-cart',{  products:{} });
    }
    var cart= new Cart(req.session.cart);
+    
    var products =cart.generateArray();
    res.render('pages/users/shopping-cart',{ products:products,totalQty:cart.totalQty,totalPrice:cart.totalPrice })
    //console.log(products);
@@ -30,22 +31,47 @@ function (req, res,next){
     res.render('pages/public/payment-method')
     //console.log(products);
   });
- router.get('/checkout', 
+  router.get('/product/:id', function(req, res, next) {
+    var productId=req.params.id;
+        product=Product.findById(productId,function(err,product){
+        // if(err){
+        //     return res.redirect('/');
+        // }
+            res.render('pages/public/product-checkout', {
+              product: product,
+              layout:'layout'
+          })
+      })
+  });
+ router.get('/checkout/:id', 
  function (req, res,next){
-    if(!req.session.cart){
-      res.redirect('/shopping-cart');
-    }
-    var cart= new Cart(req.session.cart);
-    var products =cart.generateArray();
-    res.render('pages/public/checkout',{ products:products,totalQty:cart.totalQty,totalPrice:cart.totalPrice })
-    //console.log(products);
+  req.session.cart = {};
+  var productId=req.params.id;
+    // if(!req.session.cart){
+    //   res.redirect('/shopping-cart');
+    // }
+    //var cart= new Cart(req.session.cart);
+  
+    Product.findById(productId,function(err,product){
+      var cart= new Cart({});
+      if(err){
+          return res.redirect('/');
+      }
+     // console.log(product);
+      cart.add(product,product.id);   
+      req.session.cart=cart; 
+      var products =cart.generateArray();
+      res.render('pages/public/checkout',{ products:products,totalQty:cart.totalQty,totalPrice:cart.totalPrice })
+      //console.log( req.session.cart+'cart');
+    });
+  
   });
   router.post('/checkout',function(req,res,next){
-        if (!req.session.cart) {
-            return res.redirect('/shopping-cart');
-        }
+        // if (!req.session.cart) {
+        //     return res.redirect('/shopping-cart');
+        // }
         var cart = new Cart(req.session.cart);
-        
+       // console.log(req.session.cart+'fdfdfd');
         var stripe = require("stripe")(
             "sk_test_eOl4PQxl78Ry0gZNIFMd6mED00aVcbzrUA"
         );

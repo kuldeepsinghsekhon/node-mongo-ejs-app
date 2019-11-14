@@ -4930,3 +4930,61 @@ input, input.form-control, select, select.form-control, textarea, textarea.form-
 .size-select-grid .grid-tile.buy-tile:hover .tile-inner {
 	background: #f0f9ef;
 }
+/*card payment selection css */
+
+.address-form.fs-block {
+	margin-top: 2rem;
+}
+.form-title {
+	font-weight: 600;
+	font-size: 20px;
+}
+.field {
+    height: 60px;
+    margin: 10px 0;
+    width: 100%;
+    padding: 10px;
+    border-radius: 0;
+    display: block;
+    background: #fff;
+	border: 1px solid#e5e7ea;
+}
+
+.select-custom ::after {
+	display: inline-block;
+	position: absolute;
+	right: 2.9rem;
+	-webkit-transform: translateY(-51%);
+	transform: translateY(-51%);
+	color: #34373f;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: 1.5rem;
+	content: "\f0d7";
+	top: 32%;
+}
+
+
+.field.field-select select {
+	width: 100%;
+	height: auto;
+	border: none;
+	
+	padding: 10px;
+}
+.selection-subtitle {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 40px;
+    color: 
+    #7c7c7c;
+}
+.selection-title {
+	font-size: 45px;
+	font-weight: 700;
+	line-height: 1.2;
+	margin-top: 2rem;
+}
+
+.col-xs-12.form-group.required.card_sec {
+	width: 100%;
+}
