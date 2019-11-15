@@ -9,6 +9,7 @@ const bcrypt = require('bcryptjs');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const Product = require('../models/Product');
 const User = require('../models/User');
+const Role = require('../models/Role');
 const Cart = require('../models/Mycart');
 var faker = require('faker');
 const path = require('path');
@@ -40,6 +41,12 @@ router.get('/sign-up', forwardAuthenticated, (req, res) => res.render('pages/pub
 
 // Register
 router.post('/sign-up', (req, res) => {
+   const role=Role.User;
+  // const name =req.body.name;
+  // const email =req.body.email;
+  // const password =req.body.password;
+  // const password2 =req.body.password2;
+  // const role =req.body.role;
   const { name, email, password, password2 } = req.body;
   let errors = [];
 
@@ -79,7 +86,7 @@ router.post('/sign-up', (req, res) => {
           name,
           email,
           password,
-         
+          role,
         });
 
         bcrypt.genSalt(10, (err, salt) => {
