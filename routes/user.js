@@ -4,8 +4,8 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 // Load User model
 const User = require('../models/User');
-const { forwardAuthenticated } = require('../config/auth');
-router.get('/selling', function(req, res, next) {
+const {ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
+router.get('/selling',ensureAuthenticated, function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   
@@ -25,7 +25,7 @@ router.get('/selling', function(req, res, next) {
             })
         })
   });
-  router.get('/buying', function(req, res, next) {
+  router.get('/buying',ensureAuthenticated, function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   
@@ -45,7 +45,7 @@ router.get('/selling', function(req, res, next) {
             })
         })
   });
-  router.get('/portfolio', function(req, res, next) {
+  router.get('/portfolio',ensureAuthenticated, function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   
@@ -65,7 +65,7 @@ router.get('/selling', function(req, res, next) {
             })
         })
   });
-router.get('/profile', function(req, res, next) {
+router.get('/profile',ensureAuthenticated, function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   
@@ -85,7 +85,7 @@ router.get('/profile', function(req, res, next) {
             })
         })
   });
-  router.get('/following', function(req, res, next) {
+  router.get('/following',ensureAuthenticated, function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   
@@ -105,7 +105,7 @@ router.get('/profile', function(req, res, next) {
             })
         })
   });
-  router.get('/setting', function(req, res, next) {
+  router.get('/setting',ensureAuthenticated, function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   

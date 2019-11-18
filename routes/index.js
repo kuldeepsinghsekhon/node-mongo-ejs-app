@@ -129,7 +129,12 @@ router.post('/sign-in', passport.authenticate('local', {
         req.session.oldUrl=null;
         res.redirect(oldUrl);
       }else{
-        res.redirect('/');
+        if(req.user.role=='Admin'){
+          res.redirect('/admin/');
+        }else{
+          res.redirect('/');
+        }
+       
       }    
     });
 
@@ -162,4 +167,9 @@ router.get('/add-to-cart/:id', (req, res,next) => {
     res.render('pages/users/shopping-cart',{ products:products,totalQty:cart.totalQty,totalPrice:cart.totalPrice })
     console.log(products);
   });
+  router.get('/forbidden', forwardAuthenticated, (req, res) => res.render('pages/public/sign-in',{
+    message: "Forbidden",
+    layout:'login-layout'
+  }));
+
 module.exports = router;

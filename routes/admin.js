@@ -5,21 +5,22 @@ const fs = require('fs');
 const Product = require('../models/Product');
 const User = require('../models/User');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
+const { permit } = require('../config/role-auth');
 const fileUpload = require('express-fileupload');
 const app = express();
 app.use(fileUpload());
 
-router.get('/dashboard', ensureAuthenticated, (req, res) =>
+router.get('/dashboard', ensureAuthenticated,permit('Admin'), (req, res) =>
   res.render('dashboard', {
     user: req.user
   })
 );
-router.get('/', ensureAuthenticated, (req, res) => res.render('pages/admin/dashboard',{ layout:'admin-layout' }));
+router.get('/', ensureAuthenticated,permit('Admin'),(req, res) => res.render('pages/admin/dashboard',{ layout:'admin-layout' }));
 router.get('/add-product', function(req, res, next) {
     res.render('pages/admin/add-product',{layout:'admin-layout'}); 
 });
 
-router.post('/add-product', function(req, res, next) {
+router.post('/add-product',ensureAuthenticated, permit('Admin'),function(req, res, next) {
     var product = new Product();
     var imgname='default.jpg';
     product.category = req.body.category_name;
@@ -65,7 +66,7 @@ router.post('/add-product', function(req, res, next) {
 //router.get('/admin/', ensureAuthenticated, (req, res) => res.render('pages/admin/dashboard',{ layout:'admin-layout' }));
 //router.get('/admin/users', ensureAuthenticated, (req, res) => res.render('pages/admin/users',{ layout:'admin-layout' }));
 //router.get('/admin/template-products', ensureAuthenticated, (req, res) => res.render('pages/admin/template-products',{ layout:'admin-layout' }));
-router.get('/template-products/:page', function(req, res, next) {
+router.get('/template-products/:page',ensureAuthenticated, permit('Admin'), function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   
@@ -85,7 +86,7 @@ router.get('/template-products/:page', function(req, res, next) {
             })
         })
   });
-  router.get('/users/:page', function(req, res, next) {
+  router.get('/users/:page',ensureAuthenticated, permit('Admin'), function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   
