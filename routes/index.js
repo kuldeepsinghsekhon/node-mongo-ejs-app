@@ -169,7 +169,15 @@ router.get('/add-to-cart/:id', (req, res,next) => {
   });
   router.get('/forbidden', forwardAuthenticated, (req, res) => res.render('pages/public/sign-in',{
     message: "Forbidden",
-    layout:'login-layout'
+    layout:'layout'
   }));
-
+  router.get('/contactus', (req, res) => res.render('pages/public/contactus',{
+    layout:'layout'
+  }));
+  router.get('/about', (req, res) => res.render('pages/public/aboutus',{
+    layout:'layout'
+  }));
+  router.get('/search', (req, res) => res.render('pages/public/search',{
+    layout:'layout'
+  }));
 module.exports = router;

@@ -5,7 +5,8 @@ const passport = require('passport');
 // Load User model
 const User = require('../models/User');
 const {ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
-router.get('/selling',ensureAuthenticated, function(req, res, next) {
+const { permit } = require('../config/role-auth');
+router.get('/selling',ensureAuthenticated,permit('User'), function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   

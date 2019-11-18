@@ -94,8 +94,10 @@ function (req, res,next){
                 cart: cart,
                 address: req.body.address,
                 name: req.body.name,
-                paymentId: charge.id
+                paymentId: charge.id,
+                payment:charge
             });
+            console.log(charge);
             order.save(function(err, result) {
                 req.flash('success', 'Successfully bought product!');
                 req.session.cart = null;

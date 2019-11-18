@@ -2433,7 +2433,7 @@ body {
 
 .footer-middle {
 	padding-top: 46px;
-	margin-top: 3rem;
+	
 }
 .contact-info li {
 	font-size: 16px;
@@ -5804,4 +5804,39 @@ span.market-dir-up-arrow {
 }
 .menu li:hover > ul, .menu li.show > ul, .menu li:hover > .megamenu, .menu li.show > .megamenu {
 	display: block!important;
+}
+/* Contact_us page css */
+
+
+.site-section.nws {
+    padding: 5rem 0;
+	background:#d4d7dd;
+}
+
+.site-section input {
+	height: 55px;
+	background: #fff 
+	border: transparent 
+}
+
+.heading-39291 {
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 30px;
+}
+.list-inline, .list-unstyled {
+	padding-left: 0;
+	list-style: none;
+}
+
+.d-block {
+    display: block !important;
+}
+
+.send_msg {
+    color: #fff!important;
+    background-color: #43ab92!important;
+    border-color: #43ab92!important;
 }
