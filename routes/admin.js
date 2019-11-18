@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const Product = require('../models/Product');
 const User = require('../models/User');
+const Myorder = require('../models/Myorder');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const { permit } = require('../config/role-auth');
 const fileUpload = require('express-fileupload');
@@ -103,6 +104,28 @@ router.get('/template-products/:page',ensureAuthenticated, permit('Admin'), func
                     pages: Math.ceil(count / perPage),
                     layout:'admin-layout'
                 })
+            })
+        })
+  });
+  router.get('/orders/:page',ensureAuthenticated, permit('Admin'), function(req, res, next) {
+    var perPage = 9;
+    var page = req.params.page || 1;
+  
+    Myorder
+        .find({})
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .exec(function(err, orders) {
+            Product.count().exec(function(err, count) {
+                if (err) return next(err)
+                res.render('pages/admin/orders', {
+                  
+                  orders: orders,
+                    current: page,
+                    pages: Math.ceil(count / perPage),
+                    layout:'admin-layout'
+                })
+                console.log(orders);
             })
         })
   });
