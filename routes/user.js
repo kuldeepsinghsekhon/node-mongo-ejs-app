@@ -26,7 +26,7 @@ router.get('/selling',ensureAuthenticated,permit('User'), function(req, res, nex
             })
         })
   });
-  router.get('/buying',ensureAuthenticated, function(req, res, next) {
+  router.get('/buying',ensureAuthenticated,permit('User'), function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   
@@ -46,7 +46,7 @@ router.get('/selling',ensureAuthenticated,permit('User'), function(req, res, nex
             })
         })
   });
-  router.get('/portfolio',ensureAuthenticated, function(req, res, next) {
+  router.get('/portfolio',ensureAuthenticated,permit('User'), function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   
@@ -66,7 +66,7 @@ router.get('/selling',ensureAuthenticated,permit('User'), function(req, res, nex
             })
         })
   });
-router.get('/profile',ensureAuthenticated, function(req, res, next) {
+router.get('/profile',ensureAuthenticated,permit('User'), function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   
@@ -86,7 +86,7 @@ router.get('/profile',ensureAuthenticated, function(req, res, next) {
             })
         })
   });
-  router.get('/following',ensureAuthenticated, function(req, res, next) {
+  router.get('/following',ensureAuthenticated,permit('User'), function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   
@@ -106,7 +106,7 @@ router.get('/profile',ensureAuthenticated, function(req, res, next) {
             })
         })
   });
-  router.get('/setting',ensureAuthenticated, function(req, res, next) {
+  router.get('/setting',ensureAuthenticated,permit('User'), function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   
