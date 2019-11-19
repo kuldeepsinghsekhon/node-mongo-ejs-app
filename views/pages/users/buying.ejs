@@ -49,14 +49,14 @@
                     <div class="tab-pane fade active show" id="products_1" role="tabpanel" aria-labelledby="featured-products-tab">
 
                         <div class="sales-history">
-                            <div class="collection-header header-history pagingCollectionTable__ActionBar-d8ww1c-4 iSIVdG">
+                            <!-- <div class="collection-header header-history pagingCollectionTable__ActionBar-d8ww1c-4 iSIVdG">
                              <form class="form-inline searchForm pagingCollectionTable__SearchForm-d8ww1c-0 eJUxod">
                               <div class="form-group">
                                <div class="pagingCollectionTable__SearchBar-d8ww1c-1 gRvpGB"><input type="submit" class="pagingCollectionTable__SubmitButton-d8ww1c-3 QsRlz" value="Search"><input class="form-control searchInput" type="text" placeholder="Search name, order #" value=""></div>
                               </div>
                              </form>
                              <button class="sales-report btn btn-danger btn-flat">Request Export</button>
-                            </div>
+                            </div> -->
                             <div class="portfolio-item-table" style="position: relative;">
                              <table class="table">
                               <thead>
@@ -69,9 +69,25 @@
                                </tr>
                               </thead>
                               <tbody>
+                                    <% 
+                                    if (orders) { %>
+                                    <% for (var i = 0; i < orders.length; i++) { %>
+                                       <tr>
+                                         
+                                        
+                                        
+                                             <% var products= orders[i];
+                                             for (var j = 0; j < products.length; j++) { %>
+                                                <td><%= products[j].item.name %></td><td><%= order_id[i] %></td><td><%= new Date(payment[i].created*1000).toLocaleString() %></td> <td><%= products[j].item.price %></td> <td><%= payment[i].status %></td>
+                                            
+                                                <% } %> 
+                                         
+                                         </tr>
+                                        <% }}else{ %>
                                <tr>
                                   <td colspan="5" class="no-pis"><em>No Results.</em></td>
                                </tr>
+                               <% } %> 
                               </tbody>
                              </table>
                             </div>
@@ -83,14 +99,14 @@
 
                  <div class="tab-pane " id="products_2" role="tabpanel" aria-labelledby="featured-products-tab">
                   <div class="sales-history">
-                     <div class="collection-header header-history pagingCollectionTable__ActionBar-d8ww1c-4 iSIVdG">
+                     <!-- <div class="collection-header header-history pagingCollectionTable__ActionBar-d8ww1c-4 iSIVdG">
                       <form class="form-inline searchForm pagingCollectionTable__SearchForm-d8ww1c-0 eJUxod">
                        <div class="form-group">
                         <div class="pagingCollectionTable__SearchBar-d8ww1c-1 gRvpGB"><input type="submit" class="pagingCollectionTable__SubmitButton-d8ww1c-3 QsRlz" value="Search"><input class="form-control searchInput" type="text" placeholder="Search name, order #" value=""></div>
                        </div>
                       </form>
                       <button class="sales-report btn btn-danger btn-flat">Request Export</button>
-                     </div>
+                     </div> -->
                      <div class="portfolio-item-table" style="position: relative;">
                       <table class="table">
                        <thead>

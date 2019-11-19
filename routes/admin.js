@@ -5,6 +5,7 @@ const fs = require('fs');
 const Product = require('../models/Product');
 const User = require('../models/User');
 const Myorder = require('../models/Myorder');
+const Cart = require('../models/Mycart');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const { permit } = require('../config/role-auth');
 const fileUpload = require('express-fileupload');
@@ -112,21 +113,32 @@ router.get('/template-products/:page',ensureAuthenticated, permit('Admin'), func
     var page = req.params.page || 1;
   
     Myorder
-        .find({})
-        .skip((perPage * page) - perPage)
-        .limit(perPage)
-        .exec(function(err, orders) {
-            Product.count().exec(function(err, count) {
-                if (err) return next(err)
-                res.render('pages/admin/orders', {
-                  
-                  orders: orders,
-                    current: page,
-                    pages: Math.ceil(count / perPage),
-                    layout:'admin-layout'
-                })
-                console.log(orders);
+    .find({})
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .exec(function(err, orders) {
+        Myorder.count().exec(function(err, count) {
+            if (err) return next(err)
+            var arr = [];
+            var order_id = [];
+            var payment = [];
+            orders.forEach(order => {                 
+                var cart= new Cart(order.cart);
+            var products =cart.generateArray();
+            arr.push(products); 
+            order_id.push(order.id);
+            payment.push(order.payment)
+              }); 
+            res.render('pages/admin/orders', {                  
+                orders: arr,
+                order_id:order_id,
+                payment:payment,
+                current: page,
+                pages: Math.ceil(count / perPage),
+                layout:'admin-layout'
             })
+            //console.log(orders);
         })
+    })
   });
 module.exports = router;
