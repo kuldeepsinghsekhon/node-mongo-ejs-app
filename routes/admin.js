@@ -12,15 +12,39 @@ const fileUpload = require('express-fileupload');
 const app = express();
 app.use(fileUpload());
 
-router.get('/dashboard', ensureAuthenticated,permit('Admin'), (req, res) =>
+router.get('/dashboard', ensureAuthenticated,permit('Admin'), function(req, res){
+  var usercount=User.count().exec();
+  var productcount=Product.count().exec();
   res.render('dashboard', {
+    usercount:usercount,
+    productcount:productcount,
     user: req.user
   })
-);
-router.get('/', ensureAuthenticated,permit('Admin'),(req, res) => res.render('pages/admin/dashboard',{ layout:'admin-layout' }));
-router.get('/add-product', function(req, res, next) {
-    res.render('pages/admin/add-product',{layout:'admin-layout'}); 
 });
+router.get('/', ensureAuthenticated,permit('Admin'),
+
+function(req, res){
+  var usercount=0;
+    var productcount=0;
+    Product
+    .count(function(err, count) {
+      productcount= count;
+      console.log(productcount) ;
+    });
+
+  res.render('pages/admin/dashboard', {
+   
+    layout:'admin-layout',
+    usercount:usercount,
+    pcount:productcount,
+    user: req.user
+  })
+});
+
+// (req, res) => res.render('pages/admin/dashboard',{ layout:'admin-layout' }));
+// router.get('/add-product', function(req, res, next) {
+//     res.render('pages/admin/add-product',{layout:'admin-layout'}); 
+// });
 
 router.get('/product/:id/edit', function(req, res, next) {
   var productId=req.params.id;
@@ -48,7 +72,7 @@ router.post('/product/:id/update',ensureAuthenticated, permit('Admin'),function 
   var img='';
   var prod={name:req.body.product_name, description:req.body.product_description,category:req.body.category_name,sku:req.body.product_sku,price:req.body.product_price,style: req.body.style };
   if (!req.files || Object.keys(req.files).length=== 0) {
-    console.log('No files were uploaded.');
+    //console.log('No files were uploaded.');
   }else{  
     let productImage1 = req.files.productImage;
       imgname=Date.now()+path.extname(req.files.productImage.name);
@@ -58,7 +82,7 @@ router.post('/product/:id/update',ensureAuthenticated, permit('Admin'),function 
         //res.send('File uploaded!');}
       });  
       prod={name:req.body.product_name,description:req.body.product_description,category:req.body.category_name,sku:req.body.product_sku,price:req.body.product_price,style: req.body.style,image:imgname };     
-    console.log(img);
+   // console.log(img);
   }
   Product.findByIdAndUpdate(productId, {$set:prod}, function (err, product) {
           if (err) return next(err);
