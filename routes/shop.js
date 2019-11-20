@@ -5,6 +5,7 @@ const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 const router = express.Router();
 const passport = require('passport');
+const { permit } = require('../config/role-auth');
 const bcrypt = require('bcryptjs');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const Product = require('../models/Product');
