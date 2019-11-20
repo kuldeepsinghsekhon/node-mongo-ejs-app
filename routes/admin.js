@@ -22,6 +22,50 @@ router.get('/add-product', function(req, res, next) {
     res.render('pages/admin/add-product',{layout:'admin-layout'}); 
 });
 
+router.get('/product/:id/edit', function(req, res, next) {
+  var productId=req.params.id;
+      product=Product.findById(productId,function(err,product){
+      // if(err){
+      //     return res.redirect('/');
+      // }
+          res.render('pages/admin/edit-product', {
+            product: product,
+            layout:'admin-layout'
+        })
+    })
+});
+
+router.post('/product/:id/update',ensureAuthenticated, permit('Admin'),function (req, res,next) {
+  var productId=req.params.id.replace(" ", "");
+  var product = new Product();
+  var imgname='default.jpg';
+  product.category = req.body.category_name;
+  product.description = req.body.product_description;
+  product.name = req.body.product_name;
+  product.sku = req.body.product_sku;
+  product.price = req.body.product_price;
+  var imgpath=appRoot+'//public//uploads//products//';
+  var img='';
+  var prod={name:req.body.product_name, description:req.body.product_description,category:req.body.category_name,sku:req.body.product_sku,price:req.body.product_price,style: req.body.style };
+  if (!req.files || Object.keys(req.files).length=== 0) {
+    console.log('No files were uploaded.');
+  }else{  
+    let productImage1 = req.files.productImage;
+      imgname=Date.now()+path.extname(req.files.productImage.name);
+      productImage1.mv(imgpath+'//'+imgname, function(err) { 
+        if (err) throw err
+        //return res.status(500).send(err);
+        //res.send('File uploaded!');}
+      });  
+      prod={name:req.body.product_name,description:req.body.product_description,category:req.body.category_name,sku:req.body.product_sku,price:req.body.product_price,style: req.body.style,image:imgname };     
+    console.log(img);
+  }
+  Product.findByIdAndUpdate(productId, {$set:prod}, function (err, product) {
+          if (err) return next(err);
+          res.redirect('/admin/template-products/1');
+      });
+    });
+
 router.post('/add-product',ensureAuthenticated, permit('Admin'),function(req, res, next) {
     var product = new Product();
     var imgname='default.jpg';
@@ -30,7 +74,24 @@ router.post('/add-product',ensureAuthenticated, permit('Admin'),function(req, re
     product.name = req.body.product_name;
     product.sku = req.body.product_sku;
     product.price = req.body.product_price; 
-
+    product.style = req.body.style; 
+    let errors = [];
+    if (!req.body.category_name || !req.body.product_description || !req.body.product_name || !req.body.product_sku
+      || !req.body.product_price || !req.body.style ) {
+      errors.push({ msg: 'Please enter all Required fields' });
+    }
+  
+    // if (password != password2) {
+    //   errors.push({ msg: 'Passwords do not match' });
+    // }
+  
+    if (errors.length > 0) {
+      res.render('pages/admin/add-product', {
+        errors ,
+        layout:'admin-layout'
+      });
+    } else {
+  
     var imgpath=appRoot+'//public//uploads//products//';
     var mask=777;
       fs.mkdir(imgpath, mask, function(err) {
@@ -61,7 +122,13 @@ router.post('/add-product',ensureAuthenticated, permit('Admin'),function(req, re
              // console.log(product);         
         }      
     });
+    req.flash(
+      'success_msg',
+      'Product Addded Successfully'
+    );
     res.redirect('/admin/add-product');
+  }
+    
 });
 
 

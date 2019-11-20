@@ -11,6 +11,7 @@ const prodSchema = new mongoose.Schema({
  category: String,
  sku: Number,
  price: Number,
+ style:String,
  image: String
 });
 // - Compiling mongoose Schema to a Model - \\

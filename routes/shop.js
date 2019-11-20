@@ -14,7 +14,7 @@ const Order = require('../models/Myorder');
 var faker = require('faker');
 const path = require('path');
 const fs = require('fs');
-router.get('/shopping-cart', 
+router.get('/shopping-cart', forwardAuthenticated,
 function (req, res,next){
    if(!req.session.cart){
      res.render('pages/users/shopping-cart',{  products:{} });
@@ -25,13 +25,13 @@ function (req, res,next){
    res.render('pages/users/shopping-cart',{ products:products,totalQty:cart.totalQty,totalPrice:cart.totalPrice })
    //console.log(products);
  });
- router.get('/payment-method', 
+ router.get('/payment-method', forwardAuthenticated,
  function (req, res,next){
    
     res.render('pages/public/payment-method')
     //console.log(products);
   });
-  router.get('/product/:id', function(req, res, next) {
+  router.get('/product/:id',ensureAuthenticated,permit('User'), function(req, res, next) {
     var productId=req.params.id;
         product=Product.findById(productId,function(err,product){
         // if(err){
@@ -43,7 +43,7 @@ function (req, res,next){
           })
       })
   });
- router.get('/checkout/:id', 
+ router.get('/checkout/:id', ensureAuthenticated,permit('User'),
  function (req, res,next){
   req.session.cart = {};
   var productId=req.params.id;
@@ -61,12 +61,12 @@ function (req, res,next){
       cart.add(product,product.id);   
       req.session.cart=cart; 
       var products =cart.generateArray();
-      res.render('pages/public/checkout',{ products:products,totalQty:cart.totalQty,totalPrice:cart.totalPrice })
+      res.render('pages/public/checkout',{ products:products,product:product,totalQty:cart.totalQty,totalPrice:cart.totalPrice })
       //console.log( req.session.cart+'cart');
     });
   
   });
-  router.post('/checkout',function(req,res,next){
+  router.post('/checkout',ensureAuthenticated,permit('User'),function(req,res,next){
         // if (!req.session.cart) {
         //     return res.redirect('/shopping-cart');
         // }
@@ -101,7 +101,7 @@ function (req, res,next){
             order.save(function(err, result) {
                 req.flash('success', 'Successfully bought product!');
                 req.session.cart = null;
-                res.redirect('/');
+                res.redirect('/user/buying');
             });
         }); 
   });
