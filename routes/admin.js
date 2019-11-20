@@ -42,9 +42,9 @@ function(req, res){
 });
 
 // (req, res) => res.render('pages/admin/dashboard',{ layout:'admin-layout' }));
-// router.get('/add-product', function(req, res, next) {
-//     res.render('pages/admin/add-product',{layout:'admin-layout'}); 
-// });
+ router.get('/add-product', function(req, res, next) {
+    res.render('pages/admin/add-product',{layout:'admin-layout'}); 
+ });
 
 router.get('/product/:id/edit', function(req, res, next) {
   var productId=req.params.id;
@@ -89,7 +89,7 @@ router.post('/product/:id/update',ensureAuthenticated, permit('Admin'),function 
           res.redirect('/admin/template-products/1');
       });
     });
-
+ 
 router.post('/add-product',ensureAuthenticated, permit('Admin'),function(req, res, next) {
     var product = new Product();
     var imgname='default.jpg';
