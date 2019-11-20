@@ -27,18 +27,22 @@
         </div>
         <!-- End .header-left -->
         <div class="header-right">
-           <p class="welcome-msg">How it Works! </p>
+           <p class="welcome-msg">  Welcome  &nbsp;<%=role%> &nbsp; <%=name%> </p>
            <div class="header-dropdown dropdown-expanded">
               <a href="#">Links</a>
               <div class="header-menu">
                  <ul>
-                    <li><a href="/user/profile">MY ACCOUNT </a></li>
+                   
                     <li><a href="/help">Help</a></li>
                    
+                   
+                    <% if(role=='User'){%>
+                     <li><a href="/user/profile">MY ACCOUNT </a></li>
+                     <li><a href="/logout">Logout</a></li>
+                     <% }else{ %>
                      <li><a href="/sign-up">Sign up</a></li>
                      <li><a href="/sign-in" class="login-link">Sign IN</a></li>
-                     <li><a href="/logout">Logout</a></li>
-
+                     <% } %>
                  </ul>
               </div>
               <!-- End .header-menu -->
@@ -101,7 +105,7 @@
            <a href='/' class="logo">
            <img src="/assets/images/logo.png" alt=" Logo">
            </a>
-         
+          
            <nav class="main-nav">
               <ul class="menu sf-arrows sf-js-enabled" style="touch-action: pan-y;">
                  <li class="active"><a href="/">Home</a></li>
@@ -117,8 +121,6 @@
                                    </div>
                                    <ul>
                                       <li><a href="/">Fullwidth Banner<span class="tip tip-hot">Hot!</span></a></li>
-                                      <li><a href="/">Boxed Slider Banner</a></li>
-                                      <li><a href="/">Boxed Image Banner</a></li>
                                       <li><a href="/">Left Sidebar</a></li>
                                       
                                    </ul>
@@ -130,8 +132,6 @@
                                    </div>
                                    <ul>
                                       <li><a href="#">Product List Item Types</a></li>
-                                      <li><a href="/">Ajax Infinite Scroll</a></li>
-                                      <li><a href="/">3 Columns Products</a></li>
                                       <li><a href="/">4 Columns Products <span class="tip tip-new">New</span></a></li>
                                       
                                    </ul>
@@ -154,32 +154,45 @@
                     </div>
                     <!-- End .megamenu -->
                  </li>
-                 <li class=""><a href="/news">News</a></li>
+                 <!-- <li class=""><a href="/news">News</a></li> -->
                  <li class=""><a href="/app">App</a></li>
                  <li class=""><a href="/user/portfolio">Portfolio</a></li>
+                 <li class=""><a href="/about">About</a></li>
                  <li class="">
-                  <a href="#" class="sf-with-ul">About</a>
-                  <ul style="display: none;">
+                 <!-- <a href="/about" class="sf-with-ul">About</a>
+                   <ul style="display: none;">
                      <li><a href="/user/buying">buying</a></li>
                      <li><a href="/user/selling">Selling</a></li>
                      <li><a href="/user/profile">Profile</a></li>
                   </ul>
-               </li>
+               </li> -->
                  <li class=""><a href="/help">Help</a></li>
 
                  <li class="float-right buy-effect"><a href="/products" target="_blank"><span>Sell </span></a></li>
-                 <li class="float-right">
-                  <a href="#" class="sf-with-ul">MyAccount</a>
-                  <ul style="display: none;">
-                     <li><a href="/user/buying">buying</a></li>
-                     <li><a href="/user/selling">Selling</a></li>
-                     <li><a href="/user/profile">Profile</a></li>
-                     <li><a href="/user/portfolio">Portfolio</a></li>
-                     <li><a href="/user/Following">Following</a></li>
-                     <li><a href="/user/setting">Setings</a></li>
-                     <li><a href="/signout">Signout</a></li>
-                  </ul>
-               </li>
+                 
+                 <% if(role=='User'){%>
+                  <li class="float-right">
+                     <a href="#" class="sf-with-ul">MyAccount</a>
+                     <ul style="display: none;">
+                        <li><a href="/user/buying">buying</a></li>
+                        <li><a href="/user/selling">Selling</a></li>
+                        <li><a href="/user/profile">Profile</a></li>
+                        <li><a href="/user/portfolio">Portfolio</a></li>
+                        <li><a href="/user/Following">Following</a></li>
+                        <li><a href="/user/setting">Setings</a></li>
+                        <li><a href="/signout">Signout</a></li>
+                     </ul>
+                  </li>
+                  <% }else{ %>
+                     <li class="float-right">
+                           <a href="#" class="sf-with-ul">MyAccount</a>
+                           <ul style="display: none;">
+                  <li><a href="/sign-up">Sign up</a></li>
+                  <li><a href="/sign-in" class="login-link">Sign IN</a></li>
+               </ul>
+            </li>
+                  <% } %>
+                
               </ul>
            </nav>
         </div>

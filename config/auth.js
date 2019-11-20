@@ -1,16 +1,24 @@
 module.exports = {
   ensureAuthenticated: function(req, res, next) {
     if (req.isAuthenticated()) {
-      return next();
+      res.locals.role = req.user.role;
+      res.locals.name = req.user.name;
+      return next();  
     }
     req.flash('error_msg', 'Please log in to view that resource');
     res.redirect('/sign-in');
   },
   forwardAuthenticated: function(req, res, next) {
+    
     if (!req.isAuthenticated()) {
-      return next();
+      res.locals.name = 'guest';
+      res.locals.role = '';
+    }else{
+      res.locals.role = req.user.role;
+      res.locals.name = req.user.name; 
     }
-    res.redirect('/');      
+    return next();
+    //res.redirect('/');      
   }
 };
 

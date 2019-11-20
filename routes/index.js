@@ -16,7 +16,7 @@ const path = require('path');
 const fs = require('fs');
 // Welcome Page
 //router.get('/',  (req, res) => res.render('pages/public/home',{ layout: 'layout' }));
-router.get('/', function(req, res, next) {
+router.get('/',forwardAuthenticated, function(req, res, next) {
   var perPage = 9;
   var page = req.params.page || 1;
   Product
@@ -121,7 +121,7 @@ router.post('/sign-up', (req, res) => {
 router.get('/sign-in', forwardAuthenticated, (req, res) => res.render('pages/public/sign-in',{layout:'login-layout'}));
 
 // Login
-router.post('/sign-in', passport.authenticate('local', {
+router.post('/sign-in',forwardAuthenticated, passport.authenticate('local', {
     failureRedirect: '/sign-in',
     failureFlash: true}),function(req, res, next){
       if(req.session.oldUrl){
@@ -139,12 +139,12 @@ router.post('/sign-in', passport.authenticate('local', {
     });
 
 // Logout
-router.get('/logout', (req, res) => {
+router.get('/logout',forwardAuthenticated, (req, res) => {
   req.logout();
   req.flash('success_msg', 'You are logged out');
   res.redirect('/sign-in');
 });
-router.get('/add-to-cart/:id', (req, res,next) => {
+router.get('/add-to-cart/:id', forwardAuthenticated,(req, res,next) => {
   var cart= new Cart(req.session.cart?req.session.cart:{});
   var productId=req.params.id;
   Product.findById(productId,function(err,product){
@@ -157,7 +157,7 @@ router.get('/add-to-cart/:id', (req, res,next) => {
     res.redirect('/products');
   })
 });
-  router.get('/shopping-cart', 
+  router.get('/shopping-cart', forwardAuthenticated,
  function (req, res,next){
     if(!req.session.cart){
       res.render('pages/users/shopping-cart',{  products:{} });
@@ -171,13 +171,13 @@ router.get('/add-to-cart/:id', (req, res,next) => {
     message: "Forbidden",
     layout:'layout'
   }));
-  router.get('/contactus', (req, res) => res.render('pages/public/contactus',{
+  router.get('/contactus', forwardAuthenticated,(req, res) => res.render('pages/public/contactus',{
     layout:'layout'
   }));
-  router.get('/about', (req, res) => res.render('pages/public/aboutus',{
+  router.get('/about',forwardAuthenticated, (req, res) => res.render('pages/public/aboutus',{
     layout:'layout'
   }));
-  router.get('/search', (req, res) => res.render('pages/public/search',{
+  router.get('/search',forwardAuthenticated, (req, res) => res.render('pages/public/search',{
     layout:'layout'
   }));
 module.exports = router;

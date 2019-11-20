@@ -11,7 +11,12 @@
                       <li><a href="/user/profile">My Account</a></li>
                       <li><a href="/user/buying">Orders History</a></li>
                       <li><a href="/search">Advanced Search</a></li>
-                      <li><a href="/sign-in" class="login-link">Sign-in</a></li>
+                      <% if(role=='User'){%>     
+                        <li><a href="/logout" class="login-link">logout</a></li> 
+                        <% }else{%>
+                           <li><a href="/sign-up" class="login-link">Sign-up</a></li>
+                           <%} %>         
+                     
                    </ul>
                 </div>
                 <!-- End .widget -->

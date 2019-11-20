@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product');
+const {ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
+
 //router.get('/admin/template-products', ensureAuthenticated, (req, res) => res.render('pages/admin/template-products',{ layout:'admin-layout' }));
-router.get('/', function(req, res, next) {
+router.get('/',forwardAuthenticated, function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   
@@ -22,7 +24,7 @@ router.get('/', function(req, res, next) {
             })
         })
   });
-  router.get('/:id', function(req, res, next) {
+  router.get('/:id',forwardAuthenticated, function(req, res, next) {
     var productId=req.params.id;
     product=Product.findById(productId,function(err,product){
     // if(err){
