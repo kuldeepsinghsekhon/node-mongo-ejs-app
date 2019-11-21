@@ -18,9 +18,10 @@ exports.products = function(req, res, next) {
             })
         })
   }
-  
+
   exports.findById=function(req, res, next) {
     var productId=req.params.id;
+    req.session.oldUrl='/products/'+productId;
     product=Product.findById(productId,function(err,product){
     // if(err){
     //     return res.redirect('/');
