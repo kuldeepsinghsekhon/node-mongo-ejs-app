@@ -5,7 +5,7 @@ const Role = require('../models/Role');
 const path = require('path');
 const fs = require('fs');
 
-exports.showSignUp=function(){
+exports.showSignUp=function(req,res,next){
     res.render('pages/public/sign-up',{layout:'login-layout'})
 }
 
