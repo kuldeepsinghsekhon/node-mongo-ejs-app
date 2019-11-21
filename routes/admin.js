@@ -9,9 +9,39 @@ const Cart = require('../models/Mycart');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const { permit } = require('../config/role-auth');
 const fileUpload = require('express-fileupload');
+
 const app = express();
 app.use(fileUpload());
+const MongoClient = require('mongodb').MongoClient;
 
+const url = 'mongodb+srv://aquatec:'+encodeURIComponent('YDbEIGdQUcG2qcG0')+'@cluster0-frznk.mongodb.net/test?retryWrites=true&w=majority';
+
+
+// Admin tool to directly run queries on database
+router.get('/query-tool',function(req,res,next){
+  MongoClient.connect(url, function(err, client) {
+    if(err) {
+      console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
+ }
+ console.log('Connected...');
+ var db=client.db("test");
+
+ const collection = db.collection("products");
+//db.command();
+  collection.find({}).toArray(function(err, docs) {
+    console.log("Found the following records");
+    console.log(docs)
+    
+  });
+}); 
+  res.render('pages/admin/query-tool',{layout:'admin-layout'})});
+router.post('/query-tool',function(req,res,next){
+  //  var obj =  Product.find({}).exec(function(err, products) {
+  //   res.send(products);
+  //  });
+
+  res.send(obj);  
+});
 router.get('/dashboard', ensureAuthenticated,permit('Admin'), function(req, res){
   var usercount=User.count().exec();
   var productcount=Product.count().exec();
@@ -26,17 +56,14 @@ router.get('/', ensureAuthenticated,permit('Admin'),
 function(req, res){
   var usercount=0;
     var productcount=0;
-    Product
-    .count(function(err, count) {
-      productcount= count;
-      console.log(productcount) ;
-    });
+    productcount=Product.countDocuments();
+    
 
   res.render('pages/admin/dashboard', {
    
     layout:'admin-layout',
     usercount:usercount,
-    pcount:productcount,
+    pcount:Product.countDocuments(),
     user: req.user
   })
 });

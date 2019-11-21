@@ -55,6 +55,37 @@
   <!-- endinject -->
   <!-- Custom js for this page-->
   <script src="/js/dashboard.js"></script>
+  <script>
+
+   function postItem() {
+    var data = {};
+					data.query = $('#_query').val();
+				
+     $.ajax({
+         type: "POST",
+         url: $("#data-form").prop('action'),
+         timeout: 10000,
+         data: JSON.stringify(data),
+         success: function(data) {
+             //show content
+             $('#result').text(JSON.stringify(data));
+             //console.log(JSON.stringify(data));
+             alert('Success!')
+         },
+         error: function(jqXHR, textStatus, err) {
+             //show error message
+             alert('text status '+textStatus+', err '+err)
+         }
+     });
+ }//postItem()
+ 
+ $("#submit-btn").on('click', function(e) {
+   e.preventDefault();
+     postItem();
+    // alert('fdsf');
+ });
+    
+ </script>
   <!-- End custom js for this page-->
 </body>
 
