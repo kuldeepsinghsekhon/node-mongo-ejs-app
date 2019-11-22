@@ -98,6 +98,25 @@ function (req, res,next){
                 paymentId: charge.id,
                 payment:charge
             });
+            // Create a Transfer to the connected account (later):
+            // stripe.transfers.create({
+            //   amount: 7000,
+            //   currency: "inr",
+            //   destination: "{{CONNECTED_STRIPE_ACCOUNT_ID}}",
+            //   transfer_group: "{ORDER10}",
+            // }).then(function(transfer) {
+            //   // asynchronously called
+            // });
+
+            // // Create a second Transfer to another connected account (later):
+            // stripe.transfers.create({
+            //   amount: 2000,
+            //   currency: "inr",
+            //   destination: "{{OTHER_CONNECTED_STRIPE_ACCOUNT_ID}}",
+            //   transfer_group: "{ORDER10}",
+            // }).then(function(second_transfer) {
+            //   // asynchronously called
+            // });
             console.log(charge);
             order.save(function(err, result) {
                 req.flash('success', 'Successfully bought product!');

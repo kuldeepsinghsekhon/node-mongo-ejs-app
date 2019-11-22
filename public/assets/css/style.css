@@ -5840,4 +5840,81 @@ span.market-dir-up-arrow {
     background-color: #43ab92!important;
     border-color: #43ab92!important;
 }
-/*Jagjit*/
+/* buymid,shipmid,payoutmid,shipmid css */
+
+
+.cncl_btn button {
+	background: #eae5e5;
+	color: #000;
+	padding: 11px 30px;
+	float: right;
+	margin-top: 2rem;
+}
+
+.field.field-select.cntry select {
+	
+	padding: 10px 0;
+	
+}
+.btn.flT_lft {
+	float: left;
+}
+.btn.flT_right {
+	background: #49b939;
+	color: #fff;
+}
+
+
+.btn.flT_right.color_rd {
+	background: rgb(255, 81, 95);
+}
+
+.split-pane.with-button-bar.mg_tp {
+	margin: 3rem 0;
+}
+.form-headg {
+	font-size: 45px;
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+.form-titl {
+	font-size: 20px;
+	font-weight: 600;
+	margin-bottom: 40px;
+	color: #7c7c7c;
+}
+
+.user_info h1 {
+	font-size: 18px;
+	font-weight: 600;
+	color: #7c7c7c;
+}
+
+.tp-heading {
+	margin-bottom: 40px;
+}
+.reset_sec {
+	width: 700px;
+	max-width: 80%;
+	margin: 5rem auto;
+	text-align: center;
+}
+.reset_head h1 {
+	font-size: 40px;
+	font-weight: 700;
+	margin: 1.5rem 0;
+}
+.reset_img img {
+	display: ;
+	display: inline;
+}
+.reset_para p {
+	font-size: 21px;
+}
+.reset_para_btn button {
+	background: rgb(81, 157, 49);
+	color: #fff;
+	font-size: 18px;
+	padding: 8px 24px;
+}
