@@ -12,9 +12,13 @@
                 <div class="selection-title">Payment Methods</div>
                 <div class="selection-subtitle">Please choose your payment Receive method</div>
                 <div class="payment-options">
-                   <a class="btn btn-success" href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://localhost:5000/user/paymentmethods/stripe&client_id=ca_GE0YuX7XYYVuArKFVUIDBeoGIOruUTkg&state={STATE_VALUE}" data-testid="payment-button" class="paymentButton__Button-earipx-0 gqxTWB">
-                     Connect With Stripe
+                   <a class="btn btn-success" href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://localhost:5000/user/paymentmethods/stripe&client_id=ca_GE0YuX7XYYVuArKFVUIDBeoGIOruUTkg" data-testid="payment-button" class="paymentButton__Button-earipx-0 gqxTWB">
+                     Connect With Stripe Express
                      </a>
+                     <br>
+                     <a class="btn btn-success" href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_GE0YuX7XYYVuArKFVUIDBeoGIOruUTkg&scope=read_write" data-testid="payment-button" class="paymentButton__Button-earipx-0 gqxTWB">
+                        Connect With Stripe standard-accounts
+                        </a>
                      https://stripe.com/docs/connect/express-accounts
                      https://stripe.com/docs/connect/standard-accounts
                 </div>

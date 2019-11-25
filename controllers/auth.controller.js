@@ -4,7 +4,7 @@ const User = require('../models/User');
 const Role = require('../models/Role');
 const path = require('path');
 const fs = require('fs');
-
+const stripe = require('stripe')('sk_test_eOl4PQxl78Ry0gZNIFMd6mED00aVcbzrUA');
 exports.showSignUp=function(req,res,next){
     res.render('pages/public/sign-up',{layout:'login-layout'})
 }
@@ -125,3 +125,32 @@ exports.signIn=function(req, res, next){
               })
           })
     }
+    
+exports.saveinfoStripeStandard=function(req,res){
+
+ var stripecode =req.query.code;
+  var user=req.user;
+  console.log(user);
+  stripe.oauth.token({
+    grant_type: 'authorization_code',
+    code:stripecode,
+  }).then(function(response) {
+    // asynchronously called
+    console.log(response);
+    var connected_account_id = response.stripe_user_id;
+    console.log('stripe connected access_token '+response.access_token);
+    console.log('stripe connected refresh_token '+response.refresh_token);
+    console.log('stripe connected connected_account_id '+connected_account_id);
+    stripe.charges.create({
+      amount: 2000,
+      currency: "inr",
+      source: "tok_visa",
+    }, {
+      stripe_account: connected_account_id,
+    }).then(function(charge) {
+      // asynchronously called
+    });
+  });
+ 
+  res.redirect('/user/profile');
+}

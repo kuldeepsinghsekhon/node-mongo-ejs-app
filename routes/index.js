@@ -81,5 +81,5 @@ router.get('/add-to-cart/:id', forwardAuthenticated,(req, res,next) => {
   router.get('/search',forwardAuthenticated, (req, res) => res.render('pages/public/search',{
     layout:'layout'
   }));
- 
+  router.get('/saveinfo-stripe-standard',forwardAuthenticated,auth_controller.saveinfoStripeStandard);
 module.exports = router;
