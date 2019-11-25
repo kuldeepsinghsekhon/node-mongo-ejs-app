@@ -1,12 +1,15 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
+const session = require('express-session');
+const fileUpload = require('express-fileupload');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
-const session = require('express-session');
 const mongoStore = require('connect-mongo')(session);
+const dotenv = require('dotenv');
+dotenv.config();
 const app = express();
-const fileUpload = require('express-fileupload');
+
 app.use(fileUpload());
 const path = require('path');
 global.appRoot = path.resolve(__dirname);
@@ -62,14 +65,7 @@ app.use(function(req, res, next) {
   res.locals.session = req.session;
   next();
 });
-//Mail sending
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-      user: 'aquatecinnovative1@gmail.com',
-      pass: 'aquatec@321'
-  }
-});
+
 // Routes
 app.use('/', require('./routes/index.js'));
 app.use('/user', require('./routes/user.js'));

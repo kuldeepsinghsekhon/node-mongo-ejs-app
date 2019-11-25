@@ -1,4 +1,9 @@
-dbPassword = 'mongodb+srv://aquatec:'+ encodeURIComponent('YDbEIGdQUcG2qcG0') + '@cluster0-frznk.mongodb.net/test?retryWrites=true&w=majority';
+const DBHOST = process.env.DBHOST ;
+const DBUSER = process.env.DBUSER;
+const DBKEY = process.env.DBKEY;
+const DBNAME = process.env.DBNAME;
+
+dbPassword = `mongodb+srv://${DBUSER}:`+ encodeURIComponent(`${DBKEY}`) + `${DBHOST}/${DBNAME}?retryWrites=true&w=majority`;
 
 module.exports = {
     mongoURI: dbPassword
