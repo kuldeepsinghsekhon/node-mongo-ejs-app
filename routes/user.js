@@ -109,6 +109,7 @@ router.get('/selling',ensureAuthenticated,permit('User'), function(req, res, nex
   router.get('/profile',ensureAuthenticated,permit('User'), auth_controller.profile);
   router.get('/setting',ensureAuthenticated,permit('User'), settings_controller.settings);
   router.get('/settings/buyer-info',ensureAuthenticated,permit('User'), settings_controller.buyerInfo);
+  router.post('/settings/buyer-info',ensureAuthenticated,permit('User'), settings_controller.saveBuyerInfo);
   router.get('/settings/shipping-info',ensureAuthenticated,permit('User'), settings_controller.shippingInfo);
   router.get('/settings/seller-info',ensureAuthenticated,permit('User'), settings_controller.sellerInfo);
 module.exports = router;

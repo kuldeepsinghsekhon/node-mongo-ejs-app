@@ -20,9 +20,9 @@ exports.settings=function(req, res, next) {
   exports.buyerInfo=function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
-  
+
     Address
-        .find({})
+        .findOne({user:req.user,address_type:'billing'})
         .exec(function(err, users) {
             Address.count().exec(function(err, count) {
                 if (err) return next(err)
@@ -34,6 +34,39 @@ exports.settings=function(req, res, next) {
                 })
             })
         })
+  }
+  exports.saveBuyerInfo=async function(req,res){
+    const update={name:'kuldeep',country:'india',state:'punjab',city:'Amritsar',locality:'New sant',thoroughfare:'G.T Road',premise:'A1',phone:'9803242155'
+              ,user:req.user,address_type:'billing'};
+    const  filter={user:req.user,address_type:'billing'};
+   let c= await Address.countDocuments(filter);
+   console.log(c);
+   let address=await  Address.findOneAndUpdate(filter, update, {
+        new: true,
+        upsert: true // Make this update into an upsert
+      });
+      console.log(address);
+    // const doc = Address.findOne().exec(
+    //     function(err,address){
+    //         if(address){
+    //             address.name='dfdsf';
+    //             console.log('Address find');
+    //             console.log(address);
+    //             address.save();
+    //            // Address.updateOne(req.body);
+    //         }else{
+    //             console.log('not found');
+    //            var address= Address.create(update);
+  
+    //          console.log(address);
+    //         }
+      //  }
+        
+    //);
+    //   Address.findByIdAndUpdate(productId, {$set:prod}, function (err, product) {
+    //     if (err) return next(err);
+    //     res.redirect('/admin/template-products/1');
+    // });
   }
   exports.shippingInfo=function(req, res, next) {
     var perPage = 9;

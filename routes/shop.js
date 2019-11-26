@@ -73,9 +73,7 @@ function (req, res,next){
         // }
         var cart = new Cart(req.session.cart);
        // console.log(req.session.cart+'fdfdfd');
-        var stripe = require("stripe")(
-            "sk_test_eOl4PQxl78Ry0gZNIFMd6mED00aVcbzrUA"
-        );
+        var stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
     
         stripe.charges.create({
             amount: cart.totalPrice * 100,

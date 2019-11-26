@@ -9,8 +9,12 @@
               <div style="position: relative; overflow-y: hidden;" class="pane forty pane-grey">
                  
                  <div class="selection-subtitle">Credit Card</div>
-                 <form accept-charset="UTF-8" action="/" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="pk_bQQaTxnaZlzv4FnnuZ28LFHccVSaj" id="payment-form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓" /><input name="_method" type="hidden" value="PUT" /><input name="authenticity_token" type="hidden" value="qLZ9cScer7ZxqulsUWazw4x3cSEzv899SP/7ThPCOV8=" /></div>
-                 <div class='form-row'>
+                 <form accept-charset="UTF-8" method="POST" action="/user/settings/buyer-info"  >
+                  <!-- <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓" />
+                    <input name="_method" type="hidden" value="PUT" />
+                    <input name="authenticity_token" type="hidden" value="qLZ9cScer7ZxqulsUWazw4x3cSEzv899SP/7ThPCOV8=" />
+                  </div> -->
+                 <!-- <div class='form-row'>
                    <div class='col-xs-12 form-group required card_sec'>
                      <label class='control-label'>Name on Card</label>
                      <input class='form-control' size='4' type='text'>
@@ -39,7 +43,7 @@
                  
                  
              
-               </form>
+               
      
                  <div class="address-form fs-block">
                     <div class="form-title">billing Info</div>
@@ -67,9 +71,11 @@
                     </div>
                     <div>
                        <div class="GPlacesACField__Container-sc-1xqqpdz-0 iUshPx"><input data-testid="user-streetAddress" name="streetAddress" type="text" required="" placeholder="Address" autocomplete="true" class="field  " value=""></div>
-                    </div>
-                    <input data-testid="user-extendedAddress" name="extendedAddress" type="text" placeholder="Address 2" autocomplete="true" class="field  " value=""><input data-testid="user-locality" name="locality" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="">
-                    <div class="inner-flex between"><input data-testid="user-region" name="region" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value=""><input data-testid="user-postalCode" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value=""></div>
+                    </div> -->
+                    <input data-testid="user-extendedAddress" name="extendedAddress" type="text" placeholder="Address 2" autocomplete="true" class="field  " value="">
+                    <input data-testid="user-locality" name="locality" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="">
+                    <div class="inner-flex between"><input data-testid="user-region" name="region" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value="">
+                      <input data-testid="user-postalCode" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value=""></div>
                     <input data-testid="user-telephone" name="telephone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field  " value="">
                  </div>
                  
@@ -77,9 +83,9 @@
      
                  <div class="cncl_btn">
                        <button type="button " class="btn flT_lft">Cancel</button>
-                       <button type="button" class="btn flT_right color_rd ">Save Shipping</button>
+                       <button type="submit" class="btn flT_right color_rd ">Save Shipping</button>
                        </div>  
-                  
+                      </form>
               </div>
            </div>
         </div>

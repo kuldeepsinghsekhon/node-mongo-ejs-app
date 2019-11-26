@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+var Schema = mongoose.Schema;
 const AddressSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -7,7 +7,7 @@ const AddressSchema = new mongoose.Schema({
   },
   organisation_name: {
     type: String,
-    required: true
+    required: false
   },
   country: {
     type: String,
@@ -35,8 +35,9 @@ const AddressSchema = new mongoose.Schema({
   phone:{
     type: String,
     required: true
-  }
-
+  },
+  user: {type: Schema.Types.ObjectId, ref: 'User'},
+  address_type:{type:String, required:true}
 });
 
 const Address = mongoose.model('Address', AddressSchema);
