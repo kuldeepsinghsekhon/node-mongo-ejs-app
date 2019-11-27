@@ -21,16 +21,12 @@ const AddressSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  thoroughfare:{
+  address1:{
     type: String,
     required: true
   },
-  locality:{
+  address2:{
     type: String,
-  },
-  premise:{
-    type: String,
-    required: true
   },
   phone:{
     type: String,

@@ -13,11 +13,15 @@
              
              
              <div class="address-form fs-block">
+                  <form accept-charset="UTF-8" method="POST" action="/user/settings/shipping-info"  >
                 <div class="form-title">Shipping Info</div>
-                <input data-testid="user-firstName" name="firstName" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value=""><input data-testid="user-lastName" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="">
+              
+                <% include ../../partials/messages %>
+                <input data-testid="user-firstName" name="name" type="text" required="" placeholder="Full Name" autocomplete="true" class="field  " value="">
                 <div class="field   field-select cntry">
-                   <select name="countryCodeAlpha2" required="" placeholder="Country">
-                      <option value="" >Country</option>
+                   <select name="country" required="" placeholder="Country">
+                      
+                      <option value="">Country</option>
                       <option value="US">United States</option>
                       <option value="AU">Australia</option>
                       <option value="CA">Canada</option>
@@ -35,6 +39,18 @@
                    </select>
                    
                 </div>
+                <div>
+                   <div class="GPlacesACField__Container-sc-1xqqpdz-0 iUshPx">
+                     <input data-testid="user-streetAddress" name="address1" type="text" required="" placeholder="Address " autocomplete="true" class="field  " value=""></div>
+                </div> 
+                <input data-testid="user-extendedAddress" name="address2" type="text" placeholder="Address 2" autocomplete="true" class="field  " value="">
+               
+                <div class="inner-flex between"><input data-testid="user-region" name="state" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value="">
+              
+                <input data-testid="user-locality" name="city" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="">
+                    <input data-testid="user-postalCode" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value=""></div>
+                <input data-testid="user-telephone" name="phone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field  " value="">
+           
                 <div>
                    <div class="GPlacesACField__Container-sc-1xqqpdz-0 iUshPx"><input data-testid="user-streetAddress" name="streetAddress" type="text" required="" placeholder="Address" autocomplete="true" class="field  " value=""></div>
                 </div>

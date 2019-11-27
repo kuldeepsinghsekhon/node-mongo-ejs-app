@@ -74,7 +74,15 @@ function (req, res,next){
         var cart = new Cart(req.session.cart);
        // console.log(req.session.cart+'fdfdfd');
         var stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-    
+        // stripe.charges.create({
+        //      amount:  cart.totalPrice * 100,//2000,
+        //      currency: "inr",
+        //      source: req.body.stripeToken,//"tok_visa",
+        //    }, {
+        //      stripe_account: connected_account_id,
+        //    }).then(function(charge) {
+            
+        //    });
         stripe.charges.create({
             amount: cart.totalPrice * 100,
             currency: "inr",

@@ -36,16 +36,57 @@ exports.settings=function(req, res, next) {
         })
   }
   exports.saveBuyerInfo=async function(req,res){
-    const update={name:'kuldeep',country:'india',state:'punjab',city:'Amritsar',locality:'New sant',thoroughfare:'G.T Road',premise:'A1',phone:'9803242155'
-              ,user:req.user,address_type:'billing'};
-    const  filter={user:req.user,address_type:'billing'};
-   let c= await Address.countDocuments(filter);
-   console.log(c);
+      const user=req.user;
+    let address_type='billing';
+    const { name, country,address1,address2, state, city,postalCode,phone} = req.body;
+    let errors = [];
+ 
+   if (!name || !country || !state || !city||!address1||!phone||!postalCode) {
+     errors.push({ msg: 'Please enter all fields' });
+   }
+   if (name.length < 6) {
+    errors.push({ msg: 'name must be at least 6 characters' });
+  }
+   if (country.length < 2) {
+     errors.push({ msg: 'country must be at least 6 characters' });
+   }
+   if (state.length < 3) {
+    errors.push({ msg: 'state must be at least 3 characters' });
+  }
+  if (city.length < 3) {
+    errors.push({ msg: 'city must be at least 3 characters' });
+  }
+  if (address1.length < 3) {
+    errors.push({ msg: 'address1 must be at least 3 characters' });
+  }
+
+  if (phone.length < 10) {
+    errors.push({ msg: 'phone must be at least 10 characters' });
+  }
+    const update={name,country,state,city,address1,address2,phone,user,address_type};
+    const  filter={user:user,address_type:address_type};
+   
+  // console.log(c);
+   if (errors.length > 0) {
+       console.log(errors);
+    res.render('pages/users/settings-buyer-info', {
+      errors,
+      name, country,address1,address2, state, city,postalCode,phone
+    });
+  } else {
    let address=await  Address.findOneAndUpdate(filter, update, {
         new: true,
         upsert: true // Make this update into an upsert
       });
+      req.flash(
+        'success_msg',
+        'Billing/Buyer info saved successfully'
+      );
+      res.redirect('/user/setting');
       console.log(address);
+
+  }
+    
     // const doc = Address.findOne().exec(
     //     function(err,address){
     //         if(address){
@@ -86,6 +127,59 @@ exports.settings=function(req, res, next) {
             })
         })
   }
+  exports.saveShippingInfo=async function(req,res){
+    const user=req.user;
+  let address_type='billing';
+  const { name, country,address1,address2, state, city,postalCode,phone} = req.body;
+  let errors = [];
+
+ if (!name || !country || !state || !city||!address1||!phone||!postalCode) {
+   errors.push({ msg: 'Please enter all fields' });
+ }
+ if (name.length < 6) {
+  errors.push({ msg: 'name must be at least 6 characters' });
+}
+ if (country.length < 2) {
+   errors.push({ msg: 'country must be at least 6 characters' });
+ }
+ if (state.length < 3) {
+  errors.push({ msg: 'state must be at least 3 characters' });
+}
+if (city.length < 3) {
+  errors.push({ msg: 'city must be at least 3 characters' });
+}
+if (address1.length < 3) {
+  errors.push({ msg: 'address1 must be at least 3 characters' });
+}
+
+if (phone.length < 10) {
+  errors.push({ msg: 'phone must be at least 10 characters' });
+}
+  const update={name,country,state,city,address1,address2,phone,user,address_type};
+  const  filter={user:user,address_type:address_type};
+ 
+// console.log(c);
+ if (errors.length > 0) {
+     console.log(errors);
+  res.render('pages/users/settings-shipping-info', {
+    errors,
+    name, country,address1,address2, state, city,postalCode,phone
+  });
+} else {
+ let address=await  Address.findOneAndUpdate(filter, update, {
+      new: true,
+      upsert: true // Make this update into an upsert
+    });
+    req.flash(
+      'success_msg',
+      'Shipping info saved successfully'
+    );
+    res.redirect('/user/setting');
+    console.log(address);
+
+
+    }
+}
   exports.sellerInfo=function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
@@ -104,6 +198,62 @@ exports.settings=function(req, res, next) {
             })
         })
   }
+ 
+    exports.saveSellerInfo=async function(req,res){
+        const user=req.user;
+      let address_type='seller';
+      const { name,organisation_name, country,address1,address2, state, city,postalCode,phone} = req.body;
+      let errors = [];
+   
+     if (!name || !organisation_name||!country || !state || !city||!address1||!phone||!postalCode||!phone) {
+       errors.push({ msg: 'Please enter all fields' });
+     }
+     if (name.length < 6) {
+      errors.push({ msg: 'name must be at least 6 characters' });
+    }
+    if (organisation_name.length < 3) {
+        errors.push({ msg: 'organisation name must be at least 3 characters' });
+      }
+     if (country.length < 2) {
+       errors.push({ msg: 'country must be at least 6 characters' });
+     }
+     if (state.length < 3) {
+      errors.push({ msg: 'state must be at least 3 characters' });
+    }
+    if (city.length < 3) {
+      errors.push({ msg: 'city must be at least 3 characters' });
+    }
+    if (address1.length < 3) {
+      errors.push({ msg: 'address1 must be at least 3 characters' });
+    }
+  
+    if (phone.length < 10) {
+      errors.push({ msg: 'phone must be at least 10 characters' });
+    }
+      const update={name,organisation_name,country,state,city,address1,address2,phone,user,address_type};
+      const  filter={user:user,address_type:address_type};
+     
+    // console.log(c);
+     if (errors.length > 0) {
+         console.log(errors);
+      res.render('pages/users/settings-seller-info', {
+        errors,
+        name, country,address1,address2, state, city,postalCode,phone
+      });
+    } else {
+     let address=await  Address.findOneAndUpdate(filter, update, {
+          new: true,
+          upsert: true // Make this update into an upsert
+        });
+        req.flash(
+          'success_msg',
+          'Seller info saved successfully'
+        );
+        res.redirect('/user/setting');
+        console.log(address);
+  
+    }
+}
   exports.payoutInfo=function(req,res,next){
       res.render('pages/users/settings-payout-info')
   }
