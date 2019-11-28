@@ -1,69 +1,402 @@
-<div class="bid-page" style="position: relative; overflow-y: hidden;">
-        <div class="split-pane-page">
-           <div class="split-pane with-button-bar">
-              <div class="pane sixty hide-on-mobile">
-                 <div class="buysell-header">
-                    <div class="pane-header">
-                       <h1 class="proxima-heading">Jordan 4 Retro <br class="hidden-xs">Bred (2019)</h1>
-                       <div class="market-summary"><span class="grey">Highest Bid: </span><span class="bold">$235</span><span class="grey"> | Lowest Ask: </span><span class="bold">$269 </span></div>
-                       <div class="hidden-xs">
-                          <div class="market-summary"><span class="grey">U.S. Men's Size</span>&nbsp;<span class="bold">8</span></div>
-                       </div>
-                    </div>
-                    <div class="header-image image-container"><img src="/uploads/products/<%= product.image %>" alt="Bred (2019)"></div>
-                 </div>
-              </div>
-              
-              
-              
-              
-              <div style="position: relative; overflow-y: hidden;" class="pane forty pane-grey">
-                 
-                 
-                 <div class="payment-selection">
-                    <div class="selection-title">Billing/Shipping</div>
-                    <div class="selection-subtitle">Please choose your billing and shipping method</div>
-                    <div class="payment-options">
-                       <button data-testid="payment-button" class="paymentButton__Button-earipx-0 gqxTWB">
-                          <div style="display: flex; align-items: center;">
-                             <img src="/assets/images/payment-stripe.png"  alt="Paypal" class="badge__Badge-ufoui8-0 fJklpk">
-                             <div style="margin-left: 10px;">Stripe</div>
-                             <div style="flex: 1 1 0%; width: 100%; display: flex; justify-content: flex-end; align-items: center;">
-                                <svg width="15" height="7" xmlns="http://www.w3.org/2000/svg">
-                                   <path fill="black" id="svg_1" d="m7.53083,6.89884c0.10873,-0.00632 0.21178,-0.04931 0.29333,-0.12138l6.47343,-5.82608c0.10051,-0.08471 0.1631,-0.20608 0.17195,-0.33757c0.00948,-0.13086 -0.03477,-0.26046 -0.12201,-0.35843c-0.08787,-0.09799 -0.21178,-0.15615 -0.34264,-0.1612c-0.13149,-0.00506 -0.25983,0.04362 -0.35465,0.13402l-6.14975,5.53284l-6.14975,-5.53284c-0.09483,-0.0904 -0.22316,-0.13908 -0.35465,-0.13402c-0.13086,0.00506 -0.25476,0.06322 -0.34264,0.1612c-0.08724,0.09799 -0.13149,0.22757 -0.12201,0.35843c0.00885,0.13149 0.07144,0.25287 0.17195,0.33757l6.47343,5.82608c0.09735,0.08661 0.22442,0.13023 0.35402,0.12138l0,0z"></path>
-                                </svg>
-                             </div>
-                          </div>
-                       </button>
-                       <!-- <button data-testid="payment-button" class="paymentButton__Button-earipx-0 gqxTWB">
-                          <div style="display: flex; align-items: center;">
-                             <div style="display: flex; justify-content: center;"><img src="images/visa.png" class="badge__Badge-ufoui8-0 fJklpk"><img src="images/badge-mastercard.png" alt="MasterCard" class="badge__Badge-ufoui8-0 fJklpk"><img src="images/discover.png" alt="Discover" class="badge__Badge-ufoui8-0 fJklpk"><img src="images/american-express.png" alt="American Express" class="badge__Badge-ufoui8-0 fJklpk"></div>
-                             <div style="margin-left: 10px;">Credit Card</div>
-                             <div style="flex: 1 1 0%; width: 100%; display: flex; justify-content: flex-end; align-items: center;">
-                                <svg width="15" height="7" xmlns="http://www.w3.org/2000/svg">
-                                   <path fill="black" id="svg_1" d="m7.53083,6.89884c0.10873,-0.00632 0.21178,-0.04931 0.29333,-0.12138l6.47343,-5.82608c0.10051,-0.08471 0.1631,-0.20608 0.17195,-0.33757c0.00948,-0.13086 -0.03477,-0.26046 -0.12201,-0.35843c-0.08787,-0.09799 -0.21178,-0.15615 -0.34264,-0.1612c-0.13149,-0.00506 -0.25983,0.04362 -0.35465,0.13402l-6.14975,5.53284l-6.14975,-5.53284c-0.09483,-0.0904 -0.22316,-0.13908 -0.35465,-0.13402c-0.13086,0.00506 -0.25476,0.06322 -0.34264,0.1612c-0.08724,0.09799 -0.13149,0.22757 -0.12201,0.35843c0.00885,0.13149 0.07144,0.25287 0.17195,0.33757l6.47343,5.82608c0.09735,0.08661 0.22442,0.13023 0.35402,0.12138l0,0z"></path>
-                                </svg>
-                             </div>
-                          </div>
-                       </button> -->
-                       <div style="display: flex; width: 100%; align-items: center; justify-content: center;">
-                          <div style="border: 1px solid rgb(224, 224, 224); width: 100%;"></div>
-                          <div style="padding: 8px; color: rgb(224, 224, 224); font-weight: bold;">OR</div>
-                          <div style="border: 1px solid rgb(224, 224, 224); width: 100%;"></div>
-                       </div>
-                       <button class="paymentButton__Button-earipx-0 gqxTWB">
-                          <div style="display: flex; justify-content: space-between; align-items: center;">
-                             <div style="display: flex; justify-content: center; align-items: center;">
-                                <div style="font-weight: bold;">Buy now</div>
-                                &nbsp;
-                                <div>for $25/month with affirm</div>
-                             </div>
-                             <img src="/assets/images/badge-affirm.png" " alt="Affirm" class="badge__Badge-ufoui8-0 fJklpk">
-                          </div>
-                       </button>
-                    </div>
-                 </div>
-              </div>
-           </div>
-        </div>
+<style>
+/* Uses Bootstrap stylesheets for styling, see linked CSS*/
+body {
+  background-color: #fff;
+  padding: 15px;
+}
+
+.toast {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 9999;
+}
+
+.bootstrap-basic {
+  background: white;
+}
+
+/* Braintree Hosted Fields styling classes*/
+.braintree-hosted-fields-focused {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.braintree-hosted-fields-focused.is-invalid {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+</style>
+<div class="bootstrap-basic">
+   <form class="needs-validation" action="/payments/hosted" method="POST" novalidate="">
+      <input type="hidden" name="payment_method_nonce" id="payment_method_nonce">
+     <div class="row">
+       <div class="col-sm-6 mb-3">
+         <label for="cc-name">Name on card</label>
+         <input type="text" class="form-control" id="cc-name" placeholder="" required="true">
+         <small class="text-muted">Full name as displayed on card</small>
+         <div class="invalid-feedback">
+           Name on card is required
+         </div>
+       </div>
+       <div class="col-sm-6 mb-3">
+         <label for="email">Email</label>
+         <input type="email" class="form-control" id="email" placeholder="you@example.com">
+         <div class="invalid-feedback">
+           Please enter a valid email address for shipping updates.
+         </div>
+       </div>
      </div>
+ 
+     <div class="row">
+       <div class="col-sm-6 mb-3">
+         <label for="cc-number">Credit card number</label>
+         <div class="form-control" id="cc-number"></div>
+         <div class="invalid-feedback">
+           Credit card number is required
+         </div>
+       </div>
+       <div class="col-sm-3 mb-3">
+         <label for="cc-expiration">Expiration</label>
+         <div class="form-control" id="cc-expiration"></div>
+         <div class="invalid-feedback">
+           Expiration date required
+         </div>
+       </div>
+       <div class="col-sm-3 mb-3">
+         <label for="cc-expiration">CVV</label>
+         <div class="form-control" id="cc-cvv"></div>
+         <div class="invalid-feedback">
+           Security code required
+         </div>
+       </div>
+     </div>
+ 
+     <hr class="mb-4">
+     <div class="text-center">
+     <button class="btn btn-primary btn-lg" type="submit">Pay with <span id="card-brand">Card</span></button>
+     </div>
+   </form>
+ </div>
+ <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+ <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+   <div class="toast-header">
+     <strong class="mr-auto">Success!</strong>
+     <small>Just now</small>
+     <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+       <span aria-hidden="true">&times;</span>
+     </button>
+   </div>
+   <div class="toast-body">
+     Next, submit the payment method nonce to your server.
+   </div>
+ </div>
+ </div>
+ 
+   <!-- Load the required client component. -->
+   <script src="https://js.braintreegateway.com/web/3.55.0/js/client.min.js"></script>
+ 
+   <!-- Load Hosted Fields component. -->
+   <script src="https://js.braintreegateway.com/web/3.55.0/js/hosted-fields.min.js"></script>
+<script>
+var form = $('form');
+
+braintree.client.create({
+  authorization: 'sandbox_g42y39zw_348pk9cgf3bgyw2b'
+}, function(err, clientInstance) {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
+  braintree.hostedFields.create({
+    client: clientInstance,
+    styles: {
+      input: {
+        // change input styles to match
+        // bootstrap styles
+        'font-size': '1rem',
+        color: '#495057'
+      }
+    },
+    fields: {
+      number: {
+        selector: '#cc-number',
+        placeholder: '4111 1111 1111 1111'
+      },
+      cvv: {
+        selector: '#cc-cvv',
+        placeholder: '123'
+      },
+      expirationDate: {
+        selector: '#cc-expiration',
+        placeholder: 'MM / YY'
+      }
+    }
+  }, function(err, hostedFieldsInstance) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    function createInputChangeEventListener(element) {
+      return function () {
+        validateInput(element);
+      }
+    }
+
+    function setValidityClasses(element, validity) {
+      if (validity) {
+        element.removeClass('is-invalid');
+        element.addClass('is-valid');  
+      } else {
+        element.addClass('is-invalid');
+        element.removeClass('is-valid');  
+      }    
+    }
+    
+    function validateInput(element) {
+      // very basic validation, if the
+      // fields are empty, mark them
+      // as invalid, if not, mark them
+      // as valid
+
+      if (!element.val().trim()) {
+        setValidityClasses(element, false);
+
+        return false;
+      }
+
+      setValidityClasses(element, true);
+
+      return true;
+    }
+    
+    function validateEmail () {
+      var baseValidity = validateInput(email);
+      
+      if (!baseValidity) {  
+        return false;
+      }
+
+      if (email.val().indexOf('@') === -1) {
+        setValidityClasses(email, false);
+        return false;
+      }
+      
+      setValidityClasses(email, true);
+      return true;
+    }
+
+    var ccName = $('#cc-name');
+    var email = $('#email');
+
+    ccName.on('change', function () {
+      validateInput(ccName);
+    });
+    email.on('change', validateEmail);
+
+
+            hostedFieldsInstance.on('validityChange', function(event) {
+      var field = event.fields[event.emittedBy];
+
+      // Remove any previously applied error or warning classes
+      $(field.container).removeClass('is-valid');
+      $(field.container).removeClass('is-invalid');
+
+      if (field.isValid) {
+        $(field.container).addClass('is-valid');
+      } else if (field.isPotentiallyValid) {
+        // skip adding classes if the field is
+        // not valid, but is potentially valid
+      } else {
+        $(field.container).addClass('is-invalid');
+      }
+    });
+
+    hostedFieldsInstance.on('cardTypeChange', function(event) {
+      var cardBrand = $('#card-brand');
+      var cvvLabel = $('[for="cc-cvv"]');
+
+      if (event.cards.length === 1) {
+        var card = event.cards[0];
+
+        // change pay button to specify the type of card
+        // being used
+        cardBrand.text(card.niceType);
+        // update the security code label
+        cvvLabel.text(card.code.name);
+      } else {
+        // reset to defaults
+        cardBrand.text('Card');
+        cvvLabel.text('CVV');
+      }
+    });
+
+    form.submit(function(event) {
+      event.preventDefault();
+
+      var formIsInvalid = false;
+      var state = hostedFieldsInstance.getState();
+
+      // perform validations on the non-Hosted Fields
+      // inputs
+      if (!validateEmail() || !validateInput($('#cc-name'))) {
+        formIsInvalid = true;
+      }
+
+      // Loop through the Hosted Fields and check
+      // for validity, apply the is-invalid class
+      // to the field container if invalid
+      Object.keys(state.fields).forEach(function(field) {
+        if (!state.fields[field].isValid) {
+          $(state.fields[field].container).addClass('is-invalid');
+          formIsInvalid = true;
+        }
+      });
+
+      if (formIsInvalid) {
+        // skip tokenization request if any fields are invalid
+        return;
+      }
+
+      hostedFieldsInstance.tokenize({
+        // include the cardholderName in the tokenization
+        // request
+        cardholderName: $('#cc-name').val()
+      }, function(err, payload) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        // This is where you would submit payload.nonce to your server
+        $('.toast').toast('show');
+
+        // you can either send the form values with the payment
+        // method nonce via an ajax request to your server,
+        // or add the payment method nonce to a hidden inpiut
+        // on your form and submit the form programatically
+         $('#payment-method-nonce').val(payload.nonce);
+
+
+
+
+         
+         form.submit()
+      });
+    });
+  });
+});
+</script>
+
+
+
+
+<!--dropin Example-->
+ <div id="dropin-wrapper">
+   <div id="checkout-message"></div>
+   <div id="dropin-container"></div>
+   <button id="submit-button">Submit payment</button>
+ </div>
+<!--dropin Script Example-->
+ <script>
+   var form = document.querySelector('#hosted-fields-form');
+   var submit = document.querySelector('input[type="submit"]');
+ 
+   braintree.client.create({
+     // Insert your tokenization key here
+     authorization: 'sandbox_tvb37t33_dwt5m34ppngz6s7k'
+   }, function (clientErr, clientInstance) {
+     if (clientErr) {
+       console.error(clientErr);
+       return;
+     }
+ 
+     // Create a hostedFields component to initialize the form
+ 
+     braintree.hostedFields.create({
+       client: clientInstance,
+       // Customize the Hosted Fields.
+       // More information can be found at:
+       // https://developers.braintreepayments.com/guides/hosted-fields/styling/javascript/v3
+       styles: {
+         'input': {
+           'font-size': '14px'
+         },
+         'input.invalid': {
+           'color': 'red'
+         },
+         'input.valid': {
+           'color': 'green'
+         }
+       },
+       // Configure which fields in your card form will be generated by Hosted Fields instead
+       fields: {
+         number: {
+           selector: '#card-number',
+           placeholder: '4111 1111 1111 1111'
+         },
+         cvv: {
+           selector: '#cvv',
+           placeholder: '123'
+         },
+         expirationDate: {
+           selector: '#expiration-date',
+           placeholder: '10/2019'
+         }
+       }
+     }, function (hostedFieldsErr, instance) {
+       if (hostedFieldsErr) {
+         console.error(hostedFieldsErr);
+         return;
+       }
+ 
+       // Once the fields are initialized enable the submit button
+       submit.removeAttribute('disabled');
+ 
+       // Initialize the form submit event
+       form.addEventListener('submit', function (event) {
+         event.preventDefault();
+         // When the user clicks on the 'Submit payment' button this code will send the
+         // encrypted payment information in a variable called a payment method nonce
+         instance.tokenize(function (tokenizeErr, payload) {
+           if (tokenizeErr) {
+             console.error(tokenizeErr);
+             return;
+           }
+ 
+           instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
+             $.ajax({
+               type: 'POST',
+               url: '/checkout',
+               data: {'paymentMethodNonce': payload.nonce}
+             }).done(function(result) {
+               // Tear down the Hosted Fields form
+               instance.teardown(function (teardownErr) {
+                 if (teardownErr) {
+                   console.error('Could not tear down the Hosted Fields form!');
+                 } else {
+                   console.info('Hosted Fields form has been torn down!');
+                   // Remove the 'Submit payment' button
+                   $('#hosted-fields-form').remove();
+                 }
+               });
+ 
+               if (result.success) {
+                 $('#checkout-message').html('<h1>Success</h1><p>Your Hosted Fields form is working! Check your <a href="https://sandbox.braintreegateway.com/login">sandbox Control Panel</a> for your test transactions.</p><p>Refresh to try another transaction.</p>');
+               } else {
+                 $('#checkout-message').html('<h1>Error</h1><p>Check your console.</p>');
+               }
+             });
+           });
+         });
+       }, false);
+     });
+   });
+ </script>
+
+ 

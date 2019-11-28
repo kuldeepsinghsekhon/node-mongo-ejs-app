@@ -73,6 +73,7 @@ app.use('/admin', require('./routes/admin.js'));
 app.use('/products', require('./routes/products.js'));
 app.use('/email', require('./routes/email.js'));
 app.use('/shop', require('./routes/shop.js'));
+app.use('/payments', require('./routes/payments.js'));
 
 const PORT = process.env.PORT || 5000;
 

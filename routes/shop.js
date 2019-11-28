@@ -1,4 +1,13 @@
 const express = require('express');
+
+const braintree = require("braintree");
+const gateway = braintree.connect({
+  environment: braintree.Environment.Sandbox,
+  merchantId: "dwt5m34ppngz6s7k",       //merchant id
+  publicKey: "g2d976m7dxpt6bx5",        //public key
+  privateKey: "117df9268ade2b95fc3f526966441059" //private key
+});
+//const gateway = require('./config/keys').gateway;
 const app = express();
 const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
@@ -28,8 +37,17 @@ function (req, res,next){
  });
  router.get('/payment-method', forwardAuthenticated,
  function (req, res,next){
+ // console.log(gateway);
+  gateway.clientToken.generate({
+    customerId: 2222
+  }, function (err, response) {
+    let clientToken = response.clientToken;
+    console.log(clientToken);
+    res.render('pages/public/payment-method',{clientToken:clientToken});
    
-    res.render('pages/public/payment-method')
+    console.log(err);
+  });
+   
     //console.log(products);
   });
   router.get('/product/:id',ensureAuthenticated,permit('User'), function(req, res, next) {
