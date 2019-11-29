@@ -78,10 +78,11 @@ body {
  
      <hr class="mb-4">
      <div class="text-center">
-     <button class="btn btn-primary btn-lg" type="submit">Pay with <span id="card-brand">Card</span></button>
+     <button id="hosted-submit-button" class="btn btn-primary btn-lg" type="submit">Pay with <span id="card-brand">Card</span></button>
      </div>
    </form>
  </div>
+ <div id="paypal-button"></div>
  <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
    <div class="toast-header">
@@ -106,8 +107,9 @@ body {
 var form = $('form');
 
 braintree.client.create({
-  authorization: 'sandbox_g42y39zw_348pk9cgf3bgyw2b'
-}, function(err, clientInstance) {
+  authorization: 'sandbox_tvb37t33_dwt5m34ppngz6s7k'
+},
+ function(err, clientInstance) {
   if (err) {
     console.error(err);
     return;
@@ -272,24 +274,135 @@ braintree.client.create({
           console.error(err);
           return;
         }
-
+        //$('#payment-method-nonce').val(payload.nonce);
+        console.log(payload);
+        var button = document.querySelector('#hosted-submit-button');
+        button.addEventListener('click', function () {
+        $.ajax({
+              type: 'POST',
+              url: '/payments/hosted',
+              data: {'paymentMethodNonce': payload.nonce}
+            }).done(function(result) {
+              // Tear down the Drop-in UI
+              hostedFieldsInstance.teardown(function (teardownErr) {
+                if (teardownErr) {
+                  console.error('Could not tear down Drop-in UI!');
+                } else {
+                  console.info('Drop-in UI has been torn down!');
+                  // Remove the 'Submit payment' button
+                  $('#hosted-submit-button').remove();
+                }
+              });
+    
+              if (result.success) {
+              
+                $('.toast').html('<h1>Success</h1><p>Your Drop-in UI is working! Check your <a href="https://sandbox.braintreegateway.com/login">sandbox Control Panel</a> for your test transactions.</p><p>Refresh to try another transaction.</p>');
+                $('.toast').toast('show');
+              } else {
+                console.log(result);
+                $('.toast').html('<h1>Error</h1><p>Check your console.</p>');
+                $('.toast').toast('show');
+              }
+            });
+          
+          });
         // This is where you would submit payload.nonce to your server
-        $('.toast').toast('show');
+       
 
         // you can either send the form values with the payment
         // method nonce via an ajax request to your server,
         // or add the payment method nonce to a hidden inpiut
         // on your form and submit the form programatically
          $('#payment-method-nonce').val(payload.nonce);
-
-
-
-
-         
-         form.submit()
+        // form.submit();
       });
     });
   });
+});
+</script>
+<script>
+
+
+// Create a client.
+braintree.client.create({
+  authorization: 'sandbox_tvb37t33_dwt5m34ppngz6s7k'
+}).then(function (clientInstance) {
+  // Create a PayPal Checkout component.
+  return braintree.paypalCheckout.create({
+    client: clientInstance
+  });
+}).then(function (paypalCheckoutInstance) {
+  // Set up PayPal with the checkout.js library
+  paypal.Button.render({
+    env: 'sandbox', // Or 'sandbox'
+    commit: true, // This will add the transaction amount to the PayPal button
+
+    payment: function () {
+      return paypalCheckoutInstance.createPayment({
+        flow: 'checkout', // Required
+        amount: 10.00, // Required
+        currency: 'USD', // Required
+        enableShippingAddress: true,
+        shippingAddressEditable: false,
+        shippingAddressOverride: {
+          recipientName: 'Scruff McGruff',
+          line1: '1234 Main St.',
+          line2: 'Unit 1',
+          city: 'Chicago',
+          countryCode: 'US',
+          postalCode: '60652',
+          state: 'IL',
+          phone: '123.456.7890'
+        }
+      });
+    },
+
+    onAuthorize: function (data, actions) {
+      return paypalCheckoutInstance.tokenizePayment(data)
+        .then(function (payload) {
+          $.ajax({
+              type: 'POST',
+              url: '/payments/hosted',
+              data: {'paymentMethodNonce': payload.nonce}
+            }).done(function(result) {
+              // Tear down the Drop-in UI
+              hostedFieldsInstance.teardown(function (teardownErr) {
+                if (teardownErr) {
+                  console.error('Could not tear down Drop-in UI!');
+                } else {
+                  console.info('Drop-in UI has been torn down!');
+                  // Remove the 'Submit payment' button
+                  $('#hosted-submit-button').remove();
+                }
+              });
+    
+              if (result.success) {
+              
+                $('.toast').html('<h1>Success</h1><p>Your Drop-in UI is working! Check your <a href="https://sandbox.braintreegateway.com/login">sandbox Control Panel</a> for your test transactions.</p><p>Refresh to try another transaction.</p>');
+                $('.toast').toast('show');
+              } else {
+                console.log(result);
+                $('.toast').html('<h1>Error</h1><p>Check your console.</p>');
+                $('.toast').toast('show');
+              }
+            });
+        });
+    },
+
+    onCancel: function (data) {
+      console.log('checkout.js payment cancelled', JSON.stringify(data, 0, 2));
+    },
+
+    onError: function (err) {
+      console.error('checkout.js error', err);
+    }
+  }, '#paypal-button');
+}).then(function () {
+  // The PayPal button will be rendered in an html element with the id
+  // `paypal-button`. This function will be called when the PayPal button
+  // is set up and ready to be used.
+}).catch(function (err) {
+  // Handle component creation error
 });
 </script>
 
@@ -303,100 +416,4 @@ braintree.client.create({
    <button id="submit-button">Submit payment</button>
  </div>
 <!--dropin Script Example-->
- <script>
-   var form = document.querySelector('#hosted-fields-form');
-   var submit = document.querySelector('input[type="submit"]');
- 
-   braintree.client.create({
-     // Insert your tokenization key here
-     authorization: 'sandbox_tvb37t33_dwt5m34ppngz6s7k'
-   }, function (clientErr, clientInstance) {
-     if (clientErr) {
-       console.error(clientErr);
-       return;
-     }
- 
-     // Create a hostedFields component to initialize the form
- 
-     braintree.hostedFields.create({
-       client: clientInstance,
-       // Customize the Hosted Fields.
-       // More information can be found at:
-       // https://developers.braintreepayments.com/guides/hosted-fields/styling/javascript/v3
-       styles: {
-         'input': {
-           'font-size': '14px'
-         },
-         'input.invalid': {
-           'color': 'red'
-         },
-         'input.valid': {
-           'color': 'green'
-         }
-       },
-       // Configure which fields in your card form will be generated by Hosted Fields instead
-       fields: {
-         number: {
-           selector: '#card-number',
-           placeholder: '4111 1111 1111 1111'
-         },
-         cvv: {
-           selector: '#cvv',
-           placeholder: '123'
-         },
-         expirationDate: {
-           selector: '#expiration-date',
-           placeholder: '10/2019'
-         }
-       }
-     }, function (hostedFieldsErr, instance) {
-       if (hostedFieldsErr) {
-         console.error(hostedFieldsErr);
-         return;
-       }
- 
-       // Once the fields are initialized enable the submit button
-       submit.removeAttribute('disabled');
- 
-       // Initialize the form submit event
-       form.addEventListener('submit', function (event) {
-         event.preventDefault();
-         // When the user clicks on the 'Submit payment' button this code will send the
-         // encrypted payment information in a variable called a payment method nonce
-         instance.tokenize(function (tokenizeErr, payload) {
-           if (tokenizeErr) {
-             console.error(tokenizeErr);
-             return;
-           }
- 
-           instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
-             $.ajax({
-               type: 'POST',
-               url: '/checkout',
-               data: {'paymentMethodNonce': payload.nonce}
-             }).done(function(result) {
-               // Tear down the Hosted Fields form
-               instance.teardown(function (teardownErr) {
-                 if (teardownErr) {
-                   console.error('Could not tear down the Hosted Fields form!');
-                 } else {
-                   console.info('Hosted Fields form has been torn down!');
-                   // Remove the 'Submit payment' button
-                   $('#hosted-fields-form').remove();
-                 }
-               });
- 
-               if (result.success) {
-                 $('#checkout-message').html('<h1>Success</h1><p>Your Hosted Fields form is working! Check your <a href="https://sandbox.braintreegateway.com/login">sandbox Control Panel</a> for your test transactions.</p><p>Refresh to try another transaction.</p>');
-               } else {
-                 $('#checkout-message').html('<h1>Error</h1><p>Check your console.</p>');
-               }
-             });
-           });
-         });
-       }, false);
-     });
-   });
- </script>
-
  
