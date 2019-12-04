@@ -5,7 +5,7 @@ const prodSchema = new mongoose.Schema({
  department:String,
  brand: { 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Brand'
+    ref: 'Brand' 
   }, 
  description: String,
  category: String, //sneekers/addidas/yeezee/model
@@ -15,8 +15,10 @@ const prodSchema = new mongoose.Schema({
  image: String,
 //specs: Map,
 Condition:String,
-
- attrs:[{name: String,value: String}] ,
+ attrs:[{
+    name: String,
+    value: String
+}] ,
   images:[{ 
    type: mongoose.Schema.Types.ObjectId, 
      ref: 'Image' //multiple image 
@@ -29,10 +31,7 @@ shipping : {
     },
     weight: mongoose.Decimal128
 },
-variants:[{ 
-  type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Variant' //multiple image 
- }]
+
 });
 const Product = mongoose.model('Product', prodSchema);
 
