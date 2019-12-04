@@ -11,6 +11,9 @@ const { permit } = require('../config/role-auth');
 const fileUpload = require('express-fileupload');
 const product_controller = require('../controllers/product.controller');
 const users_controller = require('../controllers/user.controller');
+const admin_controller = require('../controllers/admin.controller');
+
+
 const app = express();
 app.use(fileUpload());
 const MongoClient = require('mongodb').MongoClient;
@@ -119,4 +122,6 @@ router.get('/orders/:page',ensureAuthenticated, permit('Admin'), function(req, r
         })
     })
   });
+
+  router.get('/brand/:id', admin_controller.listBrands);
 module.exports = router;
