@@ -1,12 +1,5 @@
 const express = require('express');
-
 const braintree = require("braintree");
-const gateway = braintree.connect({
-  environment: braintree.Environment.Sandbox,
-  merchantId: "dwt5m34ppngz6s7k",       //merchant id
-  publicKey: "g2d976m7dxpt6bx5",        //public key
-  privateKey: "117df9268ade2b95fc3f526966441059" //private key
-});
 //const gateway = require('./config/keys').gateway;
 const app = express();
 const mongoose = require('mongoose');
@@ -24,44 +17,23 @@ const Order = require('../models/Myorder');
 var faker = require('faker');
 const path = require('path');
 const fs = require('fs');
-router.get('/shopping-cart', forwardAuthenticated,
-function (req, res,next){
-   if(!req.session.cart){
-     res.render('pages/users/shopping-cart',{  products:{} });
-   }
-   var cart= new Cart(req.session.cart);
-    
-   var products =cart.generateArray();
-   res.render('pages/users/shopping-cart',{ products:products,totalQty:cart.totalQty,totalPrice:cart.totalPrice })
-   //console.log(products);
- });
- router.get('/payment-method', forwardAuthenticated,
- function (req, res,next){
- // console.log(gateway);
-  gateway.clientToken.generate({
-    customerId: 2222
-  }, function (err, response) {
-    let clientToken = response.clientToken;
-    console.log(clientToken);
-    res.render('pages/public/payment-method',{clientToken:clientToken});
-   
-    console.log(err);
-  });
-   
-    //console.log(products);
-  });
+
+  /* show Buy/sell bid page */ 
+
   router.get('/product/:id',ensureAuthenticated,permit('User'), function(req, res, next) {
     var productId=req.params.id;
         product=Product.findById(productId,function(err,product){
         // if(err){
         //     return res.redirect('/');
         // }
-            res.render('pages/public/product-checkout', {
+            res.render('pages/public/product-buyorbid', {
               product: product,
               layout:'layout'
           })
       })
   });
+  
+  /* show make payment page using Stripe  */ 
  router.get('/checkout/:id', ensureAuthenticated,permit('User'),
  function (req, res,next){
   req.session.cart = {};
@@ -85,6 +57,8 @@ function (req, res,next){
     });
   
   });
+
+  /***************save Order in database After Payment **************/
   router.post('/checkout',ensureAuthenticated,permit('User'),function(req,res,next){
         // if (!req.session.cart) {
         //     return res.redirect('/shopping-cart');
@@ -149,4 +123,46 @@ function (req, res,next){
             });
         }); 
   });
+
+
+/*************************Testing/R&D    ******************/
+/*************************Payment MEthod Choice********/
+const gateway = braintree.connect({
+  environment: braintree.Environment.Sandbox,
+  merchantId: "dwt5m34ppngz6s7k",       //merchant id
+  publicKey: "g2d976m7dxpt6bx5",        //public key
+  privateKey: "117df9268ade2b95fc3f526966441059" //private key
+});
+router.get('/payment-method', forwardAuthenticated,
+ function (req, res,next){
+ // console.log(gateway);
+  gateway.clientToken.generate({
+    customerId: 2222
+  }, function (err, response) {
+    let clientToken = response.clientToken;
+    console.log(clientToken);
+    res.render('pages/public/payment-method',{clientToken:clientToken});
+   
+    console.log(err);
+  });
+   
+    //console.log(products);
+  });
+
+/********************** View Shoping Cart Not Required in This Project Testing only ************************/
+  router.get('/shopping-cart', forwardAuthenticated,
+function (req, res,next){
+   if(!req.session.cart){
+     res.render('pages/users/shopping-cart',{  products:{} });
+   }
+   var cart= new Cart(req.session.cart);
+   var products =cart.generateArray();
+   res.render('pages/tests/shopping-cart',{ products:products,totalQty:cart.totalQty,totalPrice:cart.totalPrice })
+   //console.log(products);
+ });
+ 
+//  router.get('/selling', forwardAuthenticated,
+//  function (req, res,next){   
+//     res.render('pages/index1',{  })
+//   });
   module.exports = router;

@@ -29,12 +29,46 @@ exports.products = function(req, res, next) {
     // if(err){
     //     return res.redirect('/');
     // }
-        res.render('pages/public/product', {
+        res.render('pages/public/product-detail', {
           product: product,
           layout:'layout'
       })
   })
 }
+/*********** select Product Variant ***************/
+exports.sellProductVariant=function(req, res, next) {
+  var productId=req.params.id;
+  req.session.oldUrl='/products/'+productId;
+  product=Product.findById(productId,function(err,product){
+  // if(err){
+  //     return res.redirect('/');
+  // }
+      res.render('pages/public/sell-product-variant', {
+        product: product,
+        layout:'layout'
+    })
+})
+}
+/*********** Product Sell Or Ask  ***************/
+exports.sellProductOrAsk=function(req, res, next) {
+  var productId=req.params.id;
+
+  req.session.oldUrl='/products/'+productId;
+  product=Product.findById(productId,function(err,product){
+   if(!req.body.payment_method){
+    res.render('pages/public/product-sell-payment-method', {
+      product: product,
+      layout:'layout'
+  });
+   }else{
+      res.render('pages/public/product-sellorask', {
+        product: product,
+        layout:'layout'
+    })
+  }
+})
+}
+
 exports.adminProducts=function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;

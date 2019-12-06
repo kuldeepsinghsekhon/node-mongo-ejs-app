@@ -4397,7 +4397,7 @@ padding: 0 30px;
 }
 .pl_cn .nav-link.active {
 	color: #fff;
-	background: #509e2f !important;
+	background: #509e2f ;
 	border: 1px solid #509e2f;
 }
 .sprt_sec {
@@ -5917,4 +5917,20 @@ span.market-dir-up-arrow {
 	color: #fff;
 	font-size: 18px;
 	padding: 8px 24px;
+}
+/* sell or ask*/
+.nv_top li .active {
+	color: #fff;
+	background: #ff515f !important;
+	border: 1px solid #ff515f!important
+}
+
+.nxxt_btn button {
+	background: #ff515f;
+	color: #fff;
+	float: right;
+	margin-top: 2rem;
+}
+.nxxt_btn {
+    margin-bottom: 6rem;
 }

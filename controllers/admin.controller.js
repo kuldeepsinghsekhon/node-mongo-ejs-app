@@ -1,5 +1,5 @@
 //let c= await Address.countDocuments(filter);
-
+const Attribute = require('../models/Attribute');
 /*brand controller */
 const Brand = require('../models/Brand');
 exports.listBrands=function(req, res, next) {
@@ -22,3 +22,6 @@ exports.listBrands=function(req, res, next) {
             })
         })
   }
+module.saveAttribute=function name(req,res) {
+    
+}

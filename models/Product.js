@@ -1,5 +1,6 @@
 
 const mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 const prodSchema = new mongoose.Schema({
  name: String,
  department:String,
@@ -14,9 +15,11 @@ const prodSchema = new mongoose.Schema({
  style:String,
  image: String,
 //specs: Map,
-Condition:String,
-
- attrs:[{name: String,value: String}] ,
+condition:String,
+size:Number,
+ attrs:[{ type: mongoose.Schema.Types.ObjectId,
+  ref: 'Attribute'
+}] ,
   images:[{ 
    type: mongoose.Schema.Types.ObjectId, 
      ref: 'Image' //multiple image 
