@@ -1,3 +1,4 @@
+const braintree = require("braintree");
 const Product = require('../models/Product');
 const path = require('path');
 const fs = require('fs');
@@ -50,24 +51,59 @@ exports.sellProductVariant=function(req, res, next) {
 })
 }
 /*********** Product Sell Or Ask  ***************/
+const gateway = braintree.connect({
+  environment: braintree.Environment.Sandbox,
+  merchantId: "dwt5m34ppngz6s7k",       //merchant id
+  publicKey: "g2d976m7dxpt6bx5",        //public key
+  privateKey: "117df9268ade2b95fc3f526966441059" //private key
+});
 exports.sellProductOrAsk=function(req, res, next) {
   var productId=req.params.id;
-
   req.session.oldUrl='/products/'+productId;
   product=Product.findById(productId,function(err,product){
-   if(!req.body.payment_method){
-    res.render('pages/public/product-sell-payment-method', {
-      product: product,
-      layout:'layout'
-  });
-   }else{
-      res.render('pages/public/product-sellorask', {
-        product: product,
-        layout:'layout'
-    })
-  }
-})
+        if(!req.body.payment_method){
+          res.render('pages/public/product-sell-payment-method', {
+            product: product,
+            layout:'layout'
+        });
+        }else{
+
+          gateway.clientToken.generate({
+            customerId: 2222
+          }, function (err, response) {
+            let clientToken = response.clientToken;
+            console.log(clientToken);
+            res.render('pages/public/product-sellorask', {
+              product: product,
+              clientToken:clientToken,
+              layout:'layout'
+          })
+            console.log(err);
+          });      
+        }
+      })
 }
+
+exports.sellAsk= function(req, res,next){
+ 
+  var nonceFromTheClient = req.body.paymentMethodNonce;
+  // Create a new transaction for $10
+  var newTransaction = gateway.transaction.sale({
+    amount: '47.54',
+    paymentMethodNonce: nonceFromTheClient,
+    options: {
+      // This option requests the funds from the transaction
+      // once it has been authorized successfully
+      submitForSettlement: true
+    }
+  }, function(error, result) {
+      if (result) {
+        res.send(result);
+      } else {
+        res.status(500).send(error);
+      }
+  });
+  }
 
 exports.adminProducts=function(req, res, next) {
     var perPage = 9;
@@ -77,7 +113,7 @@ exports.adminProducts=function(req, res, next) {
         .find({})
         .skip((perPage * page) - perPage)
         .limit(perPage)
-        .exec(function(err, products) {
+        .exec(function(err, products){
             Product.count().exec(function(err, count) {
                 if (err) return next(err)
                 res.render('pages/admin/template-products', {

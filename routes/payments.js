@@ -10,7 +10,6 @@ const  gateway = braintree.connect({
 });
 router.post('/paypal', function(req, res, next) {
  
-
   // Use the payment method nonce here
   var nonceFromTheClient = req.body.paymentMethodNonce;
   // Create a new transaction for $10
@@ -36,7 +35,7 @@ router.post('/hosted', function(req, res, next) {
     var nonceFromTheClient = req.body.paymentMethodNonce;
     // Create a new transaction for $10
     var newTransaction = gateway.transaction.sale({
-      amount: '26.23',
+      amount: '55.23',
       paymentMethodNonce: nonceFromTheClient,
       options: {
         // This option requests the funds from the transaction
