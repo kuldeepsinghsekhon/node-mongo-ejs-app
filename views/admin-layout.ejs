@@ -9,6 +9,7 @@
   <!-- plugins:css -->
   <link rel="stylesheet" href="/vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" href="/vendors/base/vendor.bundle.base.css">
+  
   <!--<link rel="stylesheet" href="/vendors/base/bootstrap.min.css">
   endinject -->
   <!-- plugin css for this page -->
@@ -91,3 +92,20 @@
 
 </html>
 
+<script type="text/javascript">
+ var room = 1;
+function education_fields() {
+ 
+    room++;
+    var objTo = document.getElementById('education_fields')
+    var divtest = document.createElement("div");
+	divtest.setAttribute("class", "form-group removeclass"+room);
+	var rdiv = 'removeclass'+room;
+ divtest.innerHTML ='<div class="col-sm-3 nopadding"><div class="form-group"><input type="text" class="form-control" id="attributename" name="attributename" value="" placeholder="Degree"></div> </div> <div class="col-sm-3 nopadding"> <div class="form-group"><div class="input-group"><div class="form-group"><input type="text" class="form-control" id="attributevalues" name="attributevalues" value="" placeholder="attribute|attribute|attribute"></div><div class="input-group-btn"> <button class="btn btn-danger" type="button" onclick="remove_education_fields('+ room +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div></div></div></div><div class="clear"></div>';
+    objTo.appendChild(divtest)
+}
+   function remove_education_fields(rid) {
+	   $('.removeclass'+rid).remove();
+   }
+    </script>
+    https://bootsnipp.com/snippets/AXVrV

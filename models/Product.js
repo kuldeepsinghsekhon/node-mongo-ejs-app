@@ -1,6 +1,6 @@
-
+const Attribute = require('../models/Attribute');
 const mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 const prodSchema = new mongoose.Schema({
  name: String,
  department:String,
@@ -17,11 +17,11 @@ const prodSchema = new mongoose.Schema({
 //specs: Map,
 condition:String,
 size:Number,
- attrs:[{ type: mongoose.Schema.Types.ObjectId,
+ attrs:[{ type: Schema.Types.ObjectId,
   ref: 'Attribute'
 }] ,
   images:[{ 
-   type: mongoose.Schema.Types.ObjectId, 
+   type: Schema.Types.ObjectId, 
      ref: 'Image' //multiple image 
   }],
 shipping : {
@@ -33,7 +33,7 @@ shipping : {
     weight: mongoose.Decimal128
 },
 variants:[{ 
-  type: mongoose.Schema.Types.ObjectId, 
+  type: Schema.Types.ObjectId, 
     ref: 'Variant' //multiple image 
  }]
 });

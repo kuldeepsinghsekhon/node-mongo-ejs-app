@@ -16,6 +16,7 @@
     "braintree-web": "^3.55.0",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^3.1.2",
+    "csv": "^5.3.1",
     "dotenv": "^8.2.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
@@ -27,13 +28,13 @@
     "mongodb": "^3.3.4",
     "mongoose": "^5.4.1",
     "nodemailer": "^6.3.1",
-    "nodemon": "^2.0.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "performance-now": "^2.1.0",
     "stripe": "^7.13.0"
   },
   "devDependencies": {
+    "nodemon": "^2.0.1",
     "request": "^2.81.0",
     "tape": "^4.7.0"
   },

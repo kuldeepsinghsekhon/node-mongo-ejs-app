@@ -1,10 +1,13 @@
 
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 const BidSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  }, 
+  productid:String, // {type: Schema.Types.ObjectId, ref: 'Product'},
+  bidprice:Number,
+  status: String,
+  biddate:{type: Date},
+  updated:Date,
+  user:{type: Schema.Types.ObjectId, ref: 'User'},
 });
-const sellBid = mongoose.model('BuyBid', BidSchema);
-module.exports = sellBid;
+const SellBid = mongoose.model('sellBid', BidSchema);
+module.exports = SellBid;

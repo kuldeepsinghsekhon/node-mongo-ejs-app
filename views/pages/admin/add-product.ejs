@@ -1,37 +1,101 @@
-<div class="row">
-       
-        <div class="col-lg-6 col-md-offset-3">
+
+
+
+
+    <div class="card">  
+        <div class="card-body">
                 <% include ../../partials/messages %>
                 <h3> New Product</h3>
-                <form method="post" action="/admin/add-product" enctype="multipart/form-data">
+               
+               
                     <div class="panel panel-default">
                         <div class="panel-body">
-                                <div class="form-group">                              
-                                        <input type="text" id="product_name" class="form-control" name="product_name" placeholder="Product Name">
+                              
+ <!--tabrow-->
+ <form method="post" action="/admin/add-product" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-3">
+                                  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                    <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">General</a>
+                                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Style</a>
+                                    <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Attributes</a>
+                                    <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+                                  </div>
+                                </div>
+                                <!--tabContent-->
+                            <div class="col-9">
+                                  <div class="tab-content" id="v-pills-tabContent">
+                                    <!--General-->
+                                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                            <div class="form-group">  
+                                              <input type="text" id="product_name" class="form-control" name="product_name" placeholder="Product Name">                                  
+                                            </div>
+                                          <div class="form-group">                              
+                                              <input type="text" id="category_name" class="form-control" name="category_name" placeholder="Category Name"> 
+                                          </div>
+                                          <div class="form-group">
+                                              <textarea name="product_description" class="form-control" rows="6" placeholder="Product Description" ></textarea> 
+                                          </div>
+                                          <div class="form-group">
+                                                <input type="text" id="product_price" class="form-control" name="product_price" placeholder="Product Regular Price">
+                                          </div>      
+                                          <div class="form-group">
+                                              <input type="text" id="product_sku" class="form-control" name="product_sku" placeholder="Product Sku">
+                                          </div>
+                                 </div>
+                                  <!----Style Tab--> 
+                                    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab"> 
+                                        
+                                      <div class="form-group">
+                                        <input type="text" id="style" class="form-control" name="style" placeholder="Style">
+                                      </div>
+                                  </div>
+                                   <!----Style Tab End--> 
+                                   <!----Attributes Tab--> 
+                                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                                       <div class="panel panel-default">
+                                            <div class="panel-body">
+                                            <div id="education_fields"></div>
+                                                 <div class="col-sm-3 nopadding">
+                                            <div class="form-group">
+                                              <input type="text" class="form-control" id="Schoolname" name="attributename" value="" placeholder="Attribute Name">
+                                            </div>
+                                          </div>                                                                               
+                                          <div class="col-sm-3 nopadding">
+                                            
+                                            <div class="form-group">
+                                              <div class="input-group">
+                                                  <input type="text" class="form-control" id="attributevalues" name="attributevalues" value="" placeholder="attribute1|attribute2|attribute3">
+                                                <div class="input-group-btn">
+                                                  <button class="btn btn-success" type="button"  onclick="education_fields();"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="clear"></div>
+                                            </div>
+                                            <div class="panel-footer"><small>Press <span class="glyphicon glyphicon-plus gs"></span> to add another form field :)</small>, <small>Press <span class="glyphicon glyphicon-minus gs"></span> to remove form field :)</small></div>
+                                            <div class="panel-footer"><small><em><a href="">More Info - Developer Shafi (Bangladesh)</a></em></small></div>
+                                          </div>  
                                     </div>
-                            <div class="form-group">                              
-                                <input type="text" id="category_name" class="form-control" name="category_name" placeholder="Category Name">
-                            </div>
-
-                          <div class="form-group">
-                                <input type="text" id="product_price" class="form-control" name="product_price" placeholder="Product Regular Price">
-                            </div>
-                            <div class="form-group">
-                                    <input type="text" id="style" class="form-control" name="style" placeholder="Style">
-                                </div>
-                            <div class="form-group">
-                                    <input type="text" id="product_sku" class="form-control" name="product_sku" placeholder="Product Sku">
-                                </div>
-                            <div class="form-group">
-                                    <input type="file" id="productImage" class="form-control" name="productImage" placeholder="Product Image">
-                                </div>
-                                <div class="form-group">
-                                        <textarea name="product_description" class="form-control" rows="6" placeholder="Product Description" ></textarea> 
+                                     <!----Attributes Tab End--> 
+                                    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                                        <div class="form-group">
+                                            <input type="file" id="productImage" class="form-control" name="productImage" placeholder="Product Image">
+                                        </div>
                                     </div>
-                                   
+                                  </div>
+                                </div>
+                               <!-- tabContent-->
+                              </div>
+             <!--tabrow End-->       
                             <button type="submit" class="btn btn-success">Add New Product</button>
+                          </form>
                         </div>
                     </div>
-                </form>
+
             </div>
-</div>
+          </div>
+
+
+   

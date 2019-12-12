@@ -1,5 +1,7 @@
 const braintree = require("braintree");
 const Product = require('../models/Product');
+const SellBid = require('../models/SellBid');
+const Attribute = require('../models/Attribute');
 const path = require('path');
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
@@ -26,10 +28,11 @@ exports.products = function(req, res, next) {
   exports.findById=function(req, res, next) {
     var productId=req.params.id;
     req.session.oldUrl='/products/'+productId;
-    product=Product.findById(productId,function(err,product){
-    // if(err){
-    //     return res.redirect('/');
-    // }
+    product=Product.findById(productId,function(err,product){         
+    //   res.render('pages/public/sell-product-variant', {
+    //     product: product,
+    //     layout:'layout'
+    // })
         res.render('pages/public/product-detail', {
           product: product,
           layout:'layout'
@@ -37,17 +40,30 @@ exports.products = function(req, res, next) {
   })
 }
 /*********** select Product Variant ***************/
-exports.sellProductVariant=function(req, res, next) {
+exports.sellProductVariant= async function(req, res, next) {
   var productId=req.params.id;
   req.session.oldUrl='/products/'+productId;
-  product=Product.findById(productId,function(err,product){
+  product=  Product.findOne({ '_id':productId })
+  .populate('attrs')
+  .exec(function(err,product){
   // if(err){
   //     return res.redirect('/');
   // }
-      res.render('pages/public/sell-product-variant', {
-        product: product,
-        layout:'layout'
-    })
+  if(product.attrs.length>0){
+    res.render('pages/public/sell-product-variant', {
+      product: product,
+       layout:'layout'
+   })
+  }else{
+    res.render('pages/public/product-sellorask', {
+      product: product,
+      layout:'layout'
+      
+  })
+  }
+      
+    
+
 })
 }
 /*********** Product Sell Or Ask  ***************/
@@ -85,11 +101,17 @@ exports.sellProductOrAsk=function(req, res, next) {
 }
 
 exports.sellAsk= function(req, res,next){
- 
+  var sellBid = new SellBid();
+  sellBid.productid = req.body.productid;
+  sellBid.bidprice = req.body.bidprice;
+  sellBid.user = req.user;//Date.now()
+  sellBid.biddate=Date.now();
+  sellBid.status="ask";
+  sellBid.save();
   var nonceFromTheClient = req.body.paymentMethodNonce;
   // Create a new transaction for $10
   var newTransaction = gateway.transaction.sale({
-    amount: '47.54',
+    amount: req.body.bidprice,
     paymentMethodNonce: nonceFromTheClient,
     options: {
       // This option requests the funds from the transaction
@@ -136,6 +158,23 @@ exports.saveProduct=function(req, res, next) {
     product.sku = req.body.product_sku;
     product.price = req.body.product_price; 
     product.style = req.body.style; 
+    //console.log(req.body.attributename);
+    let attributes=[];
+    if(req.body.attributename){
+
+      const attributename=req.body.attributename;
+      const attributevalues=req.body.attributevalues;
+     for(var i = 0; i < attributename.length;i++){
+       var attribut= new Attribute();
+       attribut.name=attributename[i];
+       attribut.attrs=attributevalues[i].split('|');
+       attribut.save();
+       attributes.push(attribut);
+      }
+    }
+    product.attrs = attributes; 
+    //console.log(req.body.attributevalues);
+  
     let errors = [];
     if (!req.body.category_name || !req.body.product_description || !req.body.product_name || !req.body.product_sku
       || !req.body.product_price || !req.body.style ) {
@@ -180,7 +219,7 @@ exports.saveProduct=function(req, res, next) {
         if (err){
           throw err
         } else{
-             // console.log(product);         
+              console.log(product);         
         }      
     });
     req.flash(
