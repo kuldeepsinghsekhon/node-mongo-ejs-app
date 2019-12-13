@@ -13,17 +13,17 @@
 		</div>
 		</div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-4 bidsel-pane">
 		
 		<div class="left_sec">
 	
 		<div class="pl_cn nv_top">
 		<ul class="nav nav-pills nav-fill navtop ">
 			<li class="nav-item">
-				<a class="nav-link active" href="#menu1" data-toggle="tab"> Place Ask </a>
+				<a class="nav-link active" href="#menu1" data-toggle="tab" id="menu1btn"> Place Ask </a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#menu2" data-toggle="tab">Sell Now</a>
+				<a class="nav-link" href="#menu2" data-toggle="tab" id="menu2btn">Sell Now</a>
 			</li>
 			
 		</ul>
@@ -35,21 +35,40 @@
 			<div class="ask-input" data-tour="bid-education">
 			   <div class="amount-input vertical">
 				  <div class="decoration">$</div>
-				  <input data-testid="product-bid-input" placeholder="Enter Bid" class="amount" name="ask-amount" type="tel" maxlength="11" value="">
+				  <input data-testid="product-bid-input" id="bid-price-input" placeholder="Enter Bid" class="amount" name="ask-amount" type="tel" maxlength="11" value="0">
 			   </div>
 			</div>
 
 			<div class="multi-order-summary ">
-			   <div>
-				  <div class="item-row">
-					 <div>Discount Code</div>
-					 <div data-testid="bid-total"><input class="discount-input" type="text" placeholder="Add Discount +" value=""></div>
-				  </div>
-				  <div class="item-row">
-					 <div>Total</div>
-					 <div data-testid="bid-total"><span class="total__BoldText-g5xqhv-0 hsrKxN">--</span></div>
-				  </div>
-			   </div>
+				<div>
+					<div class="item-row">
+					   <div>Transaction Fee (9.5%)</div>
+					   <div id="TransactionFee-ask">-$0.00</div>
+					</div>
+					<div class="item-row">
+					   <div>Payment Proc. (3%)
+  </div>
+					   <div data-testid="bid-total" id="Proc-ask">-$0.00
+  </div>
+					</div>				  
+					  <div class="item-row">
+					   <div>Shipping
+  </div>
+					   <div data-testid="bid-total" id="Shipping-ask">-$0.00
+  </div>
+					</div>
+					<div class="item-row">
+					   <div>Discount Code
+  </div>
+					   <div data-testid="bid-total"><input class="discount-input" type="text" placeholder="Add Discount +" value=""></div>
+					</div>				  		  
+					  <div class="item-row">
+					   <div>Total Payout
+  </div>
+					   <div data-testid="bid-total" id="totalpayout-ask">$0.00
+  </div>
+					</div>				  
+				 </div>
 			</div>
 
 			<div class="multi-settings ">
@@ -72,7 +91,7 @@
 					 </div>
 				  </div>
 			   </div>
-			   <div class="settings-detail dotted-detail fs-block">
+			   <div class="settings-detail dotted-detail fs-block pay-method-bt">
 				  <div class="details">
 					 <div class="decoration"><img src="/assets/images/credit card.png"></div>
 					 Please add a payment method
@@ -98,21 +117,19 @@
 			<div class="multi-order-summary ">
 			   <div>
 				  <div class="item-row">
-					 <div>Transaction Fee (9.5%)
-</div>
-					 <div data-testid="bid-total">-$5.00
-</div>
+					 <div>Transaction Fee (9.5%)</div>
+					 <div id="TransactionFee">-$5.00</div>
 				  </div>
 				  <div class="item-row">
 					 <div>Payment Proc. (3%)
 </div>
-					 <div data-testid="bid-total">-$1.29
+					 <div data-testid="bid-total" id="Proc">-$1.29
 </div>
 				  </div>				  
 				    <div class="item-row">
 					 <div>Shipping
 </div>
-					 <div data-testid="bid-total">-$30.29
+					 <div data-testid="bid-total" id="Shipping">-$0.0
 </div>
 				  </div>
 				  <div class="item-row">
@@ -123,7 +140,7 @@
 				    <div class="item-row">
 					 <div>Total Payout
 </div>
-					 <div data-testid="bid-total">$6.71
+					 <div data-testid="bid-total" id="totalpayout">$0.0
 </div>
 				  </div>				  
 			   </div>
@@ -139,13 +156,121 @@
 			</div>			
 			</div>			
 			<div class="nxxt_btn">
-				  <button type="button" class="btn">Cancel</button>
-				  </div>			
+				  <button type="button" class="btn">NEXT</button>
+			</div>			
 		</div>	
 		</div>
 		</div>
+		<div style="" class="col-md-4 pane-payment">
+             
+           
+			<div class="payment-selection">
+			   <div class="selection-title">Payment Methods</div>
+			   <div class="selection-subtitle">Please confirm your payout method below
+			  </div>
+			  <div class="selected-payment"><div class="payment-bubble paypal"><img src="/img/icons/credit_card_white.svg?auto=compress,format"></div><div class="payment-title">Use PayPal for payout</div></div>
+			  <div class="paypal-form"><div class="form-title">PayPal Info</div><input data-testid="user-paypalEmail" name="paypalEmail" id="paypalEmail" type="text" placeholder="PayPal Email" autocomplete="true" class="field" value="">
+			  <input data-testid="user-confirmPaypalEmail" name="confirmPaypalEmail" type="text"  placeholder="Confirm PayPal Email" autocomplete="true" class="field" value=""></div>
+			</div>
+			<div class="cncl_btn">
+			  <button type="button " class="btn flT_lft paymethod-cancel">Cancel</button>
+			  <button type="button" class="btn flT_right paymethod-submit">Submit</button>
+			  </div>  
+			
+		 </div>
+
 		</div>
 		</div>
 		</div>
 		
-		
+		<script>
+		//$(function(){
+			$("#menu2btn").on('click',function(){
+				var id ="<%=product.id %>";// $("#id-manuf-name").val();
+				
+				var size='5';
+				var sendInfo = {id: id};
+				$.ajax({
+					method:'post',
+					url:"/products/cal/",
+					dataType: "json",
+					data:sendInfo,
+         		  	success: function (json_data) {
+					$("#TransactionFee").text('-$'+json_data['TransactionFee']);
+					$("#Proc").text('-$'+json_data['Proc']);
+					$("#Shipping").text('-$'+json_data['Shipping']);
+					$("#discountcode").text('-$'+json_data['discountcode']);
+					$("#totalpayout").text('$'+json_data['totalpayout']);	  
+				   },
+				   error:function(err){  //console.log(err);  
+				}	
+				});	
+			});			
+		//})
+		$("#menu1btn").on('click',function(){
+			getbidCharges();
+			});	
+		$("#bid-price-input").on('change',function(){
+			getbidCharges();
+			});		
+		function getbidCharges(){
+			var id ="<%=product.id %>";
+				var askprice=$("#bid-price-input").val();
+				var expiry=$('.dropdown-toggle').text();
+				var size='5';
+				var sendInfo = {id: id, askprice:askprice , expiry: expiry };
+				$.ajax({
+					method:'post',
+					url:"/products/cal/",
+					dataType: "json",
+					data:sendInfo,
+         		  	success: function (json_data) {
+					$("#TransactionFee-ask").text('-$'+json_data['TransactionFee']);
+					$("#Proc-ask").text('-$'+json_data['Proc']);
+					$("#Shipping-ask").text('-$'+json_data['Shipping']);
+					$("#discountcode-ask").text('-$'+json_data['discountcode']);
+					$("#totalpayout-ask").text('$'+json_data['totalpayout']);	  
+				   },
+				   error:function(err){  //console.log(err);  
+				}	
+				});			
+		}
+		$('.dropdown-menu a').on('click', function(){    
+	$('.dropdown-toggle').html($(this).html() + '<span class="caret"></span>'); 
+	getbidCharges();   
+})
+$( function(){
+	$('.pane-payment').hide();
+	
+});
+$('.pay-method-bt').on('click', function(){    
+	$('.bidsel-pane').hide(); 
+	$('.pane-payment').show();
+	  
+})
+$('.paymethod-cancel').on('click',function(){	
+	$('.pane-payment').hide();	
+		$('.bidsel-pane').show();
+})
+$('.paymethod-submit').on('click',function(){
+	var paypalEmail=$('#paypalEmail').val();
+	var fdata = {paypalEmail:paypalEmail };
+	$.ajax({
+			method:'post',
+			url:"/user/settings/payout-info",
+			dataType: "json",
+			data:fdata,
+			success: function (response) {
+				console.log(paypalEmail);
+				console.log(response);
+				$('.pane-payment').hide();	
+				$('.bidsel-pane').show();
+			},
+			error:function(err){
+				console.log('some error occoured');
+				console.log(err);
+			}
+		});
+});
+
+		</script>

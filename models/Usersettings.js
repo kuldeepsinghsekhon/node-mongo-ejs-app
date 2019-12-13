@@ -21,7 +21,8 @@ const UsersettingSchema = new mongoose.Schema({
   seller: {
     type: Schema.Types.ObjectId,
     ref: 'Address'
-  }
+  },
+  paypal_email: String
 
 });
 // - Compiling mongoose Schema to a Model - \\

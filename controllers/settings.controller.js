@@ -1,4 +1,5 @@
 const Address = require('../models/Address');
+const User = require('../models/User');
 exports.settings=function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
@@ -256,6 +257,20 @@ if (phone.length < 10) {
 }
   exports.payoutInfo=function(req,res,next){
       res.render('pages/users/settings-payout-info')
+  }
+  exports.savePayoutInfo=function(req,res,next) {
+    const user_id=req.user._id;
+    console.log(user_id);
+    console.log(req.user);
+    const prod={paypalEmail:req.body.paypalEmail};    
+
+    User.findByIdAndUpdate(user_id, {$set:prod}, function (err, user) {
+          if (err) {
+            res.status(200).json({status:"error",message:"failed to update"})
+          }else{
+            res.status(200).json({status:"ok",message:"paypal email updated successfully"})
+          }    
+    });
   }
   
   exports.editProfile=function(req,res,next){

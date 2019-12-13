@@ -61,11 +61,9 @@ exports.sellProductVariant= async function(req, res, next) {
       
   })
   }
-      
-    
-
 })
 }
+
 /*********** Product Sell Or Ask  ***************/
 const gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
@@ -73,6 +71,38 @@ const gateway = braintree.connect({
   publicKey: "g2d976m7dxpt6bx5",        //public key
   privateKey: "117df9268ade2b95fc3f526966441059" //private key
 });
+exports.sellProductVariantNowPay=function(req, res, next) {
+  var productId=req.params.id;
+    product=Product.findById(productId,function(err,product){
+      res.render('pages/public/product-sell-payment-method', {
+          product: product,
+          layout:'layout'
+      });
+    })
+}
+exports.sellCalculateCharges=function(req, res, next) {
+   var productId=req.body.id;
+  
+   
+     product=Product.findById(productId,function(err,product){
+      var askprice=0; 
+     
+      if(!req.body.askprice){
+        askprice=product.price;
+       }else{
+        askprice=req.body.askprice;
+        var expiry=req.body.expiry;
+        expiry=expiry.split("Days").map(Number);       
+        console.log(expiry[0]);
+       }
+     var TransactionFee=askprice*0.09;
+     var Proc=askprice*0.03;
+     var Shipping=30;
+     var totalpayout=askprice-(TransactionFee+Proc+Shipping);
+      res.json({ TransactionFee: TransactionFee ,Proc:Proc,Shipping:Shipping,discountcode:'',totalpayout:totalpayout });
+      })
+  //res.json({ username: 'Flavio' });
+}
 exports.sellProductOrAsk=function(req, res, next) {
   var productId=req.params.id;
   req.session.oldUrl='/products/'+productId;

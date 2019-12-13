@@ -7,22 +7,19 @@
           
           <div style="position: relative; overflow-y: hidden;" class="pane forty pane-grey">
              
-             
+            <form accept-charset="UTF-8" method="POST" action="/user/settings/seller-info"  >
              <div class="payment-selection">
                 <div class="selection-title">Payment Methods</div>
-                <div class="selection-subtitle">Please choose your payment Receive method</div>
-                <div class="payment-options">
-                   <a class="btn btn-success" href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://localhost:5000/user/paymentmethods/stripe&client_id=ca_GE0YuX7XYYVuArKFVUIDBeoGIOruUTkg" data-testid="payment-button" class="paymentButton__Button-earipx-0 gqxTWB">
-                     Connect With Stripe Express
-                     </a>
-                     <br>
-                     <a class="btn btn-success" href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_GE0YuX7XYYVuArKFVUIDBeoGIOruUTkg&scope=read_write" data-testid="payment-button" class="paymentButton__Button-earipx-0 gqxTWB">
-                        Connect With Stripe standard-accounts
-                        </a>
-                     https://stripe.com/docs/connect/express-accounts
-                     https://stripe.com/docs/connect/standard-accounts
-                </div>
+                <div class="selection-subtitle">Please confirm your payout method below
+               </div>
+               <div class="selected-payment"><div class="payment-bubble paypal"><img src="/img/icons/credit_card_white.svg?auto=compress,format"></div><div class="payment-title">Use PayPal for payout</div></div>
+               <div class="paypal-form"><div class="form-title">PayPal Info</div><input data-testid="user-paypalEmail" name="paypalEmail" type="text" required="" placeholder="PayPal Email" autocomplete="true" class="field" value=""><input data-testid="user-confirmPaypalEmail" name="confirmPaypalEmail" type="text" required="" placeholder="Confirm PayPal Email" autocomplete="true" class="field" value=""></div>
              </div>
+             <div class="cncl_btn">
+               <button type="button " class="btn flT_lft">Cancel</button>
+               <button type="button" class="btn flT_right">Submit</button>
+               </div>  
+             </form>
           </div>
        </div>
     </div>

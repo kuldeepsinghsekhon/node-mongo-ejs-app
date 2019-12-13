@@ -106,6 +106,7 @@ router.get('/selling',ensureAuthenticated,permit('User'), function(req, res, nex
   router.get('/settings/profile',ensureAuthenticated,permit('User'),settings_controller.editProfile);
   router.get('/settings/resetpsword',ensureAuthenticated,permit('User'),settings_controller.resetPassword);
   router.get('/settings/payout-info',ensureAuthenticated,permit('User'),settings_controller.payoutInfo);
+  router.post('/settings/payout-info',forwardAuthenticated,settings_controller.savePayoutInfo);
   router.get('/profile',ensureAuthenticated,permit('User'), auth_controller.profile);
   router.get('/setting',ensureAuthenticated,permit('User'), settings_controller.settings);
   router.get('/settings/buyer-info',ensureAuthenticated,permit('User'), settings_controller.buyerInfo);

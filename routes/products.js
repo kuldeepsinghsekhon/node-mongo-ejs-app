@@ -11,6 +11,8 @@ router.get('/:id',forwardAuthenticated, product_controller.findById );
 /* product Sell-Select Variant page */
 
 router.get('/sell/:id',forwardAuthenticated, product_controller.sellProductVariant );
+router.post('/sell/:id',forwardAuthenticated, product_controller.sellProductVariantNowPay);
+router.post('/cal',forwardAuthenticated, product_controller.sellCalculateCharges);
 router.get('/sell/:id/pay',ensureAuthenticated, product_controller.sellProductOrAsk );
 router.post('/sell/:id/',ensureAuthenticated, product_controller.sellAsk );
 module.exports = router;
