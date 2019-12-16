@@ -5926,11 +5926,37 @@ span.market-dir-up-arrow {
 }
 
 .nxxt_btn button {
-	background: #ff515f;
-	color: #fff;
-	float: right;
-	margin-top: 2rem;
+    background: #ff515f;
+    color: #fff;
+    float: right;
+    margin-top: 2rem;
+    margin-right: 1rem;
+    padding: 7px 28px;
+    font-size: 19px;
 }
 .nxxt_btn {
     margin-bottom: 6rem;
+}
+
+/*---- attribute Selector-----*/
+.buy-sell-size {
+	padding: 14px;
+	background: #fff;
+	border: 1px solid #e5e7ea;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	cursor: pointer;
+	font-size: 16px;
+	font-weight: 600;
+}
+.buy-sell-size {
+    margin: 30px;
+}
+.buy-sell-size img {
+width: 22px;
+height: 22px;
 }

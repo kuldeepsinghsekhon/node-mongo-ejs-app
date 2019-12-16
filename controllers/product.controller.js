@@ -46,22 +46,25 @@ exports.sellProductVariant= async function(req, res, next) {
   product=  Product.findOne({ '_id':productId })
   .populate('attrs')
   .exec(function(err,product){
-  // if(err){
-  //     return res.redirect('/');
-  // }
-  if(product.attrs.length>0){
-    res.render('pages/public/sell-product-variant', {
-      product: product,
-       layout:'layout'
-   })
-  }else{
     res.render('pages/public/product-sellorask', {
-      product: product,
-      layout:'layout'
-      
-  })
-  }
-})
+           product: product,
+           layout:'layout'
+          })
+        // if(err){
+        //     return res.redirect('/');
+        // }
+        // if(product.attrs.length>0){
+        //   res.render('pages/public/sell-product-variant', {
+        //     product: product,
+        //      layout:'layout'
+        //  })
+        // }else{
+        //   res.render('pages/public/product-sellorask', {
+        //     product: product,
+        //     layout:'layout'    
+      // })
+        // }
+    })
 }
 
 /*********** Product Sell Or Ask  ***************/
@@ -129,6 +132,15 @@ exports.sellProductOrAsk=function(req, res, next) {
         }
       })
 }
+exports.sellProductPay=function(req,res){
+  var productId=req.body.id;
+  product=Product.findById(productId,function(err,product){
+ 
+      res.render('pages/public/product-sell-payment', {
+        product: product,
+        layout:'blank-layout' });
+      });
+}
 
 exports.sellAsk= function(req, res,next){
   var sellBid = new SellBid();
@@ -138,6 +150,8 @@ exports.sellAsk= function(req, res,next){
   sellBid.biddate=Date.now();
   sellBid.status="ask";
   sellBid.save();
+  console.log(sellBid);
+  console.log('sellBid');
   var nonceFromTheClient = req.body.paymentMethodNonce;
   // Create a new transaction for $10
   var newTransaction = gateway.transaction.sale({
@@ -151,6 +165,7 @@ exports.sellAsk= function(req, res,next){
   }, function(error, result) {
       if (result) {
         res.send(result);
+        console.log(result);
       } else {
         res.status(500).send(error);
       }

@@ -3,6 +3,7 @@ module.exports = {
     if (req.isAuthenticated()) {
       res.locals.role = req.user.role;
       res.locals.name = req.user.name;
+      res.locals.paypalEmail = req.user.paypalEmail; 
       return next();  
     }
     req.flash('error_msg', 'Please log in to view that resource');
@@ -16,6 +17,7 @@ module.exports = {
     }else{
       res.locals.role = req.user.role;
       res.locals.name = req.user.name; 
+      res.locals.paypalEmail = req.user.paypalEmail; 
     }
     return next();
     //res.redirect('/');      

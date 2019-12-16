@@ -13,8 +13,52 @@
 		</div>
 		</div>
 		</div>
+	<!--Size selector Pane-->
+	<% if(product.attrs.length>0){ %>
+		<div class=" col-md-4 attr-selector-pane">
+					<%  for(var i = 0; i < product.attrs.length;i++){ %>
+						<div style="position: relative; overflow-y: hidden;" class="pane forty pane-grey"> 
+						   <div data-testid="product-size-grid" class="size-select-grid">
+							  <div class="bsSizeSelectGrid__Title-sc-10iau84-0 jqmgAU">Select <%=product.attrs[i].name %></div>
+							  <div class="bsSizeSelectGrid__SubtitleContainer-sc-10iau84-1 efPZCS">
+								 U.S. Men's <%=product.attrs[i].name %> | Lowest Asks
+								 <!-- <div class="bsSizeSelectGrid__SizeChartButton-sc-10iau84-2 icWnhq">Size Chart</div> -->
+							  </div>
+							  <div class="grid-tiles">
+								   <%  for(var j = 0; j < product.attrs[i].attrs.length;j++){ %>
+								 <div class="grid-tile buy-tile attr-selector-cell">
+									<div class="tile-inner">
+									   <div class="tile-value" value="<%=product.attrs[i].attrs[j] %>"><%=product.attrs[i].attrs[j] %></div>
+									   <div class="tile-subvalue">
+										  <div class="tile-subvalue">$750</div>
+									   </div>
+									</div>
+								 </div>
+								 <% } %>
+								 <div class="grid-tile buy-tile">
+									<div class="tile-inner">
+									   <div class="tile-value">US16</div>
+									   <div class="tile-subvalue">
+										  <div class="tile-subvalue value-black">Bid</div>
+									   </div>
+									</div>
+								 </div>
+							  </div>
+						   </div>
+			  
+						</div>
+						
+						<%  } %>
+			</div>
+			  <% } %>
+					<!---Size Selector pane End-->
 		<div class="col-md-4 bidsel-pane">
-		
+			<% if(product.attrs.length>0){ %>
+				<div class="buy-sell-size attr-selector-select ">
+					<div class="size-details">U.S. Men's Size <span id="attr-selector-attr1">4</span></div>
+					<img src="/assets/images/pencil.png" >
+					</div>
+				<%  } %>
 		<div class="left_sec">
 	
 		<div class="pl_cn nv_top">
@@ -93,8 +137,13 @@
 			   </div>
 			   <div class="settings-detail dotted-detail fs-block pay-method-bt">
 				  <div class="details">
-					 <div class="decoration"><img src="/assets/images/credit card.png"></div>
-					 Please add a payment method
+					 <div class="decoration "><img src="/assets/images/credit card.png"></div>
+					 <div class="paypalEmailtext"><%if(paypalEmail){%>
+						<%=paypalEmail %>
+						<%}else{%>
+						Please add a payment method
+						<% } %>
+					</div>
 				  </div>
 				  <div class="details-action pointer"><img src="/assets/images/pencil.png"></div>
 			   </div>
@@ -146,17 +195,23 @@
 			   </div>
 			</div>			
 			<div class="multi-settings ">			 
-			   <div class="settings-detail dotted-detail fs-block">
-				  <div class="details">
-					 <div class="decoration"><img src="/assets/images/credit card.png"></div>
+			   <div class="settings-detail dotted-detail fs-block pay-method-bt">
+				  <div class="details ">
+					 <div class="decoration "><img src="/assets/images/credit card.png"></div>
+					 <div class="paypalEmailtext">
+					 <%if(paypalEmail){%>
+					 <%=paypalEmail %>
+					 <%}else{%>
 					 Please add a payment method
+					 <% } %>
+					</div>
 				  </div>
 				  <div class="details-action pointer"><img src="/assets/images/pencil.png"></div>
 			   </div>			 
 			</div>			
 			</div>			
 			<div class="nxxt_btn">
-				  <button type="button" class="btn">NEXT</button>
+				  <button type="button " class="btn nextPay">NEXT</button>
 			</div>			
 		</div>	
 		</div>
@@ -166,6 +221,7 @@
            
 			<div class="payment-selection">
 			   <div class="selection-title">Payment Methods</div>
+			   
 			   <div class="selection-subtitle">Please confirm your payout method below
 			  </div>
 			  <div class="selected-payment"><div class="payment-bubble paypal"><img src="/img/icons/credit_card_white.svg?auto=compress,format"></div><div class="payment-title">Use PayPal for payout</div></div>
@@ -178,6 +234,7 @@
 			  </div>  
 			
 		 </div>
+		 <div class="col-md-4 make-payment"></div>
 
 		</div>
 		</div>
@@ -217,7 +274,7 @@
 			var id ="<%=product.id %>";
 				var askprice=$("#bid-price-input").val();
 				var expiry=$('.dropdown-toggle').text();
-				var size='5';
+				var size=$('#attr-selector-attr1').text();
 				var sendInfo = {id: id, askprice:askprice , expiry: expiry };
 				$.ajax({
 					method:'post',
@@ -240,8 +297,43 @@
 	getbidCharges();   
 })
 $( function(){
+	var attrs=<%=product.attrs.length%>;
+	if(attrs>0){
+		$('.bidsel-pane').hide(); //attr-selector-select
+		$('.attr-selector-pane').show();
+		$('.attr-selector-cell').on('click',function(){
+			var attrv='dfs';
+			var attrv=$(this).find(".tile-value:first").text();			
+		$('#attr-selector-attr1').html(attrv);
+		$('.attr-selector-pane').hide();
+		$('.bidsel-pane').show();	
+		});	
+		$('.attr-selector-select').on('click',function(){
+		$('.attr-selector-pane').show();
+		$('.bidsel-pane').hide();	
+		});	
+
+	}else{		
+		$('.attr-selector-pane').hide();
+	}
 	$('.pane-payment').hide();
-	
+	$('.nextPay').on('click',function(){
+		//alert('dfsf')
+		var formdata = {id: '<%=product.id %>'};
+		$.ajax({
+			method:'post',
+			url:"/products/sell/<%=product.id %>/pay",
+			//dataType: "json",
+			data:formdata,
+			success: function (response) {
+				$('.attr-selector-pane').hide();
+				$('.bidsel-pane').hide();	
+				$('.make-payment').html(response);
+				//console.log(response);
+			}
+		})
+	});
+		
 });
 $('.pay-method-bt').on('click', function(){    
 	$('.bidsel-pane').hide(); 
@@ -261,10 +353,11 @@ $('.paymethod-submit').on('click',function(){
 			dataType: "json",
 			data:fdata,
 			success: function (response) {
-				console.log(paypalEmail);
-				console.log(response);
+				//console.log(paypalEmail);
+				//console.log(response);
 				$('.pane-payment').hide();	
 				$('.bidsel-pane').show();
+				$('.paypalEmailtext').text(response.paypalEmail);
 			},
 			error:function(err){
 				console.log('some error occoured');
