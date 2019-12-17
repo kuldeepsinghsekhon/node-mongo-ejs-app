@@ -35,7 +35,10 @@ shipping : {
 variants:[{ 
   type: Schema.Types.ObjectId, 
     ref: 'Variant' //multiple image 
- }]
+ }],
+ sellbids:[{ type: Schema.Types.ObjectId,
+  ref: 'SellBid'
+}] ,
 });
 const Product = mongoose.model('Product', prodSchema);
 

@@ -74,7 +74,7 @@
                   </div>
                  </form>
 
-     
+     <div class="toast"></div>
      <!-- Load the required client component. -->
    <script src="https://js.braintreegateway.com/web/3.55.0/js/client.min.js"></script>
  
@@ -239,7 +239,6 @@ braintree.client.create({
           formIsInvalid = true;
         }
       });
-
       if (formIsInvalid) {
         return;
       }
@@ -255,10 +254,11 @@ braintree.client.create({
         // var button = document.querySelector('#hosted-submit-button');
         // button.addEventListener('click', function () {
           var askprice=$("#bid-price-input").val();
+          var productid="<%=product.id %>";
         $.ajax({
               type: 'POST',
               url:"/products/sell/<%=product.id %>",
-              data: {'paymentMethodNonce': payload.nonce,bidprice:askprice}
+              data: {'paymentMethodNonce': payload.nonce,bidprice:askprice,productid:productid}
             }).done(function(result) {
               form.trigger("reset");
               // Tear down the Drop-in UI
@@ -274,7 +274,7 @@ braintree.client.create({
     
               if (result.success) {
               
-                $('.toast').html('<h1>Success</h1><p>Your Drop-in UI is working! Check your <a href="https://sandbox.braintreegateway.com/login">sandbox Control Panel</a> for your test transactions.</p><p>Refresh to try another transaction.</p>');
+                $('.toast').html('<h1>Success</h1><p>Your Bid has been placed successfully.</p>');
                 $('.toast').toast('show');
               } else {
                

@@ -1,5 +1,8 @@
 const Address = require('../models/Address');
 const User = require('../models/User');
+const Myorder = require('../models/Myorder');
+const Cart = require('../models/Mycart');
+const SellBid = require('../models/SellBid');
 exports.settings=function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
@@ -341,11 +344,11 @@ exports.productsBuying=function(req, res, next) {
               orders.forEach(order => {                 
                   var cart= new Cart(order.cart);
               var products =cart.generateArray();
-              arr.push(products); 
+              arr.push(products);
               order_id.push(order.id);
               payment.push(order.payment)
                 }); 
-              res.render('pages/users/buying', {                  
+              res.render('pages/users/buying',{                  
                   orders: arr,
                   order_id:order_id,
                   payment:payment,
@@ -362,20 +365,23 @@ exports.productsBuying=function(req, res, next) {
 
 exports.productsSelling=function(req, res, next) {
   var perPage = 9;
-  var page = req.params.page || 1;  
-  User
-      .find({})
+  var page = req.params.page || 1;
+  //console.log(req.user._id);
+  var query = { user: req.user._id }; 
+        SellBid
+        .find(query).populate('productid')
       .skip((perPage * page) - perPage)
       .limit(perPage)
-      .exec(function(err, users) {
-          User.count().exec(function(err, count) {
+      .exec(function(err, askbids) {
+        SellBid.count().exec(function(err, count) {
               if (err) return next(err)
               res.render('pages/users/selling', {
-                  users: users,
+                askbids: askbids,
                   current: page,
                   pages: Math.ceil(count / perPage),
                   layout:'layout'
               })
           })
+          console.log(askbids);
       })
 }

@@ -44,7 +44,12 @@ exports.sellProductVariant= async function(req, res, next) {
   var productId=req.params.id;
   req.session.oldUrl='/products/'+productId;
   product=  Product.findOne({ '_id':productId })
-  .populate('attrs')
+  .populate({path:'attrs'})
+  .populate({path:'selbids',
+  options: {
+    sort: { bidprice: -1 },
+    limit: 1
+  }})
   .exec(function(err,product){
     res.render('pages/public/product-sellorask', {
            product: product,
@@ -142,16 +147,23 @@ exports.sellProductPay=function(req,res){
       });
 }
 
-exports.sellAsk= function(req, res,next){
+exports.sellAsk=async  function(req, res,next){
   var sellBid = new SellBid();
+  const productId= req.body.productid;
   sellBid.productid = req.body.productid;
   sellBid.bidprice = req.body.bidprice;
   sellBid.user = req.user;//Date.now()
   sellBid.biddate=Date.now();
   sellBid.status="ask";
+  
   sellBid.save();
-  console.log(sellBid);
-  console.log('sellBid');
+  let sellbids=[];
+ var prod=await Product.findById(productId).populate('selbids');
+ prod.sellbids.push(sellBid);
+  prod.save();
+  console.log(prod);
+  //console.log(sellBid);
+  //console.log('sellBid');
   var nonceFromTheClient = req.body.paymentMethodNonce;
   // Create a new transaction for $10
   var newTransaction = gateway.transaction.sale({
@@ -165,7 +177,7 @@ exports.sellAsk= function(req, res,next){
   }, function(error, result) {
       if (result) {
         res.send(result);
-        console.log(result);
+       // console.log(result);
       } else {
         res.status(500).send(error);
       }
