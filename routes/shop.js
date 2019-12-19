@@ -26,7 +26,7 @@ const fs = require('fs');
         // if(err){
         //     return res.redirect('/');
         // }
-            res.render('pages/public/product-buyorbid', {
+            res.render('pages/public/product-buyorbid-old', {
               product: product,
               layout:'layout'
           })

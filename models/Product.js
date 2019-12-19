@@ -39,6 +39,9 @@ variants:[{
  sellbids:[{ type: Schema.Types.ObjectId,
   ref: 'SellBid'
 }] ,
+Buybids:[{ type: Schema.Types.ObjectId,
+  ref: 'BuyBid'
+}] ,
 });
 const Product = mongoose.model('Product', prodSchema);
 

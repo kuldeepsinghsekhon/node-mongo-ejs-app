@@ -7,7 +7,7 @@
 		<div class="col-md-8">
 		<div class="left_sec">
 		<h1><%= product.name %> BandA1975</h1>
-		<p>Highest Bid:<span class="bold">$249</span>  | Lowest Ask:<span class="bold"> $299</span> </p>
+		<p>Highest Bid:<span class="bold">$<%if(highbid){highbid.bidprice}else{}%></span>  | Lowest Ask:<span class="bold"> $<%=lowbid.bidprice%></span> </p>
 		<div class="img_sec">
 		<img src="/uploads/products/<%= product.image %>">
 		</div>
@@ -157,7 +157,7 @@
 			<div class="ask-input" data-tour="bid-education">
 			   <div class="amount-input vertical">
 				  <div class="decoration">$</div>
-				  <input data-testid="product-bid-input" placeholder="299" class="amount" name="ask-amount" type="tel" maxlength="11" value="">
+				  <input data-testid="product-bid-input" placeholder="<%if(highbid){highbid.bidprice}else{}%>" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="">
 			   </div>
 			</div>
 			<div class="bid-warning ">
@@ -297,7 +297,7 @@
 	getbidCharges();   
 })
 $( function(){
-	var attrs=<%=product.attrs.length%>;
+	var attrs="<%=product.attrs.length%>";
 	if(attrs>0){
 		$('.bidsel-pane').hide(); //attr-selector-select
 		$('.attr-selector-pane').show();

@@ -11,9 +11,15 @@ router.get('/:id',forwardAuthenticated, product_controller.findById );
 /* product Sell-Select Variant page */
 
 router.get('/sell/:id',ensureAuthenticated, product_controller.sellProductVariant );
+router.post('/sell/:id/',ensureAuthenticated, product_controller.sellAsk );
 //router.post('/sell/:id',forwardAuthenticated, product_controller.sellProductVariantNowPay);
 router.post('/cal',ensureAuthenticated, product_controller.sellCalculateCharges);
 router.get('/sell/:id/pay',ensureAuthenticated, product_controller.sellProductOrAsk );
 router.post('/sell/:id/pay',ensureAuthenticated, product_controller.sellProductPay );
-router.post('/sell/:id/',ensureAuthenticated, product_controller.sellAsk );
+
+router.get('/buy/:id',ensureAuthenticated, product_controller.buyProductVariant );
+router.post('/buy/:id/',ensureAuthenticated, product_controller.plcaeBuyBid );
+router.post('/calcbuy',ensureAuthenticated, product_controller.calculateBuyCharges);
+router.post('/buy/billingshiping/form',ensureAuthenticated, product_controller.buyBillingShipping);
+router.post('/buy/shipping/shippingform',ensureAuthenticated, product_controller.buyShipping);
 module.exports = router;

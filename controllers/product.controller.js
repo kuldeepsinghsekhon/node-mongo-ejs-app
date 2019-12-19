@@ -1,6 +1,8 @@
 const braintree = require("braintree");
 const Product = require('../models/Product');
 const SellBid = require('../models/SellBid');
+const BuyBid = require('../models/BuyBid');
+const Address = require('../models/Address');
 const Attribute = require('../models/Attribute');
 const path = require('path');
 const fs = require('fs');
@@ -41,35 +43,66 @@ exports.products = function(req, res, next) {
 }
 /*********** select Product Variant ***************/
 exports.sellProductVariant= async function(req, res, next) {
-  var productId=req.params.id;
+  var productId=req.params.id;//productId:productId
   req.session.oldUrl='/products/'+productId;
-  product=  Product.findOne({ '_id':productId })
-  .populate({path:'attrs'})
-  .populate({path:'selbids',
-  options: {
-    sort: { bidprice: -1 },
-    limit: 1
-  }})
-  .exec(function(err,product){
+  Promise.all([
+    Product.findOne({ _id: productId }).populate({path:'attrs'}),
+    SellBid.findOne({productid:productId}).sort({bidprice:+1}).limit(1),
+    BuyBid.findOne({productid:productId}).sort({bidprice:-1}).limit(1)
+  ]).then( ([ product, sellbid,highbid ]) => {
     res.render('pages/public/product-sellorask', {
-           product: product,
-           layout:'layout'
-          })
-        // if(err){
-        //     return res.redirect('/');
-        // }
-        // if(product.attrs.length>0){
-        //   res.render('pages/public/sell-product-variant', {
-        //     product: product,
-        //      layout:'layout'
-        //  })
-        // }else{
-        //   res.render('pages/public/product-sellorask', {
-        //     product: product,
-        //     layout:'layout'    
-      // })
-        // }
-    })
+      product: product,
+      lowbid:sellbid,
+      highbid:highbid,
+      layout:'layout'
+     })
+   // console.log( product );
+    console.log( sellbid );
+  });
+//  // console.log('fdsf');
+
+//   product=  Product.findOne({ '_id':productId })
+//   .populate({path:'attrs'})
+//   .populate({path:'selbids',
+//   options: {
+//     productid:productId,
+//     sort: { bidprice: -1 },
+//     limit: 1
+//   }})
+//   .exec(function(err,product){
+//     //console.log(product);
+//     //var bidp='';
+//    // console.log(bidp);
+//     res.render('pages/public/product-sellorask', {
+//            product: product,
+//            layout:'layout'
+//           })
+//           //console.log(bidp);
+//         // if(err){
+//         //     return res.redirect('/');
+//         // }
+//         // if(product.attrs.length>0){
+//         //   res.render('pages/public/sell-product-variant', {
+//         //     product: product,
+//         //      layout:'layout'
+//         //  })
+//         // }else{
+//         //   res.render('pages/public/product-sellorask', {
+//         //     product: product,
+//         //     layout:'layout'    
+//       // })
+//         // }
+//     })
+}
+exports.sellLowestBid=function name(req,res,next) {
+  SellBid.find({productid:productId}).sort({bidprice:+1}).limit(1).exec(function(err, bid){
+    SellBid.count().exec(function(err, count) {
+      if(err)console.log(err);
+      console.log(bid);
+      res.json({ bid:bid});
+    }); 
+  })
+
 }
 
 /*********** Product Sell Or Ask  ***************/
@@ -90,8 +123,6 @@ exports.sellProductVariantNowPay=function(req, res, next) {
 }
 exports.sellCalculateCharges=function(req, res, next) {
    var productId=req.body.id;
-  
-   
      product=Product.findById(productId,function(err,product){
       var askprice=0; 
      
@@ -183,11 +214,72 @@ exports.sellAsk=async  function(req, res,next){
       }
   });
   }
+/*************Buy and BuyBid Start**************/
+exports.buyProductVariant=function name(req,res,next) {
+  var productId=req.params.id;//productId:productId
+  req.session.oldUrl='/products/'+productId;
+  Promise.all([
+    Product.findOne({ _id: productId }).populate({path:'attrs'}),
+    SellBid.findOne({productid:productId}).sort({bidprice:+1}).limit(1),
+    SellBid.findOne({productid:productId}).sort({bidprice:-1}).limit(1),
+    Address.findOne({address_type:'shipping',user:req.user}).limit(1),
+    Address.findOne({address_type:'billing',user:req.user}).limit(1)
+  ]).then( ([ product, sellbid,highbid,shippingAddress,billingAddress ]) => {
+    res.render('pages/public/product-buyorbid', {
+      product: product,
+      lowbid:sellbid,
+      highbid:highbid,
+      shippingAddress:shippingAddress,
+      billingAddress:billingAddress,
+      layout:'layout'
+     })
+   // console.log( product );
+    console.log( sellbid );
+  });
+}
+exports.plcaeBuyBid=function name(req,res,next) {
+  
+}
+exports.calculateBuyCharges=function name(req,res,next) {
+  var productId=req.body.id;
+  product=Product.findById(productId,function(err,product){
+   var askprice=0; 
+   if(!req.body.askprice){
+     askprice=product.price;
+    }else{
+     askprice=req.body.askprice;
+     var expiry=req.body.expiry;
+     expiry=expiry.split("Days").map(Number);
+     console.log(expiry[0]);
+    }
+    var processingFee=askprice*0.09;
+    var Proc=askprice*0.03;
+    var Shipping=30;
+    var totalpayout=askprice-(processingFee+Proc+Shipping);
+   res.json({ TransactionFee: processingFee ,Proc:Proc,Shipping:Shipping,discountcode:'',totalpayout:totalpayout });
+   })
+}
+exports.buyBillingShipping=function(req,res){
+  var productId=req.body.id;
+  product=Product.findById(productId,function(err,product){ 
+      res.render('pages/public/product-buy-billing-shipping', {
+        product: product,
+        layout:'blank-layout' });
+      });
+}
+exports.buyShipping=function(req,res){
+  var productId=req.body.id;
+  product=Product.findById(productId,function(err,product){ 
+      res.render('pages/public/product-buy-shipping-info', {
+        product: product,
+        layout:'blank-layout' });
+      });
+}
 
+/*************Buy and BuyBid End **************/
 exports.adminProducts=function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
-  
     Product
         .find({})
         .skip((perPage * page) - perPage)
