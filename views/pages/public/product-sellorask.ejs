@@ -7,7 +7,7 @@
 		<div class="col-md-8">
 		<div class="left_sec">
 		<h1><%= product.name %> BandA1975</h1>
-		<p>Highest Bid:<span class="bold">$<%if(highbid){highbid.bidprice}else{}%></span>  | Lowest Ask:<span class="bold"> $<%=lowbid.bidprice%></span> </p>
+		<p>Highest Bid:<span class="bold">$<%=highbid.bidprice%></span>  | Lowest Ask:<span class="bold"> $<%=lowbid.bidprice%></span> </p>
 		<div class="img_sec">
 		<img src="/uploads/products/<%= product.image %>">
 		</div>
@@ -90,20 +90,15 @@
 					   <div id="TransactionFee-ask">-$0.00</div>
 					</div>
 					<div class="item-row">
-					   <div>Payment Proc. (3%)
-  </div>
-					   <div data-testid="bid-total" id="Proc-ask">-$0.00
-  </div>
+					   <div>Payment Proc. (3%)  </div>
+					   <div data-testid="bid-total" id="Proc-ask">-$0.00  </div>
 					</div>				  
 					  <div class="item-row">
-					   <div>Shipping
-  </div>
-					   <div data-testid="bid-total" id="Shipping-ask">-$0.00
-  </div>
+					   <div>Shipping  </div>
+					   <div data-testid="bid-total" id="Shipping-ask">-$0.00  </div>
 					</div>
 					<div class="item-row">
-					   <div>Discount Code
-  </div>
+					   <div>Discount Code  </div>
 					   <div data-testid="bid-total"><input class="discount-input" type="text" placeholder="Add Discount +" value=""></div>
 					</div>				  		  
 					  <div class="item-row">
@@ -157,7 +152,7 @@
 			<div class="ask-input" data-tour="bid-education">
 			   <div class="amount-input vertical">
 				  <div class="decoration">$</div>
-				  <input data-testid="product-bid-input" placeholder="<%if(highbid){highbid.bidprice}else{}%>" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="">
+				  <input data-testid="product-bid-input" placeholder="<%=highbid.bidprice%>" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="<%=highbid.bidprice%>">
 			   </div>
 			</div>
 			<div class="bid-warning ">

@@ -39,7 +39,7 @@ variants:[{
  sellbids:[{ type: Schema.Types.ObjectId,
   ref: 'SellBid'
 }] ,
-Buybids:[{ type: Schema.Types.ObjectId,
+buybids:[{ type: Schema.Types.ObjectId,
   ref: 'BuyBid'
 }] ,
 });

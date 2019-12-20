@@ -164,7 +164,7 @@
 			<div class="ask-input" data-tour="bid-education">
 			   <div class="amount-input vertical">
 				  <div class="decoration">$</div>
-				  <input data-testid="product-bid-input" placeholder="<%=lowbid.bidprice%>" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="">
+				  <input data-testid="product-bid-input" placeholder="<%=lowbid.bidprice%>" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="<%=lowbid.bidprice%>">
 			   </div>
 			</div>
 			<div class="bid-warning ">
@@ -173,12 +173,11 @@
 			<div class="multi-order-summary ">
 			   <div>
 				  <div class="item-row">
-					 <div>Transaction Fee (9.5%)</div>
+					 <div>Processing  Fee</div>
 					 <div id="TransactionFee">-$5.00</div>
 				  </div>
 				  <div class="item-row">
-					 <div>Payment Proc. (3%)
-</div>
+					 <div>Authentication Fee</div>
 					 <div data-testid="bid-total" id="Proc">-$1.29
 </div>
 				  </div>				  
@@ -256,7 +255,7 @@
 				var sendInfo = {id: id};
 				$.ajax({
 					method:'post',
-					url:"/products/cal/",
+					url:"/products/calcbuy/",
 					dataType: "json",
 					data:sendInfo,
          		  	success: function (json_data) {
@@ -388,6 +387,7 @@ $('.paymethod-submit').on('click',function(){
 			}
 		});
 });
+
 //shippingInfotext
 
 		</script>

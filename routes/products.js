@@ -18,8 +18,10 @@ router.get('/sell/:id/pay',ensureAuthenticated, product_controller.sellProductOr
 router.post('/sell/:id/pay',ensureAuthenticated, product_controller.sellProductPay );
 
 router.get('/buy/:id',ensureAuthenticated, product_controller.buyProductVariant );
-router.post('/buy/:id/',ensureAuthenticated, product_controller.plcaeBuyBid );
+router.post('/buy/:id/',ensureAuthenticated, product_controller.placeBuyBid );
 router.post('/calcbuy',ensureAuthenticated, product_controller.calculateBuyCharges);
 router.post('/buy/billingshiping/form',ensureAuthenticated, product_controller.buyBillingShipping);
 router.post('/buy/shipping/shippingform',ensureAuthenticated, product_controller.buyShipping);
+//router.post('/buy/shipping/pay',ensureAuthenticated, product_controller.buyProductPay );
+
 module.exports = router;

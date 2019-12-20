@@ -7,7 +7,9 @@
 			<div class='form-row'>				  
 	  <div class='col-xs-12 form-group required card_sec'>
 		<label class='control-label'>Name on Card</label>
-		<input class='form-control' name="name" id="card-name" size='4' type='text' required>
+    <input class='form-control' name="name" id="card-name" size='4' type='text' required>
+    <input class='form-control' name="paymentMethodNonce" id="paymentMethodNonce" size='4' type='hidden' value="">
+    
 	  </div>
 	</div>
 	<div class='form-row'>
@@ -56,12 +58,17 @@
 		  </select>		  
 	   </div>
 	   <div>
-		  <div class="GPlacesACField__Container-sc-1xqqpdz-0 iUshPx"><input data-testid="user-streetAddress" name="streetAddress" type="text" required="" placeholder="Address" autocomplete="true" class="field  " value=""></div>
+		  <div class="GPlacesACField__Container-sc-1xqqpdz-0 iUshPx">
+        <input data-testid="user-streetAddress" name="streetAddress" type="text" required="" placeholder="Address" autocomplete="true" class="field  " value=""></div>
 	   </div>
 	   <input data-testid="user-extendedAddress" id="address" name="address" type="text" placeholder="Address 2" autocomplete="true" class="field  " value=""><input data-testid="user-locality" name="locality" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="">
 	   <div class="inner-flex between"><input data-testid="user-region" name="region" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value=""><input data-testid="user-postalCode" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value=""></div>
 	   <input data-testid="user-telephone" name="telephone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field  " value="">
-	</div>
+  </div>
+  <div class="billingCheckbox">
+    <label for="differentShipping">Ship to my Billing</label>
+    <input class="fs1" type="checkbox" id="differentShipping">
+  </div>
 	<div class="address-form fs-block">
 	   <div class="form-title">Shipping Info</div>
 	   <input data-testid="user-firstName" name="firstName" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value=""><input data-testid="user-lastName" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="">
@@ -271,9 +278,10 @@ braintree.client.create({
         // button.addEventListener('click', function () {
           var askprice=$("#bid-price-input").val();
           var productid="<%=product.id %>";
+         // $("#paymentMethodNonce").val(payload.nonce);
         $.ajax({
               type: 'POST',
-              url:"/products/sell/<%=product.id %>",
+              url:"/products/buy/<%=product.id %>",
               data: {'paymentMethodNonce': payload.nonce,bidprice:askprice,productid:productid}
             }).done(function(result) {
               form.trigger("reset");
@@ -298,7 +306,7 @@ braintree.client.create({
                 $('.toast').toast('show');
               }
             });
-          
+           // form.submit();
          // });
        });
     });
