@@ -6,7 +6,8 @@ const BidSchema = new mongoose.Schema({
   status: String,
   biddate:{type: Date},
   updated:Date,
-  user:{type: Schema.Types.ObjectId, ref: 'User'}
+  user:{type: Schema.Types.ObjectId, ref: 'User'},
+  sellbid:{type: Schema.Types.ObjectId, ref: 'SellBid'},
 });
 const BuyBid = mongoose.model('BuyBid', BidSchema);
 module.exports = BuyBid;

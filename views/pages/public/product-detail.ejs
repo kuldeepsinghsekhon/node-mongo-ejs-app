@@ -15,7 +15,7 @@
 					  </div>
 				   </div>
 				   <div id="market-summary" class="market-summary">
-					  <div class="options">
+				<!--	  <div class="options">
 						 <div class="form-group">
 							<label class="size-label">Size</label>
 							<div class="select-control shoe-size">
@@ -184,7 +184,7 @@
 							   </div>
 							</div>
 						 </div>
-					  </div>
+					  </div>-->
 					  <div class="last-sale-block">
 						 <div>
 							<div data-testid="product-last-sale-button" class="last-sale">
@@ -203,9 +203,9 @@
 					  </div>
 					  <div class="bid bid-button-b">
 						 <div data-testid="product-bid-button" class="inner">
-							<a class="button-container-b bid-button  en-us" href="/shop/product/<%=product.id %>">
-							   <div class="stats ">
-								  <div class="en-us stat-value stat-small">$148</div>
+							<a class="button-container-b bid-button  en-us" href="/products/buy/<%=product.id %>">
+							   <div class="stats "><!---shop/product/<%=product.id %>-->
+								  <div class="en-us stat-value stat-small"><% if(lowbid){ %>$<%=lowbid.bidprice%> <% }else{ %>-- <% } %></div>
 								  <h3>Lowest Ask</h3>
 							   </div>
 							   <div class="button-divider en-us"></div>
@@ -223,7 +223,7 @@
 						 <div data-testid="product-ask-button" class="inner">
 							<a class="button-container-b ask-button  en-us" href="/products/sell/<%=product.id %>">
 							   <div class="stats ">
-								  <div class="en-us stat-value stat-small">$141</div>
+								  <div class="en-us stat-value stat-small"><% if(highbid){ %>$<%=highbid.bidprice%> <% }else{ %>-- <% } %></div>
 								  <h3>Highest Bid</h3>
 							   </div>
 							   <div class="button-divider en-us"></div>

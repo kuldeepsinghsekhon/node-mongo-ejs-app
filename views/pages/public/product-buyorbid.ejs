@@ -7,7 +7,7 @@
 		<div class="col-md-8">
 		<div class="left_sec">
 		<h1><%= product.name %> BandA1975</h1>
-		<p>Highest Bid:<span class="bold">$<%=highbid.bidprice%></span>  | Lowest Ask:<span class="bold"> $<%=lowbid.bidprice%></span> </p>
+		<p>Highest Bid:<span class="bold"><% if(highbid){ %>$<%=highbid.bidprice%> <% }else{ %>-- <% } %></span>  | Lowest Ask:<span class="bold"> <% if(lowbid){ %>$<%=lowbid.bidprice%> <% }else{ %>-- <% } %></span> </p>
 		<div class="img_sec">
 		<img src="/uploads/products/<%= product.image %>">
 		</div>
@@ -75,7 +75,7 @@
 
 		<div class="tab-content ">
 			<div class="tab-pane active" role="tabpanel" id="menu1">
-		
+				<input type="hidden" id="bid-type" value="buybid">
 			<div class="ask-input" data-tour="bid-education">
 			   <div class="amount-input vertical">
 				  <div class="decoration">$</div>
@@ -87,16 +87,16 @@
 				<div>
 					<div class="item-row">
 					   <div>Processing  Fee</div>
-					   <div id="TransactionFee-ask">-$0.00</div>
+					   <div id="processingFee-bid">$0.00</div>
 					</div>
 									  
 					  <div class="item-row">
 					   <div>Shipping</div>
-					   <div data-testid="bid-total" id="Shipping-bid">-$0.00 </div>
+					   <div data-testid="bid-total" id="shipping-bid">$0.00 </div>
 					</div>
 					<div class="item-row">
 						<div>Authentication Fee</div>
-						<div data-testid="bid-total" id="Shipping-bid">-$0.00 </div>
+						<div data-testid="bid-total" id="authenticationFee-bid">$0.00 </div>
 					 </div>
 					<div class="item-row">
 					   <div>Discount Code</div>
@@ -104,7 +104,7 @@
 					</div>				  		  
 					  <div class="item-row">
 					   <div>Total </div>
-					   <div data-testid="bid-total" id="totalpayout-ask">$0.00 </div>
+					   <div data-testid="total-bid" id="totalpay-bid">$0.00 </div>
 					</div>				  
 				 </div>
 			</div>
@@ -164,7 +164,9 @@
 			<div class="ask-input" data-tour="bid-education">
 			   <div class="amount-input vertical">
 				  <div class="decoration">$</div>
-				  <input data-testid="product-bid-input" placeholder="<%=lowbid.bidprice%>" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="<%=lowbid.bidprice%>">
+				  <% if(highbid){ %> <input data-testid="product-bid-input" placeholder="<%=lowbid.bidprice%>" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="<%=lowbid.bidprice%>">
+				  <% }else{ %> <input data-testid="product-bid-input" placeholder="" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="">
+				  <% } %>
 			   </div>
 			</div>
 			<div class="bid-warning ">
@@ -174,29 +176,21 @@
 			   <div>
 				  <div class="item-row">
 					 <div>Processing  Fee</div>
-					 <div id="TransactionFee">-$5.00</div>
+					 <div id="processingFee">$0.00</div>
 				  </div>
 				  <div class="item-row">
-					 <div>Authentication Fee</div>
-					 <div data-testid="bid-total" id="Proc">-$1.29
-</div>
+					<div>Shipping</div><div data-testid="bid-total" id="shipping">$0.00</div>
+				 </div>
+				  <div class="item-row">
+					 <div>Authentication Fee</div><div data-testid="bid-total" id="authenticationFee">$0.0</div>
 				  </div>				  
-				    <div class="item-row">
-					 <div>Shipping
-</div>
-					 <div data-testid="bid-total" id="Shipping">-$0.0
-</div>
-				  </div>
+				   
 				  <div class="item-row">
-					 <div>Discount Code
-</div>
-					 <div data-testid="bid-total"><input class="discount-input" type="text" placeholder="Add Discount +" value=""></div>
+					 <div>Discount Code</div><div data-testid="bid-total"><input class="discount-input" type="text" placeholder="Add Discount +" value=""></div>
 				  </div>				  		  
 				    <div class="item-row">
-					 <div>Total Payout
-</div>
-					 <div data-testid="bid-total" id="totalpayout">$0.0
-</div>
+					 <div>Total</div>
+					 <div data-testid="bid-total" id="totalpay">$0.00</div>
 				  </div>				  
 			   </div>
 			</div>			
@@ -250,7 +244,10 @@
 		//$(function(){
 			$("#menu2btn").on('click',function(){
 				var id ="<%=product.id %>";// $("#id-manuf-name").val();
-				
+				//alert('sdfsd');
+				$("#bid-type").val("buy");
+				var bidType=$("#bid-type").val();
+				console.log(bidType);
 				var size='5';
 				var sendInfo = {id: id};
 				$.ajax({
@@ -259,11 +256,11 @@
 					dataType: "json",
 					data:sendInfo,
          		  	success: function (json_data) {
-					$("#TransactionFee").text('-$'+json_data['TransactionFee']);
-					$("#Proc").text('-$'+json_data['Proc']);
-					$("#Shipping").text('-$'+json_data['Shipping']);
-					$("#discountcode").text('-$'+json_data['discountcode']);
-					$("#totalpayout").text('$'+json_data['totalpayout']);	  
+					$("#processingFee").text('$'+json_data['processingFee']);
+					$("#authenticationFee").text('$'+json_data['authenticationFee']);
+					$("#shipping").text('$'+json_data['shipping']);
+					$("#discountcode").text('$'+json_data['discountcode']);
+					$("#totalpay").text('$'+json_data['totalpay']);	  
 				   },
 				   error:function(err){  //console.log(err);  
 				}	
@@ -271,28 +268,32 @@
 			});			
 		//})
 		$("#menu1btn").on('click',function(){
-			getbidCharges();
+			$("#bid-type").val("buybid");
+			var bidType=$("#bid-type").val();
+			console.log(bidType)
+			getbidCharges(bidType);
 			});	
 		$("#bid-price-input").on('change',function(){
 			getbidCharges();
+			console.log('sdfds');
 			});		
 		function getbidCharges(){
 			var id ="<%=product.id %>";
 				var askprice=$("#bid-price-input").val();
 				var expiry=$('.dropdown-toggle').text();
 				var size=$('#attr-selector-attr1').text();
-				var sendInfo = {id: id, askprice:askprice , expiry: expiry };
+				var sendInfo = {id: id, askprice:askprice, expiry:expiry };
 				$.ajax({
 					method:'post',
-					url:"/products/cal/",
+					url:"/products/calcbuy/",
 					dataType: "json",
 					data:sendInfo,
          		  	success: function (json_data) {
-					$("#TransactionFee-ask").text('-$'+json_data['TransactionFee']);
-					$("#Proc-ask").text('-$'+json_data['Proc']);
-					$("#Shipping-ask").text('-$'+json_data['Shipping']);
-					$("#discountcode-ask").text('-$'+json_data['discountcode']);
-					$("#totalpayout-ask").text('$'+json_data['totalpayout']);	  
+					$("#processingFee-bid").text('$'+json_data['processingFee']);
+					$("#authenticationFee-bid").text('$'+json_data['authenticationFee']);
+					$("#shipping-bid").text('$'+json_data['shipping']);
+					$("#discountcode-ask").text('$'+json_data['discountcode']);
+					$("#totalpay-bid").text('$'+json_data['totalpay']);	  
 				   },
 				   error:function(err){  //console.log(err);  
 				}	
@@ -324,21 +325,11 @@ $( function(){
 	}
 	$('.pane-payment').hide();
 	$('.pay-billing-shipping-bt').on('click',function(){
+		showBilling();
 		//alert('dfsf')
-		var formdata = {id: '<%=product.id %>'};
-		$.ajax({
-			method:'post',
-			url:"/products/buy/billingshiping/form",
-			//dataType: "json",
-			data:formdata,
-			success: function (response) {
-				$('.attr-selector-pane').hide();
-				$('.bidsel-pane').hide();	
-				$('.make-payment').html(response);
-				//console.log(response);
-			}
-		})
+
 	});
+	
 	$('.pay-shipping-bt').on('click',function(){
 		//alert('dfsf')
 		var formdata = {id: '<%=product.id %>'};
@@ -357,11 +348,31 @@ $( function(){
 	});
 		
 });
+function showBilling(){
+	var formdata = {id: '<%=product.id %>'};
+		$.ajax({
+			method:'post',
+			url:"/products/buy/billingshiping/form",
+			//dataType: "json",
+			data:formdata,
+			success: function (response) {
+				$('.attr-selector-pane').hide();
+				$('.bidsel-pane').hide();	
+				$('.make-payment').html(response);
+				//console.log(response);
+			}
+		})	
+}
+
+$('.nextPay').on('click', function(){    
+	showBilling();	  
+})
 $('.pay-method-bt').on('click', function(){    
 	$('.bidsel-pane').hide(); 
 	$('.pane-payment').show();
 	  
 })
+
 $('.paymethod-cancel').on('click',function(){	
 	$('.pane-payment').hide();	
 		$('.bidsel-pane').show();

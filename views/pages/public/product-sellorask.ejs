@@ -7,7 +7,8 @@
 		<div class="col-md-8">
 		<div class="left_sec">
 		<h1><%= product.name %> BandA1975</h1>
-		<p>Highest Bid:<span class="bold">$<%=highbid.bidprice%></span>  | Lowest Ask:<span class="bold"> $<%=lowbid.bidprice%></span> </p>
+		<p>Highest Bid:<span class="bold"><% if(highbid){ %>$<%=highbid.bidprice%> <% }else{ %>-- <% } %></span> 
+			 | Lowest Ask:<span class="bold"><% if(lowbid){ %>$<%=lowbid.bidprice%> <% }else{ %>-- <% } %></span> </p>
 		<div class="img_sec">
 		<img src="/uploads/products/<%= product.image %>">
 		</div>
@@ -75,7 +76,7 @@
 
 		<div class="tab-content ">
 			<div class="tab-pane active" role="tabpanel" id="menu1">
-		
+		<input type="hidden" id="bid-type" value="ask">
 			<div class="ask-input" data-tour="bid-education">
 			   <div class="amount-input vertical">
 				  <div class="decoration">$</div>
@@ -102,10 +103,8 @@
 					   <div data-testid="bid-total"><input class="discount-input" type="text" placeholder="Add Discount +" value=""></div>
 					</div>				  		  
 					  <div class="item-row">
-					   <div>Total Payout
-  </div>
-					   <div data-testid="bid-total" id="totalpayout-ask">$0.00
-  </div>
+					   <div>Total Payout</div>
+					   <div data-testid="bid-total" id="totalpayout-ask">$0.00</div>
 					</div>				  
 				 </div>
 			</div>
@@ -152,7 +151,9 @@
 			<div class="ask-input" data-tour="bid-education">
 			   <div class="amount-input vertical">
 				  <div class="decoration">$</div>
-				  <input data-testid="product-bid-input" placeholder="<%=highbid.bidprice%>" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="<%=highbid.bidprice%>">
+				  <% if(highbid){ %> <input data-testid="product-bid-input" placeholder="<%=highbid.bidprice%>" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="<%=highbid.bidprice%>">
+				  <% }else{ %> <input data-testid="product-bid-input" placeholder="" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="">
+				  <% } %>
 			   </div>
 			</div>
 			<div class="bid-warning ">
@@ -165,27 +166,17 @@
 					 <div id="TransactionFee">-$5.00</div>
 				  </div>
 				  <div class="item-row">
-					 <div>Payment Proc. (3%)
-</div>
-					 <div data-testid="bid-total" id="Proc">-$1.29
-</div>
+					  <div>Payment Proc. (3%)</div><div data-testid="bid-total" id="Proc">-$1.29</div>
 				  </div>				  
 				    <div class="item-row">
-					 <div>Shipping
-</div>
-					 <div data-testid="bid-total" id="Shipping">-$0.0
-</div>
+					 <div>Shipping</div><div data-testid="bid-total" id="Shipping">-$0.0</div>
 				  </div>
 				  <div class="item-row">
-					 <div>Discount Code
-</div>
-					 <div data-testid="bid-total"><input class="discount-input" type="text" placeholder="Add Discount +" value=""></div>
+					 <div>Discount Code</div><div data-testid="bid-total"><input class="discount-input" type="text" placeholder="Add Discount +" value=""></div>
 				  </div>				  		  
 				    <div class="item-row">
-					 <div>Total Payout
-</div>
-					 <div data-testid="bid-total" id="totalpayout">$0.0
-</div>
+					 <div>Total Payout</div>
+					 <div data-testid="bid-total" id="totalpayout">$0.0</div>
 				  </div>				  
 			   </div>
 			</div>			
@@ -239,7 +230,7 @@
 		//$(function(){
 			$("#menu2btn").on('click',function(){
 				var id ="<%=product.id %>";// $("#id-manuf-name").val();
-				
+				$("#bid-type").val("sale");
 				var size='5';
 				var sendInfo = {id: id};
 				$.ajax({
@@ -260,7 +251,9 @@
 			});			
 		//})
 		$("#menu1btn").on('click',function(){
+			$("#bid-type").val("ask");
 			getbidCharges();
+			
 			});	
 		$("#bid-price-input").on('change',function(){
 			getbidCharges();
@@ -313,8 +306,13 @@ $( function(){
 	}
 	$('.pane-payment').hide();
 	$('.nextPay').on('click',function(){
-		//alert('dfsf')
-		var formdata = {id: '<%=product.id %>'};
+		var bidType="ask";
+		 bidType=$("#bid-type").val();
+		 var expiry=$('.dropdown-toggle').text();
+				var size=$('#attr-selector-attr1').text();
+		//alert(bidType)
+		var formdata = {id: '<%=product.id %>' ,bidType:bidType , expiry:expiry , size:size };
+		
 		$.ajax({
 			method:'post',
 			url:"/products/sell/<%=product.id %>/pay",

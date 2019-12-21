@@ -4,6 +4,7 @@ const SellBid = require('../models/SellBid');
 const BuyBid = require('../models/BuyBid');
 const Address = require('../models/Address');
 const Attribute = require('../models/Attribute');
+const OrderBid = require('../models/OrderBid');
 const path = require('path');
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
@@ -30,16 +31,29 @@ exports.products = function(req, res, next) {
   exports.findById=function(req, res, next) {
     var productId=req.params.id;
     req.session.oldUrl='/products/'+productId;
-    product=Product.findById(productId,function(err,product){         
-    //   res.render('pages/public/sell-product-variant', {
-    //     product: product,
-    //     layout:'layout'
-    // })
-        res.render('pages/public/product-detail', {
-          product: product,
-          layout:'layout'
-      })
-  })
+    Promise.all([
+      Product.findOne({ _id: productId }).populate({path:'attrs'}),
+      SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1),
+      BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1)
+    ]).then( ([ product, sellbid,highbid ]) => {
+      res.render('pages/public/product-detail', {
+        product: product,
+        lowbid:sellbid,
+        highbid:highbid,
+        layout:'layout'
+       })
+      });
+
+  //   product=Product.findById(productId,function(err,product){         
+  //   //   res.render('pages/public/sell-product-variant', {
+  //   //     product: product,
+  //   //     layout:'layout'
+  //   // })
+  //       res.render('pages/public/product-detail', {
+  //         product: product,
+  //         layout:'layout'
+  //     })
+  // })
 }
 /*********** select Product Variant ***************/
 exports.sellProductVariant= async function(req, res, next) {
@@ -47,8 +61,8 @@ exports.sellProductVariant= async function(req, res, next) {
   req.session.oldUrl='/products/'+productId;
   Promise.all([
     Product.findOne({ _id: productId }).populate({path:'attrs'}),
-    SellBid.findOne({productid:productId}).sort({bidprice:+1}).limit(1),
-    BuyBid.findOne({productid:productId}).sort({bidprice:-1}).limit(1)
+    SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1),
+    BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1)
   ]).then( ([ product, sellbid,highbid ]) => {
     res.render('pages/public/product-sellorask', {
       product: product,
@@ -126,14 +140,14 @@ exports.sellCalculateCharges=async function(req, res, next) {
    
    Promise.all([
     Product.findOne({ _id: productId }).populate({path:'attrs'}),
-    BuyBid.findOne({productid:productId}).sort({bidprice:-1}).limit(1),
+    BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1),
   ]).then( ([product,highbid])=>{
     var askprice=0; 
       if(!req.body.askprice){
         askprice=highbid.bidprice;
         
        }else{
-        askprice=req.body.askprice;
+        askprice=parseInt(req.body.askprice);
         var expiry=req.body.expiry;
         expiry=expiry.split("Days").map(Number);       
         console.log(expiry[0]);
@@ -204,26 +218,43 @@ exports.sellProductPay=function(req,res){
 }
 
 exports.sellAsk=async  function(req, res,next){
+  
   var sellBid = new SellBid();
+  
   const productId= req.body.productid;
+  var bidprice=0;//req.body.bidprice;
+  var buybid=await BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1);
   sellBid.productid = req.body.productid;
-  sellBid.bidprice = req.body.bidprice;
+ 
   sellBid.user = req.user;//Date.now()
   sellBid.biddate=Date.now();
-  sellBid.status="ask";
-  
-  sellBid.save();
+  if(req.body.bidType=='sale'){
+    sellBid.status="sale";
+    
+    bidprice=buybid.bidprice;
+  }else{
+    sellBid.status="ask";
+    bidprice=req.body.bidprice;
+  }
+  sellBid.bidprice = bidprice;
+  //sellBid.save();
   let sellbids=[];
+  var TransactionFee=bidprice*0.09;
+  var Proc=bidprice*0.03;
+  var Shipping=30;
+  var totalcharges=Math.ceil(TransactionFee+Proc+Shipping);
+  console.log('total chrges'+totalcharges);
+  console.log('bidprice'+bidprice);
  var prod=await Product.findById(productId).populate('selbids');
  prod.sellbids.push(sellBid);
-  prod.save();
+ 
  // console.log(prod);
   //console.log(sellBid);
   //console.log('sellBid');
   var nonceFromTheClient = req.body.paymentMethodNonce;
   // Create a new transaction for $10
   var newTransaction = gateway.transaction.sale({
-    amount: req.body.bidprice,
+    amount: totalcharges,
     paymentMethodNonce: nonceFromTheClient,
     options: {
       // This option requests the funds from the transaction
@@ -232,8 +263,23 @@ exports.sellAsk=async  function(req, res,next){
     }
   }, function(error, result) {
       if (result) {
+        if(req.body.bidType=='sale'){
+          const order=new OrderBid();
+          buybid.status='buy';
+        order.seller=req.user;
+        order.buyer=buybid.user;
+        order.buybid=buybid;
+        order.sellbid=sellBid;
+        order.product=prod;
+        order.netprice=bidprice;//need to add buying charges
+        order.save();
+        }
+        sellBid.save();
+        buybid.save();
+        prod.save();
+        
         res.send(result);
-       // console.log(result);
+        console.log(result);
       } else {
         res.status(500).send(error);
       }
@@ -246,11 +292,12 @@ exports.buyProductVariant=function name(req,res,next) {
 
   Promise.all([
     Product.findOne({ _id: productId }).populate({path:'attrs'}),
-    SellBid.findOne({productid:productId}).sort({bidprice:+1}).limit(1),
-    BuyBid.findOne({productid:productId}).sort({bidprice:-1}).limit(1),
+    SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1),
+    BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1),
     Address.findOne({address_type:'shipping',user:req.user}).limit(1),
     Address.findOne({address_type:'billing',user:req.user}).limit(1)
   ]).then( ([ product, sellbid,highbid,shippingAddress,billingAddress ]) => {
+ 
     res.render('pages/public/product-buyorbid', {
       product: product,
       lowbid:sellbid,
@@ -264,26 +311,47 @@ exports.buyProductVariant=function name(req,res,next) {
   });
 }
 exports.placeBuyBid=async function name(req,res,next) {
-  var buyBid = new BuyBid();
+  //console.log('fdggdgf');
+  const buyBid = new BuyBid();
+
+  var bidprice=0;
   const productId= req.body.productid;
+  var sellask=await SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1);
+  var prod=await Product.findById(productId).populate('buybids');
   buyBid.productid = req.body.productid;
   buyBid.bidprice = req.body.bidprice;
   buyBid.user = req.user;//Date.now()
   buyBid.biddate=Date.now();
-  buyBid.status="buybid";
+  console.log('bidtype'+req.body.bidType);
   
-  buyBid.save();
+  if(req.body.bidType=='buy'){
+    buyBid.status="buy";   
+    bidprice=sellask.bidprice;
+  }else{
+    buyBid.status="buybid";
+    bidprice=parseInt(req.body.bidprice);
+  }
+  buyBid.bidprice = bidprice;
+   
+  var processingFee=bidprice*0.09;
+     var authenticationFee=bidprice*0.03;
+     var shipping=30;
+     var totalpay=bidprice+(processingFee+authenticationFee+shipping);
+  var totalcharges=Math.ceil(totalpay);
+  console.log('total chrges'+totalcharges);
+  console.log('bidprice'+bidprice);
   //let buybids=[];
- var prod=await Product.findById(productId).populate('buybids');
- prod.buybids.push(buyBid);
-  prod.save();
-  console.log(prod);
-  console.log(buyBid);
-  console.log('buyBid');
+//  var prod=await Product.findById(productId).populate('buybids');
+//  prod.buybids.push(buyBid);
+//   prod.save();
+ // console.log(prod);
+ // console.log(buyBid);
+  //console.log('buyBid');
   var nonceFromTheClient = req.body.paymentMethodNonce;
+  
   // Create a new transaction for $10
   var newTransaction = gateway.transaction.sale({
-    amount: req.body.bidprice,
+    amount: totalcharges,
     paymentMethodNonce: nonceFromTheClient,
     options: {
       // This option requests the funds from the transaction
@@ -292,11 +360,32 @@ exports.placeBuyBid=async function name(req,res,next) {
     }
   }, function(error, result) {
       if (result) {
+       // sellask.status='sale';
+       if(req.body.bidType=='buy'){  
+        const order=new OrderBid();    
+        sellask.status="sale";
+        bidprice=sellask.bidprice;
+        order.sellbid=sellask;
+        order.seller=sellask.user;
+        //buyBid.sellbid=sellask;
+        order.buybid=buyBid;
+        order.buyer=req.user;
+        order.netprice=totalpay;
+        order.product=prod;
+        order.save();
+      }     
+        sellask.save();      
+        //orderdate
+        buyBid.save();       
+          prod.buybids.push(buyBid);
+           prod.save();
+         
         res.send(result);
-        console.log(result);
+       // console.log(result);
       } else {
         res.status(500).send(error);
       }
+
   });
   
 }
@@ -304,24 +393,24 @@ exports.calculateBuyCharges=function name(req,res,next) {
   var productId=req.body.id;
   Promise.all([
     Product.findOne({ _id: productId }).populate({path:'attrs'}),
-    SellBid.findOne({productid:productId}).sort({bidprice:+1}).limit(1),
+    SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1),
   ]).then( ([product,lowestbid])=>{
     var askprice=0; 
       if(!req.body.askprice){
         askprice=lowestbid.bidprice;
         
        }else{
-        askprice=req.body.askprice;
+        askprice=parseInt(req.body.askprice);
         var expiry=req.body.expiry;
         expiry=expiry.split("Days").map(Number);       
         console.log(expiry[0]);
        }
-     var TransactionFee=askprice*0.09;
-     var Proc=askprice*0.03;
-     var Shipping=30;
-     var totalpayout=askprice-(TransactionFee+Proc+Shipping);
+     var processingFee=askprice*0.09;
+     var authenticationFee=askprice*0.03;
+     var shipping=30;
+     var totalpay=askprice+(processingFee+authenticationFee+shipping);
      console.log(askprice);
-      res.json({ TransactionFee: TransactionFee ,Proc:Proc,Shipping:Shipping,discountcode:'',totalpayout:totalpayout });
+      res.json({ processingFee: processingFee ,authenticationFee:authenticationFee,shipping:shipping,discountcode:'',totalpay:totalpay });
       
   })
   // product=Product.findById(productId,function(err,product){

@@ -277,12 +277,16 @@ braintree.client.create({
         // var button = document.querySelector('#hosted-submit-button');
         // button.addEventListener('click', function () {
           var askprice=$("#bid-price-input").val();
+          var bidType="buybid";
+		
+      var bidType=$("#bid-type").val();
+      console.log(bidType)
           var productid="<%=product.id %>";
          // $("#paymentMethodNonce").val(payload.nonce);
         $.ajax({
               type: 'POST',
               url:"/products/buy/<%=product.id %>",
-              data: {'paymentMethodNonce': payload.nonce,bidprice:askprice,productid:productid}
+              data: {'paymentMethodNonce': payload.nonce,bidprice:askprice,productid:productid,bidType:bidType}
             }).done(function(result) {
               form.trigger("reset");
               // Tear down the Drop-in UI
