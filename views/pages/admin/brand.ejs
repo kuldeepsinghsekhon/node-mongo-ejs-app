@@ -1,1 +1,225 @@
-<h1>Helllo</h1>
+<div class="row">
+    <div class="col-md-12 grid-margin">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h4 class="font-weight-bold mb-0">Brands Mangement</h4>
+              </div>
+              <div>
+                  <button type="button" class="btn btn-primary btn-icon-text btn-rounded" data-toggle="modal" data-target="#myModal">
+                    <i class="ti-clipboard btn-icon-prepend"></i>Newbrand
+                  </button>
+              </div>
+            </div>
+          </div>
+    <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">All Users</h4>
+                <p class="card-description">
+                  Manage <code>users</code>
+                </p>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>
+                          User Image
+                        </th>
+                        <th>
+                          Full name
+                        </th>
+                        <th>
+                           Edit
+                          </th>
+                          <th>
+                            Delete
+                          </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <% for (var i = 0; i < brands.length; i++) { %>
+                      <tr class="data-row">
+                          <input value="<%= brands[i].image; %>" type="hidden"class="image">
+                        <td >
+                          <img class="image" src="/uploads/brands/<%= brands[i].image; %> " value="<%= brands[i].image; %>" alt="image" data-item-image="<%=brands[i].image %>"/>
+                        </td>
+                        <td class="name" data-item-name="<%=brands[i].name %>">
+                            <%= brands[i].name %>
+                        </td>
+                        
+                        <td>
+                            <button class=" btn btn-primary btn-rounded btn-icon"   id="edit-item" data-item-id="<%=brands[i]._id %>" >
+                              <i class="ti-file btn-icon-append"></i> 
+                            </button>
+                        </td> 
+                        <td>
+                            <a class=" btn btn-primary btn-rounded btn-icon" href="/admin/brand/<%=brands[i]._id %>/delete" >
+                              <i class="ti-file btn-icon-append"></i> 
+                            </a>
+                        </td> 
+                        
+                      </tr>
+                     <% } %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% if (pages > 0) { %>
+            <ul class="pagination text-center">
+                <% if (current == 1) { %>
+                    <li class="disabled"><a class="page-link">First</a></li>
+                <% } else { %>
+                    <li  class="page-item"><a class="page-link" href="/admin/brand/1">First</a></li>
+                <% } %>
+                <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                <% if (i !== 1) { %>
+                    <li class="page-item disabled"><a class="page-link">...</a></li>
+                <% } %>
+                <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                    <% if (i == current) { %>
+                        <li class="page-item active"><a class="page-link"><%= i %></a></li>
+                    <% } else { %>
+                        <li class="page-item"><a class="page-link" href="/admin/brand/<%= i %>"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == Number(current) + 4 && i < pages) { %>
+                        <li class="page-item disabled" ><a class="page-link">...</a></li>
+                    <% } %>
+                <% } %>
+                <% if (current == pages) { %>
+                    <li class="disabled"><a class="page-link">Last</a></li>
+                <% } else { %>
+                    <li><a  class="page-link" href="/admin/brand/<%= pages %>">Last</a></li>
+                <% } %>
+            </ul>
+        <% } %>
+        
+</div>
+ <!-- pop up brand -->
+ <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Brand</h4>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="/admin/add-brand" enctype="multipart/form-data">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                            <div class="form-group">                              
+                                    <input type="text" id="brand_name" class="form-control" name="brand_name" placeholder="brand Name">
+                                </div>
+                      
+                     
+                        <div class="form-group">
+                                <input type="file" id="brandImage" class="form-control" name="brandImage" placeholder="brand Image">
+                            </div>
+                           
+                               
+                        <button type="submit" class="btn btn-success">Add New Brand</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <script>
+     $(document).ready(function() {
+  /**
+   * for showing edit item popup
+   */
+
+  $(document).on('click', "#edit-item", function() {
+    $(this).addClass('edit-item-trigger-clicked'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
+
+    var options = {
+      'backdrop': 'static'
+    };
+    $('#edit-modal').modal(options)
+  })
+
+  // on modal show
+  $('#edit-modal').on('show.bs.modal', function() {
+    var el = $(".edit-item-trigger-clicked"); // See how its usefull right here? 
+    var row = el.closest(".data-row");
+
+    // get the data
+    var id = el.data('item-id');
+    var name = row.children(".name").text();
+    var image = row.children(".image").val();
+
+    // fill the data in the input fields
+    $("#modal-input-id").val(id);
+    $("#modal-input-name").val(name);
+    $("#modal-input-image").val(image);
+
+  })
+
+  // on modal hide
+  $('#edit-modal').on('hide.bs.modal', function() {
+    $('.edit-item-trigger-clicked').removeClass('edit-item-trigger-clicked')
+    $("#edit-form").trigger("reset");
+  })
+})
+          </script> 
+
+  <!-- Attachment edit  Modal -->
+<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="edit-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="edit-modal-label">Edit Data</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="attachment-body-content">
+          <form id="edit-brand" class="form-horizontal" method="POST" action="/admin/brand/update"  enctype="multipart/form-data">
+            <div class="card text-white bg-dark mb-0">
+              <div class="card-header">
+                <h2 class="m-0">Edit</h2>
+              </div>
+              <div class="card-body">
+                <!-- id -->
+                <div class="form-group">
+                  <input type="hidden" name="brandid" class="form-control" id="modal-input-id" required>
+                </div>
+                <!-- /id -->
+                <!-- name -->
+                <div class="form-group">
+                  <label class="col-form-label" for="modal-input-name">Name</label>
+                  <input type="text" name="brand_name" class="form-control" id="modal-input-name"  value="" required autofocus>
+                </div>
+                <!-- /name -->
+                <!-- description -->
+                <div class="form-group">
+                  <input type="hidden" class="form-control" id="modal-input-image">
+                </div>
+                <div class="form-group">
+                        <label class="col-form-label" for="modal-input-description">Image</label>
+                        <input type="file" name="brandImage" class="form-control"required>
+                      </div>
+                <div class="form-group">
+                        <input type="submit"  class="form-control" value="submit" required>
+                      </div>
+                <!-- /description -->
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Update</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Attachment Modal -->

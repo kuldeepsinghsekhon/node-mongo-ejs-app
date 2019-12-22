@@ -91,5 +91,9 @@ router.get('/template-products/:page',ensureAuthenticated, permit('Admin'), prod
 router.get('/users/:page',ensureAuthenticated, permit('Admin'),users_controller.listUsers);
 router.get('/orders/:page',ensureAuthenticated, permit('Admin'),admin_controller.allOrders);
 
-  router.get('/brand/:id', admin_controller.listBrands);
+router.get('/brand/:id',ensureAuthenticated, permit('Admin'), admin_controller.listBrands);
+  router.post('/add-brand/',ensureAuthenticated,permit('Admin'), admin_controller.saveBrand);
+  router.post('/brand/update',ensureAuthenticated, permit('Admin'),admin_controller.updateBrand);
+  router.get('/brand/:id/delete',ensureAuthenticated, permit('Admin'), admin_controller.deleteBrand);
+
 module.exports = router;
