@@ -3,6 +3,10 @@ const User = require('../models/User');
 const Myorder = require('../models/Myorder');
 const Cart = require('../models/Mycart');
 const SellBid = require('../models/SellBid');
+const BuyBid = require('../models/BuyBid');
+
+const OrderBid = require('../models/OrderBid');
+
 exports.settings=function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
@@ -331,34 +335,46 @@ exports.productsBuying=function(req, res, next) {
   var page = req.params.page || 1;
   //console.log(req.user._id);
   var query = { user: req.user._id };
-  Myorder
-      .find(query)
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
-      .exec(function(err, orders) {
-          Myorder.count().exec(function(err, count) {
-              if (err) return next(err)
-              var arr = [];
-              var order_id = [];
-              var payment = [];
-              orders.forEach(order => {                 
-                  var cart= new Cart(order.cart);
-              var products =cart.generateArray();
-              arr.push(products);
-              order_id.push(order.id);
-              payment.push(order.payment)
-                }); 
-              res.render('pages/users/buying',{                  
-                  orders: arr,
-                  order_id:order_id,
-                  payment:payment,
-                  current: page,
-                  pages: Math.ceil(count / perPage),
-                  layout:'layout'
-              })
-              //console.log(orders);
-          })
-      })
+  var query = { user: req.user._id ,status:'buybid'}; 
+  Promise.all([
+    OrderBid.find({ buyer: req.user }).populate({path:'product'}),
+    BuyBid.find(query).sort({bidprice:-1}).limit(10),
+  ]).then( ([orders,buybids])=>{
+    res.render('pages/users/buying', {
+      buybids: buybids,
+      orders:orders,
+      layout:'layout'
+    })
+      
+  })
+  // Myorder
+  //     .find(query)
+  //     .skip((perPage * page) - perPage)
+  //     .limit(perPage)
+  //     .exec(function(err, orders) {
+  //         Myorder.count().exec(function(err, count) {
+  //             if (err) return next(err)
+  //             var arr = [];
+  //             var order_id = [];
+  //             var payment = [];
+  //             orders.forEach(order => {                 
+  //                 var cart= new Cart(order.cart);
+  //             var products =cart.generateArray();
+  //             arr.push(products);
+  //             order_id.push(order.id);
+  //             payment.push(order.payment)
+  //               }); 
+  //             res.render('pages/users/buying',{                  
+  //                 orders: arr,
+  //                 order_id:order_id,
+  //                 payment:payment,
+  //                 current: page,
+  //                 pages: Math.ceil(count / perPage),
+  //                 layout:'layout'
+  //             })
+  //             //console.log(orders);
+  //         })
+  //     })
 
 }
 
@@ -367,21 +383,32 @@ exports.productsSelling=function(req, res, next) {
   var perPage = 9;
   var page = req.params.page || 1;
   //console.log(req.user._id);
-  var query = { user: req.user._id }; 
-        SellBid
-        .find(query).populate('productid')
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
-      .exec(function(err, askbids) {
-        SellBid.count().exec(function(err, count) {
-              if (err) return next(err)
-              res.render('pages/users/selling', {
-                askbids: askbids,
-                  current: page,
-                  pages: Math.ceil(count / perPage),
-                  layout:'layout'
-              })
-          })
-          console.log(askbids);
-      })
+  var query = { user: req.user._id ,status:'ask'}; 
+  Promise.all([
+    OrderBid.find({ seller: req.user }).populate({path:'product'}),
+    SellBid.find(query).sort({bidprice:-1}).limit(10),
+  ]).then( ([orders,askbids])=>{
+    res.render('pages/users/selling', {
+      askbids: askbids,
+      orders:orders,
+      layout:'layout'
+    })
+      
+  })
+      //   SellBid
+      //   .find(query).populate('productid')
+      // .skip((perPage * page) - perPage)
+      // .limit(perPage)
+      // .exec(function(err, askbids) {
+      //   SellBid.count().exec(function(err, count) {
+      //         if (err) return next(err)
+      //         res.render('pages/users/selling', {
+      //           askbids: askbids,
+      //             current: page,
+      //             pages: Math.ceil(count / perPage),
+      //             layout:'layout'
+      //         })
+      //     })
+      //     console.log(askbids);
+      // })
 }

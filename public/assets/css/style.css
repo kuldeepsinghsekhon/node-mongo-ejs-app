@@ -5268,6 +5268,14 @@ span.market-dir-up-arrow {
 	border-style: solid;
 	border-width: 0 7px 13.9px;
 }
+.market-dir-down {
+	color: #ff5a5f;
+}
+span.market-dir-down-arrow {
+	border-color: transparent transparent #ff5a5f;
+	border-style: solid;
+	border-width: 0 7px 13.9px;
+}
 span.market-dir-down-arrow, span.market-dir-up-arrow {
 	display: inline-block;
 	width: 0;
@@ -5281,6 +5289,11 @@ span.market-dir-down-arrow, span.market-dir-up-arrow {
 
 span.market-dir-up-arrow {
 	border-color: transparent transparent #509e2f;
+	border-style: solid;
+	border-width: 0 7px 13.9px;
+}
+span.market-dir-down-arrow {
+	border-color: transparent transparent #ff5a5f;
 	border-style: solid;
 	border-width: 0 7px 13.9px;
 }

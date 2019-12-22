@@ -19,38 +19,31 @@
                     </p>
                     <div class="table-responsive">
 
-                      <table class="table table-striped">
-                          <thead>
-                           <tr class="headers">
-                              <th class="col-lg-3 col-sm-4 col-xs-6 sortable undefined">Item </th>
-                              <th class="col-lg-2 hidden-md hidden-sm hide-xs undefined">Order Number </th>
-                              <th class="col-lg-2 col-sm-2 col-xs-3 sortable  dropdown">Sale Date </th>
-                              <th class="col-sm-1 col-xs-2 sortable undefined">Price </th>
-                              <th class="col-lg-2 col-sm-3 col-xs-2 hide-xs sortable undefined">Status </th>
-                           </tr>
-                          </thead>
-                          <tbody>
-                                <% 
-                                if (orders) { %>
-                                <% for (var i = 0; i < orders.length; i++) { %>
-                                   <tr>
-                                     
-                                    
-                                    
-                                         <% var products= orders[i];
-                                         for (var j = 0; j < products.length; j++) { %>
-                                            <td><%= products[j].item.name %></td><td><%= order_id[i] %></td><td><%= new Date(payment[i].created*1000).toLocaleString() %></td> <td><%= products[j].item.price %></td> <td><%= payment[i].status %></td>
-                                        
-                                            <% } %> 
-                                     
-                                     </tr>
-                                    <% }}else{ %>
-                           <tr>
-                              <td colspan="5" class="no-pis"><em>No Results.</em></td>
-                           </tr>
-                           <% } %> 
-                          </tbody>
-                         </table>
+                      <table class="table">
+                        <thead>
+                         <tr class="headers">
+                            <th class="col-lg-3 col-sm-4 col-xs-6 sortable undefined">Item </th>
+                            <th class="col-lg-2 hidden-md hidden-sm hide-xs undefined">Order Number </th>
+                            <th class="col-lg-2 col-sm-2 col-xs-3 sortable  dropdown">Sale Date </th>
+                            <th class="col-sm-1 col-xs-2 sortable undefined">Price </th>
+                            <th class="col-lg-2 col-sm-3 col-xs-2 hide-xs sortable undefined">Status </th>
+                         </tr>
+                        </thead>
+                        <tbody>
+                          <% if(orders){ %>
+                             <% for (var i = 0; i < orders.length; i++) { %>
+                                <tr><td><%= orders[i].product.name %></td>
+                                   <td><%= orders[i]._id %></td>
+                                   <td><%= orders[i].orderdate %></td>
+                                   <td><%= orders[i].netprice %></td>
+                                   <td><%= orders[i].status %></td>
+                               </tr>
+                                <% } }else{ %>
+                                   <tr> <td colspan="5" class="no-pis"><em>No Results.</em></td></tr>
+                                   <% } %> 
+                        
+                        </tbody>
+                       </table>
                     </div>
                     <% if (pages > 0) { %>
                       <ul class="pagination text-center">

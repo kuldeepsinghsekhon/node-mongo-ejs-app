@@ -6,6 +6,8 @@ const OrderSchema = new mongoose.Schema({
   seller:{type: Schema.Types.ObjectId, ref: 'User'},
   sellbid:{type: Schema.Types.ObjectId, ref: 'SellBid'},
   buybid:{type: Schema.Types.ObjectId, ref: 'BuyBid'},
+  //paymentId: {type: String, required: true},
+ // payment: {type: Object, required: true},
   orderdate:{type: Date},
   netprice:Number,
   status: String,

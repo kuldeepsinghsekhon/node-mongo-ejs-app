@@ -71,23 +71,13 @@
                           <div class="col-6 col-md-4">
                              <div class="product">
                                 <figure class="product-image-container">
-                                   <a href="product.html" class="product-image">
+                                   <a href="/products/<%= products[i]._id %>" class="product-image">
                                    <img src="/uploads/products/<%= products[i].image %>" alt="product">
                                    </a>
-                                   <a href="ajax/product-quick-view.html" class="btn-quickview">Quick View</a>
+                                   <a href="/products/<%= products[i]._id %>" class="btn-quickview">Quick View</a>
                                 </figure>
                                 <div class="product-details">
-                                   <div class="ratings-container">
-                                      <div class="product-ratings">
-                                         <i class="fa fa-star" aria-hidden="true"></i>
-                                         <i class="fa fa-star" aria-hidden="true"></i>
-                                         <i class="fa fa-star" aria-hidden="true"></i>
-                                         <i class="fa fa-star" aria-hidden="true"></i>
-                                         <i class="fa fa-star" aria-hidden="true"></i>
-                                         <!-- End .ratings -->
-                                      </div>
-                                      <!-- End .product-ratings -->
-                                   </div>
+                                  
                                    <!-- End .product-container -->
                                    <h2 class="product-title">
                                       <a href="/products/<%= products[i]._id %>"> <%= products[i].name %></a>
@@ -96,11 +86,7 @@
                                       <span class="product-price">$<%= products[i].price %></span>
                                    </div>
                                    <!-- End .price-box -->
-                                   <div class="product-action">
-                                      <a href="/products/<%= products[i]._id %>" class="paction add-cart" title="Add to Cart">
-                                      <span>Add to Cart</span>
-                                      </a>
-                                   </div>
+                                  
                                    <!-- End .product-action -->
                                 </div>
                                 <!-- End .product-details -->
@@ -127,17 +113,7 @@
                                        <a href="/products/<%= products[i]._id %>" class="btn-quickview">Quick View</a>
                                     </figure>
                                     <div class="product-details">
-                                       <div class="ratings-container">
-                                          <div class="product-ratings">
-                                             <i class="fa fa-star" aria-hidden="true"></i>
-                                             <i class="fa fa-star" aria-hidden="true"></i>
-                                             <i class="fa fa-star" aria-hidden="true"></i>
-                                             <i class="fa fa-star" aria-hidden="true"></i>
-                                             <i class="fa fa-star" aria-hidden="true"></i>
-                                             <!-- End .ratings -->
-                                          </div>
-                                          <!-- End .product-ratings -->
-                                       </div>
+                                       
                                        <!-- End .product-container -->
                                        <h2 class="product-title">
                                           <a href="/products/<%= products[i]._id %>"> <%= products[i].name %></a>
@@ -146,11 +122,7 @@
                                           <span class="product-price">$<%= products[i].price %></span>
                                        </div>
                                        <!-- End .price-box -->
-                                       <div class="product-action">
-                                          <a href="/products/<%= products[i]._id %>" class="paction add-cart" title="Add to Cart">
-                                          <span>Add to Cart</span>
-                                          </a>
-                                       </div>
+                                      
                                        <!-- End .product-action -->
                                     </div>
                                     <!-- End .product-details -->

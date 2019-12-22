@@ -189,12 +189,22 @@
 						 <div>
 							<div data-testid="product-last-sale-button" class="last-sale">
 							   <h3>Last Sale</h3>
-							   <div class="sale-value">$148</div>
+							   <div class="sale-value"><%if(lastsale){%>$<%=Math.ceil(lastsale.netprice)%><%}else{ %>--<%}%></div>
+							  <% if(lastsale){var pc= spchange/lastsale.netprice*100;if(spchange>0){ %>
 							   <div data-testid="product-size-button" class="last-sale-value market-dir market-dir-up">
 								  <span class="market-dir-up-arrow"></span>
-								  <div class="dollar">+$1</div>
+								  <div class="dollar">+$<%=spchange.toFixed(2)%></div>
 								  <div class="percentage">(1%)</div>
 							   </div>
+							   <% }else{ %>
+								<div data-testid="product-size-button" class="last-sale-value market-dir market-dir-down">
+									<span class="market-dir-up-down"></span>
+									<div class="dollar">$<%=spchange.toFixed(2)%></div>
+									<div class="percentage">(<%=pc.toFixed(2)%>%)</div>
+								 </div>
+								 <% } }%>
+
+
 							</div>
 							<div class="sale-size">
 							   <div><a class="all">View All Sales</a></div>
@@ -521,7 +531,7 @@
 											  <div class="gauge-container">
 												 <div class="gauge"></div>
 												 <div class="gauge-title"># of Sales</div>
-												 <div class="gauge-value">460</div>
+												 <div class="gauge-value"><%=ordercount%></div>
 											  </div>
 											  <div class="gauge-container">
 												 <div class="gauge"></div>

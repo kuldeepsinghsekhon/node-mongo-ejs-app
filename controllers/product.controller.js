@@ -34,13 +34,27 @@ exports.products = function(req, res, next) {
     Promise.all([
       Product.findOne({ _id: productId }).populate({path:'attrs'}),
       SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1),
-      BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1)
-    ]).then( ([ product, sellbid,highbid ]) => {
+      BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1),
+      OrderBid.find({ product: productId }).sort({orderdate:-1}).limit(2),
+      OrderBid.count({ product: productId}),
+    ]).then( ([ product, sellbid,highbid,lastsale,ordercount ]) => {
+      console.log("lastsale");
+      console.log(lastsale);
+      var spchange=0;
+     var highsale;
+      if(lastsale.length>0){
+     spchange=lastsale[0].netprice-lastsale[1].netprice;
+     highsale=lastsale[0];
+      }
       res.render('pages/public/product-detail', {
         product: product,
         lowbid:sellbid,
         highbid:highbid,
-        layout:'layout'
+        layout:'layout',
+        spchange:spchange,
+        lastsale:highsale,
+        ordercount:ordercount
+       
        })
       });
 
@@ -224,10 +238,25 @@ exports.sellAsk=async  function(req, res,next){
   const productId= req.body.productid;
   var bidprice=0;//req.body.bidprice;
   var buybid=await BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1);
+ var lowestask=await SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1);
+  var prod=await Product.findById(productId).populate('selbids');
   sellBid.productid = req.body.productid;
  
   sellBid.user = req.user;//Date.now()
   sellBid.biddate=Date.now();
+  sellBid.title=prod.name;
+  if(buybid!=null){
+    sellBid.highestbid=buybid.bidprice;
+  }
+if(lowestask!=null){
+  sellBid.lowestask=lowestask.bidprice;
+}
+
+  var expiry=req.body.expiry;
+  expiry=expiry.split("Days").map(Number);  
+  var expire= parseInt(expiry[0])    
+  //console.log(expiry[0]);
+  sellBid.expire=Date.now() + ( 3600 * 1000 * 24*expire)
   if(req.body.bidType=='sale'){
     sellBid.status="sale";
     
@@ -245,7 +274,7 @@ exports.sellAsk=async  function(req, res,next){
   var totalcharges=Math.ceil(TransactionFee+Proc+Shipping);
   console.log('total chrges'+totalcharges);
   console.log('bidprice'+bidprice);
- var prod=await Product.findById(productId).populate('selbids');
+
  prod.sellbids.push(sellBid);
  
  // console.log(prod);
@@ -273,9 +302,10 @@ exports.sellAsk=async  function(req, res,next){
         order.product=prod;
         order.netprice=bidprice;//need to add buying charges
         order.save();
+        buybid.save();
         }
         sellBid.save();
-        buybid.save();
+       
         prod.save();
         
         res.send(result);
@@ -317,11 +347,27 @@ exports.placeBuyBid=async function name(req,res,next) {
   var bidprice=0;
   const productId= req.body.productid;
   var sellask=await SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1);
+  var highestbid=await BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1);
+
   var prod=await Product.findById(productId).populate('buybids');
+  if(highestbid){
+    buyBid.highestbid = highestbid.bidprice;
+  }
+  if(sellask){
+    buyBid.lowestask = sellask.bidprice;
+  }
   buyBid.productid = req.body.productid;
   buyBid.bidprice = req.body.bidprice;
-  buyBid.user = req.user;//Date.now()
-  buyBid.biddate=Date.now();
+  
+
+  buyBid.user = req.user
+  buyBid.biddate=Date.now();//Date.now() + ( 3600 * 1000 * 24)
+  var expiry=req.body.expiry;
+        expiry=expiry.split("Days").map(Number);  
+        var expire= parseInt(expiry[0])    
+        //console.log(expiry[0]);
+  buyBid.expire=Date.now() + ( 3600 * 1000 * 24*expire)
+  buyBid.title=prod.name;
   console.log('bidtype'+req.body.bidType);
   
   if(req.body.bidType=='buy'){
@@ -372,9 +418,10 @@ exports.placeBuyBid=async function name(req,res,next) {
         order.buyer=req.user;
         order.netprice=totalpay;
         order.product=prod;
+        order.orderdate=Date.now();
         order.save();
-      }     
         sellask.save();      
+      }     
         //orderdate
         buyBid.save();       
           prod.buybids.push(buyBid);

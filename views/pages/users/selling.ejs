@@ -68,21 +68,22 @@
                                <table class="table">
                                 <thead>
                                  <tr class="headers">
-                                    <th class="col-lg-3 col-sm-4 col-xs-6 sortable undefined">Item </th>
-                                    <th class="col-lg-2 hidden-md hidden-sm hide-xs undefined">Order Number </th>
-                                    <th class="col-lg-2 col-sm-2 col-xs-3 sortable  dropdown">Sale Date </th>
-                                    <th class="col-sm-1 col-xs-2 sortable undefined">Price </th>
-                                    <th class="col-lg-2 col-sm-3 col-xs-2 hide-xs sortable undefined">Status </th>
+                                    <th class="col-sm-2 col-xs-2 sortable undefined">Item</th>
+                                    <th class="col-sm-2 col-xs-2 sortable undefined">Ask Price</th>
+                                    <th class="col-sm-2 col-xs-2 sortable undefined">Highest Bid</th>
+                                    <th class="col-sm-2 col-xs-2 sortable undefined">Lowest Ask</th>
+                                    <th class="col-sm-2 col-xs-2 sortable undefined">Expires</th>
+
                                  </tr>
                                 </thead>
                                 <tbody>                          
                                     <% if(askbids){ %>
                                        <% for (var i = 0; i < askbids.length; i++) { %>
-                                          <tr><td><%= askbids[i].id %></td>
+                                          <tr><td><%= askbids[i].title %></td>
                                              <td><%= askbids[i].bidprice %></td>
-                                             <td><%= new Date(askbids[i].biddate*1000).toLocaleString() %></td>
-                                              <td><%= askbids[i].bidprice %></td> 
-                                              <td><%= askbids[i].status %></td>
+                                             <td><%= askbids[i].highestbid %></td>
+                                             <td><%= askbids[i].lowestask %></td>
+                                             <td><%= askbids[i].expire%></td>
                                          </tr>
                                     <% } }else{ %>
                                        <tr> <td colspan="5" class="no-pis"><em>No Results.</em></td></tr>
@@ -114,9 +115,18 @@
                           </tr>
                          </thead>
                          <tbody>
-                          <tr>
-                             <td colspan="5" class="no-pis"><em>No Results.</em></td>
-                          </tr>
+                           <% if(orders){ %>
+                              <% for (var i = 0; i < orders.length; i++) { %>
+                                 <tr><td><%= orders[i].product.name %></td>
+                                    <td><%= orders[i]._id %></td>
+                                    <td><%= orders[i].orderdate %></td>
+                                    <td><%= orders[i].netprice %></td>
+                                    <td><%= orders[i].status %></td>
+                                </tr>
+                                 <% } }else{ %>
+                                    <tr> <td colspan="5" class="no-pis"><em>No Results.</em></td></tr>
+                                    <% } %> 
+                         
                          </tbody>
                         </table>
                        </div>

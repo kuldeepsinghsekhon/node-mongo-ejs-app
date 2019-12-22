@@ -82,46 +82,14 @@ router.get('/product/:id/edit', product_controller.editProduct);
 router.post('/product/:id/update',ensureAuthenticated, permit('Admin'),product_controller.updateProduct);
  
 router.post('/add-product',ensureAuthenticated, permit('Admin'),product_controller.saveProduct);
-
-
+router.get('/buying',ensureAuthenticated, permit('Admin'),admin_controller.productsBuyBids);
+router.get('/selling',ensureAuthenticated, permit('Admin'),admin_controller.productsSellBids);
 //router.get('/admin/', ensureAuthenticated, (req, res) => res.render('pages/admin/dashboard',{ layout:'admin-layout' }));
 //router.get('/admin/users', ensureAuthenticated, (req, res) => res.render('pages/admin/users',{ layout:'admin-layout' }));
 //router.get('/admin/template-products', ensureAuthenticated, (req, res) => res.render('pages/admin/template-products',{ layout:'admin-layout' }));
 router.get('/template-products/:page',ensureAuthenticated, permit('Admin'), product_controller.adminProducts);
 router.get('/users/:page',ensureAuthenticated, permit('Admin'),users_controller.listUsers);
-router.get('/orders/:page',ensureAuthenticated, permit('Admin'), function(req, res, next) {
-    var perPage = 9;
-    var page = req.params.page || 1;
-  
-    Myorder
-    .find({})
-    .skip((perPage * page) - perPage)
-    .limit(perPage)
-    .exec(function(err, orders) {
-        Myorder.count().exec(function(err, count) {
-            if (err) return next(err)
-            var arr = [];
-            var order_id = [];
-            var payment = [];
-            orders.forEach(order => {                 
-                var cart= new Cart(order.cart);
-            var products =cart.generateArray();
-            arr.push(products); 
-            order_id.push(order.id);
-            payment.push(order.payment)
-              }); 
-            res.render('pages/admin/orders', {                  
-                orders: arr,
-                order_id:order_id,
-                payment:payment,
-                current: page,
-                pages: Math.ceil(count / perPage),
-                layout:'admin-layout'
-            })
-            //console.log(orders);
-        })
-    })
-  });
+router.get('/orders/:page',ensureAuthenticated, permit('Admin'),admin_controller.allOrders);
 
   router.get('/brand/:id', admin_controller.listBrands);
 module.exports = router;

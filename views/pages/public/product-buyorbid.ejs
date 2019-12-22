@@ -164,7 +164,7 @@
 			<div class="ask-input" data-tour="bid-education">
 			   <div class="amount-input vertical">
 				  <div class="decoration">$</div>
-				  <% if(highbid){ %> <input data-testid="product-bid-input" placeholder="<%=lowbid.bidprice%>" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="<%=lowbid.bidprice%>">
+				  <% if(lowbid){ %> <input data-testid="product-bid-input" placeholder="<%=lowbid.bidprice%>" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="<%=lowbid.bidprice%>">
 				  <% }else{ %> <input data-testid="product-bid-input" placeholder="" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="">
 				  <% } %>
 			   </div>
