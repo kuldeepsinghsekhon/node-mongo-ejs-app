@@ -67,12 +67,13 @@ exports.products = function(req, res, next) {
       Product.findOne({ _id: productId }).populate({path:'attrs'}),
       SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1),
       BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1),
-      OrderBid.find({ product: productId }).sort({orderdate:-1}).limit(2),
+      OrderBid.find({ product: productId }).sort({orderdate:-1}).limit(10),
       OrderBid.count({ product: productId}),
       Product.find({ }).limit(10),
     ]).then( ([ product, sellbid,highbid,lastsale,ordercount,relatedproducts]) => {
       console.log("lastsale");
       console.log(lastsale);
+      var allsales=lastsale;
       var spchange=0;
      var highsale;
       if(lastsale.length>1){
@@ -90,6 +91,7 @@ exports.products = function(req, res, next) {
         layout:'layout',
         spchange:spchange,
         lastsale:highsale,
+        allsales:allsales,
         ordercount:ordercount,
         relatedproducts:relatedproducts
        
@@ -689,9 +691,7 @@ exports.editProduct=function(req, res, next) {
         ]).then( ([lastsale]) => {
           var resarr=[];
           for(i=0;i<lastsale.length;i++){
-            var date=1167609600000+10000;
-            resarr.push([lastsale[i].netprice,date]);
-           
+            resarr.push([lastsale[i].orderdate,lastsale[i].netprice]);  
           }
           //   var spchange=0;
           // var highsale;

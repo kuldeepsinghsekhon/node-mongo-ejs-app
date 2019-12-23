@@ -398,51 +398,26 @@
 										<div class="latest-sales-container">
 										   <table class="latest-sales table table-striped table-condensed " id="latest-sales-table">
 											  <thead>
+												 
 												 <tr>
-													<th class="col-sm-2 col-xs-3">Size</th>
+													<th class="col-sm-2 col-xs-3">SNo.</th>
 													<th class="col-sm-3 col-xs-3">Sale Price</th>
-													<th class="col-sm-4 col-xs-6">Date</th>
-													<th class="col-sm-3">Time</th>
+													<th class="col-sm-4 col-xs-6">Date Time</th>
+													
 												 </tr>
+												
 											  </thead>
 											  <tbody>
+												<%if(allsales.length>0){
+													for (var i = 0; i < allsales.length; i++) { %>
 												 <tr>
-													<td>10</td>
-													<td>$148</td>
-													<td>Thursday, November 14, 2019</td>
-													<td>4:15 AM EST</td>
+													<td><%=i%></td>
+													<td>$<%=Math.ceil(allsales[i].netprice)%></td>
+													<td><%=allsales[i].orderdate%></td>
+													
 												 </tr>
-												 <tr>
-													<td>10</td>
-													<td>$148</td>
-													<td>Thursday, November 14, 2019</td>
-													<td>2:17 AM EST</td>
-												 </tr>
-												 <tr>
-													<td>10</td>
-													<td>$147</td>
-													<td>Thursday, November 14, 2019</td>
-													<td>11:21 PM EST</td>
-												 </tr>
-												 <tr>
-													<td>10</td>
-													<td>$140</td>
-													<td>Thursday, November 14, 2019</td>
-													<td>10:44 PM EST</td>
-												 </tr>
-												 <tr>
-													<td>10</td>
-													<td>$140</td>
-													<td>Thursday, November 14, 2019</td>
-													<td>10:43 PM EST</td>
-												 </tr>
-												 <tr>
-													<td>10</td>
-													<td>$140</td>
-													<td>Thursday, November 14, 2019</td>
-													<td>10:08 PM EST</td>
-												 </tr>
-										
+												 <%}} %>
+												
 											  </tbody>
 										   </table>
 										</div>
@@ -482,15 +457,6 @@
 								</div>
 								</div>
 								</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
