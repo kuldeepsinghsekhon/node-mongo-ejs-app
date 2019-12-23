@@ -2,11 +2,11 @@
     <div class="col-md-12 grid-margin">
             <div class="d-flex justify-content-between align-items-center">
               <div>
-                <h4 class="font-weight-bold mb-0">Brands Mangement</h4>
+                <h4 class="font-weight-bold mb-0">Category Mangement</h4>
               </div>
               <div>
                   <button type="button" class="btn btn-primary btn-icon-text btn-rounded" data-toggle="modal" data-target="#myModal">
-                    <i class="ti-clipboard btn-icon-prepend"></i>Newbrand
+                    <i class="ti-clipboard btn-icon-prepend"></i>NewCategory
                   </button>
               </div>
             </div>
@@ -14,19 +14,17 @@
     <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title">All Users</h4>
+                <h4 class="card-title">All Category</h4>
                 <p class="card-description">
-                  Manage <code>users</code>
+                  Manage <code>Category</code>
                 </p>
                 <div class="table-responsive">
                   <table class="table table-striped">
                     <thead>
                       <tr>
+                        
                         <th>
-                          User Image
-                        </th>
-                        <th>
-                          Full name
+                          Name
                         </th>
                         <th>
                            Edit
@@ -38,10 +36,7 @@
                     </thead>
                     <tbody>
                         <% for (var i = 0; i < brands.length; i++) { %>
-                      <tr class="data-row">
-                          <input value="<%= brands[i].image; %>" type="hidden"class="image">
-                        <td >
-                          <img class="image" src="/uploads/brands/<%= brands[i].image; %> " value="<%= brands[i].image; %>" alt="image" data-item-image="<%=brands[i].image %>"/>
+
                         </td>
                         <td class="name" data-item-name="<%=brands[i].name %>">
                             <%= brands[i].name %>
@@ -53,7 +48,7 @@
                             </button>
                         </td> 
                         <td>
-                            <a class=" btn btn-primary btn-rounded btn-icon" href="/admin/brand/<%=brands[i]._id %>/delete" >
+                            <a class=" btn btn-primary btn-rounded btn-icon" href="/admin/category/<%=brands[i]._id %>/delete" >
                               <i class="ti-file btn-icon-append"></i> 
                             </a>
                         </td> 
@@ -71,7 +66,7 @@
                 <% if (current == 1) { %>
                     <li class="disabled"><a class="page-link">First</a></li>
                 <% } else { %>
-                    <li  class="page-item"><a class="page-link" href="/admin/brand/1">First</a></li>
+                    <li  class="page-item"><a class="page-link" href="/admin/category/1">First</a></li>
                 <% } %>
                 <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
                 <% if (i !== 1) { %>
@@ -81,7 +76,7 @@
                     <% if (i == current) { %>
                         <li class="page-item active"><a class="page-link"><%= i %></a></li>
                     <% } else { %>
-                        <li class="page-item"><a class="page-link" href="/admin/brand/<%= i %>"><%= i %></a></li>
+                        <li class="page-item"><a class="page-link" href="/admin/category1/<%= i %>"><%= i %></a></li>
                     <% } %>
                     <% if (i == Number(current) + 4 && i < pages) { %>
                         <li class="page-item disabled" ><a class="page-link">...</a></li>
@@ -90,7 +85,7 @@
                 <% if (current == pages) { %>
                     <li class="disabled"><a class="page-link">Last</a></li>
                 <% } else { %>
-                    <li><a  class="page-link" href="/admin/brand/<%= pages %>">Last</a></li>
+                    <li><a  class="page-link" href="/admin/category1/<%= pages %>">Last</a></li>
                 <% } %>
             </ul>
         <% } %>
@@ -104,23 +99,16 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Brand</h4>
+          <h4 class="modal-title">Category</h4>
         </div>
         <div class="modal-body">
-            <form method="post" action="/admin/add-brand" enctype="multipart/form-data">
+            <form method="post" action="/admin/add-category" enctype="multipart/form-data">
                 <div class="panel panel-default">
                     <div class="panel-body">
                             <div class="form-group">                              
                                     <input type="text" id="brand_name" class="form-control" name="brand_name" placeholder="brand Name">
-                                </div>
-                      
-                     
-                        <div class="form-group">
-                                <input type="file" id="brandImage" class="form-control" name="brandImage" placeholder="brand Image">
-                            </div>
-                           
-                               
-                        <button type="submit" class="btn btn-success">Add New Brand</button>
+                                </div>                             
+                        <button type="submit" class="btn btn-success">Add New Category</button>
                     </div>
                 </div>
             </form>
@@ -143,7 +131,7 @@
           </button>
         </div>
         <div class="modal-body" id="attachment-body-content">
-          <form id="edit-brand" class="form-horizontal" method="POST" action="/admin/brand/update"  enctype="multipart/form-data">
+          <form id="edit-brand" class="form-horizontal" method="POST" action="/admin/category/update"  enctype="multipart/form-data">
             <div class="card text-white bg-dark mb-0">
               <div class="card-header">
                 <h2 class="m-0">Edit</h2>
@@ -164,10 +152,7 @@
                 <div class="form-group">
                   <input type="hidden" class="form-control" id="modal-input-image">
                 </div>
-                <div class="form-group">
-                        <label class="col-form-label" for="modal-input-description">Image</label>
-                        <input type="file" name="brandImage" class="form-control"required>
-                      </div>
+  
                 <div class="form-group">
                         <input type="submit"  class="form-control" value="submit" required>
                       </div>

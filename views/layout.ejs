@@ -30,7 +30,20 @@
 
 <!-- Load the PayPal Checkout component. -->
 <script src="https://js.braintreegateway.com/web/3.55.0/js/paypal-checkout.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="/assets/js/rotate.js" type="text/javascript"></script>
+<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
       </head>
+      <style type="text/css">
+		
+        .photo_3d { cursor: crosshair;}
+        .photo_3d img {width: 100%;max-width: 600px;}
+        .photo_3d {text-align: center;}
+        .photo_3d img {width: 100%;max-width: 600px;display: inline;}
+    </style>
   <body>
       <% include ./partials/nav %>
  <%- body %>
@@ -113,6 +126,17 @@ braintree.client.create(/* ... */);
       //     });
       //   });
       // });
+    </script>
+   	<script type="application/javascript">
+      $(document).on('ready', function() {
+        $('.photo_3d').rotate3d({
+          'source': '../../../public/assets/images/',
+          'ext' :'.jpg',
+          'count' : 10,
+          'speed': 10,
+        });
+      });
+
     </script>
   </body>
 </html>

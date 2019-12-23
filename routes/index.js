@@ -5,26 +5,27 @@ const passport = require('passport');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const Product = require('../models/Product');
 const Cart = require('../models/Mycart');
-
-router.get('/',forwardAuthenticated, function(req, res, next) {
-  var perPage = 9;
-  var page = req.params.page || 1;
-  Product
-      .find({})
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
-      .exec(function(err, products) {
-          Product.count().exec(function(err, count) {
-              if (err) return next(err)
-              res.render('pages/public/home', {
-                  products: products,
-                  current: page,
-                  pages: Math.ceil(count / perPage),
-                  layout:'layout'
-              })
-          })
-      })
-});
+const product_controller = require('../controllers/product.controller');
+router.get('/',forwardAuthenticated, product_controller.products);
+// router.get('/',forwardAuthenticated, function(req, res, next) {
+//   var perPage = 9;
+//   var page = req.params.page || 1;
+//   Product
+//       .find({})
+//       .skip((perPage * page) - perPage)
+//       .limit(perPage)
+//       .exec(function(err, products) {
+//           Product.count().exec(function(err, count) {
+//               if (err) return next(err)
+//               res.render('pages/public/home', {
+//                   products: products,
+//                   current: page,
+//                   pages: Math.ceil(count / perPage),
+//                   layout:'layout'
+//               })
+//           })
+//       })
+// });
 
 // Register Page
 router.get('/sign-up',forwardAuthenticated, forwardAuthenticated,auth_controller.showSignUp);
@@ -81,5 +82,9 @@ router.get('/add-to-cart/:id', forwardAuthenticated,(req, res,next) => {
   router.get('/search',forwardAuthenticated, (req, res) => res.render('pages/public/search',{
     layout:'layout'
   }));
+
   router.get('/saveinfo-stripe-standard',forwardAuthenticated,auth_controller.saveinfoStripeStandard);
+  router.get('/category/:category_slug',forwardAuthenticated,product_controller.productsByCategory);
+  router.get('/saleschart/:id',forwardAuthenticated,product_controller.findByIdChart);
+
 module.exports = router;

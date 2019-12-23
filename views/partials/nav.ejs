@@ -112,45 +112,12 @@
                  <li class="">
                     <a href="/products" class="sf-with-ul">Browse</a>
                     <div class="megamenu megamenu-fixed-width" style="display: none;">
-                       <div class="row">
-                          <div class="col-lg-8">
-                             <div class="row">
-                                <div class="col-lg-6">
-                                   <div class="menu-title">
-                                      <a href="#">Variations 1<span class="tip tip-new">New!</span></a>
-                                   </div>
                                    <ul>
-                                      <li><a href="/">Fullwidth Banner<span class="tip tip-hot">Hot!</span></a></li>
-                                      <li><a href="/">Left Sidebar</a></li>
-                                      
-                                   </ul>
-                                </div>
-                                <!-- End .col-lg-6 -->
-                                <div class="col-lg-6">
-                                   <div class="menu-title">
-                                      <a href="#">Variations 2</a>
-                                   </div>
-                                   <ul>
-                                      <li><a href="#">Product List Item Types</a></li>
-                                      <li><a href="/">4 Columns Products <span class="tip tip-new">New</span></a></li>
-                                      
-                                   </ul>
-                                </div>
-                                <!-- End .col-lg-6 -->
-                             </div>
-                             <!-- End .row -->
-                          </div>
-                          <!-- End .col-lg-8 -->
-                          <div class="col-lg-4">
-                             <div class="banner">
-                                <a href="#">
-                                <img src="/assets/images/menu-banner-2.jpg" alt="Menu banner">
-                                </a>
-                             </div>
-                             <!-- End .banner -->
-                          </div>
-                          <!-- End .col-lg-4 -->
-                       </div>
+                                    <% for (var i = 0; i < category.length; i++) { %>
+                                       <li><a href="/category/<%=category[i].name %>"><%=category[i].name %></a></li>
+                                      <%}%>
+
+                                   </ul>                      
                     </div>
                     <!-- End .megamenu -->
                  </li>
@@ -180,7 +147,7 @@
                         <li><a href="/user/portfolio">Portfolio</a></li>
                         <li><a href="/user/Following">Following</a></li>
                         <li><a href="/user/setting">Setings</a></li>
-                        <li><a href="/signout">Signout</a></li>
+                        <li><a href="/logout">Signout</a></li>
                      </ul>
                   </li>
                   <% }else{ %>
@@ -210,22 +177,9 @@
            <li>
               <a href="/">Categories</a>
               <ul>
-                 <li><a href="/">Full Width Banner</a></li>
-                 <li><a href="/">Boxed Slider Banner</a></li>
-                 <li><a href="/">Boxed Image Banner</a></li>
-                 <li><a href="/">Left Sidebar</a></li>
-                 <li><a href="/">Right Sidebar</a></li>
-                 <li><a href="/">Product Flex Grid</a></li>
-                 <li><a href="/">Horizontal Filter 1</a></li>
-                 <li><a href="/">Horizontal Filter 2</a></li>
-                 <li><a href="#">Product List Item Types</a></li>
-                 <li><a href="/">Ajax Infinite Scroll<span class="tip tip-new">New</span></a></li>
-                 <li><a href="/">3 Columns Products</a></li>
-                 <li><a href="/">4 Columns Products</a></li>
-                 <li><a href="/">5 Columns Products</a></li>
-                 <li><a href="/">6 Columns Products</a></li>
-                 <li><a href="/">7 Columns Products</a></li>
-                 <li><a href="/">8 Columns Products</a></li>
+               <% for (var i = 0; i < category.length; i++) { %>
+                 <li><a href="/"><% category[i].name %></a></li>
+                <%}%>
               </ul>
            </li>
            <li>

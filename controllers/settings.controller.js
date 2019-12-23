@@ -334,12 +334,13 @@ exports.productsBuying=function(req, res, next) {
   var perPage = 9;
   var page = req.params.page || 1;
   //console.log(req.user._id);
-  var query = { user: req.user._id };
+  //var query = { user: req.user._id };
   var query = { user: req.user._id ,status:'buybid'}; 
   Promise.all([
-    OrderBid.find({ buyer: req.user }).populate({path:'product'}),
+    OrderBid.find({ buyer: req.user._id }).populate({path:'product'}),
     BuyBid.find(query).sort({bidprice:-1}).limit(10),
   ]).then( ([orders,buybids])=>{
+    console.log(req.user);
     res.render('pages/users/buying', {
       buybids: buybids,
       orders:orders,

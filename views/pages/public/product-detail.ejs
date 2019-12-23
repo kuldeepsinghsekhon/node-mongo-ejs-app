@@ -7,8 +7,8 @@
 						 <h1 class="name" data-testid="product-name"><%=product.name%></h1>
 						 <small>
 							<div class="header-stat"><span class="extra-space">Condition:</span><span data-testid="product-condition" class="sneak-score">New</span></div>
-							<span class="divider-pipe">|</span>
-							<div class="header-stat">Ticker:<span class="soft-black" data-testid="product-ticker" title=""> AJ1MS-FLBTG</span></div>
+							<!-- <span class="divider-pipe">|</span>
+							<div class="header-stat">Ticker:<span class="soft-black" data-testid="product-ticker" title=""> AJ1MS-FLBTG</span></div> -->
 							<span class="divider-pipe">|</span>
 							<div class="header-stat"><a href="https://help.stockx.com/s/article/How-does-the-verification-process-work" class="sneak-score" target="_blank" rel="noopener noreferrer" data-testid="product-sneaker-score">100% Authentic</a></div>
 						 </small>
@@ -250,28 +250,31 @@
 				   </div>
 				</div>
 	
+				<!-- <div class="product-media">
+					<div class="full " style="position: relative;">
+					 <div class="container">
+						 
+							 <div class="photo_3d">
+							 
+							 </div>
+						 </div>
+		 
+					</div>
+					<div class="product-gallery hidden-xs"></div>
+				 </div> -->
 	
 	
-	
-				<div class="product-media">
+				 <div class="product-media">
 				   <div class="full " style="position: relative;">
-					  <div class="container-360">
+					  <div class="container">
 						 <div class="image-container"><img data-testid="product-detail-image" alt="Jordan 1 Mid SE Fearless Blue the Great" src="/uploads/products/<%= product.image %>" draggable="false" ) 400px"></div>
-						 <div class="rc-slider">
-							<div class="rc-slider-rail" style="height: 5px;"></div>
-							<div class="rc-slider-track" style="visibility: visible; left: 0%; width: 0%; height: 5px; background-color: rgb(153, 153, 153);"></div>
-							<div class="rc-slider-step"></div>
-							<div class="rc-slider-handle" style="left: 0%;"></div>
-							<div class="rc-slider-mark"></div>
+						 <div class="photo_3d">
+						
 						 </div>
 					  </div>
 				   </div>
 				   <div class="product-gallery hidden-xs"></div>
-				</div>
-	
-	
-	
-	
+				</div> 
 	</div>
 	
 	<div class="container">
@@ -311,15 +314,15 @@
 						  <div class="product-market-summary">
 							 <ul class="row list-unstyled">
 								<li class="ft-high-low-col ">
-								   <img src="images/maker1.png"><span>52 Week </span>
+								   <img src="/assets/images/maker1.png"><span>52 Week </span>
 								   <div class="value-container"><span>High $238</span><span> | Low $135</span></div>
 								</li>
 								<li class="ds-range-col market-up">
-								   <img src="images/maker2.png" alt="chart"><span>Trade Range (12 Mos.)</span>
+								   <img src="/assets/images/maker2.png" alt="chart"><span>Trade Range (12 Mos.)</span>
 								   <div class="ds-range value-container"><span class="value">$144<span> - </span>$152</span></div>
 								</li>
 								<li class="volatility-col market-down">
-								   <img src="images/maker3.png" alt="volatility"><span>Volatility</span>
+								   <img src="/assets/images/maker3.png" alt="volatility"><span>Volatility</span>
 								   <div class="value-container"><span class="value">3.0%</span></div>
 								</li>
 							 </ul>
@@ -340,19 +343,20 @@
 											</div>
 										 </div>
 										 <ul role="navigation" class="TileRow__Row-sc-1ch097f-0 eLzsmZ">
+											<% for (var i = 0; i < relatedproducts.length; i++) { %>
 											<div>
 											   <div class="tile Tile-oazi1d-0 bbbEOC" data-testid="product-tile">
-												  <a style="color: black;" href="/air-jordan-1-mid-se-light-bone">
-													 <div class="TileImage-wau2e8-0 cqDtuD" style="position: relative; padding-top: 58%;"><img alt="Jordan 1 Mid SE Light Bone" src="images/Air-Jordan-1-Mid-SE-Light-Bone.png" class="LazyImage__StyledImage-sc-153p075-0 MEhRc"></div>
+												  <a style="color: black;" href="/uploads/products/<%= relatedproducts[i].image %>">
+													 <div class="TileImage-wau2e8-0 cqDtuD" style="position: relative; padding-top: 58%;"><img alt="Jordan 1 Mid SE Light Bone" src="/uploads/products/<%= relatedproducts[i].image %>" class="LazyImage__StyledImage-sc-153p075-0 MEhRc"></div>
 													 <div class="TileBody-x9tqoz-0 jscJze">
 														<div style="height: 38px;  margin-bottom: 6px;" size="16" class="PrimaryText-sc-1x1p394-0 hbRDwP">
-														   <div>Jordan 1 Mid SE</div>
-														   <div>Light Bone</div>
+														   <div><%= relatedproducts[i].name %></div>
+														   <!-- <div>Light Bone</div> -->
 														</div>
 														<div>
 														   <div class="price-line-div">
 															  <div class="SecondaryText-sc-1puaksj-0 cNrUGk">lowest ask</div>
-															  <div size="22" class="PrimaryText-sc-1x1p394-0 cziEBO">$199</div>
+															  <div size="22" class="PrimaryText-sc-1x1p394-0 cziEBO">$<%= relatedproducts[i].price %></div>
 														   </div>
 														</div>
 														<div class="change  SecondaryText-sc-1puaksj-0 cNrUGk">Last Sale: $145</div>
@@ -360,86 +364,11 @@
 												  </a>
 											   </div>
 											</div>
-											<div>
-											   <div class="tile Tile-oazi1d-0 bbbEOC" data-testid="product-tile">
-												  <a style="color: black;" href="/air-jordan-1-mid-se-fearless-maison-chateau-rouge">
-													 <div class="TileImage-wau2e8-0 cqDtuD" style="position: relative; padding-top: 58%;"><img alt="Jordan 1 Mid SE Fearless Maison Chateau Rouge" src="images/Air-Jordan-1-Mid-SE-Fearless-Maison-Chateau-Rouge.png" class="LazyImage__StyledImage-sc-153p075-0 MEhRc"></div>
-													 <div class="TileBody-x9tqoz-0 jscJze">
-														<div style="height: 38px; margin-bottom: 6px;" size="16" class="PrimaryText-sc-1x1p394-0 hbRDwP">
-														   <div>Jordan 1 Mid SE</div>
-														   <div>Fearless Maison Chateau Rouge</div>
-														</div>
-														<div>
-														   <div class="price-line-div">
-															  <div class="SecondaryText-sc-1puaksj-0 cNrUGk">lowest ask</div>
-															  <div size="22" class="PrimaryText-sc-1x1p394-0 cziEBO">$310</div>
-														   </div>
-														</div>
-														<div class="change  SecondaryText-sc-1puaksj-0 cNrUGk">Last Sale: $308</div>
-													 </div>
-												  </a>
-											   </div>
-											</div>
-											<div>
-											   <div class="tile Tile-oazi1d-0 bbbEOC" data-testid="product-tile">
-												  <a style="color: black;" href="/air-jordan-1-mid-se-fearless-edison-chen">
-													 <div class="TileImage-wau2e8-0 cqDtuD" style="position: relative; padding-top: 58%;"><img alt="Jordan 1 Mid SE Fearless Edison Chen CLOT" src="images/Air-Jordan-1-Mid-SE-Fearless-Edison-Chen-CLOT.jpg" class="LazyImage__StyledImage-sc-153p075-0 MEhRc"></div>
-													 <div class="TileBody-x9tqoz-0 jscJze">
-														<div style="height: 38px;  margin-bottom: 6px;" size="16" class="PrimaryText-sc-1x1p394-0 hbRDwP">
-														   <div>Jordan 1 Mid SE</div>
-														   <div>Fearless Edison Chen CLOT</div>
-														</div>
-														<div>
-														   <div class="price-line-div">
-															  <div class="SecondaryText-sc-1puaksj-0 cNrUGk">lowest ask</div>
-															  <div size="22" class="PrimaryText-sc-1x1p394-0 cziEBO">$69,666</div>
-														   </div>
-														</div>
-														<div class="change  SecondaryText-sc-1puaksj-0 cNrUGk">Last Sale: --</div>
-													 </div>
-												  </a>
-											   </div>
-											</div>
-											<div>
-											   <div class="tile Tile-oazi1d-0 bbbEOC" data-testid="product-tile">
-												  <a style="color: black;" href="/air-jordan-1-mid-se-deep-royal-gs.png">
-													 <div class="TileImage-wau2e8-0 cqDtuD" style="position: relative; padding-top: 58%;"><img alt="Jordan 1 Mid SE Deep Royal (GS)" src="images/Air-Jordan-1-Mid-SE-Deep-Royal-GS.png" class="LazyImage__StyledImage-sc-153p075-0 MEhRc"></div>
-													 <div class="TileBody-x9tqoz-0 jscJze">
-														<div style="height: 38px; margin-bottom: 6px;" size="16" class="PrimaryText-sc-1x1p394-0 hbRDwP">
-														   <div>Jordan 1 Mid</div>
-														   <div>SE Deep Royal (GS)</div>
-														</div>
-														<div>
-														   <div class="price-line-div">
-															  <div class="SecondaryText-sc-1puaksj-0 cNrUGk">lowest ask</div>
-															  <div size="22" class="PrimaryText-sc-1x1p394-0 cziEBO">$188</div>
-														   </div>
-														</div>
-														<div class="change  SecondaryText-sc-1puaksj-0 cNrUGk">Last Sale: $179</div>
-													 </div>
-												  </a>
-											   </div>
-											</div>
-											<div>
-											   <div class="tile Tile-oazi1d-0 bbbEOC" data-testid="product-tile">
-												  <a style="color: black;" href="/air-jordan-1-mid-se-lakers">
-													 <div class="TileImage-wau2e8-0 cqDtuD" style="position: relative; padding-top: 58%;"><img alt="Jordan 1 Mid SE Lakers" src="https://stockx.imgix.net/Air-Jordan-1-Mid-SE-Lakers-Product.jpg?fit=fill&amp;bg=FFFFFF&amp;w=300&amp;h=214&amp;auto=format,compress&amp;q=90&amp;dpr=2&amp;trim=color&amp;updated_at=1551891410" class="LazyImage__StyledImage-sc-153p075-0 MEhRc"></div>
-													 <div class="TileBody-x9tqoz-0 jscJze">
-														<div style="height: 38px; overflow: hidden; margin-bottom: 6px;" size="16" class="PrimaryText-sc-1x1p394-0 hbRDwP">
-														   <div>Jordan 1 Mid</div>
-														   <div>SE Lakers</div>
-														</div>
-														<div>
-														   <div class="price-line-div">
-															  <div class="SecondaryText-sc-1puaksj-0 cNrUGk">lowest ask</div>
-															  <div size="22" class="PrimaryText-sc-1x1p394-0 cziEBO">$102</div>
-														   </div>
-														</div>
-														<div class="change  SecondaryText-sc-1puaksj-0 cNrUGk">Last Sale: $175</div>
-													 </div>
-												  </a>
-											   </div>
-											</div>
+											<% } %>
+										
+											
+										
+										
 										 </ul>
 									  </div>
 								   </div>
@@ -459,7 +388,7 @@
 											<div class="col-md-8">
 											<div class="bid-page" style="position: relative; overflow-y: hidden;">
 											   <div class="split-pane-page">
-												<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+												<div id="chart-container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 												</div>
 											</div>
 											
@@ -526,7 +455,7 @@
 								
 	
 										<div class="col-md-4 gauges-wrapper">
-										   <div class="h4-12-month"><img alt="gauge" src="images/maker1.png"><span>12 Month Historical</span></div>
+										   <div class="h4-12-month"><img alt="gauge" src="/assets/images/maker1.png"><span>12 Month Historical</span></div>
 										   <div class="gauges">
 											  <div class="gauge-container">
 												 <div class="gauge"></div>
@@ -578,4 +507,66 @@
 	</script>
 			
 		
-	
+			<script>
+				Highcharts.getJSON(
+					'/saleschart/<%=product._id%>',
+				  function (data) {
+				
+					Highcharts.chart('chart-container', {
+					  chart: {
+						zoomType: 'x'
+					  },
+					  title: {
+						text: '<%=product.name%>'
+					  },
+					  subtitle: {
+						text: document.ontouchstart === undefined ?
+						  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+					  },
+					  xAxis: {
+						type: 'datetime'
+					  },
+					  yAxis: {
+						title: {
+						  text: 'LATEST SALES'
+						}
+					  },
+					  legend: {
+						enabled: false
+					  },
+					  plotOptions: {
+						area: {
+						  fillColor: {
+							linearGradient: {
+							  x1: 0,
+							  y1: 0,
+							  x2: 0,
+							  y2: 1
+							},
+							stops: [
+							  [0, Highcharts.getOptions().colors[0]],
+							  [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+							]
+						  },
+						  marker: {
+							radius: 2
+						  },
+						  lineWidth: 1,
+						  states: {
+							hover: {
+							  lineWidth: 1
+							}
+						  },
+						  threshold: null
+						}
+					  },
+				
+					  series: [{
+						type: 'area',
+						name: 'netprice',
+						data: data
+					  }]
+					});
+				  }
+				);
+				</script>

@@ -14,7 +14,39 @@ exports.products = function(req, res, next) {
     Product
         .find({})
         .skip((perPage * page) - perPage)
-        .limit(perPage)
+        .populate({path:'sellbids'
+        ,options: {
+          limit: 1,
+          sort: { bidprice: +1}        
+     } })
+     .limit(perPage)
+        .exec(function(err, products) {
+            Product.count().exec(function(err, count) {
+                if (err) return next(err)
+                console.log(products);
+                res.render('pages/public/home', {
+                    products: products,
+                    current: page,
+                    pages: Math.ceil(count / perPage),
+                    layout:'layout'
+                })
+            })
+        })
+  }
+  exports.productsByCategory = function(req, res, next) {
+    var perPage = 9;
+    var category_slug=req.params.category_slug;
+
+    var page = req.params.page || 1;
+    Product
+        .find({category:category_slug})
+        .skip((perPage * page) - perPage)
+        .populate({path:'sellbids'
+        ,options: {
+          limit: 1,
+          sort: { bidprice: +1}        
+     } })
+     .limit(perPage)
         .exec(function(err, products) {
             Product.count().exec(function(err, count) {
                 if (err) return next(err)
@@ -37,15 +69,20 @@ exports.products = function(req, res, next) {
       BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1),
       OrderBid.find({ product: productId }).sort({orderdate:-1}).limit(2),
       OrderBid.count({ product: productId}),
-    ]).then( ([ product, sellbid,highbid,lastsale,ordercount ]) => {
+      Product.find({ }).limit(10),
+    ]).then( ([ product, sellbid,highbid,lastsale,ordercount,relatedproducts]) => {
       console.log("lastsale");
       console.log(lastsale);
       var spchange=0;
      var highsale;
-      if(lastsale.length>0){
+      if(lastsale.length>1){
      spchange=lastsale[0].netprice-lastsale[1].netprice;
      highsale=lastsale[0];
       }
+      if(lastsale.length>0){
+
+        highsale=lastsale[0];
+         }
       res.render('pages/public/product-detail', {
         product: product,
         lowbid:sellbid,
@@ -53,7 +90,8 @@ exports.products = function(req, res, next) {
         layout:'layout',
         spchange:spchange,
         lastsale:highsale,
-        ordercount:ordercount
+        ordercount:ordercount,
+        relatedproducts:relatedproducts
        
        })
       });
@@ -522,6 +560,7 @@ exports.saveProduct=function(req, res, next) {
     var product = new Product();
     var imgname='default.jpg';
     product.category = req.body.category_name;
+    product.releasedate = req.body.releasedate;
     product.description = req.body.product_description;
     product.name = req.body.product_name;
     product.sku = req.body.product_sku;
@@ -643,3 +682,24 @@ exports.editProduct=function(req, res, next) {
             res.redirect('/admin/template-products/1');
         });
       }
+      exports.findByIdChart=function(req, res, next) {
+        var productId=req.params.id; 
+        Promise.all([
+         OrderBid.find({ product: productId },{ orderdate: 1, netprice: 1, _id:0 }).sort({orderdate:-1}),  
+        ]).then( ([lastsale]) => {
+          var resarr=[];
+          for(i=0;i<lastsale.length;i++){
+            var date=1167609600000+10000;
+            resarr.push([lastsale[i].netprice,date]);
+           
+          }
+          //   var spchange=0;
+          // var highsale;
+          //   if(lastsale.length>0){
+          // spchange=lastsale[0].netprice-lastsale[1].netprice;
+          // highsale=lastsale[0];
+          res.json(resarr);//.toJSON();
+  
+        });
+     }  
+     

@@ -12,7 +12,7 @@ const fileUpload = require('express-fileupload');
 const product_controller = require('../controllers/product.controller');
 const users_controller = require('../controllers/user.controller');
 const admin_controller = require('../controllers/admin.controller');
-
+const Category = require('../models/Category');
 
 const app = express();
 app.use(fileUpload());
@@ -74,7 +74,10 @@ function(req, res){
 
 // (req, res) => res.render('pages/admin/dashboard',{ layout:'admin-layout' }));
  router.get('/add-product', function(req, res, next) {
-    res.render('pages/admin/add-product',{layout:'admin-layout'}); 
+  Category.find({},function(err,category){
+    res.render('pages/admin/add-product',{layout:'admin-layout',category:category}); 
+    });
+    
  });
 
 router.get('/product/:id/edit', product_controller.editProduct);
@@ -96,4 +99,8 @@ router.get('/brand/:id',ensureAuthenticated, permit('Admin'), admin_controller.l
   router.post('/brand/update',ensureAuthenticated, permit('Admin'),admin_controller.updateBrand);
   router.get('/brand/:id/delete',ensureAuthenticated, permit('Admin'), admin_controller.deleteBrand);
 
+  router.get('/category/:id',ensureAuthenticated, permit('Admin'), admin_controller.listCategory);
+  router.post('/add-category/',ensureAuthenticated,permit('Admin'), admin_controller.saveCategory);
+  router.post('/category/update',ensureAuthenticated, permit('Admin'),admin_controller.updateCategory);
+  router.get('/category/:id/delete',ensureAuthenticated, permit('Admin'), admin_controller.deleteCategory);
 module.exports = router;

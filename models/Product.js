@@ -11,6 +11,7 @@ const prodSchema = new mongoose.Schema({
  description: String,
  category: String, //sneekers/addidas/yeezee/model
  sku: Number,
+ releasedate:Date,
  price: Number,
  style:String,
  image: String,
@@ -37,7 +38,7 @@ variants:[{
     ref: 'Variant' //multiple image 
  }],
  sellbids:[{ type: Schema.Types.ObjectId,
-  ref: 'SellBid'
+  ref: 'sellBid'
 }] ,
 buybids:[{ type: Schema.Types.ObjectId,
   ref: 'BuyBid'

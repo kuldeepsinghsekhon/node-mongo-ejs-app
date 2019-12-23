@@ -11,21 +11,10 @@
                 </div><!-- End .container -->
             </nav>
 		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
 						 
 						 <div class="container">
 				<div class="row">
-				
-				
-				
-				
-				
+
 				<aside class="sidebar-shop col-lg-3 order-lg-first">
                         <div class="pin-wrapper" style="height: 1035.4px;"><div class="sidebar-wrapper sticky-active sticky-absolute sticky-transition" style="width: 270px; position: absolute; ">
                             <div class="widget">
@@ -182,30 +171,26 @@
                                        <a href="/products/<%= products[i]._id %>" class="btn-quickview">Quick View</a>
                                     </figure>
                                     <div class="product-details">
-                                       <div class="ratings-container">
-                                          <div class="product-ratings">
-                                             <i class="fa fa-star" aria-hidden="true"></i>
-                                             <i class="fa fa-star" aria-hidden="true"></i>
-                                             <i class="fa fa-star" aria-hidden="true"></i>
-                                             <i class="fa fa-star" aria-hidden="true"></i>
-                                             <i class="fa fa-star" aria-hidden="true"></i>
-                                             <!-- End .ratings -->
-                                          </div>
-                                          <!-- End .product-ratings -->
-                                       </div>
+                                      
                                        <!-- End .product-container -->
                                        <h2 class="product-title">
                                           <a href="/products/<%= products[i]._id %>"> <%= products[i].name %></a>
                                        </h2>
+                                       <p class="product-title">Lowest Ask</p>
                                        <div class="price-box">
-                                          <span class="product-price">$<%= products[i].price %></span>
+                                           <%if(products[i].sellbids.length>0){%>
+                                            <span class="product-price">$<%= products[i].sellbids[0].bidprice %></span>
+                                          <% }else{%>
+                                            <span class="product-price">--</span>
+   
+                                            <% }%>
                                        </div>
                                        <!-- End .price-box -->
-                                       <div class="product-action">
+                                       <!-- <div class="product-action">
                                           <a href="/products/<%= products[i]._id %>" class="paction add-cart" title="Add to Cart">
                                           <span>Add to Cart</span>
                                           </a>
-                                       </div>
+                                       </div> -->
                                        <!-- End .product-action -->
                                     </div>
                                     <!-- End .product-details -->

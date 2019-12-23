@@ -7,6 +7,8 @@ const Attribute = require('../models/Attribute');
 const OrderBid = require('../models/OrderBid');
 /*brand controller */
 const Brand = require('../models/Brand');
+const Category = require('../models/Category');
+
 exports.listBrands=function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
@@ -137,6 +139,82 @@ exports.saveBrand=function(req, res, next) {
 module.saveAttribute=function name(req,res) {
     
 }
+/******************************************Category crud*************************************** */
+exports.listCategory=function(req, res, next) {
+  var perPage = 9;
+  var page = req.params.page || 1;
+  Category
+      .find({})
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
+      .exec(function(err, brand) {
+          Brand.count().exec(function(err, count) {
+              if (err) return next(err)
+              res.render('pages/admin/category', {
+                  brands: brand,
+                  current: page,
+                  pages: Math.ceil(count / perPage),
+                  layout:'admin-layout'
+              })
+          })
+      })
+}
+
+/* admin can add Category */
+exports.saveCategory=function(req, res, next) {
+  var category = new Category();
+  
+  category.name = req.body.brand_name;
+
+  let errors = [];
+  if (!req.body.brand_name  ) {
+    errors.push({ msg: 'Please enter all Required fields' });
+  }
+
+  if (errors.length > 0) {
+    res.render('pages/admin/category', {
+      errors ,
+      layout:'admin-layout'
+    });
+  } else {
+
+    category.save(function(err,category) {
+      if (err){
+        throw err
+      } else{
+           // console.log(product);         
+      }      
+  });
+  req.flash(
+    'success_msg',
+    'Product Addded Successfully'
+  );
+  res.redirect('/admin/category/1');
+}
+  
+}
+
+/* Admin can update  Category */
+exports.updateCategory=function (req, res,next) {
+    console.log(req.body);
+  var brandId=req.body.brandid;
+  var brand = new Category();
+
+  brand.name = req.body.brand_name;
+
+      brod={name:req.body.brand_name};     
+
+  Brand.findByIdAndUpdate(brandId, {$set:brod}, function (err, brand) {
+          if (err) return next(err);
+          res.redirect('/admin/brand/1');
+      });
+    }
+    exports.deleteCategory= async function name(req, res, next) {
+      var productId=req.params.id;   
+      const del = await Category.deleteOne({ _id: productId});
+      console.log( del.deletedCount);
+      res.redirect('/admin/category/1');
+    }
 exports.productsBuyBids=function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
@@ -177,6 +255,7 @@ exports.productsSellBids=function(req, res, next) {
         
     })
 }
+
 exports.allOrders=function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
