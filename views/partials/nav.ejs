@@ -113,9 +113,9 @@
                     <a href="/products" class="sf-with-ul">Browse</a>
                     <div class="megamenu megamenu-fixed-width" style="display: none;">
                                    <ul>
-                                    <% for (var i = 0; i < category.length; i++) { %>
+                                    <% if(category){ for(var i = 0; i < category.length; i++) { %>
                                        <li><a href="/category/<%=category[i].name %>"><%=category[i].name %></a></li>
-                                      <%}%>
+                                      <%} }%>
 
                                    </ul>                      
                     </div>
@@ -177,9 +177,9 @@
            <li>
               <a href="/">Categories</a>
               <ul>
-               <% for (var i = 0; i < category.length; i++) { %>
+               <% if(category){for (var i = 0; i < category.length; i++) { %>
                  <li><a href="/"><% category[i].name %></a></li>
-                <%}%>
+                <%}}%>
               </ul>
            </li>
            <li>

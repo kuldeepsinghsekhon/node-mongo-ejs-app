@@ -23,7 +23,7 @@ exports.products = function(req, res, next) {
         .exec(function(err, products) {
             Product.count().exec(function(err, count) {
                 if (err) return next(err)
-                console.log(products);
+               // console.log(products);
                 res.render('pages/public/home', {
                     products: products,
                     current: page,
@@ -71,8 +71,8 @@ exports.products = function(req, res, next) {
       OrderBid.count({ product: productId}),
       Product.find({ }).limit(10),
     ]).then( ([ product, sellbid,highbid,lastsale,ordercount,relatedproducts]) => {
-      console.log("lastsale");
-      console.log(lastsale);
+     // console.log("lastsale");
+    //  console.log(lastsale);
       var allsales=lastsale;
       var spchange=0;
      var highsale;
@@ -125,7 +125,7 @@ exports.sellProductVariant= async function(req, res, next) {
       layout:'layout'
      })
    // console.log( product );
-    console.log( sellbid );
+    //console.log( sellbid );
   });
 //  // console.log('fdsf');
 
@@ -166,7 +166,7 @@ exports.sellLowestBid=function name(req,res,next) {
   SellBid.find({productid:productId}).sort({bidprice:+1}).limit(1).exec(function(err, bid){
     SellBid.count().exec(function(err, count) {
       if(err)console.log(err);
-      console.log(bid);
+    //  console.log(bid);
       res.json({ bid:bid});
     }); 
   })
@@ -204,14 +204,14 @@ exports.sellCalculateCharges=async function(req, res, next) {
         askprice=parseInt(req.body.askprice);
         var expiry=req.body.expiry;
         expiry=expiry.split("Days").map(Number);       
-        console.log(expiry[0]);
+       // console.log(expiry[0]);
        }
      var TransactionFee=askprice*0.09;
      var Proc=askprice*0.03;
      var Shipping=30;
      var totalpayout=askprice-(TransactionFee+Proc+Shipping);
-     console.log(askprice);
-      res.json({ TransactionFee: TransactionFee ,Proc:Proc,Shipping:Shipping,discountcode:'',totalpayout:totalpayout });
+     //console.log(askprice);
+      res.json({ TransactionFee: TransactionFee.toFixed(2) ,Proc:Proc.toFixed(2),Shipping:Shipping.toFixed(2),discountcode:'',totalpayout:Math.ceil(totalpayout) });
       
   })
 
@@ -312,8 +312,8 @@ if(lowestask!=null){
   var Proc=bidprice*0.03;
   var Shipping=30;
   var totalcharges=Math.ceil(TransactionFee+Proc+Shipping);
-  console.log('total chrges'+totalcharges);
-  console.log('bidprice'+bidprice);
+  //console.log('total chrges'+totalcharges);
+  //console.log('bidprice'+bidprice);
 
  prod.sellbids.push(sellBid);
  
@@ -349,7 +349,7 @@ if(lowestask!=null){
         prod.save();
         
         res.send(result);
-        console.log(result);
+       // console.log(result);
       } else {
         res.status(500).send(error);
       }
@@ -377,7 +377,7 @@ exports.buyProductVariant=function name(req,res,next) {
       layout:'layout'
      })
    // console.log( product );
-    console.log( sellbid );
+   // console.log( sellbid );
   });
 }
 exports.placeBuyBid=async function name(req,res,next) {
@@ -424,8 +424,8 @@ exports.placeBuyBid=async function name(req,res,next) {
      var shipping=30;
      var totalpay=bidprice+(processingFee+authenticationFee+shipping);
   var totalcharges=Math.ceil(totalpay);
-  console.log('total chrges'+totalcharges);
-  console.log('bidprice'+bidprice);
+//  console.log('total chrges'+totalcharges);
+ // console.log('bidprice'+bidprice);
   //let buybids=[];
 //  var prod=await Product.findById(productId).populate('buybids');
 //  prod.buybids.push(buyBid);
@@ -490,14 +490,14 @@ exports.calculateBuyCharges=function name(req,res,next) {
         askprice=parseInt(req.body.askprice);
         var expiry=req.body.expiry;
         expiry=expiry.split("Days").map(Number);       
-        console.log(expiry[0]);
+        //console.log(expiry[0]);
        }
      var processingFee=askprice*0.09;
      var authenticationFee=askprice*0.03;
      var shipping=30;
      var totalpay=askprice+(processingFee+authenticationFee+shipping);
-     console.log(askprice);
-      res.json({ processingFee: processingFee ,authenticationFee:authenticationFee,shipping:shipping,discountcode:'',totalpay:totalpay });
+     //console.log(askprice);
+      res.json({ processingFee: processingFee.toFixed(2) ,authenticationFee:authenticationFee.toFixed(2),shipping:shipping.toFixed(2),discountcode:'',totalpay:Math.ceil(totalpay) });
       
   })
   // product=Product.findById(productId,function(err,product){
@@ -629,7 +629,7 @@ exports.saveProduct=function(req, res, next) {
         if (err){
           throw err
         } else{
-              console.log(product);         
+             // console.log(product);         
         }      
     });
     req.flash(

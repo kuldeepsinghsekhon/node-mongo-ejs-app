@@ -1,7 +1,8 @@
 const Category = require('../models/Category');
 module.exports = {
   ensureAuthenticated: function(req, res, next) {
-    Category.find({},function(err,category){
+    Category.find({},function(error,category){
+      //console.log(category)
       res.locals.category = category;
       });
     if (req.isAuthenticated()) {
@@ -14,7 +15,8 @@ module.exports = {
     res.redirect('/sign-in');
   },
   forwardAuthenticated: function(req, res, next) {
-    Category.find({},function(err,category){
+    Category.find({},function(erro,category){
+     // console.log(category)
       res.locals.category = category;
       });
     if (!req.isAuthenticated()) {

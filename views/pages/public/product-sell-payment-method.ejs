@@ -241,9 +241,10 @@ braintree.client.create({
         cvvLabel.text('CVV');
       }
     });
-
+    
     form.submit(function(event) {
       event.preventDefault();
+      $('#hosted-submit-button').attr("disabled", true).html('Payment Proccessing...');
       var formIsInvalid = false;
       var state = hostedFieldsInstance.getState();
 
@@ -286,18 +287,20 @@ braintree.client.create({
               // Tear down the Drop-in UI
               hostedFieldsInstance.teardown(function (teardownErr) {
                 if (teardownErr) {
-                  console.error('Could not tear down Drop-in UI!');
+                 // console.error('Could not tear down Drop-in UI!');
                 } else {
-                  console.info('Drop-in UI has been torn down!');
+                 // console.info('Drop-in UI has been torn down!');
                   // Remove the 'Submit payment' button
                  // $('#hosted-submit-button').remove();
                 }
               });
     
               if (result.success) {
-              
-                $('.toast').html('<h1>Success</h1><p>Your Drop-in UI is working! Check your <a href="https://sandbox.braintreegateway.com/login">sandbox Control Panel</a> for your test transactions.</p><p>Refresh to try another transaction.</p>');
-                $('.toast').toast('show');
+
+                $('#hosted-submit-button').attr("disabled", false).html('Payment Successfull');
+                $(location).attr('href', '/user/selling');
+                //$('.toast').html('<h1>Success</h1><p>Your Drop-in UI is working! Check your <a href="https://sandbox.braintreegateway.com/login">sandbox Control Panel</a> for your test transactions.</p><p>Refresh to try another transaction.</p>');
+               // $('.toast').toast('show');
               } else {
                
                 $('.toast').html('<h1>Error</h1><p>Check your console.</p>');

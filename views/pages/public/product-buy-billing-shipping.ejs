@@ -1,15 +1,14 @@
 
 	<div class="selection-title">Billing/Shipping</div>
 	<div class="selection-subtitle">Please choose your billing and shipping method</div>
-	<div class="selected-payment"><div class="payment-bubble credit"><img src="//stockx-assets.imgix.net/svg/icons/credit_card_white.svg?auto=compress,format"></div>
+	<div class="selected-payment"><div class="payment-bubble credit"><img src="#"></div>
 	<div class="payment-title">Use Credit Card for Billing</div><div class="selection-close">x</div></div>
 	<form action="/shop/checkout" method="post" id="checkout-form">
 			<div class='form-row'>				  
 	  <div class='col-xs-12 form-group required card_sec'>
 		<label class='control-label'>Name on Card</label>
     <input class='form-control' name="name" id="card-name" size='4' type='text' required>
-    <input class='form-control' name="paymentMethodNonce" id="paymentMethodNonce" size='4' type='hidden' value="">
-    
+    <input class='form-control' name="paymentMethodNonce" id="paymentMethodNonce" size='4' type='hidden' value="">    
 	  </div>
 	</div>
 	<div class='form-row'>
@@ -36,10 +35,12 @@
 
 	</div>
 	<div class="address-form fs-block">
-	   <div class="form-title">billing Info</div>
-	   <input data-testid="user-firstName" name="firstName" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value=""><input data-testid="user-lastName" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="">
-	   <div class="field   field-select">
-		  <select name="countryCodeAlpha2" required="" placeholder="Country">
+    <!----Biling info -->
+	   <div class="form-title">Billing Info</div>
+     <input data-testid="user-firstName" id="first_name_billing" name="firstName" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value="">
+     <input data-testid="user-lastName"  id="last_name_billing" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="">
+	   <div class="field field-select">
+		  <select name="countryCodeAlpha2"  id="country_code_billing" required="" placeholder="Country">
 			 <option value="" disabled="">Country</option>
 			 <option value="">Select Country or Region</option>
 			 <option value="US">United States</option>
@@ -58,22 +59,26 @@
 		  </select>		  
 	   </div>
 	   <div>
-		  <div class="GPlacesACField__Container-sc-1xqqpdz-0 iUshPx">
-        <input data-testid="user-streetAddress" name="streetAddress" type="text" required="" placeholder="Address" autocomplete="true" class="field  " value=""></div>
+		  <div class="">
+        <input data-testid="user-streetAddress" id="address_billing"name="address" type="text" required="" placeholder="Address" autocomplete="true" class="field  " value=""></div>
 	   </div>
-	   <input data-testid="user-extendedAddress" id="address" name="address" type="text" placeholder="Address 2" autocomplete="true" class="field  " value=""><input data-testid="user-locality" name="locality" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="">
-	   <div class="inner-flex between"><input data-testid="user-region" name="region" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value=""><input data-testid="user-postalCode" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value=""></div>
-	   <input data-testid="user-telephone" name="telephone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field  " value="">
+     <input data-testid="user-extendedAddress" id="address2_billing" name="address2" type="text" placeholder="Address 2" autocomplete="true" class="field  " value="">
+     <input id="city_billing" name="locality" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="">
+	   <div class="inner-flex between">
+       <input id="state_billing" name="region" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value="">
+       <input id="postalCode_billing" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value=""></div>
+	   <input id="telephone_billing" name="telephone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field  " value="">
   </div>
   <div class="billingCheckbox">
     <label for="differentShipping">Ship to my Billing</label>
     <input class="fs1" type="checkbox" id="differentShipping">
   </div>
-	<div class="address-form fs-block">
+	<div class="address-form fs-block shipping-form">
 	   <div class="form-title">Shipping Info</div>
-	   <input data-testid="user-firstName" name="firstName" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value=""><input data-testid="user-lastName" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="">
+     <input id="first_name_shipping" name="firstName" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value="">
+     <input id="last_name_shipping" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="">
 	   <div class="field   field-select">
-		  <select name="countryCodeAlpha2" required="" placeholder="Country">
+		  <select id="country_code_shipping" name="countryCodeAlpha2" required="" placeholder="Country">
 			 <option value="" disabled="">Country</option>
 			 <option value="">Select Country or Region</option>
 			 <option value="US">United States</option>
@@ -92,14 +97,17 @@
 		  </select>		  
 	   </div>
 	   <div>
-		  <div class="GPlacesACField__Container-sc-1xqqpdz-0 iUshPx"><input data-testid="user-streetAddress" name="streetAddress" type="text" required="" placeholder="Address" autocomplete="true" class="field  " value=""></div>
+		  <div class=""><input id="address_shipping" data-testid="user-streetAddress" name="streetAddress" type="text" required="" placeholder="Address" autocomplete="true" class="field  " value=""></div>
 	   </div>
-	   <input data-testid="user-extendedAddress" name="extendedAddress" type="text" placeholder="Address 2" autocomplete="true" class="field  " value=""><input data-testid="user-locality" name="locality" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="">
-	   <div class="inner-flex between"><input data-testid="user-region" name="region" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value=""><input data-testid="user-postalCode" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value=""></div>
-	   <input data-testid="user-telephone" name="telephone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field  " value="">
+     <input id="address2_shipping" data-testid="user-extendedAddress" name="extendedAddress" type="text" placeholder="Address 2" autocomplete="true" class="field  " value="">
+     <input id="city_shipping" name="locality" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="">
+     <div class="inner-flex between">
+       <input id="state_shipping" name="region" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value="">
+      <input id="postalCode_shipping" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value=""></div>
+	   <input id="telephone_shipping" name="telephone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field  " value="">
 	</div>
 <div class="nxt_btn">
-	   <button type="submit" class="btn btn-primary" >Make Payment</button>
+	   <button type="submit" class="btn btn-primary make-payment-bt" >Make Payment</button>
 		   
 	   </div>
 </form>
@@ -284,6 +292,7 @@ braintree.client.create({
       console.log(bidType)
           var productid="<%=product.id %>";
          // $("#paymentMethodNonce").val(payload.nonce);
+         $('.make-payment-bt').attr("disabled", true).html('Payment Proccessing...');
         $.ajax({
               type: 'POST',
               url:"/products/buy/<%=product.id %>",
@@ -302,7 +311,8 @@ braintree.client.create({
               });
     
               if (result.success) {
-              
+                $('.make-payment-bt').attr("disabled", false).html('Payment Successfull');
+                $(location).attr('href', '/user/buying');
                 $('.toast').html('<h1>Success</h1><p>Your Bid has been placed successfully.</p>');
                 $('.toast').toast('show');
               } else {
@@ -317,5 +327,25 @@ braintree.client.create({
     });
   });
 });
+</script>
+<script>
+
+  $("#differentShipping").on('change',function(){
+    $('.shipping-form').toggle();
+		//nodemon i 	getbidCharges();
+    if ($(this).is(':checked')) {
+      $('#first_name_shipping').val($('#first_name_billing').val());
+      $('#last_name_shipping').val($('#last_name_billing').val());
+      $('#address_shipping').val($('#address_billing').val());
+      $('#address2_shipping').val($('#address2_billing').val());
+      $('#telephone_shipping').val($('#telephone_billing').val());
+      $('#country_code_shipping').val($('#country_code_billing').val());
+      $('#city_shipping').val($('#city_billing').val());
+      $('#state_shipping').val($('#state_billing').val());
+      $('#postalCode_shipping').val($('#postalCode_billing').val());
+      
+    }
+    
+  			});
 </script>
 	 

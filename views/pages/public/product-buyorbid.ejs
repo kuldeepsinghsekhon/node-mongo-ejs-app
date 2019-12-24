@@ -81,6 +81,8 @@
 				  <div class="decoration">$</div>
 				  <input data-testid="product-bid-input" id="bid-price-input" placeholder="Enter Bid" class="amount" name="ask-amount" type="tel" maxlength="11" value="0">
 			   </div>
+			   <div class="bid-warning ">
+				<span class="warning-text"> Bid price must be more than 15</span></div>	
 			</div>
 
 			<div class="multi-order-summary ">
@@ -273,9 +275,20 @@
 			console.log(bidType)
 			getbidCharges(bidType);
 			});	
+			$(".nextPay").attr("disabled",true);
 		$("#bid-price-input").on('change',function(){
-			getbidCharges();
-			console.log('sdfds');
+			var bp=parseInt($("#bid-price-input").val());
+			if(bp>15){
+				$(".nextPay").attr("disabled",false);
+				$('.warning-text').text('greater press next to placebid');
+				getbidCharges();
+			}else{
+				$(".nextPay").attr("disabled",true);
+				$('.warning-text').text('bid Amount must be greater than 15');
+				
+			}
+			
+			//console.log('sdfds');
 			});		
 		function getbidCharges(){
 			var id ="<%=product.id %>";

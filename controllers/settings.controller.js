@@ -77,10 +77,11 @@ exports.settings=function(req, res, next) {
   // console.log(c);
    if (errors.length > 0) {
        console.log(errors);
-    res.render('pages/users/settings-buyer-info', {
-      errors,
-      name, country,address1,address2, state, city,postalCode,phone
-    });
+       res.redirect('/user/setting');
+    // res.render('pages/users/settings-buyer-info', {
+    //   errors,
+    //   name, country,address1,address2, state, city,postalCode,phone
+    // });
   } else {
    let address=await  Address.findOneAndUpdate(filter, update, {
         new: true,
@@ -135,7 +136,7 @@ exports.settings=function(req, res, next) {
             })
         })
   }
-  exports.saveShippingInfo=async function(req,res){
+  exports.saveShippingInfo=async function(req,res,next){
     const user=req.user;
   let address_type='billing';
   const { name, country,address1,address2, state, city,postalCode,phone} = req.body;
@@ -169,10 +170,11 @@ if (phone.length < 10) {
 // console.log(c);
  if (errors.length > 0) {
      console.log(errors);
-  res.render('pages/users/settings-shipping-info', {
-    errors,
-    name, country,address1,address2, state, city,postalCode,phone
-  });
+     res.redirect('/user/setting');
+      req.flash(
+      'error_msg',
+      'please fill all fields'
+    );
 } else {
  let address=await  Address.findOneAndUpdate(filter, update, {
       new: true,
@@ -183,7 +185,7 @@ if (phone.length < 10) {
       'Shipping info saved successfully'
     );
     res.redirect('/user/setting');
-    console.log(address);
+   // console.log(address);
 
 
     }
@@ -280,12 +282,47 @@ if (phone.length < 10) {
           }    
     });
   }
+  exports.saveProfile=function(req,res,next) {
+    const user_id=req.user._id;
+   //console.log(user_id);
+    
+    const prod={paypalEmail:req.body.paypalEmail};    
+
+    User.findByIdAndUpdate(user_id, {$set:prod},{new: true}, function (err, user) {
+      console.log(user);
+          if (err) {
+            res.status(200).json({status:"error",message:"failed to update"})
+          }else{
+            res.status(200).json({status:"ok",message:"paypal email updated successfully", paypalEmail: user.paypalEmail})
+          }    
+    });
+  }
   
   exports.editProfile=function(req,res,next){
-    res.render('pages/users/settings-profile')
+    User.findOne({id:req.user._id})
+      .exec(function(err, users) {
+          User.count().exec(function(err, count) {
+              if (err) return next(err)
+              res.render('pages/users/settings-profile', {
+                  user: req.user,                        
+                  layout:'layout'
+              })
+          })
+      })
+   // res.render('pages/users/settings-profile')
 }
 exports.resetPassword=function(req,res,next){
-    res.render('pages/users/settings-reset-password')
+  User.findOne({id:req.user._id})
+  .exec(function(err, users) {
+      User.count().exec(function(err, count) {
+          if (err) return next(err)
+          res.render('pages/users/settings-reset-password', {
+              user: req.user,                        
+              layout:'layout'
+          })
+      })
+  })
+    
 }
 
 
@@ -314,8 +351,7 @@ exports.productsPortfolio=function(req, res, next) {
   var perPage = 9;
   var page = req.params.page || 1;
 
-  User
-      .find({})
+  User.find({})
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .exec(function(err, users) {

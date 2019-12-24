@@ -69,18 +69,21 @@ router.get('/add-to-cart/:id', forwardAuthenticated,(req, res,next) => {
     res.render('pages/users/shopping-cart',{ products:products,totalQty:cart.totalQty,totalPrice:cart.totalPrice })
     console.log(products);
   });
-  router.get('/forbidden', forwardAuthenticated, (req, res) => res.render('pages/public/sign-in',{
+  router.get('/forbidden', forwardAuthenticated,(req, res,next) => res.render('pages/public/sign-in',{
     message: "Forbidden",
-    layout:'layout'
+    category:req.category,
   }));
   router.get('/contactus', forwardAuthenticated,(req, res) => res.render('pages/public/contactus',{
-    layout:'layout'
+    layout:'layout',
+    category:req.category,
   }));
-  router.get('/about',forwardAuthenticated, (req, res) => res.render('pages/public/aboutus',{
+  router.get('/about',forwardAuthenticated, (req, res,next) => res.render('pages/public/aboutus',{
+    category:req.category,
     layout:'layout'
   }));
   router.get('/search',forwardAuthenticated, (req, res) => res.render('pages/public/search',{
-    layout:'layout'
+    layout:'layout',
+    category:req.category
   }));
 
   router.get('/saveinfo-stripe-standard',forwardAuthenticated,auth_controller.saveinfoStripeStandard);

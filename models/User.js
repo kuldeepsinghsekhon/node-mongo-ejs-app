@@ -20,6 +20,8 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  shoesize:Number,
+  currency:String,
   paypalEmail:String
 });
 const User = mongoose.model('User', UserSchema);
