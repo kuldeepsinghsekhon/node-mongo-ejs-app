@@ -247,6 +247,7 @@
 			$("#menu2btn").on('click',function(){
 				var id ="<%=product.id %>";// $("#id-manuf-name").val();
 				//alert('sdfsd');
+				$(".nextPay").attr("disabled",false);
 				$("#bid-type").val("buy");
 				var bidType=$("#bid-type").val();
 				console.log(bidType);
@@ -270,6 +271,7 @@
 			});			
 		//})
 		$("#menu1btn").on('click',function(){
+			$(".nextPay").attr("disabled",true);
 			$("#bid-type").val("buybid");
 			var bidType=$("#bid-type").val();
 			console.log(bidType)

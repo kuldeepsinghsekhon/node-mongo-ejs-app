@@ -230,6 +230,7 @@
 		<script>
 		//$(function(){
 			$("#menu2btn").on('click',function(){
+				$(".nextPay").attr("disabled",false);
 				var id ="<%=product.id %>";// $("#id-manuf-name").val();
 				$("#bid-type").val("sale");
 				var size='5';
