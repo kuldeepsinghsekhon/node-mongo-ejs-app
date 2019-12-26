@@ -76,27 +76,25 @@
                                        <h4 class="group-name">Buying Notifications</h4>
                                        <div class="email-order">
                                           <div><span class="order-name">Bidding, New Lowest Ask....................................................</span>											<label class="switch">
-                                               <input type="checkbox">
+                                               <input  type="checkbox" data-id="1" <% if(user.notifications.notif1){ %> checked <% } %>  class="emailsettings">
                                                <span class="slider round"></span>
-                                             </label>
-            </div>
+                                             </label></div>
                                           <div>
                                             <div class="order-description">Sent when a new Lowest Ask is placed on an item you’re bidding on.</div>
                                           </div>
                                        </div>
                                        <div class="email-order">
                                           <div><span class="order-name">Bidding, New Highest Bid...................................................</span>											<label class="switch">
-                                               <input type="checkbox">
+                                               <input type="checkbox"data-id="2" <% if(user.notifications.notif2){ %> checked <% } %>  class="emailsettings">
                                                <span class="slider round"></span>
-                                             </label>
-            </div>
+                                             </label>           </div>
                                           <div>
                                             <div class="order-description">Sent when a new highest Bid is placed on an item you have an active Bid on.</div>
                                           </div>
                                        </div>
                                        <div class="email-order">
                                           <div><span class="order-name">Bid Expiring...............................................................</span>											<label class="switch">
-                                               <input type="checkbox">
+                                               <input type="checkbox" data-id="3"<% if(user.notifications.notif3){ %> checked <% } %>  class="emailsettings">
                                                <span class="slider round"></span>
                                              </label>
             </div>
@@ -106,7 +104,7 @@
                                        </div>
                                        <div class="email-order">
                                           <div><span class="order-name">Bid Expired................................................................</span>											<label class="switch">
-                                               <input type="checkbox">
+                                               <input type="checkbox" <% if(user.notifications.notif4){ %> checked <% } %> >
                                                <span class="slider round"></span>
                                              </label>
             </div>
@@ -381,4 +379,29 @@
                             </div>
                         </div>
                       </div>
-                        
+                      <script>
+                        //$(function(){
+                          $(".emailsettings").on('change',function(){
+                            var id =$(this).data("id");// $("#id-manuf-name").val();
+                            var target = $(this);
+                            var enabled=false;
+                            if($(this).prop("checked") == true){
+                              enabled=true;
+                             }
+                            // var bidType=$("#bid-type").val();
+                            // console.log(bidType);
+                            // var size='5';
+                            // var sendInfo = {id: id};
+                            $.ajax({
+                              method:'post',
+                              url:"/user/settings/notification/"+id,
+                              dataType: "json",
+                              data: {enabled: enabled},
+                                     success: function (json_data) {
+                                     // alert(json_data['enabled']);    
+                               },
+                               error:function(err){  //console.log(err);  
+                            }	
+                            });	
+                          });			
+                          </script>

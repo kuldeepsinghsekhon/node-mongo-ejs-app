@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -22,7 +25,8 @@ const UserSchema = new mongoose.Schema({
   },
   shoesize:Number,
   currency:String,
-  paypalEmail:String
+  paypalEmail:String,
+  notifications:{type: Schema.Types.ObjectId, ref: 'UserNotification'},
 });
 const User = mongoose.model('User', UserSchema);
 module.exports = User;

@@ -25,4 +25,6 @@ const { permit } = require('../config/role-auth');
   router.post('/settings/shipping-info',ensureAuthenticated,permit('User'), settings_controller.saveShippingInfo);
   router.get('/settings/seller-info',ensureAuthenticated,permit('User'), settings_controller.sellerInfo);
   router.post('/settings/seller-info',ensureAuthenticated,permit('User'), settings_controller.saveSellerInfo);
+  router.post('/settings/notification/:id',ensureAuthenticated,permit('User'), settings_controller.saveNoficationSetting);
+
 module.exports = router;

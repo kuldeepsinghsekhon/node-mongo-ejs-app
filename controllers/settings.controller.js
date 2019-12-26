@@ -4,6 +4,9 @@ const Myorder = require('../models/Myorder');
 const Cart = require('../models/Mycart');
 const SellBid = require('../models/SellBid');
 const BuyBid = require('../models/BuyBid');
+const UserNotification = require('../models/UserNotification');
+const utils_controller = require('../controllers/utils.controller');
+
 
 const OrderBid = require('../models/OrderBid');
 
@@ -11,18 +14,18 @@ exports.settings=function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
   
-    Address
-        .find({})
-        .exec(function(err, users) {
-            Address.count().exec(function(err, count) {
+    User
+        .findOne({_id:req.user._id})
+        .populate({path:'notifications'})
+        .exec(function(err, user) {
+          User.count().exec(function(err, count) {
                 if (err) return next(err)
                 res.render('pages/users/setting', {
-                    users: users,
-                    current: page,
-                    pages: Math.ceil(count / perPage),
+                    user: user,
                     layout:'layout'
                 })
             })
+            console.log(user)
         })
   }
   exports.buyerInfo=function(req, res, next) {
@@ -449,3 +452,65 @@ exports.productsSelling=function(req, res, next) {
       //     console.log(askbids);
       // })
 }
+exports.saveNoficationSetting=async function(req,res,next) {
+  const user=req.user;
+  let key='notif'+req.params.id;
+  const enabled=req.body.enabled;
+  
+     var cuser=await User.findOne({_id:user._id}).populate({path:'notifications'});
+     var notification= await UserNotification.findOne({user})
+    // BuyBid.find(query).sort({bidprice:-1}).limit(10),
+ console.log(cuser);
+    if(key=='notif1'){
+      notification.notif1=enabled;
+    }else if(key=='notif2'){
+      notification.notif2=enabled;
+    }else if(key=='notif3'){
+      notification.notif3=enabled;
+    }
+    cuser.notifications=notification;
+    console.log(cuser);
+    cuser.save();
+    notification.save();    
+    res.status(200)
+
+  var mailOptions = {
+    from: 'aquatecinnovative1@gmail.com',
+    to: user.email,
+    subject: key+' Notification '+req.body.enabled,
+    text: key+' Notification '+req.body.enabled + 'successfully'
+  };
+}
+ //console.log(user_id);
+// const doc = UserNotification.findOne({user,notificationId}).exec(
+//         function(err,notification){
+//             if(notification){
+//               if(key=='email'){
+//                 notification.email=enabled;
+//               }else if(key=='sms'){
+//                 notification.sms=enabled;
+//               }else if(key=='push'){
+//                 notification.push=enabled;
+//               }
+//               res.status(200).json({status:"ok",message:"Notification setting updated successfully", notification: notification})
+
+//                 console.log('Address find');
+//                 console.log(notification);
+//                 notification.save();
+//                // Address.updateOne(req.body);
+//             }else{
+//                 console.log('not found');
+//                var notification= UserNotification.create({notificationId:1, key:1,sms:1,push:1, user:user});
+//                res.status(200).json({status:"ok",message:"Notification setting added successfully", notification: notification})
+
+//              console.log(notification);
+//             }
+//             //mail send
+           
+//             console.log(key);
+//             console.log(enabled);
+//            // utils_controller.sendmymail(mailOptions);
+//        });
+
+ 
+//}

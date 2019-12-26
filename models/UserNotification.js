@@ -1,0 +1,32 @@
+const mongoose = require('mongoose');
+const UserNotificationSchema = new mongoose.Schema({
+notif1:Boolean,
+notif2:Boolean,
+notif3:Boolean,
+notif4:Boolean,
+notif5:Boolean,
+notif6:Boolean,
+notif7:Boolean,
+notif8:Boolean,
+notif9:Boolean,
+notif10:Boolean,
+notif11:Boolean,
+notif12:Boolean,
+notif13:Boolean,
+notif14:Boolean,
+notif15:Boolean,
+notif16:Boolean,
+notif17:Boolean,
+notif18:Boolean,
+notif19:Boolean,
+notif20:Boolean,
+notif21:Boolean,
+notif22:Boolean,
+notif23:Boolean,
+notif24:Boolean,
+notif25:Boolean,
+notif26:Boolean,
+user:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+});
+const UserNotification = mongoose.model('UserNotification', UserNotificationSchema);
+module.exports = UserNotification;
