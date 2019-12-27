@@ -39,9 +39,7 @@
                       <% for (var i = 0; i < brands.length; i++) { %>
                     <tr class="data-row">
                         </td>
-                        <td class="name" data-item-name="<%=brands[i].name %>">
-                            <%= brands[i].name %>
-                        </td>
+                        <td class="name" data-item-name="<%=brands[i].name%>" ><%= brands[i].name %></td>
                         
                         <td>
                             <button class="btn btn-primary btn-rounded btn-icon"   id="edit-item" data-item-id="<%=brands[i]._id %>" >
@@ -162,10 +160,10 @@
           
           </form>
         </div>
-        <div class="modal-footer">
+        <!-- <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal">Update</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

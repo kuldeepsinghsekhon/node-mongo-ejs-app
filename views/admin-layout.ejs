@@ -136,7 +136,7 @@ function education_fields() {
      // get the data
      var id = el.data('item-id');
      var name = row.children(".name").text();
-  
+     name=name.replace(" ","");
  
      // fill the data in the input fields
      $("#modal-input-id").val(id);
