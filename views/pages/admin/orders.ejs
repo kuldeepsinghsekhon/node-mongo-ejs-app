@@ -19,7 +19,7 @@
                     </p>
                     <div class="table-responsive">
 
-                      <table class="table table-striped">
+                      <table class="table table-striped" id="orders-data">
                         <thead>
                          <tr class="headers">
                             <th class="col-lg-3 col-sm-4 col-xs-6 sortable undefined">Item </th>
@@ -27,16 +27,31 @@
                             <th class="col-lg-2 col-sm-2 col-xs-3 sortable  dropdown">Sale Date </th>
                             <th class="col-sm-1 col-xs-2 sortable undefined">Price </th>
                             <th class="col-lg-2 col-sm-3 col-xs-2 hide-xs sortable undefined">Status </th>
+                            
                          </tr>
                         </thead>
                         <tbody>
                           <% if(orders){ %>
-                             <% for (var i = 0; i < orders.length; i++) { %>
+                             <% for (var i = 0; i < orders.length; i++) {
+                              let s = orders[i].orderdate;
+                              let d = new Date(s); 
+                              d = d.toUTCString()
+                              %>
+                              
                                 <tr><td><%= orders[i].product.name %></td>
                                    <td><%= orders[i]._id %></td>
-                                   <td><%= orders[i].orderdate %></td>
+                                   <td><%= d %></td>
                                    <td><%= orders[i].netprice %></td>
-                                   <td><%= orders[i].status %></td>
+                                   <!-- <td><%= orders[i].status %></td> -->
+                                   <td>
+                                       <select data-id="<%= orders[i]._id %>" class="action" > 
+                                            <option value="">Selcet Action</option>
+                                           <option  value="accepeted" <% if(orders[i].status=='accepeted'){ %> selected<% } %> >Accepeted</option>
+                                            <option value="canceled" <% if(orders[i].status=='canceled'){ %> selected<% } %> >Canceled</option>
+                                      </select>
+                                      <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+                                          
+                                  </td>
                                </tr>
                                 <% } }else{ %>
                                    <tr> <td colspan="5" class="no-pis"><em>No Results.</em></td></tr>
@@ -45,7 +60,7 @@
                         </tbody>
                        </table>
                     </div>
-                    <% if (pages > 0) { %>
+                    <!-- <% if (pages > 0) { %>
                       <ul class="pagination text-center">
                           <% if (current == 1) { %>
                               <li class=" page-item disabled"><a class="page-link">First</a></li>
@@ -72,9 +87,31 @@
                               <li class="page-item" ><a class="page-link" href="/admin/template-products/<%= pages %>">Last</a></li>
                           <% } %>
                       </ul>
-                  <% } %>
+                  <% } %> -->
                   </div>
                 </div>
               </div>
             
 </div>
+<script>
+  $(document).ready(function(){
+      $("select.action").change(function(){
+        var id=$(this).data('id');
+          var SelectedAction = $(this).children("option:selected").val();
+          // alert("You have selected Action - " + SelectedAction);
+          var sendInfo = {status:SelectedAction};
+          $.ajax({
+					method:'post',
+					url:"/admin/update-order/"+id,
+					dataType: "json",
+					data:sendInfo,
+         		  	success: function (json_data) {
+				//	$("#processingFee").text('$'+json_data['order']);
+				console.log(json_data['order'].status);
+				   },
+				   error:function(err){  //console.log(err);  
+				}	
+				});	
+      });
+  });
+  </script>

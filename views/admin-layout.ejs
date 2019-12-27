@@ -9,6 +9,7 @@
   <!-- plugins:css -->
   <link rel="stylesheet" href="/vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" href="/vendors/base/vendor.bundle.base.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
  
   <!--<link rel="stylesheet" href="/vendors/base/bootstrap.min.css">
   endinject -->
@@ -56,6 +57,7 @@
   <!-- endinject -->
   <!-- Custom js for this page-->
   <script src="/js/dashboard.js"></script>
+  <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
   <script>
 
    function postItem() {
@@ -116,7 +118,8 @@ function education_fields() {
     */
  
    $(document).on('click', "#edit-item", function() {
-     $(this).addClass('edit-item-trigger-clicked'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
+     
+     $(this).addClass('edit-item-trigger'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
  
      var options = {
        'backdrop': 'static'
@@ -126,26 +129,48 @@ function education_fields() {
  
    // on modal show
    $('#edit-modal').on('show.bs.modal', function() {
-     var el = $(".edit-item-trigger-clicked"); // See how its usefull right here? 
+   
+     var el = $(".edit-item-trigger"); // See how its usefull right here? 
      var row = el.closest(".data-row");
- 
+    // alert(el.attr('class'));
      // get the data
      var id = el.data('item-id');
      var name = row.children(".name").text();
-     var image = row.children(".image").val();
+  
  
      // fill the data in the input fields
      $("#modal-input-id").val(id);
      $("#modal-input-name").val(name);
-     $("#modal-input-image").val(image);
  
    })
  
    // on modal hide
    $('#edit-modal').on('hide.bs.modal', function() {
-     $('.edit-item-trigger-clicked').removeClass('edit-item-trigger-clicked')
+     $('.edit-item-trigger').removeClass('edit-item-trigger')
      $("#edit-form").trigger("reset");
    })
  })
+ $(document).ready(function() {
+    $('#data').DataTable();
+} );
+$(document).ready(function() {
+    $('#brand-data').DataTable();
+} );
+$(document).ready(function() {
+    $('#user-data').DataTable();
+} );
+$(document).ready(function() {
+    $('#buying-data').DataTable();
+} );
+$(document).ready(function() {
+    $('#selling-data').DataTable();
+} );
+$(document).ready(function() {
+    $('#orders-data').DataTable();
+} );
+$(document).ready(function() {
+    $('#template-data').DataTable();
+} );
            </script> 
+          
  

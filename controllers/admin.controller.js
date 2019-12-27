@@ -6,7 +6,7 @@ const BuyBid = require('../models/BuyBid');
 const Attribute = require('../models/Attribute');
 const OrderBid = require('../models/OrderBid');
 const Product = require('../models/Product');
-
+var mongoose = require('mongoose');
 /*brand controller */
 const Brand = require('../models/Brand');
 const Category = require('../models/Category');
@@ -144,18 +144,18 @@ module.saveAttribute=function name(req,res) {
 /******************************************Category crud*************************************** */
 exports.listCategory=function(req, res, next) {
   var perPage = 9;
-  var page = req.params.page || 1;
+ // var page = req.params.page || 1;
   Category
       .find({})
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
+     //.skip((perPage * page) - perPage)
+     // .limit(perPage)
       .exec(function(err, brand) {
           Brand.count().exec(function(err, count) {
               if (err) return next(err)
               res.render('pages/admin/category', {
                   brands: brand,
-                  current: page,
-                  pages: Math.ceil(count / perPage),
+                 // current: page,
+                //  pages: Math.ceil(count / perPage),
                   layout:'admin-layout'
               })
           })
@@ -208,7 +208,7 @@ exports.updateCategory=function (req, res,next) {
 
   Brand.findByIdAndUpdate(brandId, {$set:brod}, function (err, brand) {
           if (err) return next(err);
-          res.redirect('/admin/brand/1');
+          res.redirect('/admin/category/');
       });
     }
     exports.deleteCategory= async function name(req, res, next) {
@@ -335,4 +335,14 @@ exports.dashboard = function(req, res){
     })
   
   })
+}
+exports.updateOrderStatus = function (req,res,next) {
+  var status =req.body.status.replace(" ","");;
+  var productid =req.params.id.replace(" ","");
+console.log(status);
+
+  OrderBid.findByIdAndUpdate(productid, {status:status}, function (err, order) {
+    if (err) return next(err);
+    res.json({status:'ok',message:'status updATED',order:order});
+});
 }
