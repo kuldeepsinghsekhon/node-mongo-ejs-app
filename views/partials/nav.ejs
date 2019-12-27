@@ -65,7 +65,8 @@
               <a href="#" class="search-toggle" role="button"><i class="fa fa-search"></i></a>
               <form action="#" method="get">
                  <div class="header-search-wrapper">
-                    <input type="search" class="form-control" name="q" id="q" placeholder="Search..." required="">
+                    <input type="search" class="form-control form-control " name="q" id="top-search" placeholder="Search..." required="">
+                    
                     <div class="select-custom">
                        <select id="cat" name="cat">
                           <option value="">All Categories</option>
@@ -74,6 +75,9 @@
                           <option value="13">- Men</option>
                        </select>
                     </div>
+                    <div class="col-md-2">
+
+						</div>
                     <!-- End .select-custom -->
                     <button class="btn" type="submit"><i class="fa fa-search"></i></button>
                  </div>
@@ -135,7 +139,7 @@
                </li> -->
                  <li class=""><a href="/help">Help</a></li>
 
-                 <li class="float-right buy-effect"><a href="/products" target="_blank"><span>Sell </span></a></li>
+                 <li class="float-right buy-effect"><a href="/sellsearch" target="_blank"><span>Sell </span></a></li>
                  
                  <% if(role=='User'){%>
                   <li class="float-right">

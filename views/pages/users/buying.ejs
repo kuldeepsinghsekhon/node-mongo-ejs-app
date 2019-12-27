@@ -62,7 +62,7 @@
                                <button class="sales-report btn btn-danger btn-flat">Request Export</button>
                               </div>-->
                               <div class="portfolio-item-table" style="position: relative;">
-                               <table class="table">
+                               <table class="table data" >
                                 <thead>
                                  <tr class="headers">
                                     <th class="col-sm-2 col-xs-2 sortable undefined">Item</th>
@@ -92,16 +92,16 @@
                       </div>
                    <div class="tab-pane " id="products_2" role="tabpanel" aria-labelledby="featured-products-tab">
                     <div class="sales-history">
-                       <div class="collection-header header-history pagingCollectionTable__ActionBar-d8ww1c-4 iSIVdG">
+                       <!-- <div class="collection-header header-history pagingCollectionTable__ActionBar-d8ww1c-4 iSIVdG">
                         <form class="form-inline searchForm pagingCollectionTable__SearchForm-d8ww1c-0 eJUxod">
                          <div class="form-group">
                           <div class="pagingCollectionTable__SearchBar-d8ww1c-1 gRvpGB"><input type="submit" class="pagingCollectionTable__SubmitButton-d8ww1c-3 QsRlz" value="Search"><input class="form-control searchInput" type="text" placeholder="Search name, order #" value=""></div>
                          </div>
                         </form>
                         <button class="sales-report btn btn-danger btn-flat">Request Export</button>
-                       </div>
+                       </div> -->
                        <div class="portfolio-item-table" style="position: relative;">
-                        <table class="table">
+                        <table class="table data">
                          <thead>
                           <tr class="headers">
                              <th class="col-lg-3 col-sm-4 col-xs-6 sortable undefined">Item </th>
@@ -131,8 +131,44 @@
                    </div>
   
   
-                   <div class="tab-pane " id="products_3" role="tabpanel" aria-labelledby="featured-products-tab"></div>
-                        
+                   <div class="tab-pane " id="products_3" role="tabpanel" aria-labelledby="featured-products-tab">
+                   <div class="sales-history">
+                     <!-- <div class="collection-header header-history pagingCollectionTable__ActionBar-d8ww1c-4 iSIVdG">
+                      <form class="form-inline searchForm pagingCollectionTable__SearchForm-d8ww1c-0 eJUxod">
+                       <div class="form-group">
+                        <div class="pagingCollectionTable__SearchBar-d8ww1c-1 gRvpGB"><input type="submit" class="pagingCollectionTable__SubmitButton-d8ww1c-3 QsRlz" value="Search"><input class="form-control searchInput" type="text" placeholder="Search name, order #" value=""></div>
+                       </div>
+                      </form>
+                      <button class="sales-report btn btn-danger btn-flat">Request Export</button>
+                     </div> -->
+                     <div class="portfolio-item-table" style="position: relative;">
+                      <table class="table data">
+                       <thead>
+                        <tr class="headers">
+                           <th class="col-lg-3 col-sm-4 col-xs-6 sortable undefined">Item </th>
+                           <th class="col-lg-2 hidden-md hidden-sm hide-xs undefined">Order Number </th>
+                           <th class="col-lg-2 col-sm-2 col-xs-3 sortable  dropdown">Sale Date </th>
+                           <th class="col-sm-1 col-xs-2 sortable undefined">Price </th>
+                           <th class="col-lg-2 col-sm-3 col-xs-2 hide-xs sortable undefined">Status </th>
+                        </tr>
+                       </thead>
+                       <tbody>
+                         <% if(historyorders.length>0){ %>
+                            <% for (var i = 0; i < orders.length; i++) { %>
+                               <tr><td><%= historyorders[i].product.name %></td>
+                                  <td><%= historyorders[i]._id %></td>
+                                  <td><%= historyorders[i].orderdate %></td>
+                                  <td><%= historyorders[i].netprice %></td>
+                                  <td><%= historyorders[i].status %></td>
+                              </tr>
+                               <% } }else{ %>
+                                  <tr> <td colspan="5" class="no-pis"><em>No Results.</em></td></tr>
+                                  <% } %> 
+                       
+                       </tbody>
+                      </table>
+                     </div>
+                  </div>
   
                   </div>
                  </div>

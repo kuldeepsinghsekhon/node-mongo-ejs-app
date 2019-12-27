@@ -2,9 +2,6 @@ const express = require('express');
 const router = express.Router();
 const settings_controller = require('../controllers/settings.controller');
 const auth_controller = require('../controllers/auth.controller');
-const Cart = require('../models/Mycart');
-const User = require('../models/User');
-const Myorder = require('../models/Myorder');
 const {ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const { permit } = require('../config/role-auth');
 

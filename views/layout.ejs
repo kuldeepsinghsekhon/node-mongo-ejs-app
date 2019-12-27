@@ -35,7 +35,12 @@
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="/assets/js/rotate.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
       </head>
       <style type="text/css">
 		
@@ -44,9 +49,23 @@
         .photo_3d {text-align: center;}
         .photo_3d img {width: 100%;max-width: 600px;display: inline;}
     </style>
+    	<style type="text/css">
+        .ui-autocomplete-row
+        {
+        padding:8px;
+        background-color: #f4f4f4;
+        border-bottom:1px solid #ccc;
+        font-weight:bold;
+        }
+        .ui-autocomplete-row:hover
+        {
+        background-color: #ddd;
+        }
+      </style>
   <body>
       <% include ./partials/nav %>
  <%- body %>
+ 
     <% include ./partials/footer %>
 
 
@@ -138,5 +157,38 @@ braintree.client.create(/* ... */);
       });
 
     </script>
+    <script>
+    $("#q").on('click', function () { $.ajax({
+               type: 'POST',
+              url: '/payments/paypal',
+             data: {'paymentMethodNonce': payload.nonce}
+            }).done(function(result) {
+            
+            })
+            })
+            $(document).ready(function(){
+   
+   $('#top-search').autocomplete({
+     source: '/productsearch',
+     minLength: 1,
+     
+     select: function(event, ui)
+     {
+         $(location).attr('href', '/products/'+ui.item._id);
+       //$('#search_data').val(ui.item.name);
+     }
+   }).data('ui-autocomplete')._renderItem = function(ul, item){
+     return $("<div class='prdct_list'></div>")
+       .data("item.autocomplete", item)
+       .append('<div class="left_one_img"><img alt="Jordan 1 Mid SE Light Bone" src="/uploads/products/'+item.image+'" ></div><div class="rgt_one_txt"><h1>'+item.name+'</h1><span></span></div></div>')
+       .appendTo(ul);
+   };
+
+ });
+ $(document).ready(function() {
+    $('.data').DataTable();
+} );        
+    </script>
+   
   </body>
 </html>

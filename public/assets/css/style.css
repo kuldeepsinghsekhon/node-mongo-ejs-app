@@ -5973,3 +5973,89 @@ span.market-dir-down-arrow {
 width: 22px;
 height: 22px;
 }
+/* search PAge */
+.prdct_full {
+    padding: 2rem 0 16rem 0;
+    width: 50%;
+    margin: auto;
+}
+
+.prdct_heading {
+    border-bottom: 1px solid #ced4da;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+}
+.input_txt input {
+    border: none;
+}
+
+.input_txt input:focus {
+    border: none;
+    box-shadow: none;
+}
+
+.input_txt i {
+    padding-left: 1rem;
+}
+
+.input_txt {
+    border: 1px solid #e5e7ea;
+    background: #fff;
+    padding: 3px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border: 1px solid #e5e7ea;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background: #fff;
+}
+
+.left_one_img img {
+    width: 100%;
+    max-width: 60px;
+}
+
+.rgt_one_txt h1 {
+    color: #000;
+    font-size: 16px;
+    margin: 0;
+}
+
+.rgt_one_txt span {
+    color: #999;
+    font-size: 15px;
+}
+.prdct_list {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-weight: 600;
+    padding: 20px 0;
+    border-bottom: 2px solid #e5e7ea;
+}
+.left_one_img {
+    margin-right: 1rem;
+}
+
+/* table css */
+
+.portfolio-item-table {
+    padding: 2rem 0;
+}
+
+tr.headers th {
+    width: 20%!important;
+}
+
+div#DataTables_Table_0_wrapper {
+    padding: 2rem;
+}
+
+div#DataTables_Table_1_wrapper {
+    padding: 1rem;
+}

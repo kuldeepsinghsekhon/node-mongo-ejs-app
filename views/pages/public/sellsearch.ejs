@@ -1,0 +1,36 @@
+      
+        <div class="container">
+            <div class="prdct_full">
+            <div class="prdct_heading">
+            <h1>Choose a product</h1>
+            <p>Find the product you're looking for to continue</p>    
+            </div>
+            <div class="input_txt">
+            <i class="fa fa-search"></i>
+             <input type="text" id="search_data" placeholder="Search for brand, color, etc." autocomplete="off" class="form-control input-lg" />
+             </div>    
+
+            </div>
+
+        </div>
+<script>
+  $(document).ready(function(){
+   
+    $('#search_data').autocomplete({
+      source: '/productsearch',
+      minLength: 1,
+      
+      select: function(event, ui)
+      {
+          $(location).attr('href', '/products/'+ui.item._id);
+        //$('#search_data').val(ui.item.name);
+      }
+    }).data('ui-autocomplete')._renderItem = function(ul, item){
+      return $("<div class='prdct_list'></div>")
+        .data("item.autocomplete", item)
+        .append('<div class="left_one_img"><img alt="Jordan 1 Mid SE Light Bone" src="/uploads/products/'+item.image+'" ></div><div class="rgt_one_txt"><h1>'+item.name+'</h1><span></span></div></div>')
+        .appendTo(ul);
+    };
+
+  });
+</script>

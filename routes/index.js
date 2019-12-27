@@ -89,5 +89,7 @@ router.get('/add-to-cart/:id', forwardAuthenticated,(req, res,next) => {
   router.get('/saveinfo-stripe-standard',forwardAuthenticated,auth_controller.saveinfoStripeStandard);
   router.get('/category/:category_slug',forwardAuthenticated,product_controller.productsByCategory);
   router.get('/saleschart/:id',forwardAuthenticated,product_controller.findByIdChart);
+  router.get('/sellsearch',forwardAuthenticated,product_controller.showSellSearch);
+  router.get('/productsearch',forwardAuthenticated,product_controller.sellProductSearchReasult);
 
 module.exports = router;

@@ -11,6 +11,7 @@ const OrderSchema = new mongoose.Schema({
   orderdate:{type: Date},
   netprice:Number,
   status: String,
+  ordertype: String,
   updated:Date,
 });
 const OrderBid = mongoose.model('OrderBid', OrderSchema);

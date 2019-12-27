@@ -376,13 +376,15 @@ exports.productsBuying=function(req, res, next) {
   //var query = { user: req.user._id };
   var query = { user: req.user._id ,status:'buybid'}; 
   Promise.all([
-    OrderBid.find({ buyer: req.user._id }).populate({path:'product'}),
+    OrderBid.find({ buyer: req.user._id,status:{$in: ['Won Bid', 'Order Placed']} }).populate({path:'product'}),
     BuyBid.find(query).sort({bidprice:-1}).limit(10),
-  ]).then( ([orders,buybids])=>{
+    OrderBid.find({ buyer: req.user._id,status:{$in: ['accepeted', 'canceled']} }).populate({path:'product'}),
+  ]).then( ([orders,buybids,historyorders])=>{
     console.log(req.user);
     res.render('pages/users/buying', {
       buybids: buybids,
       orders:orders,
+      historyorders:historyorders,
       layout:'layout'
     })
       
@@ -424,14 +426,17 @@ exports.productsSelling=function(req, res, next) {
   var page = req.params.page || 1;
   //console.log(req.user._id);
   var query = { user: req.user._id ,status:'ask'}; 
+  
   Promise.all([
-    OrderBid.find({ seller: req.user }).populate({path:'product'}),
+    OrderBid.find({ seller: req.user,status:{$in: ['Won Bid', 'Order Placed']}}).populate({path:'product'}),
     SellBid.find(query).sort({bidprice:-1}).limit(10),
-  ]).then( ([orders,askbids])=>{
+    OrderBid.find({ seller: req.user._id,status:{$in: ['accepeted', 'canceled']} }).populate({path:'product'}),
+  ]).then( ([orders,askbids,ordershistory])=>{
     res.render('pages/users/selling', {
       askbids: askbids,
       orders:orders,
-      layout:'layout'
+      layout:'layout',
+      ordershistory:ordershistory
     })
       
   })

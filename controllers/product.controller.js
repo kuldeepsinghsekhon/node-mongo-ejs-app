@@ -14,7 +14,8 @@ exports.products = function(req, res, next) {
     Product
         .find({})
         .skip((perPage * page) - perPage)
-        .populate({path:'sellbids'
+        .populate({path:'sellbids',
+        match: { status: 'ask' }
         ,options: {
           limit: 1,
           sort: { bidprice: +1}        
@@ -41,7 +42,8 @@ exports.products = function(req, res, next) {
     Product
         .find({category:category_slug})
         .skip((perPage * page) - perPage)
-        .populate({path:'sellbids'
+        .populate({path:'sellbids',
+        match: { status: 'ask' }
         ,options: {
           limit: 1,
           sort: { bidprice: +1}        
@@ -340,6 +342,7 @@ if(lowestask!=null){
         order.buybid=buybid;
         order.sellbid=sellBid;
         order.product=prod;
+        order.status='Won Bid';
         order.netprice=bidprice;//need to add buying charges
         order.save();
         buybid.save();
@@ -458,6 +461,7 @@ exports.placeBuyBid=async function name(req,res,next) {
         order.buyer=req.user;
         order.netprice=totalpay;
         order.product=prod;
+        order.status='Order Placed';
         order.orderdate=Date.now();
         order.save();
         sellask.save();      
@@ -702,4 +706,39 @@ exports.editProduct=function(req, res, next) {
   
         });
      }  
+     exports.showSellSearch=function name(req,res,next) {
      
+     
+          res.render('pages/public/sellsearch', {
+            category:[],
+            layout:'layout'
+        })
+   
+       
+     }
+     exports.sellProductSearchReasult=async function(req, res, next) {
+      //var productId=req.body.id;
+      Product
+        .find({})
+        //.skip((perPage * page) - perPage)
+       // .populate({path:'sellbids'
+        //,options: {
+         // limit: 1,
+         // sort: { bidprice: +1}        
+     //} })
+     //.limit(perPage)
+     .select({ "name": 1, "_id": 1,image:1})
+        .exec(function(err, products) {
+            Product.count().exec(function(err, count) {
+                if (err) return next(err)
+               // console.log(products);
+               var resarr=[];
+          for(i=0;i<products.length;i++){
+            //resarr.push(products[i].name,products[i].image);  
+          }
+               res.json( products);
+
+            })
+        })
+         
+     }
