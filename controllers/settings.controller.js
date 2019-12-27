@@ -461,6 +461,9 @@ exports.saveNoficationSetting=async function(req,res,next) {
      var notification= await UserNotification.findOne({user})
     // BuyBid.find(query).sort({bidprice:-1}).limit(10),
  console.log(cuser);
+ if(notification){
+  UserNotification.create
+ }
     if(key=='notif1'){
       notification.notif1=enabled;
     }else if(key=='notif2'){
@@ -480,6 +483,7 @@ exports.saveNoficationSetting=async function(req,res,next) {
     subject: key+' Notification '+req.body.enabled,
     text: key+' Notification '+req.body.enabled + 'successfully'
   };
+  //utils_controller.sendmymail(mailOptions);
 }
  //console.log(user_id);
 // const doc = UserNotification.findOne({user,notificationId}).exec(

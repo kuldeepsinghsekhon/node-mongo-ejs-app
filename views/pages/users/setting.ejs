@@ -76,7 +76,7 @@
                                        <h4 class="group-name">Buying Notifications</h4>
                                        <div class="email-order">
                                           <div><span class="order-name">Bidding, New Lowest Ask....................................................</span>											<label class="switch">
-                                               <input  type="checkbox" data-id="1" <% if(user.notifications.notif1){ %> checked <% } %>  class="emailsettings">
+                                               <input  type="checkbox" data-id="1" <% if(user.notifications){if(user.notifications.notif1){ %> checked <% }} %>  class="emailsettings">
                                                <span class="slider round"></span>
                                              </label></div>
                                           <div>
@@ -85,7 +85,7 @@
                                        </div>
                                        <div class="email-order">
                                           <div><span class="order-name">Bidding, New Highest Bid...................................................</span>											<label class="switch">
-                                               <input type="checkbox"data-id="2" <% if(user.notifications.notif2){ %> checked <% } %>  class="emailsettings">
+                                               <input type="checkbox"data-id="2" <% if(user.notifications){if(user.notifications.notif2){ %> checked <% }} %>  class="emailsettings">
                                                <span class="slider round"></span>
                                              </label>           </div>
                                           <div>
@@ -94,7 +94,7 @@
                                        </div>
                                        <div class="email-order">
                                           <div><span class="order-name">Bid Expiring...............................................................</span>											<label class="switch">
-                                               <input type="checkbox" data-id="3"<% if(user.notifications.notif3){ %> checked <% } %>  class="emailsettings">
+                                               <input type="checkbox" data-id="3"<% if(user.notifications){if(user.notifications.notif3){ %> checked <% }} %>  class="emailsettings">
                                                <span class="slider round"></span>
                                              </label>
             </div>
@@ -104,7 +104,7 @@
                                        </div>
                                        <div class="email-order">
                                           <div><span class="order-name">Bid Expired................................................................</span>											<label class="switch">
-                                               <input type="checkbox" <% if(user.notifications.notif4){ %> checked <% } %> >
+                                               <input type="checkbox" <% if(user.notifications){ if(user.notifications.notif4){ %> checked <% }} %> >
                                                <span class="slider round"></span>
                                              </label>
             </div>
