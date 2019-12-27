@@ -21363,12 +21363,5 @@ dl li {
   background-color: darkgrey;
   outline: 1px solid slategrey;
 }
-.entry:not(:first-of-type)
-{
-    margin-top: 10px;
-}
 
-.glyphicon
-{
-    font-size: 12px;
-}
+/*# sourceMappingURL=maps/style.css.map */

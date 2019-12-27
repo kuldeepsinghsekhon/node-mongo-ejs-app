@@ -55,22 +55,7 @@ router.get('/dashboard', ensureAuthenticated,permit('Admin'), function(req, res)
     user: req.user
   })
 });
-router.get('/', ensureAuthenticated,permit('Admin'),
-
-function(req, res){
-  var usercount=0;
-    var productcount=0;
-    productcount=Product.countDocuments();
-    
-
-  res.render('pages/admin/dashboard', {
-   
-    layout:'admin-layout',
-    usercount:usercount,
-    pcount:Product.countDocuments(),
-    user: req.user
-  })
-});
+router.get('/', ensureAuthenticated,permit('Admin'), admin_controller.dashboard);
 
 // (req, res) => res.render('pages/admin/dashboard',{ layout:'admin-layout' }));
  router.get('/add-product', function(req, res, next) {

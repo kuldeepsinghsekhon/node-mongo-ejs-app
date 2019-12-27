@@ -5,6 +5,8 @@ const SellBid = require('../models/SellBid');
 const BuyBid = require('../models/BuyBid');
 const Attribute = require('../models/Attribute');
 const OrderBid = require('../models/OrderBid');
+const Product = require('../models/Product');
+
 /*brand controller */
 const Brand = require('../models/Brand');
 const Category = require('../models/Category');
@@ -312,3 +314,25 @@ exports.allOrders=function(req, res, next) {
 //         })
 //     })
 //   }
+exports.dashboard = function(req, res){
+  var usercount=0;
+    var productcount=0;
+    
+    var query = { user: req.user._id ,status:'buybid'}; 
+  Promise.all([
+    OrderBid.count(),
+    Product.count(),
+    BuyBid.count(),
+    SellBid.count(),
+  ]).then( ([orders,pcount,buybids,sellasks])=>{
+    res.render('pages/admin/dashboard', {
+      buybids: buybids,
+      orders:orders,
+      user: req.user,
+      pcount:pcount,
+      sellasks:sellasks,
+      layout:'admin-layout'
+    })
+  
+  })
+}
