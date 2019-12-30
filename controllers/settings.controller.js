@@ -4,6 +4,7 @@ const Myorder = require('../models/Myorder');
 const Cart = require('../models/Mycart');
 const SellBid = require('../models/SellBid');
 const BuyBid = require('../models/BuyBid');
+const Category = require('../models/Category');
 const UserNotification = require('../models/UserNotification');
 const utils_controller = require('../controllers/utils.controller');
 
@@ -377,11 +378,11 @@ exports.productsBuying=function(req, res, next) {
   var query = { user: req.user._id ,status:'buybid'}; 
   Promise.all([
     OrderBid.find({ buyer: req.user._id,status:{$in: ['Won Bid', 'Order Placed']} }).populate({path:'product'}),
-    BuyBid.find(query).sort({bidprice:-1}).limit(10),
-    
+    BuyBid.find(query).sort({bidprice:-1}).limit(10), 
     OrderBid.find({ buyer: req.user._id,status:{$in: ['accepeted', 'canceled']} }).populate({path:'product'}),
     Category.find(),
   ]).then( ([orders,buybids,historyorders,category])=>{
+    console.log(historyorders);
     console.log(req.user);
     res.render('pages/users/buying', {
       buybids: buybids,
