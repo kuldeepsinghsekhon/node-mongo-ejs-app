@@ -153,13 +153,13 @@
                         </tr>
                        </thead>
                        <tbody>
-                         <% if(historyorders.length>0){ %>
-                            <% for (var i = 0; i < orders.length; i++) { %>
-                               <tr><td><%= historyorders[i].product.name %></td>
-                                  <td><%= historyorders[i]._id %></td>
-                                  <td><%= historyorders[i].orderdate %></td>
-                                  <td><%= historyorders[i].netprice %></td>
-                                  <td><%= historyorders[i].status %></td>
+                         <% if(history.length>0){ %>
+                            <% for (var i = 0; i < history.length; i++) { %>
+                               <tr><td><%= history[i].product.name %></td>
+                                  <td><%= history[i]._id %></td>
+                                  <td><%= history[i].orderdate %></td>
+                                  <td><%= history[i].netprice %></td>
+                                  <td><%= history[i].status %></td>
                               </tr>
                                <% } }else{ %>
                                   <tr> <td colspan="5" class="no-pis"><em>No Results.</em></td></tr>

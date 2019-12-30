@@ -145,6 +145,7 @@
                       <button class="sales-report btn btn-danger btn-flat">Request Export</button>
                      </div> -->
                      <div class="portfolio-item-table" style="position: relative;">
+                        
                       <table class="table data">
                        <thead>
                         <tr class="headers">
@@ -156,13 +157,13 @@
                         </tr>
                        </thead>
                        <tbody>
-                         <% if(ordershistory.length>0){ %>
-                            <% for (var i = 0; i < orders.length; i++) { %>
-                               <tr><td><%= ordershistory[i].product.name %></td>
-                                  <td><%= ordershistory[i]._id %></td>
-                                  <td><%= ordershistory[i].orderdate %></td>
-                                  <td><%= ordershistory[i].netprice %></td>
-                                  <td><%= ordershistory[i].status %></td>
+                         <% if(history){ %>
+                            <% for (var i = 0; i < history.length; i++) { %>
+                               <tr><td><%= history[i].product.name %></td>
+                                  <td><%= history[i]._id %></td>
+                                  <td><%= history[i].orderdate %></td>
+                                  <td><%= history[i].netprice %></td>
+                                  <td><%= history[i].status %></td>
                               </tr>
                                <% } }else{ %>
                                   <tr> <td colspan="5" class="no-pis"><em>No Results.</em></td></tr>
