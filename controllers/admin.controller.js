@@ -200,22 +200,18 @@ exports.saveCategory=function(req, res, next) {
 exports.updateCategory=function (req, res,next) {
     console.log(req.body);
   var brandId=req.body.brandid;
-  var brand = new Category();
-
-  brand.name = req.body.brand_name;
-
       brod={name:req.body.brand_name};     
-
-  Brand.findByIdAndUpdate(brandId, {$set:brod}, function (err, brand) {
+  Category.findByIdAndUpdate(brandId, {$set:brod}, function (err, brand) {
           if (err) return next(err);
           res.redirect('/admin/category/');
       });
     }
+    
     exports.deleteCategory= async function name(req, res, next) {
       var productId=req.params.id;   
       const del = await Category.deleteOne({ _id: productId});
       console.log( del.deletedCount);
-      res.redirect('/admin/category/1');
+      res.redirect('/admin/category/');
     }
 exports.productsBuyBids=function(req, res, next) {
     var perPage = 9;

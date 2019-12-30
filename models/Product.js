@@ -10,7 +10,7 @@ const prodSchema = new mongoose.Schema({
   }, 
  description: String,
  category: String, //sneekers/addidas/yeezee/model
- sku: Number,
+ sku: String,
  releasedate:Date,
  price: Number,
  style:String,
