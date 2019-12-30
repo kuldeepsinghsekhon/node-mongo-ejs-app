@@ -34,11 +34,11 @@ exports.settings=function(req, res, next) {
 
     Address
         .findOne({user:req.user,address_type:'billing'})
-        .exec(function(err, users) {
+        .exec(function(err, address) {
             Address.count().exec(function(err, count) {
                 if (err) return next(err)
                 res.render('pages/users/settings-buyer-info', {
-                    users: users,
+                  address: address,
                     current: page,
                     pages: Math.ceil(count / perPage),
                     layout:'layout'
