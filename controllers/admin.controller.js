@@ -191,7 +191,7 @@ exports.saveCategory=function(req, res, next) {
     'success_msg',
     'Product Addded Successfully'
   );
-  res.redirect('/admin/category/1');
+  res.redirect('/admin/category/');
 }
   
 }
