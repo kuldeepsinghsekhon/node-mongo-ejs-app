@@ -590,8 +590,8 @@ exports.saveProduct=function(req, res, next) {
     //console.log(req.body.attributevalues);
   
     let errors = [];
-    if (!req.body.category_name || !req.body.product_description || !req.body.product_name || !req.body.product_sku
-      || !req.body.product_price || !req.body.style ) {
+    if (!req.body.category_name || !req.body.product_description || !req.body.product_name 
+      || !req.body.product_price  ) {
       errors.push({ msg: 'Please enter all Required fields' });
     }
   
@@ -652,6 +652,7 @@ exports.editProduct=function(req, res, next) {
         //     return res.redirect('/');
         // }
             res.render('pages/admin/edit-product', {
+              category: [],
               product: product,
               layout:'admin-layout'
           })
