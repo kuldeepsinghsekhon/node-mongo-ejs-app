@@ -4,6 +4,7 @@ const SellBid = require('../models/SellBid');
 const BuyBid = require('../models/BuyBid');
 const Address = require('../models/Address');
 const Attribute = require('../models/Attribute');
+const Category = require('../models/Category');
 const OrderBid = require('../models/OrderBid');
 const path = require('path');
 const fs = require('fs');
