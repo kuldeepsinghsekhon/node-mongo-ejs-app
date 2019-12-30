@@ -600,10 +600,11 @@ exports.saveProduct=function(req, res, next) {
     // }
   
     if (errors.length > 0) {
-      res.render('pages/admin/add-product', {
+      Category.find({},function(err,category){
         errors ,
-        layout:'admin-layout'
-      });
+        res.render('pages/admin/add-product',{layout:'admin-layout',category:category}); 
+
+        });
     } else {
   
     var imgpath=appRoot+'//public//uploads//products//';
@@ -652,7 +653,6 @@ exports.editProduct=function(req, res, next) {
         //     return res.redirect('/');
         // }
             res.render('pages/admin/edit-product', {
-              category: [],
               product: product,
               layout:'admin-layout'
           })
