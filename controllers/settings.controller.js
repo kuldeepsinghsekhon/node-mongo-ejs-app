@@ -378,12 +378,15 @@ exports.productsBuying=function(req, res, next) {
   Promise.all([
     OrderBid.find({ buyer: req.user._id,status:{$in: ['Won Bid', 'Order Placed']} }).populate({path:'product'}),
     BuyBid.find(query).sort({bidprice:-1}).limit(10),
+    
     OrderBid.find({ buyer: req.user._id,status:{$in: ['accepeted', 'canceled']} }).populate({path:'product'}),
-  ]).then( ([orders,buybids,historyorders])=>{
+    Category.find(),
+  ]).then( ([orders,buybids,historyorders,category])=>{
     console.log(req.user);
     res.render('pages/users/buying', {
       buybids: buybids,
       orders:orders,
+      category:category,
       historyorders:historyorders,
       layout:'layout'
     })
