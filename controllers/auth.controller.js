@@ -6,13 +6,16 @@ const path = require('path');
 const fs = require('fs');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const utils_controller = require('../controllers/utils.controller');
-
+const TokenGenerator = require('uuid-token-generator');
 exports.showSignUp=function(req,res,next){
     res.render('pages/public/sign-up',{layout:'login-layout'})
 }
 
 exports.signUp=function(req, res){
     const role=Role.User;
+    const tokgen = new TokenGenerator(); // Default is a 128-bit token encoded in base58
+
+    const token=tokgen.generate();
    // const name =req.body.name;
    // const email =req.body.email;
    // const password =req.body.password;
@@ -58,6 +61,7 @@ exports.signUp=function(req, res){
            email,
            password,
            role,
+           token,
          });
  
          bcrypt.genSalt(10, (err, salt) => {
@@ -67,7 +71,7 @@ exports.signUp=function(req, res){
              newUser
                .save()
                .then(user => {
-                 var token=123456;
+                 var token=token;
                  var userid=user._id;
                 var mailOptions = {
                   from: 'aquatecinnovative1@gmail.com',
@@ -75,7 +79,7 @@ exports.signUp=function(req, res){
                   subject: 'Validate Your Account',
                   text: '<a href="https://aquatecinnovative.herokuapp.com/validate/?user='+userid+'&token='+token+'">Click Here To Validate Your Account</a>'
                 };
-                console.log(mailOptions);
+               // console.log(mailOptions);
                 utils_controller.sendmymail(mailOptions);
                  req.flash(
                    'success_msg',
@@ -83,9 +87,10 @@ exports.signUp=function(req, res){
                  );
                 
                    if(req.session.oldUrl){
-                     var oldUrl=req.session.oldUrl;
-                     req.session.oldUrl=null;
-                     res.redirect(oldUrl);
+                    // var oldUrl=req.session.oldUrl;
+                    // req.session.oldUrl=null;
+                     //res.redirect(oldUrl);
+                     res.redirect('/sign-in');
                    }else{
                      res.redirect('/sign-in');
                    }    
@@ -104,7 +109,7 @@ exports.signUpValidate=function (req,res,next) {
 
   User.findOne({ _id: userid }).then(user => {
     if (user) {
-      if(token=='123456'){
+      if(token==user.token){
         console.log(token);
         console.log(userid);
         user.validated=1;
@@ -126,9 +131,9 @@ exports.signUpValidate=function (req,res,next) {
 
 exports.signIn=function(req, res, next){
       if(req.session.oldUrl){
-        var oldUrl=req.session.oldUrl;
-        req.session.oldUrl=null;
-        res.redirect(oldUrl);
+       // var oldUrl=req.session.oldUrl;
+      //  req.session.oldUrl=null;
+       // res.redirect(oldUrl);
       }else{
         if(req.user.role=='Admin'){
           res.redirect('/admin/');
