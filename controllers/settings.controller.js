@@ -382,8 +382,8 @@ exports.productsBuying=function(req, res, next) {
     OrderBid.find({ buyer: req.user._id,status:{$in: ['accepeted', 'canceled']} }).populate({path:'product'}),
     Category.find(),
   ]).then( ([orders,buybids,history,category])=>{
-    console.log(historyorders);
-    console.log(req.user);
+   // console.log(historyorders);
+   // console.log(req.user);
     res.render('pages/users/buying', {
       buybids: buybids,
       orders:orders,
