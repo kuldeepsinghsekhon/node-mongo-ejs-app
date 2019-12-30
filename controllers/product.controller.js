@@ -592,8 +592,12 @@ exports.saveProduct=function(req, res, next) {
   
     let errors = [];
     if (!req.body.category_name || !req.body.product_description || !req.body.product_name 
-      || !req.body.product_price  ) {
+      || !req.body.product_price||!req.files|| Object.keys(req.files).length=== 0  ) {
       errors.push({ msg: 'Please enter all Required fields' });
+     
+      if(!req.files){
+        errors.push({ msg: 'Please upload image' });
+      }
     }
   
     // if (password != password2) {
@@ -601,9 +605,10 @@ exports.saveProduct=function(req, res, next) {
     // }
   
     if (errors.length > 0) {
-      Category.find({},function(err,category){
-        errors ,
-        res.render('pages/admin/add-product',{layout:'admin-layout',category:category}); 
+    
+       Category.find({},function(err,category){
+        
+         res.render('pages/admin/add-product',{layout:'admin-layout',category:category,errors:errors}); 
 
         });
     } else {
@@ -616,15 +621,6 @@ exports.saveProduct=function(req, res, next) {
             else console.log(err); // something else went wrong
         } else console.log(null); // successfully created folder
     });
-
-    if (!req.files || Object.keys(req.files).length=== 0) {
-      errors.push({ msg: 'No files were uploaded.' });
-      Category.find({},function(err,category){
-        errors ,
-        res.render('pages/admin/add-product',{layout:'admin-layout',category:category}); 
-
-        });
-    }else{
       let productImage1 = req.files.productImage;
       imgname=Date.now()+path.extname(req.files.productImage.name);
       productImage1.mv(imgpath+'//'+imgname, function(err) { 
@@ -632,10 +628,7 @@ exports.saveProduct=function(req, res, next) {
         //return res.status(500).send(err);
         //res.send('File uploaded!');}
       });        
-    }
-
     product.image = imgname;
-
     product.save(function(err,product) {
         if (err){
           throw err
@@ -649,7 +642,7 @@ exports.saveProduct=function(req, res, next) {
     );
     res.redirect('/admin/add-product');
   }
-    
+  
 }
 /* View Page for admin can edit Product*/
 exports.editProduct=function(req, res, next) {
