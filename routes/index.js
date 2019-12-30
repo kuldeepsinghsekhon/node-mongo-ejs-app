@@ -32,6 +32,7 @@ router.get('/sign-up',forwardAuthenticated, forwardAuthenticated,auth_controller
 
 // Register
 router.post('/sign-up',auth_controller.signUp);
+router.get('/validate',auth_controller.signUpValidate);
 // Login Page
 router.get('/sign-in',auth_controller.showSignIn );
 

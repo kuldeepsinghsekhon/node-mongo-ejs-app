@@ -5,6 +5,8 @@ const Role = require('../models/Role');
 const path = require('path');
 const fs = require('fs');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const utils_controller = require('../controllers/utils.controller');
+
 exports.showSignUp=function(req,res,next){
     res.render('pages/public/sign-up',{layout:'login-layout'})
 }
@@ -65,6 +67,16 @@ exports.signUp=function(req, res){
              newUser
                .save()
                .then(user => {
+                 var token=123456;
+                 var userid=user._id;
+                var mailOptions = {
+                  from: 'aquatecinnovative1@gmail.com',
+                  to: user.email,
+                  subject: 'Validate Your Account',
+                  text: '<a href="https://aquatecinnovative.herokuapp.com/validate/?user='+userid+'&token='+token+'">Click Here To Validate Your Account</a>'
+                };
+                console.log(mailOptions);
+                utils_controller.sendmymail(mailOptions);
                  req.flash(
                    'success_msg',
                    'You are now registered and can log in'
@@ -86,7 +98,28 @@ exports.signUp=function(req, res){
      });
    }
  }
+exports.signUpValidate=function (req,res,next) {
+  var userid=req.query.user;
+  var token=req.query.token;
 
+  User.findOne({ _id: userid }).then(user => {
+    if (user) {
+      if(token=='123456'){
+        console.log(token);
+        console.log(userid);
+        user.validated=1;
+        user.save(function(err) {
+          if (err) throw err;
+          console.log(user);
+        });
+      }
+      res.redirect('/sign-in');
+    } else {
+      
+      
+    }
+  });
+}
  exports.showSignIn=function(req, res){
      res.render('pages/public/sign-in',{layout:'login-layout'})
 }

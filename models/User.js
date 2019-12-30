@@ -26,6 +26,8 @@ const UserSchema = new mongoose.Schema({
   shoesize:Number,
   currency:String,
   paypalEmail:String,
+  validated:Boolean,
+  token:String,
   notifications:{type: Schema.Types.ObjectId, ref: 'UserNotification'},
 });
 const User = mongoose.model('User', UserSchema);
