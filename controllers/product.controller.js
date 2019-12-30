@@ -617,7 +617,12 @@ exports.saveProduct=function(req, res, next) {
     });
 
     if (!req.files || Object.keys(req.files).length=== 0) {
-      return res.status(400).send('No files were uploaded.');
+      errors.push({ msg: 'No files were uploaded.' });
+      Category.find({},function(err,category){
+        errors ,
+        res.render('pages/admin/add-product',{layout:'admin-layout',category:category}); 
+
+        });
     }else{
       let productImage1 = req.files.productImage;
       imgname=Date.now()+path.extname(req.files.productImage.name);
