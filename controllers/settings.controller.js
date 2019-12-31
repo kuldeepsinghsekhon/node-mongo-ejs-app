@@ -174,24 +174,16 @@ if (phone.length < 10) {
 // console.log(c);
  if (errors.length > 0) {
      console.log(errors);
-     res.redirect('/user/setting');
-      req.flash(
-      'error_msg',
-      'please fill all fields'
-    );
+     //res.redirect('/user/setting');
+     res.json({success:false,errors:errors});
 } else {
  let address=await  Address.findOneAndUpdate(filter, update, {
       new: true,
       upsert: true // Make this update into an upsert
     });
-    req.flash(
-      'success_msg',
-      'Shipping info saved successfully'
-    );
-    res.redirect('/user/setting');
+    res.json({success:true});
+   // res.redirect('/user/setting');
    // console.log(address);
-
-
     }
 }
   exports.sellerInfo=function(req, res, next) {

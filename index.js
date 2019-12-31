@@ -1,12 +1,15 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const session = require('express-session');
+const expressValidator = require('express-validator');
+var parser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
 const mongoStore = require('connect-mongo')(session);
 const dotenv = require('dotenv');
+
 dotenv.config();
 const app = express();
 
@@ -37,8 +40,23 @@ app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
 // Express body parser
-app.use(express.urlencoded({ extended: true }));
-
+app.use(express.urlencoded({ extended: false }));
+// app.use(expressValidator({
+//   errorFormatter: function(param, msg, value) {
+//   var namespace = param.split('.')
+//   , root = namespace.shift()
+//   , formParam = root;
+  
+//   while(namespace.length) {
+//   formParam += '[' + namespace.shift() + ']';
+//   }
+//   return {
+//   param : formParam,
+//   msg : msg,
+//   value : value
+//   };
+//   }
+//   }));
 // Express session
 app.use(
   session({

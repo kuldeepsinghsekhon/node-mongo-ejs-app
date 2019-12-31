@@ -1,5 +1,4 @@
-<div class="row">
-      
+
     <div class="card">
             <% include ../../partials/messages %>
         <div class="card-body">
@@ -28,20 +27,32 @@
                             <div class="form-group">
                                     <label for="product_price">Sku</label>
                                     <input type="text" id="product_sku" class="form-control" value="<%=product.sku %>" name="product_sku" placeholder="Product Sku">
-                                </div>
-                            <div class="form-group">
-                                    <label for="product_price">Image</label>
-                                    <input type="file" id="productImage" class="form-control" value="<%=product.image %>" name="productImage" placeholder="Product Image">
-                                </div>
+                            </div>
                                 <div class="form-group">
                                         <label for="product_price">Description</label>
                                         <textarea name="product_description" class="form-control" value="<%=product.description %>" rows="6" placeholder="Product Description" ><%=product.description %></textarea> 
-                                    </div>     
+                                 </div> 
+                                    <div class="form-group">
+                                        <label for="style">Style</label>
+                                        <input type="text" id="productStyle" class="form-control" value="<%=product.style %>" placeholder="Product Style">
+                                    </div>  
+                                    <div class="form-group">
+                                        <label for="product_price">Attribute</label>
+                                        <input type="text" id="productStyle" class="form-control" value="<%=product.attributename %>" placeholder="Attribute"> 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="product_price">Attribute</label>
+                                        <input type="text" id="productStyle" class="form-control" value="<%=product.attributevalues %>" placeholder="Attribute Name"> 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productImage">Product Image</label>
+                                        <span><img src="/products/<%=product.image %>"></span>
+                                        <input type="file" id="productImage"  class="form-control" value="<%=product.productImage  %>" name="productImage" placeholder="Product Image">
+                                    </div>
                             <button type="submit" class="btn btn-success">Update Product</button>
-                        </div>
+                        </div >
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</div>

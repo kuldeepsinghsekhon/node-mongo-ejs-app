@@ -74,7 +74,7 @@
                                  </tr>
                                 </thead>
                                 <tbody>                          
-                                    <% if(buybids){ %>
+                                    <% if(buybids.length>0){ %>
                                        <% for (var i = 0; i < buybids.length; i++) { %>
                                           <tr><td><%= buybids[i].title %></td>
                                              <td><%= buybids[i].bidprice %></td>

@@ -13,6 +13,7 @@ const product_controller = require('../controllers/product.controller');
 const users_controller = require('../controllers/user.controller');
 const admin_controller = require('../controllers/admin.controller');
 const Category = require('../models/Category');
+const { check, validationResult } = require('express-validator');
 
 const app = express();
 app.use(fileUpload());
@@ -69,7 +70,7 @@ router.get('/product/:id/edit', product_controller.editProduct);
 
 router.post('/product/:id/update',ensureAuthenticated, permit('Admin'),product_controller.updateProduct);
  
-router.post('/add-product',ensureAuthenticated, permit('Admin'),product_controller.saveProduct);
+router.post('/add-product',ensureAuthenticated,permit('Admin'),product_controller.saveProduct);
 router.get('/buying',ensureAuthenticated, permit('Admin'),admin_controller.productsBuyBids);
 router.get('/selling',ensureAuthenticated, permit('Admin'),admin_controller.productsSellBids);
 //router.get('/admin/', ensureAuthenticated, (req, res) => res.render('pages/admin/dashboard',{ layout:'admin-layout' }));
