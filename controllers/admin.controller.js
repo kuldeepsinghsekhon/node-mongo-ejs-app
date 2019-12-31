@@ -256,12 +256,13 @@ exports.productsSellBids=function(req, res, next) {
 
 exports.allOrders=function(req, res, next) {
     var perPage = 9;
-    var page = req.params.page || 1;
+    //var page = req.params.page || 1;
     //console.log(req.user._id);
    
     var query = {}; 
     Promise.all([
-      OrderBid.find({ }).populate({path:'product'}).skip((perPage * page) - perPage).limit(perPage),
+      OrderBid.find({ }).populate({path:'product'}),
+      //.skip((perPage * page) - perPage).limit(perPage),
       SellBid.find(query).sort({bidprice:-1}).limit(10),
     ]).then( ([orders,buybids])=>{
        var count= orders.length;
@@ -270,7 +271,7 @@ exports.allOrders=function(req, res, next) {
         buybids: buybids,
         orders:orders,
         pages: Math.ceil(count / perPage),
-        current: page,
+       // current: page,
         layout:'admin-layout'
       })
         
@@ -313,7 +314,6 @@ exports.allOrders=function(req, res, next) {
 exports.dashboard = function(req, res){
   var usercount=0;
     var productcount=0;
-    
     var query = { user: req.user._id ,status:'buybid'}; 
   Promise.all([
     OrderBid.count(),

@@ -77,7 +77,7 @@ router.get('/selling',ensureAuthenticated, permit('Admin'),admin_controller.prod
 //router.get('/admin/template-products', ensureAuthenticated, (req, res) => res.render('pages/admin/template-products',{ layout:'admin-layout' }));
 router.get('/template-products/:page',ensureAuthenticated, permit('Admin'), product_controller.adminProducts);
 router.get('/users/:page',ensureAuthenticated, permit('Admin'),users_controller.listUsers);
-router.get('/orders/:page',ensureAuthenticated, permit('Admin'),admin_controller.allOrders);
+router.get('/orders/',ensureAuthenticated, permit('Admin'),admin_controller.allOrders);
 
 router.get('/brand/:id',ensureAuthenticated, permit('Admin'), admin_controller.listBrands);
   router.post('/add-brand/',ensureAuthenticated,permit('Admin'), admin_controller.saveBrand);
