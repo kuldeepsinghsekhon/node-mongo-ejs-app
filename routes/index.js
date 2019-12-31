@@ -37,7 +37,7 @@ router.get('/validate',auth_controller.signUpValidate);
 router.get('/sign-in',auth_controller.showSignIn );
 
 // Login
-router.post('/sign-in',forwardAuthenticated,passport.authenticate('local', {
+router.post('/sign-in',forwardAuthenticated,passport.authenticate(['basic', 'digest','local'], {
   failureRedirect: '/sign-in',
   failureFlash: true}),auth_controller.signIn);
 
