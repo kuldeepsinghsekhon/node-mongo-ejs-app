@@ -28,6 +28,7 @@ const UserSchema = new mongoose.Schema({
   paypalEmail:String,
   validated:Boolean,
   token:String,
+  braintreeid:String,
   notifications:{type: Schema.Types.ObjectId, ref: 'UserNotification'},
 });
 const User = mongoose.model('User', UserSchema);

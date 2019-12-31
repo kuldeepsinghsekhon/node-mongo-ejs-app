@@ -7,6 +7,13 @@ const fs = require('fs');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const utils_controller = require('../controllers/utils.controller');
 const TokenGenerator = require('uuid-token-generator');
+const braintree = require("braintree");
+const gateway = braintree.connect({
+  environment: braintree.Environment.Sandbox,
+  merchantId: "dwt5m34ppngz6s7k",       //merchant id
+  publicKey: "g2d976m7dxpt6bx5",        //public key
+  privateKey: "117df9268ade2b95fc3f526966441059" //private key
+});
 exports.showSignUp=function(req,res,next){
     res.render('pages/public/sign-up',{layout:'login-layout'})
 }
@@ -63,7 +70,22 @@ exports.signUp=function(req, res){
            role,
            token,
          });
- 
+         gateway.customer.create({
+          firstName: name,
+          lastName: name+'dfd',
+          //company: "Braintree",
+          email: email,
+          //phone: "312.555.1234",
+         // fax: "614.555.5678",
+         // website: "www.example.com"
+        }, function (err, result) {
+          result.success;
+          // true
+        
+          newUser.braintreeid=result.customer.id;
+          console.log(result.customer.id);
+          // e.g. 494019
+        });
          bcrypt.genSalt(10, (err, salt) => {
            bcrypt.hash(newUser.password, salt, (err, hash) => {
              if (err) throw err;
@@ -73,6 +95,7 @@ exports.signUp=function(req, res){
                .then(user => {
                  var token=token;
                  var userid=user._id;
+                
                 var mailOptions = {
                   from: 'aquatecinnovative1@gmail.com',
                   to: user.email,
