@@ -27,20 +27,27 @@ router.get('/',forwardAuthenticated, product_controller.products);
 //       })
 // });
 
-// Register Page
+// Register Page fbsign-in
 router.get('/sign-up',forwardAuthenticated, forwardAuthenticated,auth_controller.showSignUp);
-
 // Register
 router.post('/sign-up',auth_controller.signUp);
 router.get('/validate',auth_controller.signUpValidate);
 // Login Page
 router.get('/sign-in',auth_controller.showSignIn );
-
-// Login
-router.post('/sign-in',forwardAuthenticated,passport.authenticate(['basic', 'digest','local'], {
-  failureRedirect: '/sign-in',
-  failureFlash: true}),auth_controller.signIn);
-
+  router.get('/auth/facebook', passport.authenticate('facebook', { 
+    scope : ['public_profile', 'email']
+  }));
+  router.get('/auth/twitter', passport.authenticate('twitter'));
+  router.get('/auth/facebook/callback',passport.authenticate('facebook', {
+            successRedirect : '/user/profile',
+            failureRedirect : '/'
+        }));
+ router.get('/auth/google',  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/user/profile');
+  });
+  router.post('/fbsign-in',forwardAuthenticated, forwardAuthenticated,auth_controller.fbSignUpSignin);
+  router.get('/auth/twitter/callback',  passport.authenticate('twitter', { successRedirect: '/',failureRedirect: '/login' }));
 // Logout
 router.get('/logout',forwardAuthenticated, (req, res) => {
   req.logout();

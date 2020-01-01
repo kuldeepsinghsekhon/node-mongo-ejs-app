@@ -151,6 +151,9 @@ exports.signUpValidate=function (req,res,next) {
  exports.showSignIn=function(req, res){
      res.render('pages/public/sign-in',{layout:'login-layout'})
 }
+exports.fbSignUpSignin=function (req,res,next) {
+  res.json({success :'ok'})
+}
 
 exports.signIn=function(req, res, next){
       if(req.session.oldUrl){
