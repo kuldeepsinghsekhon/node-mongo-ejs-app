@@ -86,6 +86,7 @@ app.use(function(req, res, next) {
 
 // Routes
 app.use('/', require('./routes/index.js'));
+app.use('/api', require('./routes/api.js'));
 app.use('/user', require('./routes/user.js'));
 app.use('/admin', require('./routes/admin.js'));
 app.use('/products', require('./routes/products.js'));
