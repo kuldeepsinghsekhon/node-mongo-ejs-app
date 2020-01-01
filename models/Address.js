@@ -4,6 +4,8 @@ const AddressSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
+  },lastname:{
+    type: String
   },
   organisation_name: {
     type: String,
@@ -27,6 +29,10 @@ const AddressSchema = new mongoose.Schema({
   },
   address2:{
     type: String,
+  },
+  postalCode:{
+    type: Number,
+    required: true
   },
   phone:{
     type: String,

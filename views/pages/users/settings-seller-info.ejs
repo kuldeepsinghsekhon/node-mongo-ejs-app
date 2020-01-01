@@ -2,13 +2,9 @@
     <div class="split-pane-page">
        <div class="split-pane with-button-bar">
        
-          
-          
-          
-          
           <div style="position: relative; overflow-y: hidden;" class="pane forty pane-grey">
              
-               <form accept-charset="UTF-8" method="POST" action="/user/settings/seller-info"  >
+               <form accept-charset="UTF-8" method="POST" action="#" id="sellerform"  >
              
              <div class="address-form fs-block">
                 <div class="form-title">Seller Info</div>
@@ -59,3 +55,39 @@
        </div>
     </div>
  </div>
+
+ <script>
+   $("#sellerform").on('submit', function(event){
+     event.preventDefault();
+              //var id ="";// $("#id-manuf-name").val();
+              //$("#bid-type").val("sale");
+              //var size='5';
+              //var sendInfo = {id: id};
+              $.ajax({
+                 method:'post',
+                 url:"seller-info",
+                 dataType: "json",
+                 data:$(this).serialize(),
+                 
+                 success: function (res) {
+                 var data = res;
+                  console.log(res);
+                  if(res.success){
+                  
+                    $('#success_msg').html( '<div class="alert alert-success">Shipping info saved successfully.</div>');
+                  }else
+                    {
+                       $('#message_error').text('*Please input data in All fileds')
+                    //   $('#name_error').text(res.errors[0].msg);
+                    //   $('#address1_error').text(res.errors[1].msg);
+                    //    $('#city_error').text(res.errors[2].msg);
+                    //    $('#state_error').text(res.errors[3].msg);
+                    //    $('#phone_error').text(res.errors[4].msg);
+  
+                    }
+                 }
+                // error:function(err){  //console.log(err);  
+                 
+              });	
+           });		
+   </script>

@@ -390,6 +390,7 @@ exports.placeBuyBid=async function name(req,res,next) {
 
   var bidprice=0;
   const productId= req.body.productid;
+  var  billingaddress= req.body.billingAddress;
   var sellask=await SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1);
   var highestbid=await BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1);
 
@@ -524,11 +525,21 @@ exports.calculateBuyCharges=function name(req,res,next) {
 }
 exports.buyBillingShipping=function(req,res){
   var productId=req.body.id;
-  product=Product.findById(productId,function(err,product){ 
-      res.render('pages/public/product-buy-billing-shipping', {
-        product: product,
-        layout:'blank-layout' });
-      });
+  Promise.all([
+    Product.findOne({ _id: productId }).populate({path:'attrs'}),
+    
+    Address.findOne({address_type:'shipping',user:req.user}).limit(1),
+    Address.findOne({address_type:'billing',user:req.user}).limit(1)
+  ]).then( ([ product,shippingAddress,billingAddress ]) => {
+ 
+    res.render('pages/public/product-buy-billing-shipping', {
+      product: product,
+      shippingAddress:shippingAddress,
+      billingAddress:billingAddress,
+      layout:'blank-layout'
+     })
+
+  });
 }
 exports.buyShipping=function(req,res){
   var productId=req.body.id;

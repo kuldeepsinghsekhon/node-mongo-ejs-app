@@ -48,11 +48,12 @@ exports.settings=function(req, res, next) {
         })
   }
   exports.saveBuyerInfo=async function(req,res){
+   
     const user=req.user;
     let address_type='billing';
-    const { name, country,address1,address2, state, city,postalCode,phone} = req.body;
+    const { name, lastname, country,address1,address2, state, city,postalCode,phone} = req.body;
     let errors = [];
- 
+  
    if (!name || !country || !state || !city||!address1||!phone||!postalCode) {
      errors.push({ msg: 'Please enter all fields' });
    }
@@ -71,32 +72,45 @@ exports.settings=function(req, res, next) {
   if (address1.length < 3) {
     errors.push({ msg: 'address1 must be at least 3 characters' });
   }
-
+  
   if (phone.length < 10) {
     errors.push({ msg: 'phone must be at least 10 characters' });
   }
-    const update={name,country,state,city,address1,address2,phone,user,address_type};
+    const update={name,lastname,country,state,city,address1,address2,phone,user,address_type,postalCode};
     const  filter={user:user,address_type:address_type};
    
   // console.log(c);
    if (errors.length > 0) {
        console.log(errors);
-       res.redirect('/user/setting');
-    // res.render('pages/users/settings-buyer-info', {
-    //   errors,
-    //   name, country,address1,address2, state, city,postalCode,phone
-    // });
+       //res.redirect('/user/setting');
+       res.json({success:false,errors:errors});
   } else {
    let address=await  Address.findOneAndUpdate(filter, update, {
         new: true,
         upsert: true // Make this update into an upsert
       });
-      req.flash(
-        'success_msg',
-        'Billing/Buyer info saved successfully'
-      );
-      res.redirect('/user/setting');
-      console.log(address);
+      res.json({success:true,address:address});
+     // res.redirect('/user/setting');
+     // console.log(address);
+      }
+  }
+    exports.sellerInfo=function(req, res, next) {
+      var perPage = 9;
+      var page = req.params.page || 1;
+    
+      Address
+          .find({})
+          .exec(function(err, users) {
+              Address.count().exec(function(err, count) {
+                  if (err) return next(err)
+                  res.render('pages/users/settings-seller-info', {
+                      users: users,
+                      current: page,
+                      pages: Math.ceil(count / perPage),
+                      layout:'layout'
+                  })
+              })
+          }) 
 
   }
     
@@ -121,18 +135,19 @@ exports.settings=function(req, res, next) {
     //     if (err) return next(err);
     //     res.redirect('/admin/template-products/1');
     // });
-  }
+ // }
   exports.shippingInfo=function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
-  
+    let address_type='shipping';
     Address
-        .find({})
-        .exec(function(err, users) {
+        .findOne({user:req.user, address_type:address_type})
+        .exec(function(err, address) {
             Address.count().exec(function(err, count) {
                 if (err) return next(err)
+                console.log(address);
                 res.render('pages/users/settings-shipping-info', {
-                    users: users,
+                  address: address,
                     current: page,
                     pages: Math.ceil(count / perPage),
                     layout:'layout'
@@ -142,8 +157,8 @@ exports.settings=function(req, res, next) {
   }
   exports.saveShippingInfo=async function(req,res,next){
     const user=req.user;
-  let address_type='billing';
-  const { name, country,address1,address2, state, city,postalCode,phone} = req.body;
+  let address_type='shipping';
+  const { name, lastname, country,address1,address2, state, city,postalCode,phone} = req.body;
   let errors = [];
 
  if (!name || !country || !state || !city||!address1||!phone||!postalCode) {
@@ -168,7 +183,7 @@ if (address1.length < 3) {
 if (phone.length < 10) {
   errors.push({ msg: 'phone must be at least 10 characters' });
 }
-  const update={name,country,state,city,address1,address2,phone,user,address_type};
+  const update={name,lastname,country,state,city,address1,address2,phone,user,address_type,postalCode};
   const  filter={user:user,address_type:address_type};
  
 // console.log(c);
@@ -181,7 +196,7 @@ if (phone.length < 10) {
       new: true,
       upsert: true // Make this update into an upsert
     });
-    res.json({success:true});
+    res.json({success:true,address:address});
    // res.redirect('/user/setting');
    // console.log(address);
     }
@@ -426,6 +441,7 @@ exports.productsSelling=function(req, res, next) {
     OrderBid.find({ seller: req.user,status:{$in: ['Won Bid', 'Order Placed']}}).populate({path:'product'}),
     SellBid.find(query).sort({bidprice:-1}).limit(10),
     OrderBid.find({ seller: req.user._id,status:{$in: ['accepeted', 'canceled']} }).populate({path:'product'}),
+    
   ]).then( ([orders,askbids,history])=>{
     //console.log('history')
    // console.log(history[0].product.name)
