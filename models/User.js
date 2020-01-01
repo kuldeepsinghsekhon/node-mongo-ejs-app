@@ -9,11 +9,11 @@ const UserSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true
+   
   },
   password: {
     type: String,
-    required: true
+   
   },
   role:{
     type: String,
@@ -29,6 +29,8 @@ const UserSchema = new mongoose.Schema({
   validated:Boolean,
   token:String,
   braintreeid:String,
+  fbid:String,
+  googleId:String,
   notifications:{type: Schema.Types.ObjectId, ref: 'UserNotification'},
 });
 const User = mongoose.model('User', UserSchema);
