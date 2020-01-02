@@ -12,10 +12,12 @@ module.exports = {
       return next();  
       if(!validated){
         req.flash('error_msg', 'Please Check tour email  and Validate Account');
-        res.redirect('/sign-in');
+        res.json({status:'error',message:'Email Or password are incorrect '});
+       // res.redirect('/sign-in');
       }
     }
-    req.flash('error_msg', 'Please log in to view that resource');
+    res.json({status:'error',message:'Email Or password are incorrect '});
+   // req.flash('error_msg', 'Please log in to view that resource');
     res.redirect('/sign-in');
   },
   forwardAuthenticated: function(req, res, next) {

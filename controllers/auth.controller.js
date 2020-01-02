@@ -8,6 +8,8 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const utils_controller = require('../controllers/utils.controller');
 const TokenGenerator = require('uuid-token-generator');
 const braintree = require("braintree");
+const { uniqueNamesGenerator, adjectives, colors, animals } = require('unique-names-generator');
+
 const gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
   merchantId: "dwt5m34ppngz6s7k",       //merchant id
@@ -21,7 +23,7 @@ exports.showSignUp=function(req,res,next){
 exports.signUp=function(req, res){
     const role=Role.User;
     const tokgen = new TokenGenerator(); // Default is a 128-bit token encoded in base58
-
+    const randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], style: 'capital' }); // big_red_donkey
     const token=tokgen.generate();
    // const name =req.body.name;
    // const email =req.body.email;
@@ -44,24 +46,27 @@ exports.signUp=function(req, res){
    }
  
    if (errors.length > 0) {
-     res.render('pages/public/sign-up', {
-       errors,
-       name,
-       email,
-       password,
-       password2
-     });
+    res.json({status:'error',errors:errors,name:name,email:email,password:password,password2:password2});
+
+    //  res.render('pages/public/sign-up', {
+    //    errors,
+    //    name,
+    //    email,
+    //    password,
+    //    password2
+    //  });
    } else {
      User.findOne({ email: email }).then(user => {
        if (user) {
          errors.push({ msg: 'Email already exists' });
-         res.render('pages/public/sign-up', {
-           errors,
-           name,
-           email,
-           password,
-           password2
-         });
+        //  res.render('pages/public/sign-up', {
+        //    errors,
+        //    name,
+        //    email,
+        //    password,
+        //    password2
+        //  });
+        res.json({status:'error',errors:errors,name:name,email:email,password:password,password2:password2});
        } else {
          const newUser = new User({
            name,
@@ -90,6 +95,7 @@ exports.signUp=function(req, res){
            bcrypt.hash(newUser.password, salt, (err, hash) => {
              if (err) throw err;
              newUser.password = hash;
+             newUser.username = randomName;
              newUser
                .save()
                .then(user => {
@@ -100,23 +106,24 @@ exports.signUp=function(req, res){
                   from: 'aquatecinnovative1@gmail.com',
                   to: user.email,
                   subject: 'Validate Your Account',
-                  text: '<a href="https://aquatecinnovative.herokuapp.com/validate/?user='+userid+'&token='+token+'">Click Here To Validate Your Account</a>'
+                  text: 'Thanks For Register Your Validation Token is <h1>'+token+'</h1>'
                 };
-               // console.log(mailOptions);
+                console.log(user);
                 utils_controller.sendmymail(mailOptions);
-                 req.flash(
-                   'success_msg',
-                   'You are now registered and can log in'
-                 );
-                
-                   if(req.session.oldUrl){
+                //  req.flash(
+                //    'success_msg',
+                //    'You are now registered and can log in'
+                //  );
+                res.json({status:'ok',userid:userid,username:randomName,email:user.email});
+
+                 //  if(req.session.oldUrl){
                     // var oldUrl=req.session.oldUrl;
                     // req.session.oldUrl=null;
                      //res.redirect(oldUrl);
-                     res.redirect('/sign-in');
-                   }else{
-                     res.redirect('/sign-in');
-                   }    
+                     //res.redirect('/sign-in');
+                  // }else{
+                     //res.redirect('/sign-in');
+                  // }    
                 
                })
                .catch(err => console.log(err));
@@ -126,9 +133,14 @@ exports.signUp=function(req, res){
      });
    }
  }
+ exports.validationForm=function(req,res,next){
+  res.render('pages/public/validation-form', {
+    layout:'login-layout'
+  });
+ }
 exports.signUpValidate=function (req,res,next) {
-  var userid=req.query.user;
-  var token=req.query.token;
+  var userid=req.body.userid;
+  var token=req.body.token;
 
   User.findOne({ _id: userid }).then(user => {
     if (user) {
@@ -141,10 +153,9 @@ exports.signUpValidate=function (req,res,next) {
           console.log(user);
         });
       }
-      res.redirect('/sign-in');
-    } else {
-      
-      
+      res.json({status:'ok',userid:userid,username:randomName,email:user.email,validate:true});
+    } else {     
+      res.json({status:'error',userid:userid,username:randomName,email:user.email,validate:false});
     }
   });
 }
@@ -158,17 +169,24 @@ exports.fbSignUpSignin=function (req,res,next) {
 exports.signIn=function(req, res, next){
    
         if(req.user.role=='Admin'){
-          res.redirect('/admin/');
-        }else{
+          res.json({status:'ok',userid:req.user._id,username:req.user.randomName,email:req.user.email,validate:true,role:req.user.role});
+
+         // res.redirect('/admin/');
+        }else if(req.user.role=='User'){
           if(req.session.oldUrl){
              var oldUrl=req.session.oldUrl;
             req.session.oldUrl=null;
-             res.redirect(oldUrl);
+            res.json({status:'ok',userid:req.user._id,username:req.user.randomName,email:req.user.email,validate:true,url:req.user.oldUrl});
+
            }else{
-            res.redirect('/user/profile');
+            res.json({status:'ok',userid:req.user._id,username:req.user.randomName,email:req.user.email,validate:true});
+
            }
          
-       }      
+       } else{
+        res.json({status:'error',message:'Email Or password are incorrect '});
+
+       }     
          
     }
   

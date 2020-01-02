@@ -1,7 +1,7 @@
 <div class="page_wrapper">
         <% include ../../partials/messages %>
         <div id="logreg-forms">
-       <form action="/sign-in" method="POST" class="form-signin">
+       <form action="#" method="POST" class="form-signin">
            <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Sign in</h1>
            <div class="social-login">
                <button onclick="location.href='/auth/facebook'" class="btn facebook-btn social-btn" type="button"><span><i class="fa fa-facebook"></i> Sign in with Facebook</span> </button>
@@ -35,3 +35,28 @@
    </div>
    
      </div>
+     <script>
+     $('.form-signin').on('submit',function(event){
+         event.preventDefault();
+        //alert('dfsf')
+        var email=$("#email").val();
+        var password=$("#password").val();
+
+		var formdata = {email:email,password:password};
+		$.ajax({
+			method:'post',
+			url:"/sign-in",
+			//dataType: "json",
+			data:formdata,
+			success: function (response) {
+				if(response.status=='ok'){
+                    $(location).attr('href', '/user/profile');
+                }else{
+                    alert(response.message);
+                }
+				console.log(response);
+			}
+		})
+	});
+     </script>
+     

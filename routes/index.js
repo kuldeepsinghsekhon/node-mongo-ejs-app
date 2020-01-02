@@ -32,15 +32,18 @@ router.get('/sign-up',forwardAuthenticated, forwardAuthenticated,auth_controller
 // Register
 router.post('/sign-up',auth_controller.signUp);
 router.get('/validate',auth_controller.signUpValidate);
+router.get('/validation-form',auth_controller.validationForm);
+
 // Login Page
 router.get('/sign-in',auth_controller.showSignIn );
 // Login
 router.post('/sign-in',forwardAuthenticated,passport.authenticate(['local','basic','digest'], {
-  failureRedirect: '/sign-in',
+  failureRedirect: '/sign-in-eror',
   failureFlash: true}),auth_controller.signIn);
   router.get('/auth/facebook', passport.authenticate('facebook', { 
     scope : ['public_profile', 'email']
   }));
+  router.get('/sign-in-eror', forwardAuthenticated,(req, res,next) => res.json({status:'error',message:'invalid email/Password'}));
   router.get('/auth/twitter', passport.authenticate('twitter'));
   router.get('/auth/facebook/callback',passport.authenticate('facebook', {
             successRedirect : '/user/profile',

@@ -37,6 +37,7 @@
     "passport-twitter": "^1.0.4",
     "performance-now": "^2.1.0",
     "stripe": "^7.13.0",
+    "unique-names-generator": "^4.1.1",
     "uuid-token-generator": "^1.0.0",
     "validator": "^12.1.0"
   },
