@@ -204,16 +204,14 @@ if (phone.length < 10) {
   exports.sellerInfo=function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
-  
+    let address_type='seller';
     Address
-        .find({})
-        .exec(function(err, users) {
+        .findOne({user:req.user, address_type:address_type})
+        .exec(function(err, address) {
             Address.count().exec(function(err, count) {
                 if (err) return next(err)
                 res.render('pages/users/settings-seller-info', {
-                    users: users,
-                    current: page,
-                    pages: Math.ceil(count / perPage),
+                  address: address,
                     layout:'layout'
                 })
             })
@@ -251,7 +249,7 @@ if (phone.length < 10) {
     if (phone.length < 10) {
       errors.push({ msg: 'phone must be at least 10 characters' });
     }
-      const update={name,organisation_name,country,state,city,address1,address2,phone,user,address_type};
+      const update={name,organisation_name,country,state,city,address1,address2,phone,user,address_type,postalCode};
       const  filter={user:user,address_type:address_type};
      
     // console.log(c);
@@ -262,28 +260,38 @@ if (phone.length < 10) {
         name, country,address1,address2, state, city,postalCode,phone
       });
     } else {
-     let address=await  Address.findOneAndUpdate(filter, update, {
+      let  address=[];
+   address=await  Address.findOneAndUpdate(filter, update, {
           new: true,
           upsert: true // Make this update into an upsert
         });
-        req.flash(
-          'success_msg',
-          'Seller info saved successfully'
-        );
-        res.redirect('/user/setting');
-        console.log(address);
+        res.json({success:true,address:address});
+        // req.flash(
+        //   'success_msg',
+        //   'Seller info saved successfully'
+        // );
+        // res.redirect('/user/setting');
+        // console.log(address);
   
     }
 }
   exports.payoutInfo=function(req,res,next){
-      res.render('pages/users/settings-payout-info')
+    User.findOne({_id:req.user._id})
+      .exec(function(err, user) {
+          User.count().exec(function(err, count) {
+              if (err) return next(err)
+              res.render('pages/users/settings-payout-info', {
+                  user: user,                        
+                  layout:'layout'
+              })
+          })
+      })
+
   }
   exports.savePayoutInfo=function(req,res,next) {
     const user_id=req.user._id;
-   //console.log(user_id);
-    
+   console.log(user_id);
     const prod={paypalEmail:req.body.paypalEmail};    
-
     User.findByIdAndUpdate(user_id, {$set:prod},{new: true}, function (err, user) {
       console.log(user);
           if (err) {
