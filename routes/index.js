@@ -34,7 +34,10 @@ router.post('/sign-up',auth_controller.signUp);
 router.get('/validate',auth_controller.signUpValidate);
 // Login Page
 router.get('/sign-in',auth_controller.showSignIn );
-router.post('/sign-in',auth_controller.signIn );
+// Login
+router.post('/sign-in',forwardAuthenticated,passport.authenticate('local', {
+  failureRedirect: '/sign-in',
+  failureFlash: true}),auth_controller.signIn);
   router.get('/auth/facebook', passport.authenticate('facebook', { 
     scope : ['public_profile', 'email']
   }));
