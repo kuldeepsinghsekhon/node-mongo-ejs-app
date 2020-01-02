@@ -156,17 +156,20 @@ exports.fbSignUpSignin=function (req,res,next) {
 }
 
 exports.signIn=function(req, res, next){
-      if(req.session.oldUrl){
-       // var oldUrl=req.session.oldUrl;
-      //  req.session.oldUrl=null;
-       // res.redirect(oldUrl);
-      }else{
+   
         if(req.user.role=='Admin'){
           res.redirect('/admin/');
         }else{
-          res.redirect('/user/profile');
-        }      
-      }    
+          if(req.session.oldUrl){
+             var oldUrl=req.session.oldUrl;
+            req.session.oldUrl=null;
+             res.redirect(oldUrl);
+           }else{
+            res.redirect('/user/profile');
+           }
+         
+       }      
+         
     }
   
     exports.profile=function(req, res, next) {
