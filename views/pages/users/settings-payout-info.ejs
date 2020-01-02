@@ -1,27 +1,60 @@
 <div class="bid-page" style="position: relative; overflow-y: hidden;">
     <div class="split-pane-page">
        <div class="split-pane with-button-bar">
-     
-          
-          
-          
           <div style="position: relative; overflow-y: hidden;" class="pane forty pane-grey">
-             
-            <form accept-charset="UTF-8" method="POST" action="/user/settings/seller-info"  >
+            <form accept-charset="UTF-8" method="POST" id="paymentinfo" action="#">
              <div class="payment-selection">
                 <div class="selection-title">Payment Methods</div>
                 <div class="selection-subtitle">Please confirm your payout method below
                </div>
                <div class="selected-payment"><div class="payment-bubble paypal"><img src="/img/icons/credit_card_white.svg?auto=compress,format"></div><div class="payment-title">Use PayPal for payout</div></div>
-               <div class="paypal-form"><div class="form-title">PayPal Info</div><input data-testid="user-paypalEmail" name="paypalEmail" type="text" required="" placeholder="PayPal Email" autocomplete="true" class="field" value=""><input data-testid="user-confirmPaypalEmail" name="confirmPaypalEmail" type="text" required="" placeholder="Confirm PayPal Email" autocomplete="true" class="field" value=""></div>
+               <div class="paypal-form">
+                        <div class="form-title">PayPal Info</div>
+                     <input data-testid="user-paypalEmail" name="paypalEmail" type="text" required="" placeholder="PayPal Email" autocomplete="true" class="field" value="<%=user.paypalEmail%>">
+                     <input data-testid="user-confirmPaypalEmail" name="confirmPaypalEmail" type="email" required="" placeholder="Confirm PayPal Email" autocomplete="true" class="field" value="<%=user.paypalEmail%>">
+               </div>
              </div>
              <div class="cncl_btn">
                <button type="button " class="btn flT_lft">Cancel</button>
-               <button type="button" class="btn flT_right">Submit</button>
+               <button type="submit" class="btn flT_right">Submit</button>
                </div>  
              </form>
           </div>
        </div>
     </div>
  </div>
+ <script>
+ $("#paymentinfo").on('submit', function(event){
+   event.preventDefault();
+				//var id ="";// $("#id-manuf-name").val();
+				//$("#bid-type").val("sale");
+				//var size='5';
+				//var sendInfo = {id: id};
+				$.ajax({
+					method:'post',
+					url:"/user/settings/payout-info",
+					dataType: "json",
+               data:$(this).serialize(),
+               
+         		success: function (res) {
+               var data = res;
+                console.log(res);
+                if(res.status=='ok'){
+                  $('#success_msg').html( '<div class="alert alert-success">Payment info saved successfully.</div>');
+                }else
+                  {
+                     $('#message_error').text('*Please input data in All fileds')
+                  //   $('#name_error').text(res.errors[0].msg);
+                  //   $('#address1_error').text(res.errors[1].msg);
+                  //    $('#city_error').text(res.errors[2].msg);
+                  //    $('#state_error').text(res.errors[3].msg);
+                  //    $('#phone_error').text(res.errors[4].msg);
+
+                  }
+				   }
+				  // error:function(err){  //console.log(err);  
+					
+				});	
+			});		
+ </script>
  

@@ -451,6 +451,7 @@ exports.placeBuyBid=async function name(req,res,next) {
     }
   }, function(error, result) {
       if (result) {
+        console.log(result);
        // sellask.status='sale';
        if(req.body.bidType=='buy'){  
         const order=new OrderBid();    
