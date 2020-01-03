@@ -154,9 +154,9 @@ exports.signUpValidate=function (req,res,next) {
           console.log(user);
         });
       }
-      res.json({status:'success',data:{userid:userid,username:randomName,email:user.email,validate:true},message:'Validation Success');
+      res.json({status:'success',data:{userid:userid,username:req.user.username,email:user.email,validate:true},message:'Validation Success');
     } else {     
-      res.json({status:'error',data:{errors:errors,userid:userid,username:randomName,email:user.email,validate:false},message:'Validation Error');
+      res.json({status:'error',data:{errors:errors,userid:userid,username:req.user.username,email:user.email,validate:false},message:'Validation Error');
     }
   });
 }
@@ -170,16 +170,16 @@ exports.fbSignUpSignin=function (req,res,next) {
 exports.signIn=function(req, res, next){
   let errors=[];
         if(req.user.role=='Admin'){
-          res.json({status:'ok',userid:req.user._id,username:req.user.randomName,email:req.user.email,validate:true,role:req.user.role});
+          res.json({status:'ok',userid:req.user._id,username:req.user.username,email:req.user.email,validate:true,role:req.user.role});
 
          // res.redirect('/admin/');
         }else if(req.user.role=='User'){
           if(req.session.oldUrl){
              var oldUrl=req.session.oldUrl;
             req.session.oldUrl=null;
-            res.json({status:'success',data:{userid:req.user._id,username:req.user.randomName,email:req.user.email,validate:true,url:req.user.oldUrl},message:''});
+            res.json({status:'success',data:{userid:req.user._id,username:req.user.username,email:req.user.email,validate:true,url:req.user.oldUrl},message:''});
            }else{
-            res.json({status:'success',data:{userid:req.user._id,username:req.user.randomName,email:req.user.email,validate:true},message:''});
+            res.json({status:'success',data:{userid:req.user._id,username:req.user.username,email:req.user.email,validate:true},message:''});
 
            }
          
