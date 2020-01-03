@@ -12,13 +12,20 @@
                
                <p style="text-align:center">OR</p>
 
-               <input  type="name"
+               <input  type="First name"
                id="name"
                name="name"
                class="form-control"
                placeholder="Enter Name"
                value="<%= typeof name != 'undefined' ? name : '' %>"
                 required="" autofocus="">
+                <input  type="name"
+                id="lastname"
+                name="Last name"
+                class="form-control"
+                placeholder="Enter Name"
+                value="<%= typeof lastname != 'undefined' ? lastname : '' %>"
+                 required="" autofocus="">
                <input 
                type="email"
                id="email"
