@@ -161,6 +161,10 @@ exports.signUpValidate=function (req,res,next) {
       errors.push({ msg: 'User Dose not exists' });    
       res.json({status:'error',data:{errors:errors,userid:userid,token:token,validate:false},message:'Validation Error'});
     }
+  }).catch(function(err) {
+    return  errors.push({ msg: 'User Dose not exists' });    
+    res.json({status:'error',data:{errors:errors,userid:userid,token:token,validate:false},message:'Validation Error'});
+
   });
 }
  exports.showSignIn=function(req, res){
