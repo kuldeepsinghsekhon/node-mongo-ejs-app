@@ -31,7 +31,7 @@ router.get('/',forwardAuthenticated, product_controller.products);
 router.get('/sign-up',forwardAuthenticated, forwardAuthenticated,auth_controller.showSignUp);
 // Register
 router.post('/sign-up',auth_controller.signUp);
-router.get('/validate',auth_controller.signUpValidate);
+router.post('/validate',auth_controller.signUpValidate);
 router.get('/validation-form/:userid',auth_controller.validationForm);
 
 // Login Page
