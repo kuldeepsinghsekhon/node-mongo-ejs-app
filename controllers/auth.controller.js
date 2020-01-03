@@ -145,17 +145,20 @@ exports.signUpValidate=function (req,res,next) {
   let errors = [];
     User.findOne({ _id: userid }).then(user => {
     if (user) {
-      if(token==user.token){
-        console.log(token);
-        console.log(userid);
-        user.validated=1;
-        user.save(function(err) {
-          if (err) throw err;
-          console.log(user);
-        });
-      }
-      res.json({status:'success',data:{userid:userid,validate:true},message:'Validation Success'});
-    } else {     
+          if(token==user.token){
+            console.log(token);
+            console.log(userid);
+            user.validated=1;
+            user.save(function(err) {
+              if (err) throw err;
+              console.log(user);
+            });
+            res.json({status:'success',data:{userid:userid,validate:true},message:'Validation Success'});
+          }else{ errors.push({ msg: 'Incorrect Validation Token ' });
+          res.json({status:'error',data:{errors:errors,userid:userid,token:token,validate:false},message:'Validation Error'});
+        }
+    } else { 
+      errors.push({ msg: 'User Dose not exists' });    
       res.json({status:'error',data:{errors:errors,userid:userid,token:token,validate:false},message:'Validation Error'});
     }
   });
