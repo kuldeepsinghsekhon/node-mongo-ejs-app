@@ -49,12 +49,13 @@
 			//dataType: "json",
 			data:formdata,
 			success: function (response) {
-				if(response.status=='ok'){
+                console.log(response);
+				if(response.status=='success'){
                     $(location).attr('href', '/user/profile');
                 }else{
-                    alert(response.message);
+                    alert(response);
                 }
-				console.log(response);
+				
 			}
 		})
 	});

@@ -84,7 +84,6 @@ exports.signUp=function(req, res){
 
         }, function (err, result) {
           result.success;
-        
           newUser.braintreeid=result.customer.id;
           console.log(result.customer.id);
         });
