@@ -75,7 +75,7 @@
                data:formdata,
                success: function (response) {
                    if(response.status=='ok'){
-                              $(location).attr('href', '/user/validate-form/'+response.userid);  
+                              $(location).attr('href', '/validation-form/'+response.userid);  
                    }else{
                        alert(response.message);
                    }

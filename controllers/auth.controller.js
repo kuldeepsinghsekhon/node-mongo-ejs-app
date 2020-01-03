@@ -135,9 +135,8 @@ exports.signUp=function(req, res){
    }
  }
  exports.validationForm=function(req,res,next){
-  var userid = req.params.userid;
+  var userid = req.params.userid.replace(" ","");
   User.findOne({ _id: userid }).then(user => {
-    if (err) throw err;
     res.render('pages/public/validation-form', {
       layout:'login-layout',
       user:user
