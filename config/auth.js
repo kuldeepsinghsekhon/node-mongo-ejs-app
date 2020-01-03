@@ -16,7 +16,7 @@ module.exports = {
        // res.redirect('/sign-in');
       }
     }
-    res.json({status:'error',message:'Email Or password are incorrect '});
+   // res.json({status:'error',message:'Email Or password are incorrect '});
    // req.flash('error_msg', 'Please log in to view that resource');
     res.redirect('/sign-in');
   },
