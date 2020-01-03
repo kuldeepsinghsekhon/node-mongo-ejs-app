@@ -74,7 +74,7 @@
                //dataType: "json",
                data:formdata,
                success: function (response) {
-                   if(response.status=='ok'){
+                   if(response.status=='success'){
                               $(location).attr('href', '/validation-form/'+response.userid);  
                    }else{
                        alert(response.message);
