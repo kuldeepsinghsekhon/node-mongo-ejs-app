@@ -13,7 +13,7 @@ const UserSchema = new mongoose.Schema({
   },
   username: {
     type: String,
-    required: true
+    //required: true
   },
   email: {
     type: String,
@@ -39,7 +39,7 @@ const UserSchema = new mongoose.Schema({
   braintreeid:String,
   fbid:String,
   googleId:String,
-  notifications:{type: Schema.Types.ObjectId, ref: 'UserNotification'},
+  //notifications:{type: Schema.Types.ObjectId, ref: 'UserNotification'},
 });
 const User = mongoose.model('User', UserSchema);
 module.exports = User;

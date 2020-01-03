@@ -74,8 +74,11 @@
                //dataType: "json",
                data:formdata,
                success: function (response) {
+                   console.log(response);
                    if(response.status=='success'){
-                              $(location).attr('href', '/validation-form/'+response.userid);  
+                       var url= '/validation-form/'+response.data.userid;
+                       alert(url);
+                              $(location).attr('href', url);  
                    }else{
                        alert(response.message);
                    }

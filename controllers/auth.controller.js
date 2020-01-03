@@ -84,6 +84,7 @@ exports.signUp=function(req, res){
 
         }, function (err, result) {
           result.success;
+        
           newUser.braintreeid=result.customer.id;
           console.log(result.customer.id);
         });
@@ -104,7 +105,7 @@ exports.signUp=function(req, res){
                   text: 'Thanks For Register Your Validation Token is <h1>'+token+'</h1>'
                 };
                 //console.log(user);
-                utils_controller.sendmymail(mailOptions);
+               // utils_controller.sendmymail(mailOptions);
                 //  req.flash(
                 //    'success_msg',
                 //    'You are now registered and can log in'
@@ -162,7 +163,7 @@ exports.signUpValidate=function (req,res,next) {
     }
   }).catch(function(err) {
       errors.push({ msg: 'User Dose not exists' });    
-      return res.json({status:'error',data:{errors:errors,userid:userid,token:token,validate:false},message:'Validation Error'});
+    res.json({status:'error',data:{errors:errors,userid:userid,token:token,validate:false},message:'Validation Error'});
 
   });
 }
@@ -194,7 +195,7 @@ exports.signIn=function(req, res, next){
        }     
          
     }
-  
+
     exports.profile=function(req, res, next) {
       var perPage = 9;
       var page = req.params.page || 1;
