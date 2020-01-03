@@ -2,7 +2,7 @@
         <div id="logreg-forms">
        
            
-           <form action="/sign-up/" class="form-signup" method="POST">
+           <form action="#" class="form-signup" method="POST">
                <div class="social-login">
                    <button class="btn facebook-btn social-btn" type="button"><span><i class="fa fa-facebook"></i> Sign up with Facebook</span> </button>
                </div>
@@ -58,3 +58,28 @@
    </div>
    
      </div>
+     <script>
+        $('.form-signup').on('submit',function(event){
+            event.preventDefault();
+           //alert('dfsf')
+           var name=$("#name").val();
+           var lastname=$("#lastname").val();
+           var email=$("#email").val();
+           var password=$("#password").val();
+           var password2=$("#password2").val();
+           var formdata = {name:name,lastname:lastname,email:email,password:password,password2:password2};
+           $.ajax({
+               method:'post',
+               url:"/sign-up",
+               //dataType: "json",
+               data:formdata,
+               success: function (response) {
+                   if(response.status=='ok'){
+                              $(location).attr('href', '/user/validate-form/'+response.userid);  
+                   }else{
+                       alert(response.message);
+                   }
+               }
+           })
+       });
+        </script>
