@@ -157,14 +157,13 @@ exports.signUpValidate=function (req,res,next) {
           }else{ errors.push({ msg: 'Incorrect Validation Token ' });
           res.json({status:'error',data:{errors:errors,userid:userid,token:token,validate:false},message:'Validation Error'});
         }
-    } else { 
-      errors.push({ msg: 'User Dose not exists' });    
-      res.json({status:'error',data:{errors:errors,userid:userid,token:token,validate:false},message:'Validation Error'});
-    }
+     } //else { 
+    //   errors.push({ msg: 'User Dose not exists' });    
+    //   res.json({status:'error',data:{errors:errors,userid:userid,token:token,validate:false},message:'Validation Error'});
+    // }
   }).catch(function(err) {
       errors.push({ msg: 'User Dose not exists' });    
     res.json({status:'error',data:{errors:errors,userid:userid,token:token,validate:false},message:'Validation Error'});
-
   });
 }
  exports.showSignIn=function(req, res){
