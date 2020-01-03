@@ -27,7 +27,7 @@
                dataType: "json",
                data:formdata,
                success: function (response) {
-                   if(response.status=='succcess'){
+                   if(response.status=='success'){
                          $(location).attr('href', '/profile/');  
                    }else{
                        alert(response.message);

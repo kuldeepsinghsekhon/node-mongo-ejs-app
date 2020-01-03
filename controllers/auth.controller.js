@@ -105,7 +105,7 @@ exports.signUp=function(req, res){
                   text: 'Thanks For Register Your Validation Token is <h1>'+token+'</h1>'
                 };
                 //console.log(user);
-               // utils_controller.sendmymail(mailOptions);
+                utils_controller.sendmymail(mailOptions);
                 //  req.flash(
                 //    'success_msg',
                 //    'You are now registered and can log in'
@@ -177,7 +177,7 @@ exports.fbSignUpSignin=function (req,res,next) {
 exports.signIn=function(req, res, next){
   let errors=[];
         if(req.user.role=='Admin'){
-          res.json({status:'ok',userid:req.user._id,username:req.user.username,email:req.user.email,validate:true,role:req.user.role});
+          res.json({status:'success',userid:req.user._id,username:req.user.username,email:req.user.email,validate:true,role:req.user.role});
 
          // res.redirect('/admin/');
         }else if(req.user.role=='User'){
@@ -195,7 +195,7 @@ exports.signIn=function(req, res, next){
        }     
          
     }
-
+  
     exports.profile=function(req, res, next) {
       var perPage = 9;
       var page = req.params.page || 1;
