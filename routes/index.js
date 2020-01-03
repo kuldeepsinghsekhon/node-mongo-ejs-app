@@ -43,7 +43,7 @@ router.post('/sign-in',forwardAuthenticated,passport.authenticate(['local','basi
   router.get('/auth/facebook', passport.authenticate('facebook', { 
     scope : ['public_profile', 'email']
   }));
-  router.get('/sign-in-eror', forwardAuthenticated,(req, res,next) => res.json({status:'error',message:'invalid email/Password'}));
+  router.get('/sign-in-eror', forwardAuthenticated,(req, res,next) => res.json({status:'error',data:{},message:'invalid email/Password'}));
   router.get('/auth/twitter', passport.authenticate('twitter'));
   router.get('/auth/facebook/callback',passport.authenticate('facebook', {
             successRedirect : '/user/profile',
