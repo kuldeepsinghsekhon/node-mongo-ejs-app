@@ -24,7 +24,7 @@ exports.signUp=function(req, res){
     const role=Role.User;
     const tokgen = new TokenGenerator(); // Default is a 128-bit token encoded in base58
     const randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], style: 'capital' }); // big_red_donkey
-    const token=tokgen.generate();
+    const token=Math.floor(Math.random() * 100000); //tokgen.generate();
    // const name =req.body.name;
    // const email =req.body.email;
    // const password =req.body.password;
@@ -100,7 +100,7 @@ exports.signUp=function(req, res){
              newUser
                .save()
                .then(user => {
-                 var token=token;
+                 var token=user.token;
                  var userid=user._id;
                 
                 var mailOptions = {
