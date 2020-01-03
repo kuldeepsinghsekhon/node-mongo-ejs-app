@@ -24,7 +24,7 @@ exports.signUp=function(req, res){
     const role=Role.User;
     const tokgen = new TokenGenerator(); // Default is a 128-bit token encoded in base58
     const randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], style: 'capital' }); // big_red_donkey
-    const token=Math.floor(Math.random() * 100000); //tokgen.generate();
+    const token=Math.ceil(Math.random() * 1000000); //tokgen.generate();
    // const name =req.body.name;
    // const email =req.body.email;
    // const password =req.body.password;
@@ -46,7 +46,7 @@ exports.signUp=function(req, res){
    }
  
    if (errors.length > 0) {
-    res.json({status:'error',errors:errors,name:name,lastname:lastname,email:email,password:password,password2:password2});
+    res.json({status:'error',data:{errors:errors,name:name,lastname:lastname,email:email,password:password,password2:password2},message:'Failed To Register'});
 
     //  res.render('pages/public/sign-up', {
     //    errors,
@@ -66,7 +66,7 @@ exports.signUp=function(req, res){
         //    password,
         //    password2
         //  });
-        res.json({status:'error',errors:errors,name:name,lastname:lastname,email:email,password:password,password2:password2});
+        res.json({status:'error',data:{errors:errors,name:name,lastname:lastname,email:email,password:password,password2:password2},message:'Error Failed To register'});
        } else {
          const newUser = new User({
            name,
@@ -79,18 +79,14 @@ exports.signUp=function(req, res){
          gateway.customer.create({
           firstName: name,
           lastName: name+'dfd',
-          //company: "Braintree",
+
           email: email,
-          //phone: "312.555.1234",
-         // fax: "614.555.5678",
-         // website: "www.example.com"
+
         }, function (err, result) {
           result.success;
-          // true
         
           newUser.braintreeid=result.customer.id;
           console.log(result.customer.id);
-          // e.g. 494019
         });
          bcrypt.genSalt(10, (err, salt) => {
            bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -102,7 +98,6 @@ exports.signUp=function(req, res){
                .then(user => {
                  var token=user.token;
                  var userid=user._id;
-                
                 var mailOptions = {
                   from: 'aquatecinnovative1@gmail.com',
                   to: user.email,
@@ -115,7 +110,7 @@ exports.signUp=function(req, res){
                 //    'success_msg',
                 //    'You are now registered and can log in'
                 //  );
-                res.json({status:'ok',userid:userid,name:user.name,lastname:user.lastname,username:randomName,email:user.email});
+                res.json({status:'success',data:{userid:userid,name:user.name,lastname:user.lastname,username:randomName,email:user.email},message:"Thanks For Register"});
 
                  //  if(req.session.oldUrl){
                     // var oldUrl=req.session.oldUrl;
@@ -147,7 +142,8 @@ exports.signUp=function(req, res){
 exports.signUpValidate=function (req,res,next) {
   var userid=req.body.userid;
   var token=req.body.token;
-  User.findOne({ _id: userid }).then(user => {
+  let errors = [];
+    User.findOne({ _id: userid }).then(user => {
     if (user) {
       if(token==user.token){
         console.log(token);
@@ -158,9 +154,9 @@ exports.signUpValidate=function (req,res,next) {
           console.log(user);
         });
       }
-      res.json({status:'ok',userid:userid,username:randomName,email:user.email,validate:true});
+      res.json({status:'success',data:{userid:userid,username:randomName,email:user.email,validate:true},message:'Validation Success');
     } else {     
-      res.json({status:'error',userid:userid,username:randomName,email:user.email,validate:false});
+      res.json({status:'error',data:{errors:errors,userid:userid,username:randomName,email:user.email,validate:false},message:'Validation Error');
     }
   });
 }
@@ -172,7 +168,7 @@ exports.fbSignUpSignin=function (req,res,next) {
 }
 
 exports.signIn=function(req, res, next){
-   
+  let errors=[];
         if(req.user.role=='Admin'){
           res.json({status:'ok',userid:req.user._id,username:req.user.randomName,email:req.user.email,validate:true,role:req.user.role});
 
@@ -181,16 +177,14 @@ exports.signIn=function(req, res, next){
           if(req.session.oldUrl){
              var oldUrl=req.session.oldUrl;
             req.session.oldUrl=null;
-            res.json({status:'ok',userid:req.user._id,username:req.user.randomName,email:req.user.email,validate:true,url:req.user.oldUrl});
-
+            res.json({status:'success',data:{userid:req.user._id,username:req.user.randomName,email:req.user.email,validate:true,url:req.user.oldUrl},message:''});
            }else{
-            res.json({status:'ok',userid:req.user._id,username:req.user.randomName,email:req.user.email,validate:true});
+            res.json({status:'success',data:{userid:req.user._id,username:req.user.randomName,email:req.user.email,validate:true},message:''});
 
            }
          
        } else{
-        res.json({status:'error',message:'Email Or password are incorrect '});
-
+        res.json({status:'error',data:{errors:errors},message:'Email Or password are incorrect '});
        }     
          
     }
