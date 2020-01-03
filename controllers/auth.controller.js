@@ -115,7 +115,7 @@ exports.signUp=function(req, res){
                 //    'success_msg',
                 //    'You are now registered and can log in'
                 //  );
-                res.json({status:'ok',userid:userid,username:randomName,email:user.email});
+                res.json({status:'ok',userid:userid,name:user.name,lastname:user.lastname,username:randomName,email:user.email});
 
                  //  if(req.session.oldUrl){
                     // var oldUrl=req.session.oldUrl;
