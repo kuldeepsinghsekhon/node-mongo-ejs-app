@@ -154,9 +154,9 @@ exports.signUpValidate=function (req,res,next) {
           console.log(user);
         });
       }
-      res.json({status:'success',data:{userid:userid,username:req.user.username,email:user.email,validate:true},message:'Validation Success');
+      res.json({status:'success',data:{userid:userid,username:req.user.username,email:user.email,validate:true},message:'Validation Success'});
     } else {     
-      res.json({status:'error',data:{errors:errors,userid:userid,username:req.user.username,email:user.email,validate:false},message:'Validation Error');
+      res.json({status:'error',data:{errors:errors,userid:userid,username:req.user.username,email:user.email,validate:false},message:'Validation Error'});
     }
   });
 }
