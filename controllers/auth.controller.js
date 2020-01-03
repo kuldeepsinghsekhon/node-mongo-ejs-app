@@ -109,7 +109,7 @@ exports.signUp=function(req, res){
                   subject: 'Validate Your Account',
                   text: 'Thanks For Register Your Validation Token is <h1>'+token+'</h1>'
                 };
-                console.log(user);
+                //console.log(user);
                 utils_controller.sendmymail(mailOptions);
                 //  req.flash(
                 //    'success_msg',
@@ -147,7 +147,6 @@ exports.signUp=function(req, res){
 exports.signUpValidate=function (req,res,next) {
   var userid=req.body.userid;
   var token=req.body.token;
-
   User.findOne({ _id: userid }).then(user => {
     if (user) {
       if(token==user.token){
