@@ -28,7 +28,7 @@
                data:formdata,
                success: function (response) {
                    if(response.status=='success'){
-                         $(location).attr('href', '/user/profile');  
+                        // $(location).attr('href', '/user/profile');  
                    }else{
                        alert(response.message);
                    }
