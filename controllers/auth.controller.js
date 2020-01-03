@@ -30,10 +30,10 @@ exports.signUp=function(req, res){
    // const password =req.body.password;
    // const password2 =req.body.password2;
    // const role =req.body.role;
-   const { name, email, password, password2 } = req.body;
+   const { name, email, password, password2,lastname } = req.body;
    let errors = [];
  
-   if (!name || !email || !password || !password2) {
+   if (!name || !email || !password || !password2 ||!lastname) {
      errors.push({ msg: 'Please enter all fields' });
    }
  
@@ -46,7 +46,7 @@ exports.signUp=function(req, res){
    }
  
    if (errors.length > 0) {
-    res.json({status:'error',errors:errors,name:name,email:email,password:password,password2:password2});
+    res.json({status:'error',errors:errors,name:name,lastname:lastname,email:email,password:password,password2:password2});
 
     //  res.render('pages/public/sign-up', {
     //    errors,
@@ -66,10 +66,11 @@ exports.signUp=function(req, res){
         //    password,
         //    password2
         //  });
-        res.json({status:'error',errors:errors,name:name,email:email,password:password,password2:password2});
+        res.json({status:'error',errors:errors,name:name,lastname:lastname,email:email,password:password,password2:password2});
        } else {
          const newUser = new User({
            name,
+           lastname,
            email,
            password,
            role,
