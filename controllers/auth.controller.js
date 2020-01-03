@@ -146,12 +146,12 @@ exports.signUpValidate=function (req,res,next) {
     User.findOne({ _id: userid }).then(user => {
     if (user) {
           if(token==user.token){
-            console.log(token);
-            console.log(userid);
+            //console.log(token);
+           // console.log(userid);
             user.validated=1;
             user.save(function(err) {
               if (err) throw err;
-              console.log(user);
+             // console.log(user);
             });
             res.json({status:'success',data:{userid:userid,validate:true},message:'Validation Success'});
           }else{ errors.push({ msg: 'Incorrect Validation Token ' });
