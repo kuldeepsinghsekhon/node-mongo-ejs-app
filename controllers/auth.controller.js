@@ -198,7 +198,6 @@ exports.signIn=function(req, res, next){
     exports.profile=function(req, res, next) {
       User
       .findOne({user:req.user})
-          .limit(perPage)
           .exec(function(err, users) {
               User.count().exec(function(err, count) {
                   if (err) return next(err)
