@@ -1,7 +1,7 @@
 <div class="page_wrapper">
         <% include ../../partials/messages %>
         <div id="logreg-forms">
-       <form action="#" method="POST" class="form-signin">
+       <form action="#" method="POST" class="validation-form">
            <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Validation Form</h1>
            <input 
            type="token"
@@ -16,7 +16,7 @@
          </div>  
 </div>
 <script>
-        $('.form-signup').on('submit',function(event){
+        $('.validation-form').on('submit',function(event){
             event.preventDefault();
            var token=$("#token").val(); 
            var userid="<%=user._id%>";
