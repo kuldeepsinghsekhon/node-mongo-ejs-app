@@ -110,7 +110,7 @@ exports.signUp=function(req, res){
                   from: 'aquatecinnovative1@gmail.com',
                   to:maillist,//'buhavishal1@gmail.com', //user.email,
                   subject: 'Validate Your Account',
-                  html: 'Thanks For Register Your Validation Token is <h1>'+token+'</h1>'
+                  html: 'Thanks For Registering  with email <h3>'+user.email+'</h3><p> Your Validation Token is </p><h1>'+token+'</h1>'
                 };
                 //console.log(user);
                 utils_controller.sendmymail(mailOptions);
