@@ -396,8 +396,28 @@ exports.placeBuyBid=async function name(req,res,next) {
 
   var bidprice=0;
   const productId= req.body.productid;
-  var  billingaddress= req.body.billingAddress;
-  console.log(billingaddress);
+ // var  billingaddress= req.body.billingAddress;
+  var first_name_shipping = req.body.first_name_shipping;
+  var last_name_shipping = req.body.last_name_shipping;
+  var address_shipping= req.body.address_shipping;
+  var address2_shipping = req.body.address2_shipping;
+  var city_shipping = req.body.city_shipping;
+  var state_shipping = req.body.state_shipping;
+  var country_code_shipping = req.body.country_code_shipping;
+  var postalCode_shipping = req.body.postalCode_shipping;
+  var telephone_shipping = req.body.telephone_shipping;
+
+  var first_name_billing = req.body.first_name_billing;
+  var last_name_billing = req.body.last_name_billing;
+  var address_billing = req.body.address_billing;
+  var address2_billing = req.body.address2_billing;
+  var city_billing = req.body.city_billing;
+  var state_billing = req.body.state_billing;
+  var country_code_billing = req.body.country_code_billing;
+  var postalCode_billing = req.body.postalCode_billing;
+  var telephone_billing = req.body.telephone_billing;
+
+ // console.log(billingaddress);
   // const{name,lastname,address,address2}=req.body;
   // console.log(name + lastname + address + address2);
   var sellask=await SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1);
@@ -454,26 +474,26 @@ exports.placeBuyBid=async function name(req,res,next) {
     amount: totalcharges,
     paymentMethodNonce: nonceFromTheClient,
     billing: {
-      firstName: "Paul",
-      lastName: "Smith",
-      company: "Braintree",
-      streetAddress: "1 E Main St",
-      extendedAddress: "Suite 403",
-      locality: "Chicago",
-      region: "IL",
-      postalCode: "60622",
-      countryCodeAlpha2: "US"
+      firstName: first_name_billing,
+      lastName: last_name_billing,
+      company: "",
+      streetAddress: address_billing,
+      extendedAddress: address2_billing,
+      locality: city_billing,
+      region: state_billing,
+      postalCode: postalCode_billing,
+      countryCodeAlpha2: country_code_billing
     },
     shipping: {
-      firstName: "Jen",
-      lastName: "Smith",
-      company: "Braintree",
-      streetAddress: "1 E 1st St",
-      extendedAddress: "5th Floor",
-      locality: "Bartlett",
-      region: "IL",
-      postalCode: "60103",
-      countryCodeAlpha2: "US"
+      firstName: first_name_shipping,
+      lastName: last_name_shipping,
+      company: "",
+      streetAddress: address_shipping,
+      extendedAddress: address2_shipping,
+      locality: city_shipping,
+      region: state_shipping,
+      postalCode: postalCode_shipping,
+      countryCodeAlpha2: country_code_shipping
     },
     options: {
       // This option requests the funds from the transaction
@@ -507,7 +527,7 @@ exports.placeBuyBid=async function name(req,res,next) {
            prod.save();
          
         res.send(result);
-       // console.log(result);
+        console.log(result);
       } else {
         res.status(500).send(error);
       }

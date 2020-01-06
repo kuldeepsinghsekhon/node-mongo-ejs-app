@@ -287,7 +287,26 @@ braintree.client.create({
           var askprice=$("#bid-price-input").val();
           var bidType="buybid";
           var expiry=$('.dropdown-toggle').text();
+          var first_name_shipping=$("#first_name_shipping").val();
+          var last_name_shipping=$("#last_name_shipping").val();
           var address_shipping=$("#address_shipping").val();
+          var address2_shipping=$("#address2_shipping").val();
+          var telephone_shipping=$("#telephone_shipping").val();
+          var country_code_shipping=$("#country_code_shipping").val();
+          var city_shipping=$("#city_shipping").val();
+          var state_shipping=$("#state_shipping").val();
+          var postalCode_shipping=$("#postalCode_shipping").val();
+
+          var first_name_billing=$('#first_name_billing').val()
+          var last_name_billing=$('#last_name_billing').val();
+          var address_billing=$('#address_billing').val();
+          var address2_billing=$("#address2_billing").val();
+          var telephone_billing=$("#telephone_billing").val();
+          var country_code_billing=$("#country_code_billing").val();
+          var postalCode_billing=$("#postalCode_billing").val();
+          var state_billing=$("#state_billing").val();
+          var city_billing=$("#city_billing").val();
+
       var bidType=$("#bid-type").val();
       console.log(bidType)
           var productid="<%=product.id %>";
@@ -296,7 +315,29 @@ braintree.client.create({
         $.ajax({
               type: 'POST',
               url:"/products/buy/<%=product.id %>",
-              data: {'paymentMethodNonce': payload.nonce,bidprice:askprice,productid:productid,bidType:bidType, expiry:expiry,billingAddress:address_shipping }
+              data: {'paymentMethodNonce': payload.nonce,
+              bidprice:askprice,productid:productid,bidType:bidType,
+               expiry:expiry,
+               first_name_shipping:first_name_shipping,
+               last_name_shipping:last_name_shipping,
+               address_shipping:address_shipping,
+               address2_shipping:address2_shipping,
+               city_shipping:city_shipping,
+               state_shipping:state_shipping,
+               country_code_shipping:country_code_shipping,
+               postalCode_shipping:postalCode_shipping,
+               telephone_shipping:telephone_shipping,
+
+               first_name_billing:first_name_billing,
+               last_name_billing:last_name_billing,
+               address_billing:address_billing,
+               address2_billing:address2_billing,
+               city_billing:city_billing,
+               state_billing:state_billing,
+               country_code_billing:country_code_billing,
+               postalCode_billing:postalCode_billing,
+               telephone_billing:telephone_billing
+              }
             }).done(function(result) {
               form.trigger("reset");
               // Tear down the Drop-in UI
