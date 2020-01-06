@@ -258,7 +258,7 @@
 			
 			});	
 			$(".nextPay").attr("disabled",true);
-		$("#bid-price-input").on('change',function(){
+		$("#bid-price-input").on('keyup',function(){
 			var bp=parseInt($("#bid-price-input").val());
 			if(bp>15){
 				$(".nextPay").attr("disabled",false);
@@ -319,6 +319,7 @@ $( function(){
 	}
 	$('.pane-payment').hide();
 	$('.nextPay').on('click',function(){
+		//alert('Hello');
 		var bidType="ask";
 		 bidType=$("#bid-type").val();
 		 var expiry=$('.dropdown-toggle').text();
@@ -347,8 +348,9 @@ $('.pay-method-bt').on('click', function(){
 	  
 })
 $('.paymethod-cancel').on('click',function(){	
-	$('.pane-payment').hide();	
-		$('.bidsel-pane').show();
+	
+	// $('.pane-payment').hide();	
+	// 	$('.bidsel-pane').show();
 })
 $('.paymethod-submit').on('click',function(){
 	var paypalEmail=$('#paypalEmail').val();

@@ -39,7 +39,7 @@
                     </div> 
                     <input data-testid="user-extendedAddress" name="address2" type="text" placeholder="Address 2" autocomplete="true" class="field  " value="<%= address.address2%>">
                    
-                    <div class="inner-flex between"><input data-testid="user-region" name="state" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value="<%= address.state%>">
+                    <div class="inner-flex between"><input data-testid="user-region" name="state" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value="<%= address.state||''%>">
                   
                     <input data-testid="user-locality" name="city" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="<%= address.city%>">
                         <input data-testid="user-postalCode" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value="<%= address.postalCode%>"></div>

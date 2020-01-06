@@ -266,10 +266,15 @@ exports.sellProductOrAsk=function(req, res, next) {
 }
 exports.sellProductPay=function(req,res){
   var productId=req.body.id;
-  product=Product.findById(productId,function(err,product){
- 
+  Promise.all([
+    Product.findOne({ _id: productId }).populate({path:'attrs'}), 
+	Address.findOne({address_type:'billing',user:req.user}).limit(1)
+  ]).then( ([ product,address ]) =>
+  {
+      if(address==null)address=new Address();
       res.render('pages/public/product-sell-payment', {
         product: product,
+        address: address,
         layout:'blank-layout' });
       });
 }
@@ -371,7 +376,8 @@ exports.buyProductVariant=function name(req,res,next) {
     Address.findOne({address_type:'shipping',user:req.user}).limit(1),
     Address.findOne({address_type:'billing',user:req.user}).limit(1)
   ]).then( ([ product, sellbid,highbid,shippingAddress,billingAddress ]) => {
- 
+ // if(shippingAddress==null) shippingAddress = new shippingAddress();
+    // if(billingAddress==null) billingAddress = new billingAddress();
     res.render('pages/public/product-buyorbid', {
       product: product,
       lowbid:sellbid,
@@ -391,6 +397,8 @@ exports.placeBuyBid=async function name(req,res,next) {
   var bidprice=0;
   const productId= req.body.productid;
   var  billingaddress= req.body.billingAddress;
+  // const{name,lastname,address,address2}=req.body;
+  // console.log(name + lastname + address + address2);
   var sellask=await SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1);
   var highestbid=await BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1);
 
@@ -413,7 +421,7 @@ exports.placeBuyBid=async function name(req,res,next) {
         //console.log(expiry[0]);
   buyBid.expire=Date.now() + ( 3600 * 1000 * 24*expire)
   buyBid.title=prod.name;
-  console.log('bidtype'+req.body.bidType);
+  //console.log('bidtype'+req.body.bidType);
   
   if(req.body.bidType=='buy'){
     buyBid.status="buy";   
@@ -444,6 +452,28 @@ exports.placeBuyBid=async function name(req,res,next) {
   var newTransaction = gateway.transaction.sale({
     amount: totalcharges,
     paymentMethodNonce: nonceFromTheClient,
+    billing: {
+      firstName: "Paul",
+      lastName: "Smith",
+      company: "Braintree",
+      streetAddress: "1 E Main St",
+      extendedAddress: "Suite 403",
+      locality: "Chicago",
+      region: "IL",
+      postalCode: "60622",
+      countryCodeAlpha2: "US"
+    },
+    shipping: {
+      firstName: "Jen",
+      lastName: "Smith",
+      company: "Braintree",
+      streetAddress: "1 E 1st St",
+      extendedAddress: "5th Floor",
+      locality: "Bartlett",
+      region: "IL",
+      postalCode: "60103",
+      countryCodeAlpha2: "US"
+    },
     options: {
       // This option requests the funds from the transaction
       // once it has been authorized successfully
@@ -451,7 +481,7 @@ exports.placeBuyBid=async function name(req,res,next) {
     }
   }, function(error, result) {
       if (result) {
-        console.log(result);
+        //console.log(result);
        // sellask.status='sale';
        if(req.body.bidType=='buy'){  
         const order=new OrderBid();    
@@ -465,6 +495,7 @@ exports.placeBuyBid=async function name(req,res,next) {
         order.netprice=totalpay;
         order.product=prod;
         order.status='Order Placed';
+        order.payment = result;
         order.orderdate=Date.now();
         order.save();
         sellask.save();      
@@ -490,7 +521,7 @@ exports.calculateBuyCharges=function name(req,res,next) {
     SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1),
   ]).then( ([product,lowestbid])=>{
     var askprice=0; 
-      if(!req.body.askprice){
+      if(!req.body.lowestbid){
         askprice=lowestbid.bidprice;
         
        }else{
@@ -532,7 +563,10 @@ exports.buyBillingShipping=function(req,res){
     Address.findOne({address_type:'shipping',user:req.user}).limit(1),
     Address.findOne({address_type:'billing',user:req.user}).limit(1)
   ]).then( ([ product,shippingAddress,billingAddress ]) => {
- 
+    // console.log(billingAddress);
+    // console.log(shippingAddress);
+    if(shippingAddress==null) shippingAddress = new Address();
+    if(billingAddress==null) billingAddress = new Address(); 
     res.render('pages/public/product-buy-billing-shipping', {
       product: product,
       shippingAddress:shippingAddress,
@@ -544,9 +578,11 @@ exports.buyBillingShipping=function(req,res){
 }
 exports.buyShipping=function(req,res){
   var productId=req.body.id;
-  product=Product.findById(productId,function(err,product){ 
+Address.findOne({address_type:'shipping',user:req.user},function(err,address){ 
+  if (err) throw err
+  if(Address==null)address = new address();
       res.render('pages/public/product-buy-shipping-info', {
-        product: product,
+        address: address,
         layout:'blank-layout' });
       });
 }
