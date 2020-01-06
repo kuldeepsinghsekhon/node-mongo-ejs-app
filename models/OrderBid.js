@@ -13,6 +13,7 @@ const OrderSchema = new mongoose.Schema({
   status: String,
   ordertype: String,
   updated:Date,
+  payment: {type: Object, required: true}
 });
 const OrderBid = mongoose.model('OrderBid', OrderSchema);
 module.exports = OrderBid;

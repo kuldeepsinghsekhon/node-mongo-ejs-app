@@ -35,11 +35,11 @@
 
                  <div class="address-form fs-block">
                     <div class="form-title">billing Info</div>
-                    <input data-testid="user-firstName" id="fName" name="firstName" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value="">
+                    <input data-testid="user-firstName" id="fName" name="firstName" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value="<%=(address.name) ? (address.name) : ''%>">
                     <div class="invalid-feedback">
                       First Name is required
                     </div>
-                    <input data-testid="user-firstName" id="lName" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="">
+                    <input data-testid="user-firstName" id="lName" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="<%=(address.lastname) ? (address.lastname) : ''%>">
                     <div class="invalid-feedback">
                       Last Name is required
                     </div>
@@ -63,11 +63,13 @@
                        </select>                      
                     </div>
                     <div>
-                       <div class="GPlacesACField__Container-sc-1xqqpdz-0 iUshPx"><input data-testid="user-streetAddress" name="streetAddress" type="text" required="" placeholder="Address" autocomplete="true" class="field  " value=""></div>
+                       <div class="GPlacesACField__Container-sc-1xqqpdz-0 iUshPx"><input data-testid="user-streetAddress" name="streetAddress" type="text" required="" placeholder="Address" autocomplete="true" class="field  " value="<%=(address.address1) ? (address.address1) : ''%>"></div>
                     </div>
-                    <input data-testid="user-extendedAddress" name="extendedAddress" type="text" placeholder="Address 2" autocomplete="true" class="field  " value=""><input data-testid="user-locality" name="locality" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="">
-                    <div class="inner-flex between"><input data-testid="user-region" name="region" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value=""><input data-testid="user-postalCode" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value=""></div>
-                    <input data-testid="user-telephone" name="telephone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field  " value="">
+                    <input data-testid="user-extendedAddress" name="extendedAddress" type="text" placeholder="Address 2" autocomplete="true" class="field" value="<%=(address.address2) ? (address.address2) : ''%>">
+                    <input data-testid="user-locality" name="locality" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="<%=(address.city) ? (address.city) : ''%>">
+                    <div class="inner-flex between"><input data-testid="user-region" name="region" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value="<%=(address.state) ? (address.state) : ''%>">
+                    <input data-testid="user-postalCode" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value="<%=(address.postalCode) ? (address.postalCode) : ''%>"></div>
+                    <input data-testid="user-telephone" name="telephone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field  " value="<%=(address.phone) ? (address.phone) : ''%>">
                     <div class="text-center">
                       <button id="hosted-submit-button" class="btn btn-primary btn-lg" type="submit">Pay with <span id="card-brand">Card</span></button>
                       </div>

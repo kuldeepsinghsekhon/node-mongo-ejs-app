@@ -37,8 +37,8 @@
 	<div class="address-form fs-block">
     <!----Biling info -->
 	   <div class="form-title">Billing Info</div>
-     <input data-testid="user-firstName" id="first_name_billing" name="firstName" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=billingAddress.name %><%}%>">
-     <input data-testid="user-lastName"  id="last_name_billing" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=billingAddress.lastname %><%}%>">
+     <input data-testid="user-firstName" id="first_name_billing" name="firstName" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=billingAddress.name%><%}%>">
+     <input data-testid="user-lastName"  id="last_name_billing" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=billingAddress.lastname%><%}%>">
 	   <div class="field field-select">
 		  <select name="countryCodeAlpha2"  id="country_code_billing" required="" placeholder="Country">
 			 <option value="" disabled="">Country</option>
@@ -62,12 +62,12 @@
 		  <div class="">
         <input data-testid="user-streetAddress" id="address_billing"name="address" type="text" required="" placeholder="Address" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=billingAddress.address1 %><%}%>"></div>
 	   </div>
-     <input data-testid="user-extendedAddress" id="address2_billing" name="address2" type="text" placeholder="Address 2" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=billingAddress.address2 %><%}%>">
-     <input id="city_billing" name="locality" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=billingAddress.city %><%}%>">
+     <input data-testid="user-extendedAddress" id="address2_billing" name="address2" type="text" placeholder="Address 2" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=billingAddress.address2%><%}%>">
+     <input id="city_billing" name="locality" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=billingAddress.city%><%}%>">
 	   <div class="inner-flex between">
-       <input id="state_billing" name="region" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value="<%if(billingAddress){%><%=billingAddress.state %><%}%>">
-       <input id="postalCode_billing" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value="<%if(billingAddress){%><%=billingAddress.postalCode %><%}%>"></div>
-	   <input id="telephone_billing" name="telephone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=billingAddress.phone %><%}%>">
+       <input id="state_billing" name="region" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value="<%if(billingAddress){%><%=billingAddress.state%><%}%>">
+       <input id="postalCode_billing" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value="<%if(billingAddress){%><%=billingAddress.postalCode%><%}%>"></div>
+	   <input id="telephone_billing" name="telephone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field" value="<%if(billingAddress){%><%=billingAddress.phone%><%}%>">
   </div>
   <div class="billingCheckbox">
     <label for="differentShipping">Ship to my Billing</label>
@@ -75,8 +75,8 @@
   </div>
 	<div class="address-form fs-block shipping-form">
 	   <div class="form-title">Shipping Info</div>
-     <input id="first_name_shipping" name="firstName" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=shippingAddress.name %><%}%>">
-     <input id="last_name_shipping" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=shippingAddress.lastname %><%}%>">
+     <input id="first_name_shipping" name="firstName" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value="<%if(shippingAddress){%><%=shippingAddress.name %><%}%>">
+     <input id="last_name_shipping" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="<%if(shippingAddress){%><%=shippingAddress.lastname %><%}%>">
 	   <div class="field   field-select">
 		  <select id="country_code_shipping" name="countryCodeAlpha2" required="" placeholder="Country">
 			 <option value="" disabled="">Country</option>
@@ -99,16 +99,16 @@
 	   <div>
 		  <div class=""><input id="address_shipping" data-testid="user-streetAddress" name="streetAddress" type="text" required="" placeholder="Address" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=shippingAddress.address1 %><%}%>"></div>
 	   </div>
-     <input id="address2_shipping" data-testid="user-extendedAddress" name="extendedAddress" type="text" placeholder="Address 2" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=shippingAddress.address2 %><%}%>">
+     <input id="address2_shipping" data-testid="user-extendedAddress" name="extendedAddress" type="text" placeholder="Address 2" autocomplete="true" class="field  " value="<%if(shippingAddress){%><%=shippingAddress.address2 %><%}%>">
      <input id="city_shipping" name="locality" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=shippingAddress.city %><%}%>">
      <div class="inner-flex between">
-       <input id="state_shipping" name="region" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value="<%if(billingAddress){%><%=shippingAddress.state %><%}%>">
-      <input id="postalCode_shipping" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value="<%if(billingAddress){%><%=shippingAddress.postalCode %><%}%>"></div>
-	   <input id="telephone_shipping" name="telephone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=shippingAddress.phone %><%}%>">
+       <input id="state_shipping" name="region" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value="<%if(billingAddress){%><%=billingAddress.state %><%}%>">
+      <input id="postalCode_shipping" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value="<%if(billingAddress){%><%=billingAddress.postalCode %><%}%>"></div>
+	   <input id="telephone_shipping" name="telephone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=billingAddress.phone %><%}%>">
 	</div>
 <div class="nxt_btn">
+    <button type="button " class="btn flT_lft">Cancel</button>
 	   <button type="submit" class="btn btn-primary make-payment-bt" >Make Payment</button>
-		   
 	   </div>
 </form>
 <script>

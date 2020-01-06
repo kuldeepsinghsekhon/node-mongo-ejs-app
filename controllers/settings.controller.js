@@ -12,9 +12,7 @@ const utils_controller = require('../controllers/utils.controller');
 const OrderBid = require('../models/OrderBid');
 
 exports.settings=function(req, res, next) {
-    var perPage = 9;
-    var page = req.params.page || 1;
-  
+
     User
         .findOne({_id:req.user._id})
         .populate({path:'notifications'})
@@ -30,18 +28,15 @@ exports.settings=function(req, res, next) {
         })
   }
   exports.buyerInfo=function(req, res, next) {
-    var perPage = 9;
-    var page = req.params.page || 1;
-
     Address
         .findOne({user:req.user,address_type:'billing'})
         .exec(function(err, address) {
             Address.count().exec(function(err, count) {
                 if (err) return next(err)
+                if(address==null)address=new Address();
                 res.render('pages/users/settings-buyer-info', {
                   address: address,
-                    current: page,
-                    pages: Math.ceil(count / perPage),
+
                     layout:'layout'
                 })
             })
@@ -103,6 +98,7 @@ exports.settings=function(req, res, next) {
           .exec(function(err, users) {
               Address.count().exec(function(err, count) {
                   if (err) return next(err)
+                  if(address==null)address=new Address();
                   res.render('pages/users/settings-seller-info', {
                       users: users,
                       current: page,
@@ -146,6 +142,7 @@ exports.settings=function(req, res, next) {
             Address.count().exec(function(err, count) {
                 if (err) return next(err)
                 console.log(address);
+                if(address==null)address=new Address();
                 res.render('pages/users/settings-shipping-info', {
                   address: address,
                     current: page,
@@ -210,6 +207,7 @@ if (phone.length < 10) {
         .exec(function(err, address) {
             Address.count().exec(function(err, count) {
                 if (err) return next(err)
+                if(address==null)address=new Address();
                 res.render('pages/users/settings-seller-info', {
                   address: address,
                     layout:'layout'
@@ -280,6 +278,7 @@ if (phone.length < 10) {
       .exec(function(err, user) {
           User.count().exec(function(err, count) {
               if (err) return next(err)
+              //if(address==null)address=new Address();
               res.render('pages/users/settings-payout-info', {
                   user: user,                        
                   layout:'layout'
@@ -322,6 +321,7 @@ if (phone.length < 10) {
       .exec(function(err, users) {
           User.count().exec(function(err, count) {
               if (err) return next(err)
+              if(address==null)address=new Address();
               res.render('pages/users/settings-profile', {
                   user: req.user,                        
                   layout:'layout'

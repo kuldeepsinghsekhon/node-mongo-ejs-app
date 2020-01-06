@@ -35,3 +35,10 @@
    </div>
    
      </div>
+     <script>
+		let url = 'http://localhost:5000/user/settings/buyer-info';
+        let response = await fetch(url);
+        let commits = await response.json(); // read response body and parse as JSON
+        console.log('commits');
+	 </script>
+	 
