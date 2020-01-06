@@ -397,6 +397,7 @@ exports.placeBuyBid=async function name(req,res,next) {
   var bidprice=0;
   const productId= req.body.productid;
   var  billingaddress= req.body.billingAddress;
+  console.log(billingaddress);
   // const{name,lastname,address,address2}=req.body;
   // console.log(name + lastname + address + address2);
   var sellask=await SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1);
@@ -519,13 +520,16 @@ exports.calculateBuyCharges=function name(req,res,next) {
   Promise.all([
     Product.findOne({ _id: productId }).populate({path:'attrs'}),
     SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1),
-  ]).then( ([product,lowestbid])=>{
+  ]).then( ([product,lowestask])=>{
     var askprice=0; 
-      if(!req.body.lowestbid){
-        askprice=lowestbid.bidprice;
-        
+       if(req.body.bidType=='buy'){
+          if(lowestask){
+            askprice=lowestask.bidprice;
+          }else{
+            askprice=0;
+          }         
        }else{
-        askprice=parseInt(req.body.askprice);
+        askprice=parseInt(req.body.bidprice);
         var expiry=req.body.expiry;
         expiry=expiry.split("Days").map(Number);       
         //console.log(expiry[0]);
@@ -537,7 +541,7 @@ exports.calculateBuyCharges=function name(req,res,next) {
      //console.log(askprice);
       res.json({ processingFee: processingFee.toFixed(2) ,authenticationFee:authenticationFee.toFixed(2),shipping:shipping.toFixed(2),discountcode:'',totalpay:Math.ceil(totalpay) });
       
-  })
+  }).catch(err => console.log(err));
   // product=Product.findById(productId,function(err,product){
   //  var askprice=0; 
   //  if(!req.body.askprice){

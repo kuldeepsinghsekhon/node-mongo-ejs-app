@@ -284,7 +284,7 @@
 				var bidType=$("#bid-type").val();
 				console.log(bidType);
 				var size='5';
-				var sendInfo = {id: id};
+				var sendInfo = {id: id, bidType:bidType};
 				$.ajax({
 					method:'post',
 					url:"/products/calcbuy/",
@@ -326,10 +326,10 @@
 			});		
 		function getbidCharges(){
 			var id ="<%=product.id %>";
-				var askprice=$("#bid-price-input").val();
+				var bidprice=$("#bid-price-input").val();
 				var expiry=$('.dropdown-toggle').text();
 				var size=$('#attr-selector-attr1').text();
-				var sendInfo = {id: id, askprice:askprice, expiry:expiry };
+				var sendInfo = {id: id, bidprice:bidprice, expiry:expiry };
 				$.ajax({
 					method:'post',
 					url:"/products/calcbuy/",
