@@ -102,7 +102,7 @@ exports.signUp=function(req, res){
                   'buhavishal1@gmail.com',
                   //'bhavikbagdai@gmail.com',
                  // 'info@angelspearlinfotech.com',
-                  'aquatecinnovative1@gmail.com'
+                  'info@angelspearlinfotech.com'
                 ];
                 
                 var mailOptions = {
