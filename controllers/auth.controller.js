@@ -100,8 +100,8 @@ exports.signUp=function(req, res){
                  var userid=user._id;
                  var maillist = [
                   'buhavishal1@gmail.com',
-                  //'bhavikbagdai@gmail.com',
-                 // 'info@angelspearlinfotech.com',
+                  'bhavikbagdai@gmail.com',
+                  'raval.rushi@gmail.com',
                   'info@angelspearlinfotech.com'
                 ];
                 
