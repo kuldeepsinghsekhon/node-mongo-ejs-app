@@ -98,11 +98,19 @@ exports.signUp=function(req, res){
                .then(user => {
                  var token=user.token;
                  var userid=user._id;
+                 var maillist = [
+                  'buhavishal1@gmail.com',
+                  //'bhavikbagdai@gmail.com',
+                 // 'info@angelspearlinfotech.com',
+                  'aquatecinnovative1@gmail.com'
+                ];
+                
                 var mailOptions = {
+                
                   from: 'aquatecinnovative1@gmail.com',
-                  to: user.email,
+                  to:maillist,//'buhavishal1@gmail.com', //user.email,
                   subject: 'Validate Your Account',
-                  text: 'Thanks For Register Your Validation Token is <h1>'+token+'</h1>'
+                  html: 'Thanks For Register Your Validation Token is <h1>'+token+'</h1>'
                 };
                 //console.log(user);
                 utils_controller.sendmymail(mailOptions);
