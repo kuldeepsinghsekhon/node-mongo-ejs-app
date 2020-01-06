@@ -76,7 +76,8 @@
                success: function (response) {
                    console.log(response);
                    if(response.status=='success'){
-                       var url= '/validation-form/'+response.data.userid;                   
+                    var url= '/user/profile';    
+                       //var url= '/validation-form/'+response.data.userid;                   
                               $(location).attr('href', url);  
                    }else{
                        alert(response.message);
