@@ -18,9 +18,9 @@ const prodSchema = new mongoose.Schema({
 //specs: Map,
 condition:String,
 size:Number,
- attrs:[{ type: Schema.Types.ObjectId,
+ attrs:{type: Schema.Types.ObjectId,
   ref: 'Attribute'
-}] ,
+},
   images:[{ 
    type: Schema.Types.ObjectId, 
      ref: 'Image' //multiple image 

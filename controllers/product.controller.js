@@ -386,7 +386,7 @@ exports.buyProductVariant=function name(req,res,next) {
       billingAddress:billingAddress,
       layout:'layout'
      })
-   // console.log( product );
+    console.log( product );
    // console.log( sellbid );
   });
 }
@@ -396,6 +396,7 @@ exports.placeBuyBid=async function name(req,res,next) {
 
   var bidprice=0;
   const productId= req.body.productid;
+  var attr_val= req.body.attr_val;
  // var  billingaddress= req.body.billingAddress;
   var first_name_shipping = req.body.first_name_shipping;
   var last_name_shipping = req.body.last_name_shipping;
@@ -432,7 +433,7 @@ exports.placeBuyBid=async function name(req,res,next) {
   }
   buyBid.productid = req.body.productid;
   buyBid.bidprice = req.body.bidprice;
-  
+  buyBid.attr_val=attr_val;
 
   buyBid.user = req.user
   buyBid.biddate=Date.now();//Date.now() + ( 3600 * 1000 * 24)
@@ -646,20 +647,21 @@ exports.saveProduct=function(req, res, next) {
     product.price = req.body.product_price; 
     product.style = req.body.style; 
     //console.log(req.body.attributename);
-    let attributes=[];
+    let attributes;
     if(req.body.attributename){
 
       const attributename=req.body.attributename;
       const attributevalues=req.body.attributevalues;
-     for(var i = 0; i < attributename.length;i++){
-       var attribut= new Attribute();
-       attribut.name=attributename[i];
-       attribut.attrs=attributevalues[i].split('|');
-       attribut.save();
-       attributes.push(attribut);
-      }
+    //  for(var i = 0; i < attributename.length;i++){
+       var attribute= new Attribute();
+       attribute.name=attributename;
+       attribute.attrs=attributevalues.split('|');
+       attribute.save();
+      //  attributes.push(attribut);
+      // }
+      product.attrs = attribute; 
     }
-    product.attrs = attributes; 
+   
     //console.log(req.body.attributevalues);
   
     let errors = [];

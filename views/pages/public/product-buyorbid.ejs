@@ -14,27 +14,30 @@
 		</div>
 		</div>
 	<!--Size selector Pane-->
-	<% if(product.attrs.length>0){ %>
+	<% if(product.attrs){ %>
+		
+		
 		<div class=" col-md-4 attr-selector-pane">
-					<%  for(var i = 0; i < product.attrs.length;i++){ %>
-						<div style="position: relative; overflow-y: hidden;" class="pane forty pane-grey"> 
+			
+						<div  class="pane forty pane-grey"> 
 						   <div data-testid="product-size-grid" class="size-select-grid">
-							  <div class="bsSizeSelectGrid__Title-sc-10iau84-0 jqmgAU">Select <%=product.attrs[i].name %></div>
+							  <div class="bsSizeSelectGrid__Title-sc-10iau84-0 jqmgAU">Select <%=product.attrs.name %></div>
 							  <div class="bsSizeSelectGrid__SubtitleContainer-sc-10iau84-1 efPZCS">
-								 U.S. Men's <%=product.attrs[i].name %> | Lowest Asks
+								 U.S. Men's <%=product.attrs.name %> | Lowest Asks
 								 <!-- <div class="bsSizeSelectGrid__SizeChartButton-sc-10iau84-2 icWnhq">Size Chart</div> -->
 							  </div>
 							  <div class="grid-tiles">
-								   <%  for(var j = 0; j < product.attrs[i].attrs.length;j++){ %>
+								<% let attrs= product.attrs.attrs; attrs.forEach((attr)=>{ %>
+								   <%  //for(var j = 0; j < product.attrs[i].attrs.length;j++){ %>
 								 <div class="grid-tile buy-tile attr-selector-cell">
 									<div class="tile-inner">
-									   <div class="tile-value" value="<%=product.attrs[i].attrs[j] %>"><%=product.attrs[i].attrs[j] %></div>
+									   <div class="tile-value" value="<%=attr %>"><%=attr %></div>
 									   <div class="tile-subvalue">
 										  <div class="tile-subvalue">$750</div>
 									   </div>
 									</div>
 								 </div>
-								 <% } %>
+								 <% } )%>
 								 <div class="grid-tile buy-tile">
 									<div class="tile-inner">
 									   <div class="tile-value">US16</div>
@@ -48,16 +51,17 @@
 			  
 						</div>
 						
-						<%  } %>
+						<%  //} %>
 			</div>
 			  <% } %>
 					<!---Size Selector pane End-->
 		<div class="col-md-4 bidsel-pane">
-			<% if(product.attrs.length>0){ %>
+			<% if(product.attrs.attrs.length>0){ %>
 				<div class="buy-sell-size attr-selector-select ">
-					<div class="size-details">U.S. Men's Size <span id="attr-selector-attr1">4</span></div>
+					<div class="size-details">U.S. Men's <%=product.attrs.name %> <span id="attr-selector-attr">4</span></div>
 					<img src="/assets/images/pencil.png" >
 					</div>
+					
 				<%  } %>
 		<div class="left_sec">
 	
@@ -328,7 +332,8 @@
 			var id ="<%=product.id %>";
 				var bidprice=$("#bid-price-input").val();
 				var expiry=$('.dropdown-toggle').text();
-				var size=$('#attr-selector-attr1').text();
+				var size=$('#attr-selector-attr').text();
+				//console.log('ssssssssssssssss'+size +product.attrs.name);
 				var sendInfo = {id: id, bidprice:bidprice, expiry:expiry };
 				$.ajax({
 					method:'post',
@@ -351,14 +356,14 @@
 	getbidCharges();   
 })
 $( function(){
-	var attrs="<%=product.attrs.length%>";
+	var attrs="<%=product.attrs.attrs.length%>";
 	if(attrs>0){
 		$('.bidsel-pane').hide(); //attr-selector-select
 		$('.attr-selector-pane').show();
 		$('.attr-selector-cell').on('click',function(){
-			var attrv='dfs';
+			var attrv='';
 			var attrv=$(this).find(".tile-value:first").text();			
-		$('#attr-selector-attr1').html(attrv);
+		$('#attr-selector-attr').html(attrv);
 		$('.attr-selector-pane').hide();
 		$('.bidsel-pane').show();	
 		});	

@@ -124,6 +124,7 @@ braintree.client.create({
   }
 
   braintree.hostedFields.create({
+    
     client: clientInstance,
     styles: {
       input: {
@@ -306,7 +307,7 @@ braintree.client.create({
           var postalCode_billing=$("#postalCode_billing").val();
           var state_billing=$("#state_billing").val();
           var city_billing=$("#city_billing").val();
-
+          var attr_val=$('#attr-selector-attr').text();
       var bidType=$("#bid-type").val();
       console.log(bidType)
           var productid="<%=product.id %>";
@@ -336,7 +337,8 @@ braintree.client.create({
                state_billing:state_billing,
                country_code_billing:country_code_billing,
                postalCode_billing:postalCode_billing,
-               telephone_billing:telephone_billing
+               telephone_billing:telephone_billing,
+               attr_val:attr_val
               }
             }).done(function(result) {
               form.trigger("reset");
