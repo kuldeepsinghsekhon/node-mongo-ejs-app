@@ -226,7 +226,7 @@
 							</a>
 						 </div>
 						 <div class="sale-size">
-							<div><a class="all">View All Asks</a></div>
+							<div><a class="all view_all_bid" >View All Asks</a></div>
 						 </div>
 					  </div>
 					  <div class="ask ask-button-b">
@@ -244,7 +244,7 @@
 							</a>
 						 </div>
 						 <div class="sale-size">
-							<div><a class="all">View All Bids</a></div>
+							<div><a class="all view_all_ask">View All Bids</a></div>
 						 </div>
 					  </div>
 				   </div>
@@ -461,9 +461,83 @@
 	
 	
 				</div>
-				
+				 <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+			<div id="example-table"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
 				<script>
-			
+			$(".view_all_bid").click(function(){
+				var id="<%=product.id%>";
+				var URL = "/products/bids/"; //ajax URL
+				var params = {productId:id}
+				var ajaxConfig = "POST"; //ajax HTTP request type 
+				console.log(id);
+				$("#myModal").modal()
+				var table = new Tabulator("#example-table", {
+					productId:id,	
+					ajaxURL:"/products/bids/"+id, //ajax URL
+						ajaxConfig:{
+							method:"POST",
+							 //set request type to Position
+							headers: {
+								"Content-type": 'application/json; charset=utf-8', //set specific content type
+							},
+						},
+							columns:[
+							{title:"title", field:"title"},	
+							{title:"price", field:"bidprice"},  ], // send parameters to the server as a JSON encoded string
+					});
+				// $.ajax({
+				// 	url: "/products/bids/",
+				// 	dataType:"json",
+				// 	method:"post",
+				// 	data:{productId:id},
+				// 	success:function(respose){
+				// 		consle.log(response)
+				// 	},
+				// 	error:function(error){
+				// 		consle.log(error)
+				// 	}
+				// });
+	});
+	$(".view_all_ask").click(function(){
+				var id="<%=product.id%>";
+				var params = {productId:id}
+				var ajaxConfig = "POST"; //ajax HTTP request type 
+				console.log(id);
+				$("#myModal").modal()
+				var table = new Tabulator("#example-table", {
+					productId:id,	
+					ajaxURL:"/products/asks/"+id, //ajax URL
+						ajaxConfig:{
+							method:"POST",
+							 //set request type to Position
+							headers: {
+								"Content-type": 'application/json; charset=utf-8', //set specific content type
+							},
+						},
+							columns:[
+							{title:"title", field:"title"},	
+							{title:"price", field:"bidprice"},  ], // send parameters to the server as a JSON encoded string
+					});
+	});
 	
 					$(".select-control").click(function()
 		{

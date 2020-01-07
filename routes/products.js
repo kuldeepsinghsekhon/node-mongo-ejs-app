@@ -22,6 +22,8 @@ router.post('/buy/:id/',ensureAuthenticated, product_controller.placeBuyBid );
 router.post('/calcbuy',ensureAuthenticated, product_controller.calculateBuyCharges);
 router.post('/buy/billingshiping/form',ensureAuthenticated, product_controller.buyBillingShipping);
 router.post('/buy/shipping/shippingform',ensureAuthenticated, product_controller.buyShipping);
+router.post('/bids/:productId',forwardAuthenticated,product_controller.productBids);
+router.post('/asks/:productId',forwardAuthenticated,product_controller.productSells);
 //router.post('/buy/shipping/pay',ensureAuthenticated, product_controller.buyProductPay );
 
 module.exports = router;

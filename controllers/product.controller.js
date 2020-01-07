@@ -814,3 +814,32 @@ exports.editProduct=function(req, res, next) {
         })
          
      }
+     exports.productBids =function(req,res,next){
+       var productId= req.params.productId;
+       console.log(productId);
+        // console.log(req.body);
+        // console.log(req.params);
+        // console.log(req.query);
+      BuyBid.find({productid:productId}).select({ "title": 1, "_id": 0,'bidprice': 1}).exec(function(err,bids){
+        BuyBid.count().exec(function(err,count){
+          if(err)return next(err);
+          console.log(bids);
+          res.json(bids)
+        });
+      });
+  
+     } 
+     exports.productSells =function(req,res,next){
+      var productId= req.params.productId;
+      console.log(productId);
+       // console.log(req.body);
+       // console.log(req.params);
+       // console.log(req.query);
+     SellBid.find({productid:productId}).select({ "title": 1, "_id": 0,'bidprice': 1}).exec(function(err,asks){
+       SellBid.count().exec(function(err,count){
+         if(err)return next(err);
+         res.json(asks)
+       });
+     });
+ 
+    } 

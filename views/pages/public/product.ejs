@@ -216,7 +216,8 @@
 							</a>
 						 </div>
 						 <div class="sale-size">
-							<div><a class="all">View All Asks</a></div>
+							<div><a  id="all_asks">View All Asks</a>
+							</div>
 						 </div>
 					  </div>
 					  <div class="ask ask-button-b">
@@ -235,6 +236,9 @@
 						 </div>
 						 <div class="sale-size">
 							<div><a class="all">View All Bids</a></div>
+						 </div>
+						 <div>
+							<button type="button" data-toggle="modal" data-target="#myModal">Open Modal</button>
 						 </div>
 					  </div>
 				   </div>
@@ -434,28 +438,18 @@
 									  </div>
 								   </div>
 								</div>
-								
-								
-								
-								
 								<div class="graph_sec">
 								<div class="container">
 								<div class="row">
 											<div class="col-md-12 related-banner">
 						`					   <div class="h4 banner banner-red">Related sales</div>
 											</div>
-											
-											
 											<div class="col-md-8">
 											<div class="bid-page" style="position: relative; overflow-y: hidden;">
 											   <div class="split-pane-page">
 												<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 												</div>
 											</div>
-											
-											
-											
-	
 										<div class="latest-sales-container">
 										   <table class="latest-sales table table-striped table-condensed " id="latest-sales-table">
 											  <thead>
@@ -507,14 +501,7 @@
 											  </tbody>
 										   </table>
 										</div>
-	
-	
-											
-											</div>
-										 
-										 
-								
-	
+									</div>
 										<div class="col-md-4 gauges-wrapper">
 										   <div class="h4-12-month"><img alt="gauge" src="images/maker1.png"><span>12 Month Historical</span></div>
 										   <div class="gauges">
@@ -538,25 +525,31 @@
 											  </div>
 										   </div>
 										</div>
-	
-	
 								</div>
 								</div>
 								</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-				</div>
-				
+							</div>
+						 <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  		
 				<script>
 			
 	
