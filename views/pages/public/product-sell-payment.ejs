@@ -260,13 +260,14 @@ braintree.client.create({
           var askprice=$("#bid-price-input").val();
           var bidType= $("#bid-type").val();
           var expiry=$('.dropdown-toggle').text();
+          var attr_val=$('#attr-selector-attr').text();
           //alert(bidType +'expiry '+ expiry+'size '+size)
           //if(bidType=='sale-ask')
           var productid="<%=product.id %>";
         $.ajax({
               type: 'POST',
               url:"/products/sell/<%=product.id %>",
-              data: {'paymentMethodNonce': payload.nonce,bidprice:askprice,productid:productid,bidType:bidType,expiry:expiry}
+              data: {'paymentMethodNonce': payload.nonce,bidprice:askprice,productid:productid,bidType:bidType,expiry:expiry,attr_val:attr_val}
             }).done(function(result) {
               form.trigger("reset");
               // Tear down the Drop-in UI

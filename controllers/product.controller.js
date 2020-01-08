@@ -64,6 +64,7 @@ exports.products = function(req, res, next) {
   }
 
   exports.findById=function(req, res, next) {
+     //console.log(app.host)
     var productId=req.params.id;
     req.session.oldUrl='/products/'+productId;
     Promise.all([
@@ -282,7 +283,7 @@ exports.sellProductPay=function(req,res){
 exports.sellAsk=async  function(req, res,next){
   
   var sellBid = new SellBid();
-  
+  var attr_val= req.body.attr_val;
   const productId= req.body.productid;
   var bidprice=0;//req.body.bidprice;
   var buybid=await BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1);
@@ -293,6 +294,7 @@ exports.sellAsk=async  function(req, res,next){
   sellBid.user = req.user;//Date.now()
   sellBid.biddate=Date.now();
   sellBid.title=prod.name;
+  sellBid.attr_val=attr_val;
   if(buybid!=null){
     sellBid.highestbid=buybid.bidprice;
   }
@@ -822,7 +824,7 @@ exports.editProduct=function(req, res, next) {
         // console.log(req.body);
         // console.log(req.params);
         // console.log(req.query);
-      BuyBid.find({productid:productId}).select({ "title": 1, "_id": 0,'bidprice': 1}).exec(function(err,bids){
+      BuyBid.find({productid:productId}).select({ "title": 1, "_id": 0,'bidprice': 1,'attr_val':1}).exec(function(err,bids){
         BuyBid.count().exec(function(err,count){
           if(err)return next(err);
           console.log(bids);
@@ -837,7 +839,7 @@ exports.editProduct=function(req, res, next) {
        // console.log(req.body);
        // console.log(req.params);
        // console.log(req.query);
-     SellBid.find({productid:productId}).select({ "title": 1, "_id": 0,'bidprice': 1}).exec(function(err,asks){
+     SellBid.find({productid:productId}).select({ "title": 1, "_id": 0,'bidprice': 1,'attr_val':1}).exec(function(err,asks){
        SellBid.count().exec(function(err,count){
          if(err)return next(err);
          res.json(asks)
@@ -845,3 +847,41 @@ exports.editProduct=function(req, res, next) {
      });
  
     } 
+    exports.findProductAjax=function(req, res, next) {
+      var productId=req.body.productid;
+      var attr_val=req.body.attr_val;
+      req.session.oldUrl='/products/'+productId;
+      Promise.all([
+        Product.findOne({ _id: productId }).populate({path:'attrs'}),
+        SellBid.findOne({productid:productId,status:'ask',attr_val:attr_val}).sort({bidprice:+1}).limit(1),
+        BuyBid.findOne({productid:productId,status:'buybid',attr_val:attr_val}).sort({bidprice:-1}).limit(1),
+        OrderBid.find({ product: productId }).sort({orderdate:-1}).limit(10),
+        OrderBid.count({ product: productId}),
+        Product.find({ }).limit(10),
+      ]).then( ([ product, lowask,highbid,lastsale,ordercount,relatedproducts]) => {
+       // console.log("lastsale");
+      //  console.log(lastsale);
+        var allsales=lastsale;
+        var spchange=0;
+       var highsale;
+        if(lastsale.length>1){
+       spchange=lastsale[0].netprice-lastsale[1].netprice;
+       highsale=lastsale[0];
+        }
+        if(lastsale.length>0){
+  
+          highsale=lastsale[0];
+           }
+        res.json( {status:'success',data:{
+          product: product,
+          lowask:lowask,
+          highbid:highbid,
+          spchange:spchange,
+          lastsale:highsale,
+          allsales:allsales,
+          ordercount:ordercount,
+          relatedproducts:relatedproducts}
+         
+         })
+        }).catch((error) => console.log(error));
+      }

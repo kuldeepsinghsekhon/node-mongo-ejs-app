@@ -6,8 +6,8 @@
 		<div class="row">
 		<div class="col-md-8">
 		<div class="left_sec">
-		<h1><%= product.name %> BandA1975</h1>
-		<p>Highest Bid:<span class="bold"><% if(highbid){ %>$<%=highbid.bidprice%> <% }else{ %>-- <% } %></span>  | Lowest Ask:<span class="bold"> <% if(lowbid){ %>$<%=lowbid.bidprice%> <% }else{ %>-- <% } %></span> </p>
+		<h1><%= product.name %></h1>
+		<p>Highest Bid:<span class="bold HighestBid"><% if(highbid){ %>$<%=highbid.bidprice%> <% }else{ %>-- <% } %></span>  | Lowest Ask:<span class="bold lowask"> <% if(lowbid){ %>$<%=lowbid.bidprice%> <% }else{ %>-- <% } %></span> </p>
 		<div class="img_sec">
 		<img src="/uploads/products/<%= product.image %>">
 		</div>
@@ -28,24 +28,17 @@
 							  </div>
 							  <div class="grid-tiles">
 								<% let attrs= product.attrs.attrs; attrs.forEach((attr)=>{ %>
-								   <%  //for(var j = 0; j < product.attrs[i].attrs.length;j++){ %>
+								  
 								 <div class="grid-tile buy-tile attr-selector-cell">
 									<div class="tile-inner">
 									   <div class="tile-value" value="<%=attr %>"><%=attr %></div>
 									   <div class="tile-subvalue">
-										  <div class="tile-subvalue">$750</div>
+										  <div class="tile-subvalue">Bid</div>
 									   </div>
 									</div>
 								 </div>
 								 <% } )%>
-								 <div class="grid-tile buy-tile">
-									<div class="tile-inner">
-									   <div class="tile-value">US16</div>
-									   <div class="tile-subvalue">
-										  <div class="tile-subvalue value-black">Bid</div>
-									   </div>
-									</div>
-								 </div>
+								
 							  </div>
 						   </div>
 			  
@@ -170,9 +163,10 @@
 			<div class="ask-input" data-tour="bid-education">
 			   <div class="amount-input vertical">
 				  <div class="decoration">$</div>
-				  <% if(lowbid){ %> <input data-testid="product-bid-input" placeholder="<%=lowbid.bidprice%>" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="<%=lowbid.bidprice%>">
-				  <% }else{ %> <input data-testid="product-bid-input" placeholder="" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="">
-				  <% } %>
+				  <input id="lowask-input" placeholder="" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="<%=(lowbid ? lowbid.bidprice : '') %>" >
+
+
+				 
 			   </div>
 			</div>
 			<div class="bid-warning ">
@@ -362,7 +356,38 @@ $( function(){
 		$('.attr-selector-pane').show();
 		$('.attr-selector-cell').on('click',function(){
 			var attrv='';
-			var attrv=$(this).find(".tile-value:first").text();			
+			var attrv=$(this).find(".tile-value:first").text();	
+			//ajax to get lowest ask and highest bidprice of this attribute 
+			var productid="<%=product.id%>";
+			var reqdata = {attr_val:attrv,productid:productid};
+			$.ajax({
+					method:'post',
+					url:"/products/detail",
+					dataType: "json",
+					data:reqdata,
+					success: function (response) {
+						//console.log(paypalEmail);
+						console.log(response);
+						// $('.pane-payment').hide();	
+						// $('.bidsel-pane').hide();
+						if(response.data.highbid){
+							$('.HighestBid').text('$'+response.data.highbid.bidprice);
+						}else{
+							$('.HighestBid').text('--');
+						}
+						if(response.data.lowask){
+							$('.lowask').text('$'+response.data.lowask.bidprice);
+							$('#lowask-input').val(response.data.lowask.bidprice);
+						}else{
+							$('.lowask').text('--');
+							$('#lowask-input').val('');
+						}
+					},
+					error:function(err){
+						console.log('some error occoured');
+						console.log(err);
+					}
+				});	
 		$('#attr-selector-attr').html(attrv);
 		$('.attr-selector-pane').hide();
 		$('.bidsel-pane').show();	

@@ -6,60 +6,57 @@
 		<div class="row">
 		<div class="col-md-8">
 		<div class="left_sec">
-		<h1><%= product.name %> BandA1975</h1>
-		<p>Highest Bid:<span class="bold"><% if(highbid){ %>$<%=highbid.bidprice%> <% }else{ %>-- <% } %></span> 
-			 | Lowest Ask:<span class="bold"><% if(lowbid){ %>$<%=lowbid.bidprice%> <% }else{ %>-- <% } %></span> </p>
+		<h1><%= product.name %></h1>
+		<p>Highest Bid:<span class="bold HighestBid"><% if(highbid){ %>$<%=highbid.bidprice%> <% }else{ %>-- <% } %></span> 
+			 | Lowest Ask:<span class="bold lowask"><% if(lowbid){ %>$<%=lowbid.bidprice%> <% }else{ %>-- <% } %></span> </p>
 		<div class="img_sec">
 		<img src="/uploads/products/<%= product.image %>">
 		</div>
 		</div>
 		</div>
-	<!--Size selector Pane-->
-	<% if(product.attrs.length>0){ %>
-		<div class=" col-md-4 attr-selector-pane">
-					<%  for(var i = 0; i < product.attrs.length;i++){ %>
-						<div style="position: relative; overflow-y: hidden;" class="pane forty pane-grey"> 
-						   <div data-testid="product-size-grid" class="size-select-grid">
-							  <div class="bsSizeSelectGrid__Title-sc-10iau84-0 jqmgAU">Select <%=product.attrs[i].name %></div>
-							  <div class="bsSizeSelectGrid__SubtitleContainer-sc-10iau84-1 efPZCS">
-								 U.S. Men's <%=product.attrs[i].name %> | Lowest Asks
-								 <!-- <div class="bsSizeSelectGrid__SizeChartButton-sc-10iau84-2 icWnhq">Size Chart</div> -->
-							  </div>
-							  <div class="grid-tiles">
-								   <%  for(var j = 0; j < product.attrs[i].attrs.length;j++){ %>
-								 <div class="grid-tile buy-tile attr-selector-cell">
-									<div class="tile-inner">
-									   <div class="tile-value" value="<%=product.attrs[i].attrs[j] %>"><%=product.attrs[i].attrs[j] %></div>
-									   <div class="tile-subvalue">
-										  <div class="tile-subvalue">$750</div>
-									   </div>
-									</div>
-								 </div>
-								 <% } %>
-								 <div class="grid-tile buy-tile">
-									<div class="tile-inner">
-									   <div class="tile-value">US16</div>
-									   <div class="tile-subvalue">
-										  <div class="tile-subvalue value-black">Bid</div>
-									   </div>
-									</div>
-								 </div>
-							  </div>
-						   </div>
-			  
-						</div>
-						
-						<%  } %>
-			</div>
-			  <% } %>
-					<!---Size Selector pane End-->
-		<div class="col-md-4 bidsel-pane">
-			<% if(product.attrs.length>0){ %>
-				<div class="buy-sell-size attr-selector-select ">
-					<div class="size-details">U.S. Men's Size <span id="attr-selector-attr1">4</span></div>
-					<img src="/assets/images/pencil.png" >
+<!--Size selector Pane-->
+<% if(product.attrs){ %>
+		
+		
+	<div class=" col-md-4 attr-selector-pane">
+		
+					<div  class="pane forty pane-grey"> 
+					   <div data-testid="product-size-grid" class="size-select-grid">
+						  <div class="bsSizeSelectGrid__Title-sc-10iau84-0 jqmgAU">Select <%=product.attrs.name %></div>
+						  <div class="bsSizeSelectGrid__SubtitleContainer-sc-10iau84-1 efPZCS">
+							 U.S. Men's <%=product.attrs.name %> | Lowest Asks
+							 <!-- <div class="bsSizeSelectGrid__SizeChartButton-sc-10iau84-2 icWnhq">Size Chart</div> -->
+						  </div>
+						  <div class="grid-tiles">
+							<% let attrs= product.attrs.attrs; attrs.forEach((attr)=>{ %>
+							   <%  //for(var j = 0; j < product.attrs[i].attrs.length;j++){ %>
+							 <div class="grid-tile buy-tile attr-selector-cell">
+								<div class="tile-inner">
+								   <div class="tile-value" value="<%=attr %>"><%=attr %></div>
+								   <div class="tile-subvalue">
+									  <div class="tile-subvalue">Ask</div>
+								   </div>
+								</div>
+							 </div>
+							 <% } )%>
+							
+						  </div>
+					   </div>
+		  
 					</div>
-				<%  } %>
+					
+					<%  //} %>
+		</div>
+		  <% } %>
+				<!---Size Selector pane End-->
+				<div class="col-md-4 bidsel-pane">
+					<% if(product.attrs.attrs.length>0){ %>
+						<div class="buy-sell-size attr-selector-select ">
+							<div class="size-details">U.S. Men's <%=product.attrs.name %> <span id="attr-selector-attr">4</span></div>
+							<img src="/assets/images/pencil.png" >
+							</div>
+							
+						<%  } %>
 		<div class="left_sec">
 	
 		<div class="pl_cn nv_top">
@@ -153,7 +150,7 @@
 			<div class="ask-input" data-tour="bid-education">
 			   <div class="amount-input vertical">
 				  <div class="decoration">$</div>
-				  <% if(highbid){ %> <input data-testid="product-bid-input" placeholder="<%=highbid.bidprice%>" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="<%=highbid.bidprice%>">
+				  <% if(highbid){ %> <input id="highbid-input" placeholder="" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="<%=highbid.bidprice%>">
 				  <% }else{ %> <input data-testid="product-bid-input" placeholder="" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="">
 				  <% } %>
 			   </div>
@@ -298,14 +295,46 @@
 	getbidCharges();   
 })
 $( function(){
-	var attrs="<%=product.attrs.length%>";
-	if(attrs>0){
+	var attrs="<%=product.attrs.attrs.length%>";
+		if(attrs>0){
 		$('.bidsel-pane').hide(); //attr-selector-select
 		$('.attr-selector-pane').show();
 		$('.attr-selector-cell').on('click',function(){
-			var attrv='dfs';
-			var attrv=$(this).find(".tile-value:first").text();			
-		$('#attr-selector-attr1').html(attrv);
+			var attrv='';
+			var attrv=$(this).find(".tile-value:first").text();	
+			var productid="<%=product.id%>";
+			var reqdata = {attr_val:attrv,productid:productid};
+			$.ajax({
+					method:'post',
+					url:"/products/detail",
+					dataType: "json",
+					data:reqdata,
+					success: function (response) {
+						//console.log(paypalEmail);
+						console.log(response);
+						// $('.pane-payment').hide();	
+						// $('.bidsel-pane').hide();
+						if(response.data.highbid){
+							$('.HighestBid').text('$'+response.data.highbid.bidprice);
+							$('#highbid-input').val(response.data.highbid.bidprice);
+						}else{
+							$('.HighestBid').text('--');
+							$('#highbid-input').val('');
+						}
+						if(response.data.lowask){
+							$('.lowask').text('$'+response.data.lowask.bidprice);
+							
+						}else{
+							$('.lowask').text('--');
+							
+						}
+					},
+					error:function(err){
+						console.log('some error occoured');
+						console.log(err);
+					}
+				});		
+		$('#attr-selector-attr').html(attrv);
 		$('.attr-selector-pane').hide();
 		$('.bidsel-pane').show();	
 		});	

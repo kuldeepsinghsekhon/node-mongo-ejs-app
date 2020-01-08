@@ -16,6 +16,7 @@ const app = express();
 app.use(fileUpload());
 const path = require('path');
 global.appRoot = path.resolve(__dirname);
+//global.appHost = app.http;
 const nodemailer = require('nodemailer');
 // Passport Config
 require('./config/passport')(passport);

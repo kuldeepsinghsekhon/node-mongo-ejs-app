@@ -12,7 +12,8 @@ const BidSchema = new mongoose.Schema({
   highestbid:Number,
   user:{type: Schema.Types.ObjectId, ref: 'User'},
   sellbid:{type: Schema.Types.ObjectId, ref: 'SellBid'},
-  attr_val:String
+  attr_val:String,
+  attr_name:String
 });
 const BuyBid = mongoose.model('BuyBid', BidSchema);
 module.exports = BuyBid;

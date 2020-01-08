@@ -8,6 +8,8 @@ router.get('/',forwardAuthenticated,product_controller.products);
 
 /* product detail page Next Page is /shop/id/ */
 router.get('/:id',forwardAuthenticated, product_controller.findById );
+router.post('/detail',forwardAuthenticated, product_controller.findProductAjax );
+
 /* product Sell-Select Variant page */
 
 router.get('/sell/:id',ensureAuthenticated, product_controller.sellProductVariant );

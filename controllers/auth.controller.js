@@ -22,6 +22,7 @@ exports.showSignUp=function(req,res,next){
 
 exports.signUp=function(req, res){
     const role=Role.User;
+    const newUser = new User();
     const tokgen = new TokenGenerator(); // Default is a 128-bit token encoded in base58
     const randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], style: 'capital' }); // big_red_donkey
     const token=Math.ceil(Math.random() * 1000000); //tokgen.generate();
@@ -68,64 +69,69 @@ exports.signUp=function(req, res){
         //  });
         res.json({status:'error',data:{errors:errors,name:name,lastname:lastname,email:email,password:password,password2:password2},message:'Error Failed To register'});
        } else {
-         const newUser = new User({
-           name,
-           lastname,
-           email,
-           password,
-           role,
-           token,
-         });
+         
+           newUser.name=name;
+           newUser.lastname=lastname;
+           newUser.email=email;
+           newUser.password=password
+           newUser.role=role;
+           newUser.token=token;
+        
+         var braintreeid='';
          gateway.customer.create({
           firstName: name,
-          lastName: name+'dfd',
-
+          lastName: lastname,
           email: email,
 
-        }, function (err, result) {
-          result.success;
-        
+        }, function(err, result) {
+         // result.success;
+        if(result){
+          braintreeid=result.customer.id;
           newUser.braintreeid=result.customer.id;
-          console.log(result.customer.id);
-        });
-         bcrypt.genSalt(10, (err, salt) => {
-           bcrypt.hash(newUser.password, salt, (err, hash) => {
-             if (err) throw err;
-             newUser.password = hash;
-             newUser.username = randomName;
-             newUser
-               .save()
-               .then(user => {
-                 var token=user.token;
-                 var userid=user._id;
-                var mailOptions = {
-                
-                  from: 'aquatecinnovative1@gmail.com',
-                  to:'stockxa1@gmail.com', //user.email,
-                  subject: 'Validate Your Account',
-                  html: 'Thanks For Registering  with email <h3>'+user.email+'</h3><p> Your Validation Token is </p><h1>'+token+'</h1>'
-                };
-                //console.log(user);
-                utils_controller.sendmymail(mailOptions);
-                //  req.flash(
-                //    'success_msg',
-                //    'You are now registered and can log in'
-                //  );
-                res.json({status:'success',data:{userid:userid,name:user.name,lastname:user.lastname,username:randomName,email:user.email},message:"Thanks For Register"});
-
-                 //  if(req.session.oldUrl){
-                    // var oldUrl=req.session.oldUrl;
-                    // req.session.oldUrl=null;
-                     //res.redirect(oldUrl);
-                     //res.redirect('/sign-in');
-                  // }else{
-                     //res.redirect('/sign-in');
-                  // }    
-                
-               })
-               .catch(err => console.log(err));
-           });
-         });
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+              if (err) throw err;
+              newUser.password = hash;
+              newUser.username = randomName;
+             // console.log(newUser);
+              newUser.save()
+                .then(user => {
+                  var token=user.token;
+                  var userid=user._id;
+                 var mailOptions = {
+                 
+                   from: 'aquatecinnovative1@gmail.com',
+                   to:'stockxa1@gmail.com', //user.email,
+                   subject: 'Validate Your Account',
+                   html: 'Thanks For Registering  with email <h3>'+user.email+'</h3><p> Your Validation Token is </p><h1>'+token+'</h1>'
+                 };
+                 //console.log(user);
+                 utils_controller.sendmymail(mailOptions);
+                 //  req.flash(
+                 //    'success_msg',
+                 //    'You are now registered and can log in'
+                 //  );
+                 res.json({status:'success',data:{userid:userid,name:user.name,lastname:user.lastname,username:randomName,email:user.email},message:"Thanks For Register"});
+ 
+                  //  if(req.session.oldUrl){
+                     // var oldUrl=req.session.oldUrl;
+                     // req.session.oldUrl=null;
+                      //res.redirect(oldUrl);
+                      //res.redirect('/sign-in');
+                   // }else{
+                      //res.redirect('/sign-in');
+                   // }    
+                 
+                })
+                .catch(err => console.log(err));
+            });
+          });
+        }else{
+          res.json({status:'error',data:{},message:"Error in Register"});
+        }
+         
+        })
+               
        }
      });
    }
