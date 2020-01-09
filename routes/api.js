@@ -19,5 +19,6 @@ router.post('/products/buy/:id/',ensureAuthenticated, product_controller.placeBu
 router.post('/products/calcbuy',ensureAuthenticated, product_controller.calculateBuyCharges);
 router.post('/user/settings/resetpsword',passport.authenticate('basic', { session : false }),settings_controller.requestResetPassword);
 router.post('/change_password',passport.authenticate('basic', { session : false }), auth_controller.updateChangePassword);
+router.post('/settings/profile',passport.authenticate('basic', { session : false }), settings_controller.saveProfile);
 
 module.exports = router;
