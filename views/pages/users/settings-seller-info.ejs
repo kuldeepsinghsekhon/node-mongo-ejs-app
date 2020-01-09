@@ -1,12 +1,15 @@
+
 <div class="bid-page" style="position: relative; overflow-y: hidden;">
     <div class="split-pane-page">
+      
        <div class="split-pane with-button-bar">
-       
+        
           <div style="position: relative; overflow-y: hidden;" class="pane forty pane-grey">
              
                <form accept-charset="UTF-8" method="POST" action="#" id="sellerform"  >
              
              <div class="address-form fs-block">
+               <div id="success_msg"></div>
                 <div class="form-title">Seller Info</div>
                 <% include ../../partials/messages %>
                 <input data-testid="user-firstName" name="name" type="text" required="" placeholder="Full Name" autocomplete="true" class="field  " value="<%= address.name%>">
@@ -74,7 +77,7 @@
                   console.log(res);
                   if(res.success){
                   
-                    $('#success_msg').html( '<div class="alert alert-success">Shipping info saved successfully.</div>');
+                    $('#success_msg').html( '<div class="alert alert-success">Seller info saved successfully.</div>');
                   }else
                     {
                        $('#message_error').text('*Please input data in All fileds')
