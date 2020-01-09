@@ -274,7 +274,7 @@ exports.updateChangePassword=function(req,res,next){
               console.log(err);
               res.status(200).json({status:"error",message:"failed to update"})
             }else{
-              res.json({status:'success',data:{userid:user.id,token:token},message:'password update successfully'});
+              res.json({status:'success',data:{},message:'password update successfully'});
             }    
       });
     })
