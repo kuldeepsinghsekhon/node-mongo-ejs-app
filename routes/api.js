@@ -1,10 +1,12 @@
 const express = require('express');
 const passport = require('passport');
-
-const router = express.Router();
-const product_controller = require('../controllers/api.product.controller');
 const {ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
-router.post('/products/',passport.authenticate('basic', { session : false }),product_controller.products);
+const { permit } = require('../config/role-auth');
+const router = express.Router();
+const settings_controller = require('../controllers/settings.controller');
+const product_controller = require('../controllers/api.product.controller');
+
+router.post('/products/',passport.authenticate(['basic'], { session : false }),product_controller.products);
 router.get('/products/:id',forwardAuthenticated, product_controller.findById );
 router.get('/products/sell/:id',ensureAuthenticated, product_controller.sellProductVariant );
 router.post('/products/sell/:id/',ensureAuthenticated, product_controller.sellAsk );
@@ -14,5 +16,5 @@ router.post('/products/sell/:id/pay',ensureAuthenticated, product_controller.sel
 router.get('/products/buy/:id',ensureAuthenticated, product_controller.buyProductVariant );
 router.post('/products/buy/:id/',ensureAuthenticated, product_controller.placeBuyBid );
 router.post('/products/calcbuy',ensureAuthenticated, product_controller.calculateBuyCharges);
-
+router.post('/user/settings/resetpsword',passport.authenticate('basic', { session : false }),settings_controller.requestResetPassword);
 module.exports = router;

@@ -1,4 +1,4 @@
-<div class="tabs ">
+<div class="tabs settings">
         <div class="container-fluid">
           <div class="row">
               <% include ../../partials/user_dashboard_nav %>   
@@ -38,7 +38,7 @@
                                    <div class="row">
                                      <div class="acct-col">
                                        <h3>Reset Password</h3>
-                                       <a href="/user/settings/resetpsword">Click Here to Reset Password</a>
+                                       <a href="/user/settings/resetpsword" class="resetpsword">Click Here to Reset Password</a>
                                      </div>
                                    </div>
                                    <div>
@@ -391,17 +391,38 @@
                             // var bidType=$("#bid-type").val();
                             // console.log(bidType);
                             // var size='5';
-                            // var sendInfo = {id: id};
+                            // var sendInfo = {id: id};/user/settings/resetpsword
                             $.ajax({
                               method:'post',
                               url:"/user/settings/notification/"+id,
                               dataType: "json",
                               data: {enabled: enabled},
-                                     success: function (json_data) {
+                                     success: function (response) {
+                                       $(".settings").html(response);
                                      // alert(json_data['enabled']);    
                                },
                                error:function(err){  //console.log(err);  
                             }	
                             });	
                           });			
+                          </script>
+                          <script>
+                          //  $(".resetpsword").on('click',function(){
+                          //    alert('dsfds');
+                          // $.ajax({
+                          //     method:'post',
+                          //     url:"/user/settings/resetpsword",
+                          //     //dataType: "json",
+                          //     data: {portal:'web'},
+                          //     success: function (response) {
+                          //              $('.settings').html(response);
+                          //            // alert(json_data['enabled']);    
+                          //      },
+                          //      error:function(err){  //console.log(err);  
+                          //       $('.settings').html(response);
+                          //   }	
+                          //   });	
+                          // });	
+                          
+                          
                           </script>

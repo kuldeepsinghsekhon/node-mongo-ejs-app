@@ -11,7 +11,7 @@ const { permit } = require('../config/role-auth');
   router.get('/following',ensureAuthenticated,permit('User'), settings_controller.followingProducts);
   router.get('/settings/profile',ensureAuthenticated,permit('User'),settings_controller.editProfile);
   router.post('/settings/saveprofile',ensureAuthenticated,permit('User'),settings_controller.saveProfile);
-  router.get('/settings/resetpsword',ensureAuthenticated,permit('User'),settings_controller.resetPassword);
+  router.get('/settings/resetpsword',ensureAuthenticated,permit('User'),settings_controller.requestResetPassword);
   router.get('/settings/payout-info',ensureAuthenticated,permit('User'),settings_controller.payoutInfo);
   router.post('/settings/payout-info',ensureAuthenticated,settings_controller.savePayoutInfo);
   router.get('/profile',ensureAuthenticated,permit('User'), auth_controller.profile);

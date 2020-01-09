@@ -330,19 +330,33 @@ if (phone.length < 10) {
       })
    // res.render('pages/users/settings-profile')
 }
-exports.resetPassword=function(req,res,next){
-  User.findOne({id:req.user._id})
-  .exec(function(err, users) {
-      User.count().exec(function(err, count) {
-          if (err) return next(err)
-          res.render('pages/users/settings-reset-password', {
-              user: req.user,                        
-              layout:'layout'
-          })
-      })
-  })
-    
-}
+exports.requestResetPassword=function(req,res,next){
+  var portal=req.body.portal;
+  const user_id=req.user._id;
+  const email=req.user.email;
+  const token=Math.ceil(Math.random() * 1000000);
+  var mailOptions = {
+    from: 'aquatecinnovative1@gmail.com',
+    to: email,
+    subject: 'Reset Password',
+    html: 'Please Validate Your OTP on Given link. Your OTP is ' + token + 
+    '</br>  for Reset Password <a href="https://aquatecinnovative.herokuapp.com/reset_Pword?t='+token+'&id='+user_id+'">Click Here</a>',
+  };
+   utils_controller.sendmymail(mailOptions);
+    User.findOneAndUpdate({_id:user_id},{token:token})
+    .exec(function(err, user) {
+        User.count().exec(function(err, count) {
+            if (err) return next(err)
+            if(portal=='app'){
+              res.json({status:"success",data:{},message:'reset password mail sent Successfully'})
+            }else{
+              res.render('pages/users/settings-reset-password', {
+                user: user,                        
+                layout:'layout'            }) 
+            }         
+        })
+    })    
+  }
 
 
 exports.followingProducts=function(req, res, next) {
