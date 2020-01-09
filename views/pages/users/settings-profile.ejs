@@ -1,67 +1,70 @@
 <div class="bid-page" style="position: relative; overflow-y: hidden;">
+   <% include ../../partials/messages %>
     <div class="split-pane-page">
        <div class="split-pane with-button-bar">
        <div style="position: relative; overflow-y: hidden;" class="pane forty pane-grey">
-         <form action="" method="POST">
+         <form action="#" method="post" id="user_profile">
              <div class="address-form fs-block">
-                <div class="tp-heading">
-                <div class="form-headg">Profile</div>
-                <div class="form-titl">change your own settings</div>
-                </div>   
-                
+                     <div class="tp-heading">
+                     <div class="form-headg">Profile</div>
+                     <div class="form-titl">change your own settings</div>
+                     </div>   
+                <div id="success_msg"></div>
                 <div class="user_info">
                  <h1>Name</h1>
-                <input data-testid="user-firstName" name="name" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value="<%=user.name%>">
-               <!-- <input data-testid="user-lastName" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="">
-                </div>-->
-    
+                      <input data-testid="user-firstName" name="name" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value="<%=user.name%>">
+                        <!-- <input data-testid="user-lastName" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="">
+                        </div>-->
+                  <div class="user_info">
+                           <h1>Username</h1>
+                              <div class="user_info">           
+                                <input data-testid="user-firstName" name="username" type="text" required="" placeholder="UserName" autocomplete="true" class="field  " value="<%=user.username%>">               
+                              </div>
+                     </div> 
                 <div class="user_info">
-                
-                <h1>User Info</h1>
-                <div class="user_info">           
-                  <input data-testid="user-firstName" name="email" type="email" required="" placeholder="Email" autocomplete="true" class="field  " value="<%=user.email%>">               
-                   </div>
-                <div class="field   field-select cntry">
- 
-                   <select name="shoesize" required="">
-                     <option value="" disabled="">Default Shoe size</option>
-                      <option value="" >5</option>
-                      <option value="" >6</option>
-                      <option value="" >7</option>
-                      <option value="" >8</option>
-                      <option value="" >9</option>
-                      <option value="" >10</option>
-                      <option value="" >11</option>
-                      <option value="" >12</option>
-                      <option value="" >13</option>                                           
-                   </select>
-
-                </div>
+                     <h1>User Email</h1>
+                        <div class="user_info">           
+                          <input data-testid="user-firstName" name="email" type="email" required="" placeholder="Email" autocomplete="true" class="field  " value="<%=user.email%>">               
+                        </div>
+                  </div>  
+                  <div class="user_info">
+                     <h1>shoesize</h1>   
+                  <div class="field   field-select cntry">
+                     <select name="shoesize" required="">
+                        <option value="" disabled=""></option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>                                           
+                     </select>
+                  </div>
+                  </div>
                 </div>
 
                 <div class="user_info">
-                
                 <h1>Selected Currency</h1>
-                
-                       <div class="field   field-select cntry">
-  
-                   <select name="selectedCurrency" required="" placeholder="Currency">
-                     <option value="" disabled="">Currency</option>
-                     <option value="<%=user.currency%>" selected>$ <%=user.currency%></option>                    
-                     <option value="AUD">$ AUD</option>
-                     <option value="CAD">$ CAD</option>
-                     <option value="EUR">€ EUR</option>
-                     <option value="GBP">£ GBP</option>
-                     <option value="USD">$ USD</option> 
-                   </select>
+                     <div class="field   field-select cntry">
+                        <select name="selectedCurrency" required="" placeholder="Currency">
+                           <option value="" disabled="">Currency</option>
+                           <option value="<%=user.currency%>" selected>$ <%=user.currency%></option>                    
+                           <option value="AUD-$">$ AUD</option>
+                           <option value="CAD-$">$ CAD</option>
+                           <option value="EUR-$">€ EUR</option>
+                           <option value="GBP-$">£ GBP</option>
+                           <option value="USD-$">$ USD</option> 
+                        </select>
                    
+                     </div>
                 </div>
-                
-                </div>
-           
+                <button type="submit"  class="btn flT_right">Submit</button>
                  <div class="cncl_btn">
                   <!-- <button type="button " class="btn flT_lft">Cancel</button>-->
-                   <button type="submit" class="btn flT_right">Submit</button>
+                  
                    </div>   
                    </form>
           </div>
@@ -69,4 +72,28 @@
     </div>
  </div>
  </div>
-    
+ <script>
+   $('#user_profile').on('submit', function(event){
+      event.preventDefault();
+      console.log($(this).serialize());
+              $.ajax({
+                 method:'post',
+                 url:"profile",
+                 dataType: "json",
+                 data:$(this).serialize(),
+                 
+                 success: function (res) {
+                  if(res.status=='success'){
+                     alert('sdfsdf');
+                      $('#success_msg').html( '<div class="alert alert-success">Seller info saved successfully.</div>');
+                  }else
+                    {
+                       $('#message_error').html('*Please input data in All fileds')
+                      
+                    }
+                 }
+                // error:function(err){  //console.log(err);  
+                 
+              });	
+           });		
+   </script>
