@@ -319,20 +319,21 @@ if (phone.length < 10) {
   }
   
   exports.editProfile=function(req,res,next){
-    var address = req.body.address;
-    User.findOne({id:req.user._id})
-      .exec(function(err, users) {
-          User.count().exec(function(err, count) {
+    
+    Country.find()
+      .exec(function(err, countries) {
+        Country.count().exec(function(err, count) {
               if (err) return next(err)
-              // if(address==null)address=new Address();
               res.render('pages/users/settings-profile', {
-                  user: req.user,                        
+                  user: req.user, 
+                  countries:countries,                       
                   layout:'layout'
               })
           })
       })
    // res.render('pages/users/settings-profile')
 }
+
 exports.requestResetPassword=function(req,res,next){
   var portal=req.body.portal;
   const user_id=req.user._id;
