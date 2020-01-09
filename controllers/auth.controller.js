@@ -243,3 +243,40 @@ exports.saveinfoStripeStandard=function(req,res){
 // }).then(function(charge) {
 //   // asynchronously called
 // });
+
+
+//router.post('/update_password',forwardAuthenticated, auth_controller.reset_Pword);
+
+exports.showChangePassword = function(req,res,next){
+  var token=req.query.t;
+  var userid=req.query.id;
+    User.findOne({_id:userid,token:token})
+    .exec(function(err, users) {
+      console.log(users);
+      if(users){
+         res.render('pages/public/change_password',{layout:'login-layout',token:token,userid:users._id});
+      }else{
+        res.redirect('/user/setting');
+      }
+    })
+}
+exports.updateChangePassword=function(req,res,next){
+  var token=req.body.token;
+  var password=req.body.password;
+  const user_id=req.body.userid;
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(password, salt, (err, hash) => {
+      if (err) throw err;
+      password = hash;
+      const prod={password:password};  
+      User.findByIdAndUpdate(user_id, {$set:prod},{new: true}, function (err, user) {   
+            if (err) {
+              console.log(err);
+              res.status(200).json({status:"error",message:"failed to update"})
+            }else{
+              res.json({status:'success',data:{userid:user.id,token:token},message:'password update successfully'});
+            }    
+      });
+    })
+  });
+}

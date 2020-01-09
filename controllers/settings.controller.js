@@ -24,7 +24,7 @@ exports.settings=function(req, res, next) {
                     layout:'layout'
                 })
             })
-            console.log(user)
+           // console.log(user)
         })
   }
   exports.buyerInfo=function(req, res, next) {
@@ -141,7 +141,7 @@ exports.settings=function(req, res, next) {
         .exec(function(err, address) {
             Address.count().exec(function(err, count) {
                 if (err) return next(err)
-                console.log(address);
+                //console.log(address);
                 if(address==null)address=new Address();
                 res.render('pages/users/settings-shipping-info', {
                   address: address,
@@ -289,10 +289,10 @@ if (phone.length < 10) {
   }
   exports.savePayoutInfo=function(req,res,next) {
     const user_id=req.user._id;
-   console.log(user_id);
+   //console.log(user_id);
     const prod={paypalEmail:req.body.paypalEmail};    
     User.findByIdAndUpdate(user_id, {$set:prod},{new: true}, function (err, user) {
-      console.log(user);
+     // console.log(user);
           if (err) {
             res.status(200).json({status:"error",message:"failed to update"})
           }else{
@@ -307,7 +307,7 @@ if (phone.length < 10) {
     const prod={paypalEmail:req.body.paypalEmail};    
 
     User.findByIdAndUpdate(user_id, {$set:prod},{new: true}, function (err, user) {
-      console.log(user);
+      //console.log(user);
           if (err) {
             res.status(200).json({status:"error",message:"failed to update"})
           }else{
@@ -340,7 +340,7 @@ exports.requestResetPassword=function(req,res,next){
     to: email,
     subject: 'Reset Password',
     html: 'Please Validate Your OTP on Given link. Your OTP is ' + token + 
-    '</br>  for Reset Password <a href="https://aquatecinnovative.herokuapp.com/reset_Pword?t='+token+'&id='+user_id+'">Click Here</a>',
+    '</br>  for Reset Password <a href="https://aquatecinnovative.herokuapp.com/change_password?t='+token+'&id='+user_id+'">Click Here</a>',
   };
    utils_controller.sendmymail(mailOptions);
     User.findOneAndUpdate({_id:user_id},{token:token})
@@ -500,7 +500,7 @@ exports.saveNoficationSetting=async function(req,res,next) {
      var cuser=await User.findOne({_id:user._id}).populate({path:'notifications'});
      var notification= await UserNotification.findOne({user})
     // BuyBid.find(query).sort({bidprice:-1}).limit(10),
- console.log(cuser);
+ //console.log(cuser);
  if(notification){
   UserNotification.create
  }
@@ -512,7 +512,7 @@ exports.saveNoficationSetting=async function(req,res,next) {
       notification.notif3=enabled;
     }
     cuser.notifications=notification;
-    console.log(cuser);
+    //console.log(cuser);
     cuser.save();
     notification.save();    
     res.status(200)
