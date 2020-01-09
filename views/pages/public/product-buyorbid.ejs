@@ -49,7 +49,7 @@
 			  <% } %>
 					<!---Size Selector pane End-->
 		<div class="col-md-4 bidsel-pane">
-			<% if(product.attrs.attrs.length>0){ %>
+			<% if(product.attrs){ %>
 				<div class="buy-sell-size attr-selector-select ">
 					<div class="size-details">U.S. Men's <%=product.attrs.name %> <span id="attr-selector-attr">4</span></div>
 					<img src="/assets/images/pencil.png" >
@@ -350,7 +350,7 @@
 	getbidCharges();   
 })
 $( function(){
-	var attrs="<%=product.attrs.attrs.length%>";
+	var attrs="<%=(product.attrs?product.attrs.attrs.length:0)%>";
 	if(attrs>0){
 		$('.bidsel-pane').hide(); //attr-selector-select
 		$('.attr-selector-pane').show();
