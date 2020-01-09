@@ -302,26 +302,29 @@ if (phone.length < 10) {
   }
   exports.saveProfile=function(req,res,next) {
     const user_id=req.user._id;
-   //console.log(user_id);
-    
-    const prod={paypalEmail:req.body.paypalEmail};    
-
+    var shoessize = req.body.shoesize;
+    var selectedCurrency= req.body.selectedCurrency;
+    const prod={email:req.body.email,name:req.body.name,username:req.body.username,shoessize: req.body.shoesize,selectedCurrency:req.body.selectedCurrency};    
     User.findByIdAndUpdate(user_id, {$set:prod},{new: true}, function (err, user) {
       //console.log(user);
-          if (err) {
-            res.status(200).json({status:"error",message:"failed to update"})
-          }else{
-            res.status(200).json({status:"ok",message:"paypal email updated successfully", paypalEmail: user.paypalEmail})
-          }    
+          // if (err) {
+          //   res.status(200).json({status:"error",message:"failed to update"})
+          // }else{
+          //   res.status(200).json({status:"ok",message:"Profile Data updated successfully", email: user.email  })
+          // } 
+          res.status(200).json({status:"success",data:{},message:"Profile updated successfully"})
+   
+         // res.json({success:true});
     });
   }
   
   exports.editProfile=function(req,res,next){
+    var address = req.body.address;
     User.findOne({id:req.user._id})
       .exec(function(err, users) {
           User.count().exec(function(err, count) {
               if (err) return next(err)
-              if(address==null)address=new Address();
+              // if(address==null)address=new Address();
               res.render('pages/users/settings-profile', {
                   user: req.user,                        
                   layout:'layout'
