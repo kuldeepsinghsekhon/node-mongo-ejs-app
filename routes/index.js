@@ -6,6 +6,7 @@ const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const Product = require('../models/Product');
 const Cart = require('../models/Mycart');
 const product_controller = require('../controllers/product.controller');
+const utils_controller = require('../controllers/utils.controller');
 router.get('/',forwardAuthenticated, product_controller.products);
 // router.get('/',forwardAuthenticated, function(req, res, next) {
 //   var perPage = 9;
@@ -108,5 +109,6 @@ router.get('/add-to-cart/:id', forwardAuthenticated,(req, res,next) => {
   router.get('/productsearch',forwardAuthenticated,product_controller.sellProductSearchReasult);
   router.get('/change_password',forwardAuthenticated, auth_controller.showChangePassword);
   router.post('/change_password',forwardAuthenticated, auth_controller.updateChangePassword);
+  router.get('/countries',forwardAuthenticated, utils_controller.allCoutries);
 
 module.exports = router;

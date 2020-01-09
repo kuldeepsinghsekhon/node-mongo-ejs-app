@@ -1,4 +1,4 @@
-const Brand = require('../models/Category');
+
 // exports.adminProducts=function(req, res, next) {
 //     var perPage = 9;
 //     var page = req.params.page || 1;

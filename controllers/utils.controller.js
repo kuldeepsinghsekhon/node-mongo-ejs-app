@@ -1,4 +1,6 @@
 const nodemailer = require('nodemailer');
+const Country = require('../models/Country');
+
 exports.sendmymail=function(mailOptions){
     const transporter = nodemailer.createTransport({
     host: 'in-v3.mailjet.com',
@@ -18,3 +20,13 @@ exports.sendmymail=function(mailOptions){
       }
     });  
   }
+
+  exports.allCoutries=function(req,res,next) {
+    Country.find({}).exec(function(err, countries) {
+      Country.count().exec(function(err, count) {
+            if (err) return next(err)
+            res.json({status:'success',data:{
+              countries: countries},message:''})
+        })
+    })
+}
