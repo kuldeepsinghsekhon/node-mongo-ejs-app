@@ -6,6 +6,7 @@ const router = express.Router();
 const settings_controller = require('../controllers/settings.controller');
 const product_controller = require('../controllers/api.product.controller');
 const auth_controller = require('../controllers/auth.controller');
+const utils_controller = require('../controllers/utils.controller');
 
 router.post('/products/',passport.authenticate(['basic'], { session : false }),product_controller.products);
 router.get('/products/:id',forwardAuthenticated, product_controller.findById );
