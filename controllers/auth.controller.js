@@ -272,11 +272,11 @@ exports.updateChangePassword=function(req,res,next){
       password = hash;
       const update={password:password};  
       User.findOneAndUpdate(filter, {$set:update},{new: true}, function (err, user) {   
-            if (err) {
-              console.log(err);
-              res.status(200).json({status:"error",message:"failed to update"})
-            }else{
+            if (user) {
               res.json({status:'success',data:{user:user},message:'password update successfully'});
+            }else{
+              console.log(err);
+              res.status(200).json({status:"error",data:{user:[]},message:"failed to update"})
             }    
       });
     })
