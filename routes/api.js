@@ -19,13 +19,12 @@ router.post('/products/buy/:id/',ensureAuthenticated, product_controller.placeBu
 router.post('/products/calcbuy',ensureAuthenticated, product_controller.calculateBuyCharges);
 router.post('/user/settings/resetpsword',passport.authenticate('basic', { session : false }),settings_controller.requestResetPassword);
 router.post('/change_password',passport.authenticate('basic', { session : false }), auth_controller.updateChangePassword);
-router.post('/settings/profile',passport.authenticate('basic', { session : false }), settings_controller.saveProfile);
-router.get('/countries',forwardAuthenticated, utils_controller.allCoutries);
-router.post('/settings/seller-info',passport.authenticate('basic', { session : false }), settings_controller.saveSellerInfo);
-router.post('/settings/shipping-info',passport.authenticate('basic', { session : false }), settings_controller.saveShippingInfo);
-router.post('/settings/buyer-info',passport.authenticate('basic', { session : false }), settings_controller.saveBuyerInfo);
-router.post('/settings/address-info',passport.authenticate('basic', { session : false }), settings_controller.addressInfo);
+router.post('/user/settings/profile',passport.authenticate('basic', { session : false }), settings_controller.saveProfile);
+router.post('/user/settings/seller-info',passport.authenticate('basic', { session : false }), settings_controller.saveSellerInfo);
+router.post('/user/settings/shipping-info',passport.authenticate('basic', { session : false }), settings_controller.saveShippingInfo);
+router.post('/user/settings/buyer-info',passport.authenticate('basic', { session : false }), settings_controller.saveBuyerInfo);
+router.post('/user/settings/address-info',passport.authenticate('basic', { session : false }), settings_controller.addressInfo);
 router.post('/sign-in',passport.authenticate(['basic']),auth_controller.signIn);
 router.post('/sign-up',auth_controller.signUp);
-
+router.get('/countries',forwardAuthenticated, utils_controller.allCoutries);
 module.exports = router;
