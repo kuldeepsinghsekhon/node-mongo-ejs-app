@@ -29,24 +29,22 @@ exports.settings=function(req, res, next) {
         })
   }
   exports.buyerInfo=function(req, res, next) {
-    Address
-        .findOne({user:req.user,address_type:'billing'})
-        .exec(function(err, address) {
-            Address.count().exec(function(err, count) {
-                if (err) return next(err)
-                if(address==null)address=new Address();
-                res.render('pages/users/settings-buyer-info', {
-                  address: address,
-
-                    layout:'layout'
-                })
-            })
-        })
+    Promise.all([
+      Address.findOne({user:req.user, address_type:'buyer'}),   
+      Country.find(),
+    ]).then( ([address,countries])=>{
+      if(address==null)address=new Address();
+     res.render('pages/users/settings-buyer-info', {
+      address: address,
+      countries: countries,
+      layout:'layout'
+     })
+    }).catch((error)=>console.log(error));
   }
   exports.saveBuyerInfo=async function(req,res){
    
     const user=req.user;
-    let address_type='billing';
+    let address_type='buyer';
     const { name, lastname, country,address1,address2, state, city,postalCode,phone} = req.body;
     let errors = [];
   
@@ -74,40 +72,31 @@ exports.settings=function(req, res, next) {
   }
     const update={name,lastname,country,state,city,address1,address2,phone,user,address_type,postalCode};
     const  filter={user:user,address_type:address_type};
-   
-  // console.log(c);
    if (errors.length > 0) {
-       console.log(errors);
-       //res.redirect('/user/setting');
-       res.json({success:false,errors:errors});
+       res.json({status:'error',data:{errors:errors,address:update},message:'Address updated successfully'});
+
   } else {
    let address=await  Address.findOneAndUpdate(filter, update, {
         new: true,
         upsert: true // Make this update into an upsert
       });
-      res.json({success:true,address:address});
+      res.json({status:'success',data:{address:address},message:'Address updated successfully'});
      // res.redirect('/user/setting');
      // console.log(address);
       }
   }
     exports.sellerInfo=function(req, res, next) {
-      var perPage = 9;
-      var page = req.params.page || 1;
-    
-      Address
-          .find({})
-          .exec(function(err, users) {
-              Address.count().exec(function(err, count) {
-                  if (err) return next(err)
-                  if(address==null)address=new Address();
-                  res.render('pages/users/settings-seller-info', {
-                      users: users,
-                      current: page,
-                      pages: Math.ceil(count / perPage),
-                      layout:'layout'
-                  })
-              })
-          }) 
+      Promise.all([
+        Address.findOne({user:req.user, address_type:'seller'}),   
+        Country.find(),
+      ]).then( ([address,countries])=>{
+        if(address==null)address=new Address();
+       res.render('pages/users/settings-seller-info', {
+        address: address,
+        countries: countries,
+        layout:'layout'
+       })
+      }).catch((error)=>console.log(error));
 
   }
     
@@ -134,24 +123,17 @@ exports.settings=function(req, res, next) {
     // });
  // }
   exports.shippingInfo=function(req, res, next) {
-    var perPage = 9;
-    var page = req.params.page || 1;
-    let address_type='shipping';
-    Address
-        .findOne({user:req.user, address_type:address_type})
-        .exec(function(err, address) {
-            Address.count().exec(function(err, count) {
-                if (err) return next(err)
-                //console.log(address);
-                if(address==null)address=new Address();
-                res.render('pages/users/settings-shipping-info', {
-                  address: address,
-                    current: page,
-                    pages: Math.ceil(count / perPage),
-                    layout:'layout'
-                })
-            })
-        })
+    Promise.all([
+      Address.findOne({user:req.user, address_type:'shipping'}),   
+      Country.find(),
+    ]).then( ([address,countries])=>{
+      if(address==null)address=new Address();
+     res.render('pages/users/settings-shipping-info', {
+      address: address,
+      countries: countries,
+      layout:'layout'
+     })
+    }).catch((error)=>console.log(error));
   }
   exports.saveShippingInfo=async function(req,res,next){
     const user=req.user;
@@ -188,34 +170,35 @@ if (phone.length < 10) {
  if (errors.length > 0) {
      console.log(errors);
      //res.redirect('/user/setting');
-     res.json({success:false,errors:errors});
+     res.json({status:'error',data:{errors:errors,address:update},message:'Address updated Failed'});
+
 } else {
  let address=await  Address.findOneAndUpdate(filter, update, {
       new: true,
       upsert: true // Make this update into an upsert
     });
-    res.json({success:true,address:address});
+    res.json({status:'success',data:{address:address},message:'Address updated successfully'});
    // res.redirect('/user/setting');
    // console.log(address);
     }
 }
-  exports.sellerInfo=function(req, res, next) {
-    var perPage = 9;
-    var page = req.params.page || 1;
-    let address_type='seller';
-    Address
-        .findOne({user:req.user, address_type:address_type})
-        .exec(function(err, address) {
-            Address.count().exec(function(err, count) {
-                if (err) return next(err)
-                if(address==null)address=new Address();
-                res.render('pages/users/settings-seller-info', {
-                  address: address,
-                    layout:'layout'
-                })
-            })
-        })
-  }
+  // exports.sellerInfo=function(req, res, next) {
+  //   var perPage = 9;
+  //   var page = req.params.page || 1;
+  //   let address_type='seller';
+  //   Address
+  //       .findOne({user:req.user, address_type:address_type})
+  //       .exec(function(err, address) {
+  //           Address.count().exec(function(err, count) {
+  //               if (err) return next(err)
+  //               if(address==null)address=new Address();
+  //               res.render('pages/users/settings-seller-info', {
+  //                 address: address,
+  //                   layout:'layout'
+  //               })
+  //           })
+  //       })
+  // }
  
     exports.saveSellerInfo=async function(req,res){
         const user=req.user;
@@ -250,21 +233,17 @@ if (phone.length < 10) {
     }
       const update={name,organisation_name,country,state,city,address1,address2,phone,user,address_type,postalCode};
       const  filter={user:user,address_type:address_type};
-     
-    // console.log(c);
      if (errors.length > 0) {
-         console.log(errors);
-      res.render('pages/users/settings-seller-info', {
-        errors,
-        name, country,address1,address2, state, city,postalCode,phone
-      });
+      //res.json({status:'error',data:{errors:errors,address:address},message:'Address updated Failed'});
+      res.json({status:'error',data:{errors:errors,address:update},message:'Address updated Failed'});
     } else {
       let  address=[];
    address=await  Address.findOneAndUpdate(filter, update, {
           new: true,
           upsert: true // Make this update into an upsert
         });
-        res.json({success:true,address:address});
+        res.json({status:'success',data:{address:address},message:'Address updated successfully'});
+
         // req.flash(
         //   'success_msg',
         //   'Seller info saved successfully'

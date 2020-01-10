@@ -14,22 +14,18 @@
                 <input data-testid="user-firstName" name="name" type="text" required="" placeholder="Full Name" autocomplete="true" class="field  " value="<%= address.name%>">
                 <input data-testid="user-lastName" name="lastname" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="<%= address.lastname%>">
                 <div class="field   field-select cntry">
-                   <select name="country" required="" placeholder="Country">                    
-                      <option value="<% if(address.country=="AU"){%><%=address.country%><% } %>"><% if(address){%><%=address.country%><% }else{ %>Select<%} %></option>
-                      <option value="US">United States</option>
-                      <option value="AU">Australia</option>
-                      <option value="CA">Canada</option>
-                      <option value="FR">France</option>
-                      <option value="DE">Germany</option>
-                      <option value="HK">Hong Kong SAR</option>
-                      <option value="IT">Italy</option>
-                      <option value="JP">Japan</option>
-                      <option value="SG">Singapore</option>
-                      <option value="AE">United Arab Emirates</option>
-                      <option value="GB">United Kingdom</option>
-                      <option disabled="">------</option>
-                      <option value="AL">Albania</option>                    
-                  </select>
+                  <select name="country" required="" placeholder="Country">
+                          
+                     <option value="">Select Country</option>
+                     <% countries.forEach((country) =>                 
+                     {
+                        if(country.Code==address.country){%>
+                           <option selected value="<%= country.Code %>"><%= country.Name %></option>
+                       <% }else{ %>
+                           <option value="<%= country.Code %>"><%= country.Name %></option>
+                        <%}
+                     })%>
+                     </select>
                    
                 </div>
                 <div>
@@ -71,18 +67,17 @@
          		success: function (res) {
                var data = res;
                 console.log(res);
-                if(res.success){
+                if(res.status=='success'){
                 
                   $('#success_msg').html( '<div class="alert alert-success">Shipping info saved successfully.</div>');
+                  $(location).attr('href','/user/setting').delay(5000);
                 }else
                   {
-                     $('#message_error').text('*Please input data in All fileds')
-                  //   $('#name_error').text(res.errors[0].msg);
-                  //   $('#address1_error').text(res.errors[1].msg);
-                  //    $('#city_error').text(res.errors[2].msg);
-                  //    $('#state_error').text(res.errors[3].msg);
-                  //    $('#phone_error').text(res.errors[4].msg);
+                     $('#message_error').html('<div class="alert alert-danger">*Please input data in All fileds</div>')
+                     res.data.errors.forEach((error)=>{
+                        $('#message_error').append('<div class="alert alert-danger">*'+error.msg+'</div>');
 
+                     })
                   }
 				   }
 				  // error:function(err){  //console.log(err);  

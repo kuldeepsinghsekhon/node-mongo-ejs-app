@@ -18,24 +18,18 @@
                 <input data-testid="organisation_name" name="organisation_name" type="text" required="" placeholder="Company Name" autocomplete="true" class="field  " value="<%= address.organisation_name%>">
     
                 <div class="field   field-select cntry">
-                       <select name="country" required="" placeholder="Country">
+                  <select name="country" required="" placeholder="Country">
                           
-                          <option value="">Country</option>
-                          <option value="US">United States</option>
-                          <option value="AU">Australia</option>
-                          <option value="CA">Canada</option>
-                          <option value="FR">France</option>
-                          <option value="DE">Germany</option>
-                          <option value="HK">Hong Kong SAR</option>
-                          <option value="IT">Italy</option>
-                          <option value="JP">Japan</option>
-                          <option value="SG">Singapore</option>
-                          <option value="AE">United Arab Emirates</option>
-                          <option value="GB">United Kingdom</option>
-                          <option disabled="">------</option>
-                          <option value="AL">Albania</option>
-                         
-                       </select>
+                     <option value="">Select Country</option>
+                     <% countries.forEach((country) =>                 
+                     {
+                        if(country.Code==address.country){%>
+                           <option selected value="<%= country.Code %>"><%= country.Name %></option>
+                       <% }else{ %>
+                           <option value="<%= country.Code %>"><%= country.Name %></option>
+                        <%}
+                     })%>
+                     </select>
                        
                     </div>
                     <div>
@@ -77,17 +71,12 @@
                  success: function (res) {
                  var data = res;
                   console.log(res);
-                  if(res.success){
-                  
+                  if(res.status='success'){   
                     $('#success_msg').html( '<div class="alert alert-success">Seller info saved successfully.</div>');
+                    $(location).attr('href','/user/setting').delay(5000);
                   }else
                     {
                        $('#message_error').text('*Please input data in All fileds')
-                    //   $('#name_error').text(res.errors[0].msg);
-                    //   $('#address1_error').text(res.errors[1].msg);
-                    //    $('#city_error').text(res.errors[2].msg);
-                    //    $('#state_error').text(res.errors[3].msg);
-                    //    $('#phone_error').text(res.errors[4].msg);
   
                     }
                  }
