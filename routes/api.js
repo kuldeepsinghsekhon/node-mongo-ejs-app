@@ -25,5 +25,5 @@ router.post('/settings/seller-info',passport.authenticate('basic', { session : f
 router.post('/settings/shipping-info',passport.authenticate('basic', { session : false }), settings_controller.saveShippingInfo);
 router.post('/settings/buyer-info',passport.authenticate('basic', { session : false }), settings_controller.saveBuyerInfo);
 router.post('/settings/address-info',passport.authenticate('basic', { session : false }), settings_controller.addressInfo);
-
+router.post('/sign-in',passport.authenticate(['basic']),auth_controller.signIn);
 module.exports = router;
