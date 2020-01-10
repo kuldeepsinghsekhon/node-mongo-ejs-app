@@ -24,5 +24,6 @@ router.get('/countries',forwardAuthenticated, utils_controller.allCoutries);
 router.post('/settings/seller-info',passport.authenticate('basic', { session : false }), settings_controller.saveSellerInfo);
 router.post('/settings/shipping-info',passport.authenticate('basic', { session : false }), settings_controller.saveShippingInfo);
 router.post('/settings/buyer-info',passport.authenticate('basic', { session : false }), settings_controller.saveBuyerInfo);
+router.post('/settings/address-info',passport.authenticate('basic', { session : false }), settings_controller.addressInfo);
 
 module.exports = router;

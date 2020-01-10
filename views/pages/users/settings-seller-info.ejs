@@ -10,6 +10,7 @@
              
              <div class="address-form fs-block">
                <div id="success_msg"></div>
+               <div id="message_error"></div>
                 <div class="form-title">Seller Info</div>
                 <% include ../../partials/messages %>
                 <input data-testid="user-firstName" name="name" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value="<%= address.name%>">
@@ -71,15 +72,19 @@
                  success: function (res) {
                  var data = res;
                   console.log(res);
-                  if(res.status='success'){   
-                    $('#success_msg').html( '<div class="alert alert-success">Seller info saved successfully.</div>');
-                    $(location).attr('href','/user/setting').delay(5000);
-                  }else
-                    {
-                       $('#message_error').text('*Please input data in All fileds')
-  
-                    }
-                 }
+                  if(res.status=='success'){
+                
+                $('#success_msg').html( '<div class="alert alert-success">Shipping info saved successfully.</div>');
+                $(location).attr('href','/user/setting').delay(5000);
+              }else
+                {
+                   $('#message_error').html('<div class="alert alert-danger">*Please input data in All fileds</div>')
+                   res.data.errors.forEach((error)=>{
+                      $('#message_error').append('<div class="alert alert-danger">*'+error.msg+'</div>');
+
+                   })
+                }
+             }
                 // error:function(err){  //console.log(err);  
                  
               });	
