@@ -29,7 +29,7 @@ router.get('/',forwardAuthenticated, product_controller.products);
 // });
 
 // Register Page fbsign-in
-router.get('/sign-up',forwardAuthenticated, forwardAuthenticated,auth_controller.showSignUp);
+router.get('/sign-up',forwardAuthenticated,auth_controller.showSignUp);
 // Register
 router.post('/sign-up',auth_controller.signUp);
 router.post('/validate',auth_controller.signUpValidate);
