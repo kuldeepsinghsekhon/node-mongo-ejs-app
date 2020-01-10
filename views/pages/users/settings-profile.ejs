@@ -49,14 +49,14 @@
                 <div class="user_info">
                 <h1>Selected Currency</h1>
                      <div class="field   field-select cntry">
-                        <select name="selectedCurrency" required="" placeholder="Currency">
+                        <select name="currency" required="" placeholder="Currency">
                            <option value="" disabled="">Currency</option>
                            <option value="<%=user.currency%>" selected>$ <%=user.currency%></option>                    
-                           <option value="AUD-$">$ AUD</option>
-                           <option value="CAD-$">$ CAD</option>
-                           <option value="EUR-$">€ EUR</option>
-                           <option value="GBP-$">£ GBP</option>
-                           <option value="USD-$">$ USD</option> 
+                           <option value="AUD">$ AUD</option>
+                           <option value="CAD">$ CAD</option>
+                           <option value="EUR">€ EUR</option>
+                           <option value="GBP">£ GBP</option>
+                           <option value="USD">$ USD</option> 
                         </select>
                    
                      </div>
@@ -83,13 +83,12 @@
                  data:$(this).serialize(),
                  
                  success: function (res) {
-                  if(res.status=='success'){
-                     alert('sdfsdf');
+                  if(res.status=='success'){                 
                       $('#success_msg').html( '<div class="alert alert-success">Seller info saved successfully.</div>');
+                      $(location).attr('href', '/user/setting').delay(5000);
                   }else
                     {
-                       $('#message_error').html('*Please input data in All fileds')
-                      
+                       $('#message_error').html('*Please input data in All fileds')                      
                     }
                  }
                 // error:function(err){  //console.log(err);  

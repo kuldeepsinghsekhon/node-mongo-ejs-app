@@ -109,6 +109,6 @@ router.get('/add-to-cart/:id', forwardAuthenticated,(req, res,next) => {
   router.get('/productsearch',forwardAuthenticated,product_controller.sellProductSearchReasult);
   router.get('/change_password',forwardAuthenticated, auth_controller.showChangePassword);
   router.post('/change_password',forwardAuthenticated, auth_controller.updateChangePassword);
-  router.get('/countries',forwardAuthenticated, utils_controller.allCoutries);
+
 
 module.exports = router;

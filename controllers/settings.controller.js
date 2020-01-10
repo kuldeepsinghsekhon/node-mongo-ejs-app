@@ -303,9 +303,9 @@ if (phone.length < 10) {
   }
   exports.saveProfile=function(req,res,next) {
     const user_id=req.user._id;
-    var shoessize = req.body.shoesize;
-    var selectedCurrency= req.body.selectedCurrency;
-    const prod={email:req.body.email,name:req.body.name,username:req.body.username,shoessize: req.body.shoesize,selectedCurrency:req.body.selectedCurrency};    
+    var shoesize = req.body.shoesize;
+    var currency= req.body.currency;
+    const prod={email:req.body.email,name:req.body.name,username:req.body.username,shoesize: shoesize,currency:currency};    
     User.findByIdAndUpdate(user_id, {$set:prod},{new: true}, function (err, user) {
       //console.log(user);
           // if (err) {
