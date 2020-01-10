@@ -86,8 +86,10 @@ exports.settings=function(req, res, next) {
       }
   }
     exports.sellerInfo=function(req, res, next) {
+      var address_type='seller';
+      console.log(address_type);
       Promise.all([
-        Address.findOne({user:req.user, address_type:'seller'}),   
+        Address.findOne({user:req.user, address_type:address_type}),   
         Country.find(),
       ]).then( ([address,countries])=>{
         if(address==null)address=new Address();
@@ -99,6 +101,27 @@ exports.settings=function(req, res, next) {
       }).catch((error)=>console.log(error));
 
   }
+  exports.addressInfo=function(req, res, next) {
+    var address_type=req.body.address_type;
+    if(!address_type){
+      res.json({status:'error',data:{address:[]},message:'Please Provide Address Type'});
+
+    }
+    console.log(address_type);
+    Promise.all([
+      Address.findOne({user:req.user, address_type:address_type}),   
+      Country.find(),
+    ]).then( ([address,countries])=>{
+      if(address==null)address=new Address();
+     res.json({status:'success', data:{
+      address: address,
+      countries: countries
+     },message:''})
+    }).catch((error)=>{
+      res.json({status:'error',data:{address:[]},message:'Address Not Found'});
+      console.log(error)});
+
+}
     
     // const doc = Address.findOne().exec(
     //     function(err,address){
