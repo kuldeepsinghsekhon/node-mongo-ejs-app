@@ -238,11 +238,13 @@
 					dataType: "json",
 					data:sendInfo,
          		  	success: function (json_data) {
-					$("#TransactionFee").text('-$'+json_data['TransactionFee']);
-					$("#Proc").text('-$'+json_data['Proc']);
-					$("#Shipping").text('-$'+json_data['Shipping']);
-					$("#discountcode").text('-$'+json_data['discountcode']);
-					$("#totalpayout").text('$'+json_data['totalpayout']);	  
+						   console.log(json_data);
+					$("#TransactionFee").text('-$'+json_data['data'].TransactionFee);
+					$("#Proc").text('-$'+json_data['data'].Proc);
+					$("#Shipping").text('-$'+json_data['data'].Shipping);
+					$("#discountcode").text('-$'+json_data['data'].discountcode);
+					$("#totalpayout").text('$'+json_data['data'].totalpayout);
+					
 				   },
 				   error:function(err){  //console.log(err);  
 				}	
@@ -280,11 +282,18 @@
 					dataType: "json",
 					data:sendInfo,
          		  	success: function (json_data) {
-					$("#TransactionFee-ask").text('-$'+json_data['TransactionFee']);
-					$("#Proc-ask").text('-$'+json_data['Proc']);
-					$("#Shipping-ask").text('-$'+json_data['Shipping']);
-					$("#discountcode-ask").text('-$'+json_data['discountcode']);
-					$("#totalpayout-ask").text('$'+json_data['totalpayout']);	  
+					$("#TransactionFee-ask").text('-$'+json_data['data'].TransactionFee);
+					$("#Proc-ask").text('-$'+json_data['data'].Proc);
+					$("#Shipping-ask").text('-$'+json_data['data'].Shipping);
+					$("#discountcode-ask").text('-$'+json_data['data'].discountcode);
+					$("#totalpayout-ask").text('$'+json_data['data'].totalpayout);	  
+					if(json_data['status']=='error'){
+						$(".nextPay").attr("disabled",false);
+						$('.warning-text').text(json_data['message']);
+					}else{
+						$(".nextPay").attr("disabled",true);
+						$('.warning-text').text(json_data['message']);						
+					}	  
 				   },
 				   error:function(err){  //console.log(err);  
 				}	
