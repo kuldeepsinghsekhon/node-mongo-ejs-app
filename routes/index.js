@@ -34,10 +34,6 @@ router.get('/sign-up',forwardAuthenticated,auth_controller.showSignUp);
 router.post('/sign-up',auth_controller.signUp);
 router.post('/validate',auth_controller.signUpValidate);
 router.get('/validation-form/:userid',auth_controller.validationForm);
-router.get('/sign-in/forget/',auth_controller.forgetPassword);
-router.post('/sign-in/forget/',auth_controller.forgetPasswordReset);
-router.get('/sign-in/reset_password',auth_controller.forgetresetPassword);
-router.post('/sign-in/reset_password',auth_controller.updateforgetresetpassword)
 // Login Page
 router.get('/sign-in',auth_controller.showSignIn );
 // Login
@@ -112,6 +108,9 @@ router.get('/add-to-cart/:id', forwardAuthenticated,(req, res,next) => {
   router.get('/productsearch',forwardAuthenticated,product_controller.sellProductSearchReasult);
   router.get('/change_password',forwardAuthenticated, auth_controller.showChangePassword);
   router.post('/change_password',forwardAuthenticated, auth_controller.updateChangePassword);
-
+  router.get('/sign-in/forget/',auth_controller.forgetPassword);
+  router.post('/sign-in/forget/',auth_controller.forgetPasswordReset);
+  router.get('/sign-in/reset_password',auth_controller.forgetresetPassword);
+  router.post('/sign-in/reset_password',auth_controller.updateforgetresetpassword)
 
 module.exports = router;

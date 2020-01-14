@@ -3,18 +3,37 @@
     <div id="logreg-forms">
    <form method="POST" class="form-signin">
        <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">Please Enter Your Registerd Email Address </h1>
-       <input 
-       type="email" id="email" name="email" class="form-control" placeholder="Enter Email"
+       <div id="success_msg"></div>
+       <div id="error_msg"></div>
+       <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email"
         required="" autofocus="">
-      
-       
        <button class="btn btn-success btn-block" type="submit"> Submit </button>
        <hr>
        </form>
-
-
        <br>
-       
-</div>
-
+    </div>
  </div>
+<script>
+ $('.form-signin').on('submit',function(event){
+    event.preventDefault();
+   var email=$("#email").val();
+   var formdata = {email:email};
+   
+   $.ajax({
+       method:'post',
+       url:'/sign-in/forget/',
+       //dataType: "json",
+       data:formdata,
+       success: function (response) {
+           if(response.status=='success'){
+           $('#success_msg').html( '<div class="alert alert-success">'+response.message+'.</div>');
+                 $(location).attr('href','/').delay(50000);
+           }
+           else{
+               $('#error_msg').html( '<div class="alert alert-danger">'+response.message+'.</div>');
+           }
+           
+       }
+   })
+});
+</script> 

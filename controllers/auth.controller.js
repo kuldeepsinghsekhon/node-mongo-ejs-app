@@ -287,33 +287,72 @@ exports.forgetPassword=function(req,res,next){
 
 exports.forgetPasswordReset = function(req,res,next){
     email = req.body.email;
-    User.findOne({email:email}).exec(function(err, users) {
-    if(!users)
+    User.findOne({email:email}).exec(function(err,user ) {
+      if (err) return next(err)
+    if(!user)
   { 
-    errors.push({ msg: 'Email is not exists. Register First' });
+    res.json({status:'error',data:{},message:'User Is Not Registerd, Register Please.'});
   }else{
     const token=Math.ceil(Math.random() * 1000000);
+    var message= 'Please <a href="http://localhost:5000/sign-in/reset_password/?t='+token+'&id='+user._id+'"> Click Here </a> to reset Password <h3></h3><p> Your Validation Token is </p><h1>'+token+'</h1>'; 
+    console.log(message);
     var mailOptions = {          
       from: 'aquatecinnovative1@gmail.com',
       to:email, //user.email,
       subject: 'Reset Password',
      
-      html: 'Please <a href="http://localhost:5000/sign-in/reset_password/?t='+token+'?id='+users._id+'"> Click Here </a> to reset Password <h3></h3><p> Your Validation Token is </p><h1>'+token+'</h1>'
+      html:message
     };
     //console.log(user);
-    //utils_controller.sendmymail(mailOptions);
+   utils_controller.sendmymail(mailOptions);
     User.findOneAndUpdate({email:email},{token:token})
     .exec(function(err, user) {
             if (err) return next(err)
-              res.render('/sign-in/reset_password', {layout:'login-layout'}) ;
+            res.json({status:'success',data:{},message:'Confirmation Email send on Your Registerd email'});
         }) ;
     }
   });
   }
   exports.forgetresetPassword = function(req,res,next) {
-  
-  }
-  exports.updateforgetresetpassword = function(req,res,next) {
-    token = req.params.token ;
+    var token=req.query.t;
+    var userid=req.query.id;
     console.log(token);
+    console.log(userid);
+      User.findOne({_id:userid,token:token})
+      .exec(function(err, user) {
+        if(user){
+           res.render('pages/public/reset_password',{layout:'login-layout',token:token,userid:userid});
+        }else{
+          errors = [];
+            errors.push({ msg: 'Invalid Link ! Please Check Your email and Click On "click Here"' });
+          res.redirect('/sign-in');
+        }
+      })
+
+    }
+  exports.updateforgetresetpassword = function(req,res,next) {
+    var token=req.body.token;
+    const user_id=req.body.userid;
+    var password=req.body.password;
+    var repassword = req.body.confirmpassword
+    if(password==repassword){
+    const  filter={_id:user_id,token:token};
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, (err, hash) => {
+        if (err) throw err;
+        password = hash;
+        const update={password:password};  
+        User.findOneAndUpdate(filter, {$set:update},{new: true}, function (err, user) {   
+              if (user) {
+                res.json({status:'success',data:{user:user},message:'password update successfully'});
+              }else{
+                console.log(err);
+                res.status(200).json({status:"error",data:{user:[]},message:"failed to update"});
+              }    
+        });
+      })
+    });
+  }else{
+    res.status(200).json({status:"error",data:{user:[]},message:"Password and confirm Password Not match !"});
+  }
   }
