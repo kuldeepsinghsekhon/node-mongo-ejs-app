@@ -200,7 +200,9 @@ exports.sellCalculateCharges=async function(req, res, next) {
    Promise.all([
     Product.findOne({ _id: productId }).populate({path:'attrs'}),
     BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1),
-  ]).then( ([product,highbid])=>{
+    SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1),
+
+  ]).then( ([product,highbid,lowestask])=>{
     var askprice=0; 
       if(!req.body.askprice){
         askprice=highbid.bidprice;
@@ -211,12 +213,26 @@ exports.sellCalculateCharges=async function(req, res, next) {
         expiry=expiry.split("Days").map(Number);       
        // console.log(expiry[0]);
        }
+      
      var TransactionFee=askprice*0.09;
      var Proc=askprice*0.03;
      var Shipping=30;
      var totalpayout=askprice-(TransactionFee+Proc+Shipping);
      //console.log(askprice);
-      res.json({ TransactionFee: TransactionFee.toFixed(2) ,Proc:Proc.toFixed(2),Shipping:Shipping.toFixed(2),discountcode:'',totalpayout:Math.ceil(totalpayout) });
+     var price=product.price;
+     var message='You must meet the minimum Ask of '+price;
+    if(product.pricetrigger && askprice<=price){
+      res.json({status:'error',data:{ TransactionFee: TransactionFee.toFixed(2) ,Proc:Proc.toFixed(2),Shipping:Shipping.toFixed(2),discountcode:'',totalpayout:Math.ceil(totalpayout)},message:message });
+    }else{
+      if(askprice>=lowestask.price){
+        message='You are not the lowest ask';
+      }else if(askprice>highbid.bidprice){
+        message='You are about to be the lowest ask'
+      }else{
+        message='You are about to sell at the highest Bid price';
+      }     
+      res.json({status:'success',data:{TransactionFee: TransactionFee.toFixed(2) ,Proc:Proc.toFixed(2),Shipping:Shipping.toFixed(2),discountcode:'',totalpayout:Math.ceil(totalpayout)},message:message });
+    }
       
   })
 
