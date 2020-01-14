@@ -43,6 +43,7 @@ variants:[{
 buybids:[{ type: Schema.Types.ObjectId,
   ref: 'BuyBid'
 }] ,
+pricetrigger:Boolean,
 });
 const Product = mongoose.model('Product', prodSchema);
 

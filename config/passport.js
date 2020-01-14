@@ -54,7 +54,8 @@ module.exports = function(passport) {
             return done(null, false, { message: 'Password incorrect' });
           }
         });
-      });
+      }).catch(console.error()
+      );
     })
   );
   passport.use(

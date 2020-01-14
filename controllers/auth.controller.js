@@ -262,17 +262,19 @@ exports.updateChangePassword=function(req,res,next){
   var token=req.body.token;
   var password=req.body.password;
   const user_id=req.body.userid;
+  
+  const  filter={_id:user_id,token:token};
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(password, salt, (err, hash) => {
       if (err) throw err;
       password = hash;
-      const prod={password:password};  
-      User.findByIdAndUpdate(user_id, {$set:prod},{new: true}, function (err, user) {   
-            if (err) {
-              console.log(err);
-              res.status(200).json({status:"error",message:"failed to update"})
+      const update={password:password};  
+      User.findOneAndUpdate(filter, {$set:update},{new: true}, function (err, user) {   
+            if (user) {
+              res.json({status:'success',data:{user:user},message:'password update successfully'});
             }else{
-              res.json({status:'success',data:{},message:'password update successfully'});
+              console.log(err);
+              res.status(200).json({status:"error",data:{user:[]},message:"failed to update"})
             }    
       });
     })

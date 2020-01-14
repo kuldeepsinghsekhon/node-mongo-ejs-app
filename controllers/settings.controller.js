@@ -120,7 +120,20 @@ exports.settings=function(req, res, next) {
     }).catch((error)=>{
       res.json({status:'error',data:{address:[]},message:'Address Not Found'});
       console.log(error)});
-
+}
+exports.profileInfo=function(req, res, next) {
+  shoesizes=[3,3.5,4,4.5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12,12.5,13,13.5,14,14.5,15,16,17,18];
+  Promise.all([
+    User.findOne({_id:req.user.id}),   
+  ]).then( ([user])=>{
+    if(user==null)user=new User();
+   res.json({status:'success', data:{
+    user: user,
+    shoesizes: shoesizes
+   },message:''})
+  }).catch((error)=>{
+    res.json({status:'error',data:{user:[]},message:'User Not Found'});
+    console.log(error)});
 }
     
     // const doc = Address.findOne().exec(
