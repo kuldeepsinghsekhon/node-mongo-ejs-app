@@ -24,7 +24,7 @@ router.post('/user/settings/update-profile',ensureAuthenticated, settings_contro
 router.post('/user/settings/seller-info',ensureAuthenticated, settings_controller.saveSellerInfo);
 router.post('/user/settings/shipping-info',ensureAuthenticated, settings_controller.saveShippingInfo);
 router.post('/user/settings/buyer-info',ensureAuthenticated, settings_controller.saveBuyerInfo);
-router.post('/user/settings/address-info',passport.authenticate('local', { session : true }), settings_controller.addressInfo);
+router.post('/user/settings/address-info',ensureAuthenticated, settings_controller.addressInfo);
 router.post('/sign-in',passport.authenticate(['local']),auth_controller.signIn);
 router.post('/sign-up',auth_controller.signUp);
 router.get('/countries',forwardAuthenticated, utils_controller.allCoutries);
