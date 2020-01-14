@@ -6,6 +6,7 @@ const Address = require('../models/Address');
 const Attribute = require('../models/Attribute');
 const Category = require('../models/Category');
 const OrderBid = require('../models/OrderBid');
+const Country = require('../models/Country');
 const path = require('path');
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
@@ -376,19 +377,20 @@ exports.buyProductVariant=function name(req,res,next) {
     SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1),
     BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1),
     Address.findOne({address_type:'shipping',user:req.user}).limit(1),
-    Address.findOne({address_type:'billing',user:req.user}).limit(1)
-  ]).then( ([ product, sellbid,highbid,shippingAddress,billingAddress ]) => {
- // if(shippingAddress==null) shippingAddress = new shippingAddress();
-    // if(billingAddress==null) billingAddress = new billingAddress();
+    Address.findOne({address_type:'billing',user:req.user}).limit(1),
+    Country.find(),
+  ]).then( ([ product, sellbid,highbid,shippingAddress,billingAddress,countries ]) => {
+    if(shippingAddress==null) shippingAddress = new shippingAddress();
+    if(billingAddress==null) billingAddress = new billingAddress();
     res.render('pages/public/product-buyorbid', {
       product: product,
       lowbid:sellbid,
       highbid:highbid,
       shippingAddress:shippingAddress,
       billingAddress:billingAddress,
+      countries:countries,
       layout:'layout'
      })
-    console.log( product );
    // console.log( sellbid );
   });
 }
@@ -588,8 +590,9 @@ exports.buyBillingShipping=function(req,res){
     Product.findOne({ _id: productId }).populate({path:'attrs'}),
     
     Address.findOne({address_type:'shipping',user:req.user}).limit(1),
-    Address.findOne({address_type:'billing',user:req.user}).limit(1)
-  ]).then( ([ product,shippingAddress,billingAddress ]) => {
+    Address.findOne({address_type:'billing',user:req.user}).limit(1),
+    Country.find()
+  ]).then( ([ product,shippingAddress,billingAddress, countries ]) => {
     // console.log(billingAddress);
     // console.log(shippingAddress);
     if(shippingAddress==null) shippingAddress = new Address();
@@ -598,6 +601,7 @@ exports.buyBillingShipping=function(req,res){
       product: product,
       shippingAddress:shippingAddress,
       billingAddress:billingAddress,
+      countries:countries,
       layout:'blank-layout'
      })
 
@@ -605,12 +609,15 @@ exports.buyBillingShipping=function(req,res){
 }
 exports.buyShipping=function(req,res){
   var productId=req.body.id;
-Address.findOne({address_type:'shipping',user:req.user},function(err,address){ 
+Address.findOne({address_type:'shipping',user:req.user},
+Country.find(),
+function(err,address,countries){ 
   if (err) throw err
   if(Address==null)address = new address();
       res.render('pages/public/product-buy-shipping-info', {
         address: address,
-        layout:'blank-layout' });
+        countries:countries,
+        layout:'layout' });
       });
 }
 exports.buyBidPay=async  function(req, res,next){

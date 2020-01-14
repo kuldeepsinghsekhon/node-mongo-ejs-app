@@ -99,7 +99,6 @@ exports.signUp=function(req, res){
                   var token=user.token;
                   var userid=user._id;
                  var mailOptions = {
-                 
                    from: 'aquatecinnovative1@gmail.com',
                    to:'stockxa1@gmail.com', //user.email,
                    subject: 'Validate Your Account',
@@ -144,7 +143,6 @@ exports.signUp=function(req, res){
       user:user
     });
   })
- 
  }
 exports.signUpValidate=function (req,res,next) {
   var userid=req.body.userid;
@@ -280,3 +278,40 @@ exports.updateChangePassword=function(req,res,next){
     })
   });
 }
+
+exports.forgetPassword=function(req,res,next){
+  res.render('pages/public/forget',{layout:'login-layout'});
+}
+
+exports.forgetPasswordReset = function(req,res,next){
+    email = req.body.email;
+    User.findOne({email:email}).exec(function(err, users) {
+    if(!users)
+  { 
+    errors.push({ msg: 'Email is not exists. Register First' });
+  }else{
+    const token=Math.ceil(Math.random() * 1000000);
+    var mailOptions = {          
+      from: 'aquatecinnovative1@gmail.com',
+      to:email, //user.email,
+      subject: 'Reset Password',
+     
+      html: 'Please <a href="http://localhost:5000/sign-in/reset_password/?t='+token+'?id='+users._id+'"> Click Here </a> to reset Password <h3></h3><p> Your Validation Token is </p><h1>'+token+'</h1>'
+    };
+    //console.log(user);
+    //utils_controller.sendmymail(mailOptions);
+    User.findOneAndUpdate({email:email},{token:token})
+    .exec(function(err, user) {
+            if (err) return next(err)
+              res.render('/sign-in/reset_password', {layout:'login-layout'}) ;
+        }) ;
+    }
+  });
+  }
+  exports.forgetresetPassword = function(req,res,next) {
+  
+  }
+  exports.updateforgetresetpassword = function(req,res,next) {
+    token = req.params.token ;
+    console.log(token);
+  }

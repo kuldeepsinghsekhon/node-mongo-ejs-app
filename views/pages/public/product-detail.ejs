@@ -207,7 +207,7 @@
 
 							</div>
 							<div class="sale-size">
-							   <div><a class="all">View All Sales</a></div>
+							   <div><a class="all view_all_sales">View All Sales</a></div>
 							</div>
 						 </div>
 					  </div>
@@ -540,6 +540,32 @@
 							{title:"price", field:"bidprice"}] // send parameters to the server as a JSON encoded string
 					});
 	});
+
+
+	$(".view_all_sales").click(function(){
+				var id="<%=product.id%>";
+				var params = {productId:id}
+				var ajaxConfig = "POST"; //ajax HTTP request type 
+				console.log(id);
+				$("#myModal").modal()
+				var table = new Tabulator("#example-table", {
+					productId:id,	
+					ajaxURL:"/products/asks/"+id, //ajax URL
+						ajaxConfig:{
+							method:"POST",
+							 //set request type to Position
+							headers: {
+								"Content-type": 'application/json; charset=utf-8', //set specific content type
+							},
+						},
+							columns:[
+							{title:"Attribute", field:"attr_val"},	
+							{title:"title", field:"title"},	
+							{title:"price", field:"bidprice"}] // send parameters to the server as a JSON encoded string
+					});
+	});
+
+	
 	
 					$(".select-control").click(function()
 		{
