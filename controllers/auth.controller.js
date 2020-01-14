@@ -294,7 +294,7 @@ exports.forgetPasswordReset = function(req,res,next){
     res.json({status:'error',data:{},message:'User Is Not Registerd, Register Please.'});
   }else{
     const token=Math.ceil(Math.random() * 1000000);
-    var message= 'Please <a href="http://localhost:5000/sign-in/reset_password/?t='+token+'&id='+user._id+'"> Click Here </a> to reset Password <h3></h3><p> Your Validation Token is </p><h1>'+token+'</h1>'; 
+    var message= 'Please <a href="https://aquatecinnovative.herouapp.com/sign-in/reset_password/?t='+token+'&id='+user._id+'"> Click Here </a> to reset Password <h3></h3><p> Your Validation Token is </p><h1>'+token+'</h1>'; 
     console.log(message);
     var mailOptions = {          
       from: 'aquatecinnovative1@gmail.com',
