@@ -7,7 +7,7 @@ const settings_controller = require('../controllers/settings.controller');
 const product_controller = require('../controllers/api.product.controller');
 const auth_controller = require('../controllers/auth.controller');
 const utils_controller = require('../controllers/utils.controller');
-router.post('/products/',passport.authenticate(['local'], { session : false }),product_controller.products);
+router.post('/products/',forwardAuthenticated,product_controller.products);
 router.get('/products/:id',forwardAuthenticated, product_controller.findById );
 router.get('/products/sell/:id',ensureAuthenticated, product_controller.sellProductVariant );
 router.post('/products/sell/:id/',ensureAuthenticated, product_controller.sellAsk );
