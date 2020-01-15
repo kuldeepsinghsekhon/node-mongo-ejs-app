@@ -44,14 +44,15 @@
       <select name="country" required="" placeholder="Country">
                           
         <option value="">Select Country</option>
-        <% countries.forEach((country) =>                 
+        <!-- <% /*countries.forEach((country) =>                 
         {
-           if(country.Code==address.country){%>
+          Var contr='';//(billingAddress?billingAddress.country:'')
+           if(country.Code==contr){%>
               <option selected value="<%= country.Code %>"><%= country.Name %></option>
           <% }else{ %>
               <option value="<%= country.Code %>"><%= country.Name %></option>
            <%}
-        })%>
+        })*/%> -->
         </select>
 	   </div>
 	   <div>
@@ -77,14 +78,15 @@
 		  <select name="country" required="" placeholder="Country">
                           
         <option value="">Select Country</option>
-        <% countries.forEach((country) =>                 
+        <!-- <% /*countries.forEach((country) =>                 
         {
-           if(country.Code==address.country){%>
+          var contr='';//(shippingAddress?shippingAddress.country:'')
+           if(country.Code==contr){%>
               <option selected value="<%= country.Code %>"><%= country.Name %></option>
           <% }else{ %>
               <option value="<%= country.Code %>"><%= country.Name %></option>
            <%}
-        })%>
+        })*/%> -->
         </select>
 	   </div>
 	   <div>

@@ -44,6 +44,8 @@ buybids:[{ type: Schema.Types.ObjectId,
   ref: 'BuyBid'
 }] ,
 pricetrigger:Boolean,
+active:Boolean,
+
 });
 const Product = mongoose.model('Product', prodSchema);
 

@@ -394,10 +394,10 @@ exports.buyProductVariant=function name(req,res,next) {
     BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1),
     Address.findOne({address_type:'shipping',user:req.user}).limit(1),
     Address.findOne({address_type:'billing',user:req.user}).limit(1),
-    Country.find(),
+    Country.find({}),
   ]).then( ([ product, sellbid,highbid,shippingAddress,billingAddress,countries ]) => {
-    if(shippingAddress==null) shippingAddress = new shippingAddress();
-    if(billingAddress==null) billingAddress = new billingAddress();
+    if(shippingAddress==null) shippingAddress = new Address();
+    if(billingAddress==null) billingAddress = new Address();
     res.render('pages/public/product-buyorbid', {
       product: product,
       lowbid:sellbid,
@@ -611,7 +611,7 @@ exports.buyBillingShipping=function(req,res){
   ]).then( ([ product,shippingAddress,billingAddress, countries ]) => {
     // console.log(billingAddress);
     // console.log(shippingAddress);
-    if(shippingAddress==null) shippingAddress = new Address();
+        if(shippingAddress==null) shippingAddress = new Address();
     if(billingAddress==null) billingAddress = new Address(); 
     res.render('pages/public/product-buy-billing-shipping', {
       product: product,
