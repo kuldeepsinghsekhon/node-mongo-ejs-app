@@ -12,7 +12,8 @@ const BidSchema = new mongoose.Schema({
   lowestask:Number,
   highestbid:Number,
   user:{type: Schema.Types.ObjectId, ref: 'User'},
-  attr_val:String
+  attr_val:String,
+  paymentMethodToken:String
 });
 const SellBid = mongoose.model('sellBid', BidSchema);
 module.exports = SellBid;

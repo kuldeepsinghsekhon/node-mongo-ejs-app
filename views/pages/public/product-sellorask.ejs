@@ -79,7 +79,7 @@
 				  <div class="decoration">$</div>
 				  <input data-testid="product-bid-input" id="bid-price-input" placeholder="Enter Bid" class="amount" name="ask-amount" type="tel" maxlength="11" value="0">
 			   </div>
-			   <div class="bid-warning "><span class="warning-text"> Bid price must be more than 15</span></div>	
+			   <div class="bid-warning "><span class="warning-text"> </span></div>	
 			
 			</div>
 
@@ -204,11 +204,11 @@
              
            
 			<div class="payment-selection">
-			   <div class="selection-title">Payment Methods</div>
+			   <div class="selection-title">Select Payout</div>
 			   
 			   <div class="selection-subtitle">Please confirm your payout method below
 			  </div>
-			  <div class="selected-payment"><div class="payment-bubble paypal"><img src="/img/icons/credit_card_white.svg?auto=compress,format"></div><div class="payment-title">Use PayPal for payout</div></div>
+			  <div class="selected-payment"><div class="payment-bubble paypal"><img src="/images/credit_card_white.svg"></div><div class="payment-title">Use PayPal for payout</div></div>
 			  <div class="paypal-form"><div class="form-title">PayPal Info</div><input data-testid="user-paypalEmail" name="paypalEmail" id="paypalEmail" type="text" placeholder="PayPal Email" autocomplete="true" class="field" value="">
 			  <input data-testid="user-confirmPaypalEmail" name="confirmPaypalEmail" type="text"  placeholder="Confirm PayPal Email" autocomplete="true" class="field" value=""></div>
 			</div>
@@ -244,7 +244,7 @@
 					$("#Shipping").text('-$'+json_data['data'].Shipping);
 					$("#discountcode").text('-$'+json_data['data'].discountcode);
 					$("#totalpayout").text('$'+json_data['data'].totalpayout);
-					
+					$('.warning-text').text('You are about to sell at the highest Bid price');
 				   },
 				   error:function(err){  //console.log(err);  
 				}	
@@ -253,22 +253,15 @@
 		//})
 		$("#menu1btn").on('click',function(){
 			$("#bid-type").val("ask");
-			getbidCharges();
-			
-			});	
 			$(".nextPay").attr("disabled",true);
+			getbidCharges();			
+			});	
+		
 		$("#bid-price-input").on('keyup',function(){
-			var bp=parseInt($("#bid-price-input").val());
-			if(bp>15){
-				$(".nextPay").attr("disabled",false);
-				$('.warning-text').text('greater press next to placebid');
-				getbidCharges();
-			}else{
-				$(".nextPay").attr("disabled",true);
-				$('.warning-text').text('bid Amount must be greater than 15');
-				
-			}
-			
+			var bp=parseInt($("#bid-price-input").val());	
+			$(".nextPay").attr("disabled",true);
+				$('.warning-text').text('');
+				getbidCharges();			
 			});		
 		function getbidCharges(){
 			var id ="<%=product.id %>";
@@ -288,10 +281,10 @@
 					$("#discountcode-ask").text('-$'+json_data['data'].discountcode);
 					$("#totalpayout-ask").text('$'+json_data['data'].totalpayout);	  
 					if(json_data['status']=='error'){
-						$(".nextPay").attr("disabled",false);
+						$(".nextPay").attr("disabled",true);
 						$('.warning-text').text(json_data['message']);
 					}else{
-						$(".nextPay").attr("disabled",true);
+						$(".nextPay").attr("disabled",false);
 						$('.warning-text').text(json_data['message']);						
 					}	  
 				   },

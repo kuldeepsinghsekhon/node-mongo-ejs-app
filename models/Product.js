@@ -43,7 +43,7 @@ variants:[{
 buybids:[{ type: Schema.Types.ObjectId,
   ref: 'BuyBid'
 }] ,
-pricetrigger:Boolean,
+pricetrigger:{type:Boolean,default:true},
 active:Boolean,
 
 });

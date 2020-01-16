@@ -216,7 +216,7 @@ exports.sellCalculateCharges=async function(req, res, next) {
       
      var TransactionFee=askprice*0.09;
      var Proc=askprice*0.03;
-     var Shipping=30;
+     var Shipping=0;
      var totalpayout=askprice-(TransactionFee+Proc+Shipping);
      //console.log(askprice);
      var price=product.price;
@@ -224,13 +224,13 @@ exports.sellCalculateCharges=async function(req, res, next) {
     if(product.pricetrigger && askprice<=price){
       res.json({status:'error',data:{ TransactionFee: TransactionFee.toFixed(2) ,Proc:Proc.toFixed(2),Shipping:Shipping.toFixed(2),discountcode:'',totalpayout:Math.ceil(totalpayout)},message:message });
     }else{
-      if(askprice>=lowestask.price){
+      if(askprice>=lowestask.bidprice){
         message='You are not the lowest ask';
       }else if(askprice>highbid.bidprice){
-        message='You are about to be the lowest ask'
-      }else{
+        message='You are about to be the lowest ask';
+      }else if(askprice<=highbid.bidprice){
         message='You are about to sell at the highest Bid price';
-      }     
+      }    
       res.json({status:'success',data:{TransactionFee: TransactionFee.toFixed(2) ,Proc:Proc.toFixed(2),Shipping:Shipping.toFixed(2),discountcode:'',totalpayout:Math.ceil(totalpayout)},message:message });
     }
       
@@ -286,19 +286,23 @@ exports.sellProductPay=function(req,res){
   var productId=req.body.id;
   Promise.all([
     Product.findOne({ _id: productId }).populate({path:'attrs'}), 
-	Address.findOne({address_type:'billing',user:req.user}).limit(1)
-  ]).then( ([ product,address ]) =>
+  Address.findOne({address_type:'billing',user:req.user}).limit(1),
+  Country.find({}),
+  ]).then( ([ product,address,countries ]) =>
   {
       if(address==null)address=new Address();
       res.render('pages/public/product-sell-payment', {
         product: product,
         address: address,
+        countries:countries,
         layout:'blank-layout' });
       });
 }
 
 exports.sellAsk=async  function(req, res,next){
-  
+  var name =req.body.name;
+    var lastname=req.body.lastname;
+    var email=req.user.email;
   var sellBid = new SellBid();
   var attr_val= req.body.attr_val;
   const productId= req.body.productid;
@@ -349,14 +353,42 @@ if(lowestask!=null){
   //console.log('sellBid');
   var nonceFromTheClient = req.body.paymentMethodNonce;
   // Create a new transaction for $10
-  var newTransaction = gateway.transaction.sale({
-    amount: totalcharges,
+  var braintreeid=req.user.braintreeid;
+  
+  if(!braintreeid){
+    customer=  await gateway.customer.create({
+      firstName: name,
+      lastName: lastname,
+      email: email,
+
+    }).catch((error)=>console.log(error))
+    //braintreeid=customer.Customer.id;
+    //console.log(customer.customer)
+    var c=customer.customer;
+    console.log(c.id)
+
+    braintreeid=408993133;//customer.customer.id;
+  }
+ 
+  console.log('braintreeid'+braintreeid);
+  var newTransaction = gateway.customer.update(braintreeid,{
+    //amount: totalcharges,
     paymentMethodNonce: nonceFromTheClient,
-    options: {
-      // This option requests the funds from the transaction
-      // once it has been authorized successfully
-      submitForSettlement: true
-    }
+    email: email,
+  creditCard: {
+   //options: { updateExistingToken: "theToken" }
+   billingAddress: {
+    streetAddress: "New Street Address",
+    postalCode: "60622",
+    options: { updateExisting: true }
+  }
+  }
+    // options: {
+    //   makeDefault: true
+    //   // This option requests the funds from the transaction
+    //   // once it has been authorized successfully
+    //  // submitForSettlement: true
+    // }
   }, function(error, result) {
       if (result) {
         if(req.body.bidType=='sale'){
@@ -369,15 +401,18 @@ if(lowestask!=null){
         order.product=prod;
         order.status='Won Bid';
         order.netprice=bidprice;//need to add buying charges
-        order.save();
-        buybid.save();
+        //order.save();
+       // buybid.save();
         }
-        sellBid.save();
+        //sellBid.save();
        
-        prod.save();
+       // prod.save();
         
         res.send(result);
-       // console.log(result);
+       
+        console.log( result.customer.creditCards[0].token);
+        console.log(result);
+        
       } else {
         res.status(500).send(error);
       }
