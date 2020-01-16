@@ -15,7 +15,16 @@
                                     <label for="product_price">Category</label>                            
                                 <input type="text" id="category_name" class="form-control" value="<%=product.category %>" name="category_name" placeholder="Category Name">
                             </div>
-
+                            <div form-group>
+                                <div class="email-order">
+                                  <p>Status</p>
+                                    <label class="switch">
+                                       <input type="checkbox" data-id="2" name="status" class="emailsettings" value="true" <% if(product.active){if(product.active){ %> checked <% }} %>>
+                                       <!-- <input type="checkbox" data-id="2" name="status" class="emailsettings" value="false"> -->
+                                       <span class="slider round"></span>
+                                     </label>
+                                </div>
+                              </div>
                           <div class="form-group">
                                 <label for="product_price">Price</label>
                                 <input type="number" id="product_price" class="form-control" value="<%=product.price %>" name="product_price" placeholder="Product Regular Price">

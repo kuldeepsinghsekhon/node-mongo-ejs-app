@@ -676,19 +676,19 @@ exports.buyBidPay=async  function(req, res,next){
   }
 /*************Buy and BuyBid End **************/
 exports.adminProducts=function(req, res, next) {
-    var perPage = 9;
-    var page = req.params.page || 1;
+    // var perPage = 9;
+    // var page = req.params.page || 1;
     Product
         .find({})
-        .skip((perPage * page) - perPage)
-        .limit(perPage)
+        //.skip((perPage * page) - perPage)
+       // .limit(perPage)
         .exec(function(err, products){
             Product.count().exec(function(err, count) {
                 if (err) return next(err)
                 res.render('pages/admin/template-products', {
                     products: products,
-                    current: page,
-                    pages: Math.ceil(count / perPage),
+                    //current: page,
+                   // pages: Math.ceil(count / perPage),
                     layout:'admin-layout'
                 })
             })
@@ -706,6 +706,12 @@ exports.saveProduct=function(req, res, next) {
     product.sku = req.body.product_sku;
     product.price = req.body.product_price; 
     product.style = req.body.style; 
+    product.active = 'false';
+    if(req.body.status)
+    {
+      product.active = req.body.status;
+    }
+
     //console.log(req.body.attributename);
     let attributes;
     if(req.body.attributename){
@@ -722,7 +728,7 @@ exports.saveProduct=function(req, res, next) {
       product.attrs = attribute; 
     }
    
-    //console.log(req.body.attributevalues);
+    console.log(req.body.attributevalues);
   
     let errors = [];
     if (!req.body.category_name || !req.body.product_description || !req.body.product_name 
@@ -767,7 +773,7 @@ exports.saveProduct=function(req, res, next) {
         if (err){
           throw err
         } else{
-             // console.log(product);         
+              console.log(product);         
         }      
     });
     req.flash(
