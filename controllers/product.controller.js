@@ -847,6 +847,12 @@ exports.editProduct=function(req, res, next) {
     product.name = req.body.product_name;
     product.sku = req.body.product_sku;
     product.price = req.body.product_price;
+    product.pricetrigger = req.body.pricetrigger;
+    product.pricetrigger = 'false';
+    if(req.body.pricetrigger=='true')
+    {
+      product.pricetrigger = req.body.pricetrigger;
+    }
     product.active = 'false';
     if(req.body.status=='true')
     {
@@ -873,7 +879,7 @@ exports.editProduct=function(req, res, next) {
   
     var imgpath=appRoot+'//public//uploads//products//';
     var img='';
-    var prod={name:req.body.product_name, description:req.body.product_description,category:req.body.category_name,sku:req.body.product_sku,price:req.body.product_price,style: req.body.style };
+    var prod={name:req.body.product_name, active:product.active, pricetrigger:product.pricetrigger, description:req.body.product_description,category:req.body.category_name,sku:req.body.product_sku,price:req.body.product_price,style: req.body.style };
     if (!req.files || Object.keys(req.files).length=== 0) {
       //console.log('No files were uploaded.');
     }else{  
