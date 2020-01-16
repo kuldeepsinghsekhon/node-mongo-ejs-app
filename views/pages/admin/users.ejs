@@ -22,33 +22,24 @@
                       <table class="table table-striped" id="user-data">
                         <thead>
                           <tr>
-                            <th>
-                              User Image
-                            </th>
-                            <th>
-                              Full name
-                            </th>
-                            
-                            <th>
-                              Email
-                            </th>
-                            
+                            <th>User Image </th>
+                            <th> Full name </th>
+                            <th>Email</th>
+                            <th>Status</th>
                           </tr>
                         </thead>
                         <tbody>
                             <% for (var i = 0; i < users.length; i++) { %>
                           <tr>
-                            <td class="py-1">
-                              <img src="/assets/images/defaultuser.png " alt="image"/>
-                            </td>
+                            <td class="py-1"><img src="/assets/images/defaultuser.png " alt="image"/></td>
+                            <td><%= users[i].name %></td>
+                            <td> <%= users[i].email %> </td>
                             <td>
-                                <%= users[i].name %>
+                                  <label class="switch">
+                                     <input type="checkbox" data-id="2" name="status" class="emailsettings" value="<%= users[i].status%>">
+                                     <span class="slider round"></span>
+                                   </label>
                             </td>
-                            
-                            <td>
-                                <%= users[i].email %>
-                            </td>
-                            
                           </tr>
                          <% } %>
                         </tbody>
@@ -57,7 +48,7 @@
                   </div>
                 </div>
               </div>
-              <!-- <% if (pages > 0) { %>
+              <!-- <% /*if (pages > 0) { %>
                 <ul class="pagination text-center">
                     <% if (current == 1) { %>
                         <li class="disabled"><a class="page-link">First</a></li>
@@ -84,6 +75,6 @@
                         <li><a  class="page-link" href="/admin/users/<%= pages %>">Last</a></li>
                     <% } %>
                 </ul>
-            <% } %> -->
+            <% } */%> */-->
             
 </div>

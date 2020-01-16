@@ -47,7 +47,7 @@
                             </button>
                         </td> 
                         <td>
-                            <a class=" btn btn-primary btn-rounded btn-icon" href="/admin/category/<%=brands[i]._id %>/delete" >
+                            <a class=" btn btn-primary btn-rounded btn-icon" onclick="return confirm('Are you sure for Delete Category?')" href="/admin/category/<%=brands[i]._id %>/delete" >
                               <i class="ti-trash btn-icon-append"></i> 
                             </a>
                         </td> 
@@ -97,15 +97,16 @@
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
+          <h4 class="modal-title">Add New Category</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Category</h4>
+          
         </div>
         <div class="modal-body">
             <form method="post" action="/admin/add-category" enctype="multipart/form-data">
                 <div class="panel panel-default">
                     <div class="panel-body">
                             <div class="form-group">                              
-                                    <input type="text" id="brand_name" class="form-control" name="brand_name" placeholder="brand Name">
+                                    <input type="text" id="brand_name" class="form-control" name="brand_name" placeholder="New Category Name">
                             </div>                             
                         <button type="submit" class="btn btn-success">Add New Category</button>
                     </div>
@@ -125,16 +126,12 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="edit-modal-label">Edit Data</h5>
+          <h5 class="modal-title" id="edit-modal-label">Edit Category</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body" id="attachment-body-content">
           <form id="edit-brand" class="form-horizontal" method="POST" action="/admin/category/update"  enctype="multipart/form-data">
-        
-              <div class="card-header">
-                <h2>Edit</h2>
-              </div>
               <div class="card-body">
                 <!-- id -->
                 <div class="form-group">
