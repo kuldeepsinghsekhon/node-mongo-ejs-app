@@ -15,7 +15,26 @@
                                     <label for="product_price">Category</label>                            
                                 <input type="text" id="category_name" class="form-control" value="<%=product.category %>" name="category_name" placeholder="Category Name">
                             </div>
-
+                            <div form-group>
+                                <div class="email-order">
+                                  <p>Status</p>
+                                    <label class="switch">
+                                       <input type="checkbox" data-id="2" name="status" class="emailsettings" value="true" <% if(product.active){if(product.active){ %> checked <% }} %>>
+                                       <!-- <input type="checkbox" data-id="2" name="status" class="emailsettings" value="false"> -->
+                                       <span class="slider round"></span>
+                                     </label>
+                                </div>
+                              </div>
+                              <div form-group>
+                                <div class="email-order">
+                                  <p>Pricetrigger</p>
+                                    <label class="switch">
+                                       <input type="checkbox" data-id="2" name="status" class="emailsettings" value="true" <% if(product.pricetrigger){if(product.pricetrigger){ %> checked <% }} %>>
+                                       <!-- <input type="checkbox" data-id="2" name="status" class="emailsettings" value="false"> -->
+                                       <span class="slider round"></span>
+                                     </label>
+                                </div>
+                              </div>
                           <div class="form-group">
                                 <label for="product_price">Price</label>
                                 <input type="number" id="product_price" class="form-control" value="<%=product.price %>" name="product_price" placeholder="Product Regular Price">
@@ -38,16 +57,16 @@
                                     </div>  
                                     <div class="form-group">
                                         <label for="product_price">Attribute</label>
-                                        <input type="text" id="productStyle" class="form-control" value="<%=product.attributename %>" placeholder="Attribute"> 
+                                        <input type="text" id="productStyle" name="attributename" class="form-control" value="<%=(product.attrs ?product.attrs.name:'') %>" placeholder="Attribute"> 
                                     </div>
                                     <div class="form-group">
                                         <label for="product_price">Attribute</label>
-                                        <input type="text" id="productStyle" class="form-control" value="<%=product.attributevalues %>" placeholder="Attribute Name"> 
+                                        <input type="text" id="productStyle" class="form-control" value="<%=(product.attrs ? product.attrs.attrs.join('|'): '')%>" name="attributevalues" placeholder="Attribute Name"> 
                                     </div>
                                     <div class="form-group">
                                         <label for="productImage">Product Image</label>
-                                        <span><img src="/products/<%=product.image %>"></span>
-                                        <input type="file" id="productImage"  class="form-control" value="<%=product.productImage  %>" name="productImage" placeholder="Product Image">
+                                        <span><img src="/uploads/products/<%=product.image %>" width="100px" height="100px"></span>
+                                        <input type="file" id="productImage"  class="form-control" value="<%=product.productImage %>" name="productImage" placeholder="Product Image">
                                     </div>
                             <button type="submit" class="btn btn-success">Update Product</button>
                         </div >

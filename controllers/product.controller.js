@@ -712,19 +712,19 @@ exports.buyBidPay=async  function(req, res,next){
   }
 /*************Buy and BuyBid End **************/
 exports.adminProducts=function(req, res, next) {
-    var perPage = 9;
-    var page = req.params.page || 1;
+    // var perPage = 9;
+    // var page = req.params.page || 1;
     Product
         .find({})
-        .skip((perPage * page) - perPage)
-        .limit(perPage)
+        //.skip((perPage * page) - perPage)
+       // .limit(perPage)
         .exec(function(err, products){
             Product.count().exec(function(err, count) {
                 if (err) return next(err)
                 res.render('pages/admin/template-products', {
                     products: products,
-                    current: page,
-                    pages: Math.ceil(count / perPage),
+                    //current: page,
+                   // pages: Math.ceil(count / perPage),
                     layout:'admin-layout'
                 })
             })
@@ -742,12 +742,19 @@ exports.saveProduct=function(req, res, next) {
     product.sku = req.body.product_sku;
     product.price = req.body.product_price; 
     product.style = req.body.style; 
+    product.active = 'false';
+    if(req.body.status)
+    {
+      product.active = req.body.status;
+    }
+
     //console.log(req.body.attributename);
     let attributes;
     if(req.body.attributename){
 
       const attributename=req.body.attributename;
       const attributevalues=req.body.attributevalues;
+      
     //  for(var i = 0; i < attributename.length;i++){
        var attribute= new Attribute();
        attribute.name=attributename;
@@ -758,7 +765,7 @@ exports.saveProduct=function(req, res, next) {
       product.attrs = attribute; 
     }
    
-    //console.log(req.body.attributevalues);
+    console.log(req.body.attributevalues);
   
     let errors = [];
     if (!req.body.category_name || !req.body.product_description || !req.body.product_name 
@@ -803,7 +810,7 @@ exports.saveProduct=function(req, res, next) {
         if (err){
           throw err
         } else{
-             // console.log(product);         
+              console.log(product);         
         }      
     });
     req.flash(
@@ -817,15 +824,18 @@ exports.saveProduct=function(req, res, next) {
 /* View Page for admin can edit Product*/
 exports.editProduct=function(req, res, next) {
     var productId=req.params.id;
-        product=Product.findById(productId,function(err,product){
-        // if(err){
-        //     return res.redirect('/');
-        // }
+        product=Product.findById(productId)
+        .populate({path:'attrs'}).exec(function(err,product)
+          {
+            // if(err){
+            //     return res.redirect('/');
+            // }
+           // console.log(product);
             res.render('pages/admin/edit-product', {
               product: product,
               layout:'admin-layout'
           })
-      })
+      });
   }
   /* Admin can update Product */
   exports.updateProduct=function (req, res,next) {
@@ -837,6 +847,30 @@ exports.editProduct=function(req, res, next) {
     product.name = req.body.product_name;
     product.sku = req.body.product_sku;
     product.price = req.body.product_price;
+    product.active = 'false';
+    if(req.body.status=='true')
+    {
+      product.active = req.body.status;
+    }
+
+    //console.log(req.body.attributename);
+    let attributes;
+    if(req.body.attributevalues){
+
+      const attributename=req.body.attributename;
+      const attributevalues=req.body.attributevalues;
+    //  for(var i = 0; i < attributename.length;i++){
+       var attribute= new Attribute();
+       attribute.name=attributename;
+       attribute.attrs=attributevalues.split('|');
+       attribute.save();
+      //  attributes.push(attribut);
+      // }
+      product.attrs = attribute; 
+    }
+   
+    console.log(req.body.attributevalues);
+  
     var imgpath=appRoot+'//public//uploads//products//';
     var img='';
     var prod={name:req.body.product_name, description:req.body.product_description,category:req.body.category_name,sku:req.body.product_sku,price:req.body.product_price,style: req.body.style };
