@@ -7,6 +7,7 @@ const Attribute = require('../models/Attribute');
 const Category = require('../models/Category');
 const OrderBid = require('../models/OrderBid');
 const Country = require('../models/Country');
+const User = require('../models/User');
 const path = require('path');
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
@@ -218,17 +219,20 @@ exports.sellCalculateCharges=async function(req, res, next) {
      var Proc=askprice*0.03;
      var Shipping=0;
      var totalpayout=askprice-(TransactionFee+Proc+Shipping);
-     //console.log(askprice);
+     console.log(askprice);
      var price=product.price;
      var message='You must meet the minimum Ask of '+price;
     if(product.pricetrigger && askprice<=price){
       res.json({status:'error',data:{ TransactionFee: TransactionFee.toFixed(2) ,Proc:Proc.toFixed(2),Shipping:Shipping.toFixed(2),discountcode:'',totalpayout:Math.ceil(totalpayout)},message:message });
     }else{
-      if(askprice>=lowestask.bidprice){
+      var lowestaskprice=(lowestask!=null?lowestask.bidprice:0);
+      var hightestbidprice=(highbid!=null? highbid.bidprice:0);
+      console.log(lowestaskprice)
+      if(askprice>=lowestaskprice&&lowestaskprice!=0){
         message='You are not the lowest ask';
-      }else if(askprice>highbid.bidprice){
+      }else if(askprice>hightestbidprice){
         message='You are about to be the lowest ask';
-      }else if(askprice<=highbid.bidprice){
+      }else if(askprice<=hightestbidprice&&hightestbidprice!=0){
         message='You are about to sell at the highest Bid price';
       }    
       res.json({status:'success',data:{TransactionFee: TransactionFee.toFixed(2) ,Proc:Proc.toFixed(2),Shipping:Shipping.toFixed(2),discountcode:'',totalpayout:Math.ceil(totalpayout)},message:message });
@@ -360,29 +364,51 @@ if(lowestask!=null){
       firstName: name,
       lastName: lastname,
       email: email,
-
     }).catch((error)=>console.log(error))
-    //braintreeid=customer.Customer.id;
-    //console.log(customer.customer)
     var c=customer.customer;
-    console.log(c.id)
-
-    braintreeid=408993133;//customer.customer.id;
+   // console.log(c.id)
+    braintreeid=customer.customer.id;//408993133;
+     User.findByIdAndUpdate(req.user._id, {$set:{braintreeid:braintreeid}},{new: true}, function (err, user) {
+          console.log(user);
+              //  if (err) {
+              //    res.status(200).json({status:"error",message:"failed to update"})
+              //  }else{
+              //    res.status(200).json({status:"ok",message:"paypal email updated successfully", paypalEmail: user.paypalEmail})
+              //  } 
+         });
   }
- 
   console.log('braintreeid'+braintreeid);
+
+  var billingAddress={streetAddress: "New Street Address",
+  postalCode: "60622",options: { updateExisting: true }};
+  var creditCard={}; 
+  var cardtoken=req.user.cardtoken;
+  if(!cardtoken){
+    creditCard={billingAddress:billingAddress };
+  }else{
+    creditCard={
+       options: { updateExistingToken: cardtoken },
+      billingAddress:billingAddress
+     };
+  }
+
+
+ // if(!cardtoken){
+  // var  customer= await  gateway.customer.update(braintreeid,{
+  //     paymentMethodNonce: nonceFromTheClient,
+  //     email: email,
+  //   creditCard: creditCard,
+  //   });
+ // }
+//  console.log(customer);
+//    cardtoken=customer.customer.paymentMethods[0].token;
+//   console.log('braintreeid'+braintreeid);
+//   console.log('cardtoken'+cardtoken);
   var newTransaction = gateway.customer.update(braintreeid,{
     //amount: totalcharges,
     paymentMethodNonce: nonceFromTheClient,
     email: email,
-  creditCard: {
-   //options: { updateExistingToken: "theToken" }
-   billingAddress: {
-    streetAddress: "New Street Address",
-    postalCode: "60622",
-    options: { updateExisting: true }
-  }
-  }
+  creditCard:creditCard,
     // options: {
     //   makeDefault: true
     //   // This option requests the funds from the transaction
@@ -401,19 +427,29 @@ if(lowestask!=null){
         order.product=prod;
         order.status='Won Bid';
         order.netprice=bidprice;//need to add buying charges
-        //order.save();
-       // buybid.save();
+        order.save();
+        buybid.save();
         }
-        //sellBid.save();
+        sellBid.save();
        
-       // prod.save();
-        
+        prod.save();
+        console.log(result.customer)
+        cardtoken=result.customer.paymentMethods;
+        User.findByIdAndUpdate(req.user._id, {$set:{cardtoken:cardtoken}},{new: true}, function (err, user) {
+          console.log(user);
+              //  if (err) {
+              //    res.status(200).json({status:"error",message:"failed to update"})
+              //  }else{
+              //    res.status(200).json({status:"ok",message:"paypal email updated successfully", paypalEmail: user.paypalEmail})
+              //  } 
+              //  con   
+         });
+       console.log( result.customer.creditCards[0].token);
+        console.log(result);
         res.send(result);
        
-        console.log( result.customer.creditCards[0].token);
-        console.log(result);
-        
       } else {
+        console.log(error);
         res.status(500).send(error);
       }
   });

@@ -37,6 +37,7 @@ const UserSchema = new mongoose.Schema({
   validated:Boolean,
   token:String,
   braintreeid:String,
+  cardtoken:String,
   fbid:String,
   googleId:String,
   //notifications:{type: Schema.Types.ObjectId, ref: 'UserNotification'},

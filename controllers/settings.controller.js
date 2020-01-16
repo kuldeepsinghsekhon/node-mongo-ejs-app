@@ -485,7 +485,7 @@ exports.productsSelling=function(req, res, next) {
     OrderBid.find({ seller: req.user._id,status:{$in: ['accepeted', 'canceled']} }).populate({path:'product'}),
     
   ]).then( ([orders,askbids,history])=>{
-    //console.log('history')
+   // console.log('history')
    // console.log(history[0].product.name)
     res.render('pages/users/selling', {
       askbids: askbids,
