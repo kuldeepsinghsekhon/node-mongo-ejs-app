@@ -27,7 +27,7 @@ exports.products = function(req, res, next) {
                 if (err) return next(err)
                // console.log(products);
                 res.json({status:'success',
-                   data:{current: page,pages: Math.ceil(count / perPage),products: products},
+                   data:{page: page,TotalPages: Math.ceil(count / perPage),products: products},
                    message:'Products Listed Successfully',                     
                 })
             })
