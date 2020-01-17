@@ -17,4 +17,14 @@ exports.listUsers=function(req, res, next) {
             })
         })
   }
-  
+  exports.updateUserStatus = function(req,res,next){
+    var productId = req.body.uid ;
+    var status = req.body.status;
+    //console.log(status);
+    //console.log(uid);
+    var prod = {status : status};
+    User.findByIdAndUpdate(productId, {$set:prod}, function (err, users) {
+        if (err) return next(err);
+        res.json({status:'success',data:{users:users},message:'User Action success'});
+    });
+  }

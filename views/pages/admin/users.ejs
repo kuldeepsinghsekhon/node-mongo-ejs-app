@@ -19,24 +19,28 @@
                       Manage <code>users</code>
                     </p>
                     <div class="table-responsive">
+                      <div id="userAction"></div>
                       <table class="table table-striped" id="user-data">
                         <thead>
                           <tr>
+                           
                             <th>User Image </th>
                             <th> Full name </th>
                             <th>Email</th>
                             <th>Status</th>
+                           
                           </tr>
                         </thead>
                         <tbody>
                             <% for (var i = 0; i < users.length; i++) { %>
                           <tr>
+                          
                             <td class="py-1"><img src="/assets/images/defaultuser.png " alt="image"/></td>
                             <td><%= users[i].name %></td>
                             <td> <%= users[i].email %> </td>
                             <td>
                                   <label class="switch">
-                                     <input type="checkbox" data-id="2" name="status" class="emailsettings" value="true" <% if(users[i].status){if(users.status){ %> checked <% }} %>>
+                                     <input id="user_status" data-uid="<%= users[i].id%>" type="checkbox" data-id="2" name="status" class="usersatusbtn" value="true" <% if(users[i].status){if(users[i].status){ %> checked <% }} %>>
                                      <span class="slider round"></span>
                                   </label>
                             </td>
