@@ -1,4 +1,11 @@
 //let c= await Address.countDocuments(filter);
+const braintree = require("braintree");
+const gateway = braintree.connect({
+  environment: braintree.Environment.Sandbox,
+  merchantId: "dwt5m34ppngz6s7k",       //merchant id
+  publicKey: "g2d976m7dxpt6bx5",        //public key
+  privateKey: "117df9268ade2b95fc3f526966441059" //private key
+});
 const fs = require('fs');
 const path = require('path');
 const SellBid = require('../models/SellBid');
@@ -335,16 +342,54 @@ exports.dashboard = function(req, res){
 exports.updateOrderStatus = function (req,res,next) {
   var status =req.body.status.replace(" ","");
   var orderid =req.params.id.replace(" ","");
-console.log(status);
+//console.log(status);
 
   OrderBid.findByIdAndUpdate(orderid, {status:status}, function (err, order) {
-  var sellercahrges=  order.SellerTransaction.TotalPayout;
-    gateway.transaction.sale({
-      paymentMethodToken: "theToken",
-      amount: sellercahrges
-    }, function (err, result) {
-    });
+ // var sellercahrges=  order.SellerTransaction.TotalPayout;
+  var transactionid=order.payment.transaction.id;
+  if(status=='canceled'){
+  gateway.transaction.find(transactionid, function (err, transaction) {
+    if(transaction.status=='submitted_for_settlement'||transaction.status=='settlement_pending'){
+      gateway.transaction.void(transactionid, function (err, result) {
+    
+        //   console.log(result);
+        //   console.log(err);
+         });
+
+    }else{
+      gateway.transaction.refund(transactionid, function (err, result) {
+        //   console.log(result);
+        //   console.log(err);
+      
+         }); 
+    }
+
+  });
+}
+  // });
+    // gateway.transaction.sale({
+    //   paymentMethodToken: "theToken",
+    //   amount: sellercahrges
+    // }, function (err, result) {
+    // });
     if (err) return next(err);
     res.json({status:'ok',message:'status updATED',order:order});
 });
+}
+exports.viewTransaction = function (req,res,next) {
+  
+}
+exports.statusWebhook = function (req, res) {
+  gateway.webhookNotification.parse(
+    req.body.bt_signature,
+    req.body.bt_payload,
+    function (err, webhookNotification) {
+      console.log("[Webhook Received " + webhookNotification.timestamp + "] | Kind: " + webhookNotification.kind);
+
+      // Example values for webhook notification properties
+      console.log(webhookNotification.kind); // "subscriptionWentPastDue"
+      console.log(webhookNotification.timestamp); // Sun Jan 1 00:00:00 UTC 2012
+    }
+  );
+  res.status(200).send();
 }

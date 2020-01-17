@@ -111,6 +111,7 @@ router.get('/add-to-cart/:id', forwardAuthenticated,(req, res,next) => {
   router.get('/sign-in/forget/',auth_controller.forgetPassword);
   router.post('/sign-in/forget/',auth_controller.forgetPasswordReset);
   router.get('/sign-in/reset_password',auth_controller.forgetresetPassword);
-  router.post('/sign-in/reset_password',auth_controller.updateforgetresetpassword)
+  router.post('/sign-in/reset_password',auth_controller.updateforgetresetpassword);
+  router.post('/statuswebhook',admin_controller.statusWebhook);
 
 module.exports = router;

@@ -91,4 +91,5 @@ router.get('/brand/:id',ensureAuthenticated, permit('Admin'), admin_controller.l
   router.post('/add-category/',ensureAuthenticated,permit('Admin'), admin_controller.saveCategory);
   router.post('/category/update',ensureAuthenticated, permit('Admin'),admin_controller.updateCategory);
   router.get('/category/:id/delete',ensureAuthenticated, permit('Admin'), admin_controller.deleteCategory);
+  router.get('/transaction/',ensureAuthenticated, permit('Admin'),admin_controller.viewTransaction);
 module.exports = router;

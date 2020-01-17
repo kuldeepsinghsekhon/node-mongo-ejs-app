@@ -26,6 +26,9 @@
                             <th class="col-lg-2 hidden-md hidden-sm hide-xs undefined">Order Number </th>
                             <th class="col-lg-2 col-sm-2 col-xs-3 sortable  dropdown">Sale Date </th>
                             <th class="col-sm-1 col-xs-2 sortable undefined">Price </th>
+                            <th class="col-sm-1 col-xs-2 sortable undefined">Transcation </th>
+                            <th class="col-sm-1 col-xs-2 sortable undefined">Transcation Status </th>
+
                             <th class="col-lg-2 col-sm-3 col-xs-2 hide-xs sortable undefined">Status </th>
                             
                          </tr>
@@ -43,6 +46,8 @@
                                    <td><%= d %></td>
                                    <td><%= orders[i].netprice %></td>
                                    <!-- <td><%= orders[i].status %></td> -->
+                                   <td><%= orders[i].payment.transaction.id%></td>
+                                   <td><%= orders[i].payment.transaction.status%></td>
                                    <td>
                                        <select data-id="<%= orders[i]._id %>" class="action" > 
                                             <option value="">Selcet Action</option>
