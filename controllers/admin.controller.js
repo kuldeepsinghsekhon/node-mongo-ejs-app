@@ -349,18 +349,29 @@ exports.updateOrderStatus = function (req,res,next) {
   var transactionid=order.payment.transaction.id;
   if(status=='canceled'){
   gateway.transaction.find(transactionid, function (err, transaction) {
+    //console.log(transaction);
     if(transaction.status=='submitted_for_settlement'||transaction.status=='settlement_pending'){
       gateway.transaction.void(transactionid, function (err, result) {
-    
-        //   console.log(result);
-        //   console.log(err);
+        if(result.success==true){
+          order.payment= result;
+          order.save();
+        }else{
+          console.log('dfsfds');
+        }
+       
+     
+          // console.log(err);
          });
 
     }else{
       gateway.transaction.refund(transactionid, function (err, result) {
-        //   console.log(result);
-        //   console.log(err);
-      
+        if(result.success==true){
+          //console.log(result);
+         order.payment= result;
+          order.save();
+        }else{
+          console.log('xxxxxxxxxxxx');
+        }
          }); 
     }
 
