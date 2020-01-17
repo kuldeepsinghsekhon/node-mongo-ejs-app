@@ -7,6 +7,7 @@ const Attribute = require('../models/Attribute');
 const Category = require('../models/Category');
 const OrderBid = require('../models/OrderBid');
 const Country = require('../models/Country');
+const Transaction = require('../models/Transaction');
 const User = require('../models/User');
 const path = require('path');
 const fs = require('fs');
@@ -308,6 +309,8 @@ exports.sellAsk=async  function(req, res,next){
     var lastname=req.body.lastname;
     var email=req.user.email;
   var sellBid = new SellBid();
+  var transaction = new Transaction();
+
   var attr_val= req.body.attr_val;
   const productId= req.body.productid;
   var bidprice=0;//req.body.bidprice;
@@ -345,11 +348,18 @@ if(lowestask!=null){
   let sellbids=[];
   var TransactionFee=bidprice*0.09;
   var Proc=bidprice*0.03;
-  var Shipping=30;
+  var Shipping=0;
   var totalcharges=Math.ceil(TransactionFee+Proc+Shipping);
   //console.log('total chrges'+totalcharges);
   //console.log('bidprice'+bidprice);
-
+  transaction.TransactionFee=TransactionFee;
+  transaction.processingFee=Proc;
+  transaction.ShippingFee=Shipping;
+  transaction.TotalPayout=totalcharges;
+  //transaction.TradeDate=Date.now;
+  transaction.user=req.user;
+  transaction.status='NotStarted';
+  transaction.BidType='ask';
  prod.sellbids.push(sellBid);
  
  // console.log(prod);
@@ -427,9 +437,12 @@ if(lowestask!=null){
         order.product=prod;
         order.status='Won Bid';
         order.netprice=bidprice;//need to add buying charges
+        transaction.sellbid=sellBid;
+        order.SellerTransaction=transaction;
         order.save();
         buybid.save();
         }
+        transaction.save();
         sellBid.save();
        
         prod.save();

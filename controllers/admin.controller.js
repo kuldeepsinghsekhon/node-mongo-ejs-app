@@ -333,11 +333,17 @@ exports.dashboard = function(req, res){
   })
 }
 exports.updateOrderStatus = function (req,res,next) {
-  var status =req.body.status.replace(" ","");;
-  var productid =req.params.id.replace(" ","");
+  var status =req.body.status.replace(" ","");
+  var orderid =req.params.id.replace(" ","");
 console.log(status);
 
-  OrderBid.findByIdAndUpdate(productid, {status:status}, function (err, order) {
+  OrderBid.findByIdAndUpdate(orderid, {status:status}, function (err, order) {
+  var sellercahrges=  order.SellerTransaction.TotalPayout;
+    gateway.transaction.sale({
+      paymentMethodToken: "theToken",
+      amount: sellercahrges
+    }, function (err, result) {
+    });
     if (err) return next(err);
     res.json({status:'ok',message:'status updATED',order:order});
 });

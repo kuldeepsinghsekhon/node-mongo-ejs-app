@@ -475,15 +475,12 @@ exports.productsBuying=function(req, res, next) {
 
 
 exports.productsSelling=function(req, res, next) {
-  var perPage = 9;
-  var page = req.params.page || 1;
-  //console.log(req.user._id);
+
   var query = { user: req.user._id ,status:'ask'}; 
   Promise.all([
     OrderBid.find({ seller: req.user,status:{$in: ['Won Bid', 'Order Placed']}}).populate({path:'product'}),
-    SellBid.find(query).sort({bidprice:-1}).limit(10),
-    OrderBid.find({ seller: req.user._id,status:{$in: ['accepeted', 'canceled']} }).populate({path:'product'}),
-    
+    SellBid.find(query).sort({bidprice:-1}),
+    OrderBid.find({ seller: req.user._id,status:{$in: ['accepeted', 'canceled']} }).populate({path:'product'}),  
   ]).then( ([orders,askbids,history])=>{
    // console.log('history')
    // console.log(history[0].product.name)

@@ -13,7 +13,9 @@ const OrderSchema = new mongoose.Schema({
   status: String,
   ordertype: String,
   updated:Date,
-  payment: {type: Object, required: true}
+  payment: {type: Object, required: true},
+  SellerTransaction: {type: Schema.Types.ObjectId, ref: 'Transaction'},
+  BuyerTransaction: {type: Schema.Types.ObjectId, ref: 'Transaction'},
 });
 const OrderBid = mongoose.model('OrderBid', OrderSchema);
 module.exports = OrderBid;
