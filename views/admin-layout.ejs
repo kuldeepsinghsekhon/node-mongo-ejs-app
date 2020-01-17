@@ -174,4 +174,24 @@ $(document).ready(function() {
 } );
            </script> 
           
- 
+          <script>
+            $('.usersatusbtn').on('click', function(){
+            var uid=$(this).data('uid');
+            var status = '';
+            if($(this).prop("checked") == true){
+               status = 'true';
+            }else{
+              status = 'false';
+            }
+            $.ajax({
+              type: 'POST',
+              url:'/admin/users/',
+              data: {uid:uid,status:status},
+              success: function (response) {
+            if(response){
+              $('#userAction').html('<div class="alert alert-success">User Status Changed successfully</div>');
+            }
+            }
+            });
+          })
+            </script>
