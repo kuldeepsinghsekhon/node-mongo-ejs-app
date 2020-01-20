@@ -11,9 +11,14 @@ const BidSchema = new mongoose.Schema({
   expire:Date,
   lowestask:Number,
   highestbid:Number,
+  TransactionFee  : Number,
+  ProcessingFee  : Number,
+  ShippingFee  : Number,
+  DiscountCode :String,
+  TotalCharges :Number,
   user:{type: Schema.Types.ObjectId, ref: 'User'},
   attr_val:String,
   paymentMethodToken:String
 });
-const SellBid = mongoose.model('sellBid', BidSchema);
+const SellBid = mongoose.model('SellBid', BidSchema);
 module.exports = SellBid;

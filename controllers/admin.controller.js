@@ -1,10 +1,16 @@
 //let c= await Address.countDocuments(filter);
 const braintree = require("braintree");
+var paypal = require('paypal-rest-sdk');
 const gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
   merchantId: "dwt5m34ppngz6s7k",       //merchant id
   publicKey: "g2d976m7dxpt6bx5",        //public key
   privateKey: "117df9268ade2b95fc3f526966441059" //private key
+});
+paypal.configure({
+  'mode': 'sandbox', //sandbox or live
+  'client_id': 'AaquuDYgEqVLAHr-Iu6CSpJqlQQr7IFFej2VZtVP1MQE7OCof1x4xP-5mL7qMqK5r2BzDEd88f51O8sH',
+  'client_secret': 'EKF17WWFkiFCgraQdUsr5XrzKHPr9J5oA73CB17fpDcOLenDks1fE9IqAvf2lZCRz7Yo_c12iuP3ANMK'
 });
 const fs = require('fs');
 const path = require('path');
@@ -106,8 +112,6 @@ exports.saveBrand=function(req, res, next) {
 
   /* Admin can update brand */
   exports.updateBrand=function (req, res,next) {
-      console.log(req.body);
-      console.log('hello');
     // var brandId=req.params.id.replace(" ", "");
     var brandId=req.body.brandid;
     var brand = new Brand();
@@ -119,11 +123,10 @@ exports.saveBrand=function(req, res, next) {
     var img='';
     var brod={name:req.body.brand_name };
     if (!req.files || Object.keys(req.files).length=== 0) {
-      //console.log('No files were uploaded.');
+
     }else{  
       let brandImage1 = req.files.brandImage;
         imgname=Date.now()+path.extname(req.files.brandImage.name);
-        console.log(imgname);
         brandImage1.mv(imgpath+'//'+imgname, function(err) { 
           if (err) throw err
           //return res.status(500).send(err);
@@ -139,7 +142,6 @@ exports.saveBrand=function(req, res, next) {
       }
       exports.deleteBrand= async function name(req, res, next) {
         var productId=req.params.id;
-        console.log(productId);
         const del = await Brand.deleteOne({ _id: productId});
         // `1` if MongoDB deleted a doc, `0` if no docs matched the filter `{ name: ... }`
         del.deletedCount;
@@ -190,9 +192,7 @@ exports.saveCategory=function(req, res, next) {
     category.save(function(err,category) {
       if (err){
         throw err
-      } else{
-           // console.log(product);         
-      }      
+      }    
   });
   req.flash(
     'success_msg',
@@ -205,7 +205,6 @@ exports.saveCategory=function(req, res, next) {
 
 /* Admin can update  Category */
 exports.updateCategory=function (req, res,next) {
-    console.log(req.body);
   var brandId=req.body.brandid;
       brod={name:req.body.brand_name};     
   Category.findByIdAndUpdate(brandId, {$set:brod}, function (err, brand) {
@@ -217,14 +216,11 @@ exports.updateCategory=function (req, res,next) {
     exports.deleteCategory= async function name(req, res, next) {
       var productId=req.params.id;   
       const del = await Category.deleteOne({ _id: productId});
-      console.log( del.deletedCount);
       res.redirect('/admin/category/');
     }
 exports.productsBuyBids=function(req, res, next) {
     var perPage = 9;
-    var page = req.params.page || 1;
-    //console.log(req.user._id);
-   
+    var page = req.params.page || 1
     var query = {}; 
     Promise.all([
       OrderBid.find({  }).populate({path:'product'}),
@@ -243,8 +239,6 @@ exports.productsBuyBids=function(req, res, next) {
 exports.productsSellBids=function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
-    //console.log(req.user._id);
-   
     var query = {}; 
     Promise.all([
       OrderBid.find({ }).populate({path:'product'}),
@@ -263,9 +257,6 @@ exports.productsSellBids=function(req, res, next) {
 
 exports.allOrders=function(req, res, next) {
     var perPage = 9;
-    //var page = req.params.page || 1;
-    //console.log(req.user._id);
-   
     var query = {}; 
     Promise.all([
       OrderBid.find({ }).populate({path:'product'}),
@@ -273,7 +264,6 @@ exports.allOrders=function(req, res, next) {
       SellBid.find(query).sort({bidprice:-1}).limit(10),
     ]).then( ([orders,buybids])=>{
        var count= orders.length;
-        console.log(orders);
       res.render('pages/admin/orders', {
         buybids: buybids,
         orders:orders,
@@ -339,53 +329,82 @@ exports.dashboard = function(req, res){
   
   })
 }
-exports.updateOrderStatus = function (req,res,next) {
+exports.updateOrderStatus =async function (req,res,next) {
   var status =req.body.status.replace(" ","");
   var orderid =req.params.id.replace(" ","");
-//console.log(status);
-
-  OrderBid.findByIdAndUpdate(orderid, {status:status}, function (err, order) {
+var order=await OrderBid.findOne({_id:orderid}).populate({path:'sellbid'}).populate({path:'seller'});
+ // OrderBid.findByIdAndUpdate(orderid, {status:status}, function (err, order) {
  // var sellercahrges=  order.SellerTransaction.TotalPayout;
+
   var transactionid=order.payment.transaction.id;
   if(status=='canceled'){
   gateway.transaction.find(transactionid, function (err, transaction) {
-    //console.log(transaction);
     if(transaction.status=='submitted_for_settlement'||transaction.status=='settlement_pending'){
       gateway.transaction.void(transactionid, function (err, result) {
         if(result.success==true){
           order.payment= result;
           order.save();
-        }else{
-          console.log('dfsfds');
         }
-       
-     
-          // console.log(err);
          });
 
     }else{
       gateway.transaction.refund(transactionid, function (err, result) {
         if(result.success==true){
-          //console.log(result);
          order.payment= result;
           order.save();
-        }else{
-          console.log('xxxxxxxxxxxx');
         }
          }); 
     }
 
   });
-}
+}else{
+  var sender_batch_id = Math.random().toString(36).substring(9);
+  var sellerPaypal=order.seller.paypalEmail;
+  var bidprice=order.sellbid.bidprice;
+  var sellerCharges=order.sellbid.TotalCharges;
+  var sellerPayout=bidprice-sellerCharges;
+  var sender_item_id=order.product._id;
+  order.save();
+      var create_payout_json = {
+          "sender_batch_header": {
+              "sender_batch_id": sender_batch_id,
+              "email_subject": "You have a payment"
+          },
+          "items": [
+              {
+                  "recipient_type": "EMAIL",
+                  "amount": {
+                      "value": sellerPayout,
+                      "currency": "USD"
+                  },
+                  "receiver": sellerPaypal,
+                  "note": "Thank you.",
+                  "sender_item_id": sender_item_id
+              }
+          ]
+      };
+      var sync_mode = 'false';
+
+        paypal.payout.create(create_payout_json, sync_mode, function (error, payout) {
+            if (error) {
+                console.log(error.response);
+                throw error;
+            } else {
+                console.log("Create Single Payout Response");
+                console.log(payout);
+            }
+        });
+    }
+
   // });
     // gateway.transaction.sale({
     //   paymentMethodToken: "theToken",
     //   amount: sellercahrges
     // }, function (err, result) {
     // });
-    if (err) return next(err);
+   // if (err) return next(err);
     res.json({status:'ok',message:'status updATED',order:order});
-});
+//});20/1/20
 }
 exports.viewTransaction = function (req,res,next) {
   

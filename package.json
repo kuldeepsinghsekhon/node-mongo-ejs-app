@@ -35,6 +35,7 @@
     "passport-http": "^0.3.0",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
+    "paypal-rest-sdk": "^1.8.1",
     "performance-now": "^2.1.0",
     "stripe": "^7.13.0",
     "unique-names-generator": "^4.1.1",

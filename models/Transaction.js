@@ -6,7 +6,7 @@ const transactionSchema = new mongoose.Schema({
   ProcessingFee  : Number,
   ShippingFee  : Number,
   DiscountCode :String,
-  TotalPayout :Number,
+  TotalCharges :Number,
   TradeDate: Date,
   Settlement :Date,
   Payment: {type: Object},

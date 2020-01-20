@@ -38,7 +38,7 @@ variants:[{
     ref: 'Variant' //multiple image 
  }],
  sellbids:[{ type: Schema.Types.ObjectId,
-  ref: 'sellBid'
+  ref: 'SellBid'
 }] ,
 buybids:[{ type: Schema.Types.ObjectId,
   ref: 'BuyBid'
