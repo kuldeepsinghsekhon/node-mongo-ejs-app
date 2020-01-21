@@ -39,8 +39,8 @@ exports.products = function(req, res, next) {
     Product
         .find({})
         .skip((perPage * page) - perPage)
-        .populate({path:'sellbids',
-        match: { status: 'ask' }
+        .populate({path:'buybids',
+        match: { status: 'bid' }
         ,options: {
           limit: 1,
           sort: { bidprice: +1}        
