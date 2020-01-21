@@ -437,7 +437,6 @@ exports.transactionStatus = async function (req,res,next)
     order.payment= {transaction:transaction};
     order.save();
   res.json({status:"success",data:{},message:'fsadfasfd'})
-
   });
 }
 
