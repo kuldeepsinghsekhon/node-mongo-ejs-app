@@ -426,7 +426,6 @@ exports.viewTransaction = function (req,res,next) {
     })         
   })     
 }
-
 exports.transactionStatus = async function (req,res,next)
 {
   var orderid =req.body.orderid.replace(" ","");
