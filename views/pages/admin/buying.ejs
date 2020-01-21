@@ -31,12 +31,16 @@
                      </thead>
                      <tbody>                          
                          <% if(buybids){ %>
-                            <% for (var i = 0; i < buybids.length; i++) { %>
+                            <% for (var i = 0; i < buybids.length; i++) {
+                              let s = buybids[i].expire;
+                              let d = new Date(s); 
+                              d = d.toUTCString()
+                              %>
                                <tr><td><%= buybids[i].title %></td>
                                   <td><%= buybids[i].bidprice %></td>
                                   <td><%= buybids[i].highestbid %></td>
                                   <td><%= buybids[i].lowestask %></td>
-                                  <td><%= buybids[i].expire%></td>
+                                  <td><%=d %></td>
                               </tr>
                          <% } }else{ %>
                             <tr> <td colspan="5" class="no-pis"><em>No Results.</em></td></tr>

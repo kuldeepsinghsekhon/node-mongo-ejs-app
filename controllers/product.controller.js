@@ -73,10 +73,12 @@ exports.products = function(req, res, next) {
       SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1),
       BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1),
       OrderBid.find({ product: productId }).sort({orderdate:-1}).limit(10),
+      OrderBid.findOne({ product: productId }).sort({netprice:+1}).limit(1),
+      OrderBid.findOne({ product: productId }).sort({netprice:-1}).limit(1),
       OrderBid.count({ product: productId}),
       Product.find({ }).limit(10),
-    ]).then( ([ product, sellbid,highbid,lastsale,ordercount,relatedproducts]) => {
-
+    ]).then( ([ product, sellbid,highbid,lastsale,lowest_netprice,heigh_netprice,ordercount,relatedproducts]) => {
+       console.log(lowest_netprice.netprice);
       var allsales=lastsale;
       var spchange=0;
      var highsale;
@@ -88,10 +90,13 @@ exports.products = function(req, res, next) {
 
         highsale=lastsale[0];
          }
+         //console.log(highsale);
       res.render('pages/public/product-detail', {
         product: product,
         lowbid:sellbid,
         highbid:highbid,
+        lowest_netprice:lowest_netprice,
+        heigh_netprice:heigh_netprice,
         layout:'layout',
         spchange:spchange,
         lastsale:highsale,

@@ -319,7 +319,7 @@
 								</li>
 								<li class="ds-range-col market-up">
 								   <img src="/assets/images/maker2.png" alt="chart"><span>Trade Range (12 Mos.)</span>
-								   <div class="ds-range value-container"><span class="value">$144<span> - </span>$152</span></div>
+								   <div class="ds-range value-container"><span class="value"><%if(lowest_netprice){%>$<%=Math.ceil(lowest_netprice.netprice)%><%}else{ %>--<%}%><span> - </span><%if(heigh_netprice){%>$<%=Math.ceil(heigh_netprice.netprice)%><%}else{ %>--<%}%></span></div>
 								</li>
 								<li class="volatility-col market-down">
 								   <img src="/assets/images/maker3.png" alt="volatility"><span>Volatility</span>

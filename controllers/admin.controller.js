@@ -445,14 +445,16 @@ exports.orderDetail =async function (req,res,next) {
   var orderid =req.params.id.replace(" ","");
 var order=await OrderBid.findOne({_id:orderid}).populate({path:'sellbid'}).populate({path:'buybid'}).populate({path:'seller'}).populate({path:'product'});  
 var seller=order.seller;
-console.log('seller'+seller)
+var buyer = order.buyer;
+//console.log('seller'+seller)
 var sellerinfo= await Address.findOne({user:seller, address_type:'seller'}); 
-
-console.log(order);
-console.log('sellerinfo');
-console.log(sellerinfo);
-console.log('----------------------shipping------------------');
-console.log(order.payment.transaction.shipping);
+// var buyerinfo = await Address.findOne({user:buyer,address_type:'buyer'});
+// console.log(buyerinfo);
+// console.log(order);
+// console.log('sellerinfo');
+// console.log(sellerinfo);
+ console.log('----------------------shipping------------------');
+console.log(order.buybid);
   if(order){
     res.render('pages/admin/order-detail', {
       order:order,
