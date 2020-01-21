@@ -8,6 +8,7 @@ const product_controller = require('../controllers/api.product.controller');
 const auth_controller = require('../controllers/auth.controller');
 const utils_controller = require('../controllers/utils.controller');
 router.post('/products/',forwardAuthenticated,product_controller.products);
+router.post('/latestBids/',forwardAuthenticated,product_controller.latestBids);
 router.get('/products/:id',forwardAuthenticated, product_controller.findById );
 router.get('/products/sell/:id',ensureAuthenticated, product_controller.sellProductVariant );
 router.post('/products/sell/:id/',ensureAuthenticated, product_controller.sellAsk );

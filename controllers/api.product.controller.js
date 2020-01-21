@@ -33,6 +33,30 @@ exports.products = function(req, res, next) {
             })
         })
   }
+  exports.latestBids = function(req, res, next) {
+    var perPage = 9;
+    var page = req.body.page || 1;
+    Product
+        .find({})
+        .skip((perPage * page) - perPage)
+        .populate({path:'sellbids',
+        match: { status: 'ask' }
+        ,options: {
+          limit: 1,
+          sort: { bidprice: +1}        
+     } })
+     .limit(perPage)
+        .exec(function(err, latestBids) {
+            Product.count().exec(function(err, count) {
+                if (err) return next(err)
+               // console.log(products);
+                res.json({status:'success',
+                   data:{page: page,TotalPages: Math.ceil(count / perPage),latestBids: latestBids},
+                   message:'Products Listed Successfully',                     
+                })
+            })
+        })
+  }
   exports.productsByCategory = function(req, res, next) {
     var perPage = 9;
     var category_slug=req.params.category_slug;
