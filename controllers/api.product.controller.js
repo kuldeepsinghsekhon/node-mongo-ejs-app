@@ -43,7 +43,7 @@ exports.products = function(req, res, next) {
         match: { status: 'buybid' }
         ,options: {
           limit: 1,
-          sort: { bidprice: +1}        
+          sort: { bidprice: -1}        
      } })
      .limit(perPage)
         .exec(function(err, latestBids) {
