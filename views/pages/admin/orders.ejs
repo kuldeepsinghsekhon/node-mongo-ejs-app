@@ -107,7 +107,7 @@
     var confirm_status = null;
     confirm_status = $('#confirm_status').val();
       $("select.action").change(function(){
-        var success = (confirm('Are you sure want to change the status ????')) ? true : false; 
+       // var success = (confirm('Are you sure want to change the status ????')) ? true : false; 
         var id=$(this).data('id');
           var SelectedAction = $(this).children("option:selected").val();
           // alert("You have selected Action - " + SelectedAction);
