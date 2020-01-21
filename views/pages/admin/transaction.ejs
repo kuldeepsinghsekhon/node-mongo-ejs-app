@@ -32,7 +32,7 @@
                         <th class="col-sm-1 col-xs-2 sortable undefined">Price </th>
                         <th class="col-sm-1 col-xs-2 sortable undefined">Transcation </th>
                         <th class="col-sm-1 col-xs-2 sortable undefined">T.Status </th>
-                        <th class="col-sm-1 col-xs-2 sortable undefined">Latest status</th>
+                        <th class="col-sm-1 col-xs-2 sortable undefined">Re-Fetch status</th>
                      </tr>
                     </thead>
                     <tbody>
@@ -51,7 +51,7 @@
                                <!-- <td><%= orders[i].status %></td> -->
                                <td><%= orders[i].payment.transaction.id%></td>
                                <td><%= orders[i].payment.transaction.status%></td>
-                               <td><button class="status_check" data-id="<%= orders[i]._id %>">Status Latest</button></td>
+                               <td><button class="status_check" data-id="<%= orders[i]._id %>">Refresh</button></td>
                            </tr>
                             <% } }else{ %>
                                <tr> <td colspan="5" class="no-pis"><em>No Results.</em></td></tr>
