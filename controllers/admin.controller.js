@@ -325,8 +325,7 @@ exports.dashboard = function(req, res){
       pcount:pcount,
       sellasks:sellasks,
       layout:'admin-layout'
-    })
-  
+    }) 
   })
 }
 exports.updateOrderStatus =async function (req,res,next) {
@@ -337,13 +336,20 @@ var order=await OrderBid.findOne({_id:orderid}).populate({path:'sellbid'}).popul
  // var sellercahrges=  order.SellerTransaction.TotalPayout;
 
   var transactionid=order.payment.transaction.id;
-  if(status=='canceled'){
+  if(order.status=='canceled'){
+    res.json({status:'error',message:'Can not Accept/Cancel Order Already canceled '});
+  }else{
+
+  if(status=='canceled' ){
+    console.log(status)
   gateway.transaction.find(transactionid, function (err, transaction) {
     if(transaction.status=='submitted_for_settlement'||transaction.status=='settlement_pending'){
       gateway.transaction.void(transactionid, function (err, result) {
         if(result.success==true){
           order.payment= result;
+          order.status=status;
           order.save();
+          res.json({status:'success',message:'Payment Voided Refund Proccess Initiated '});
         }
          });
 
@@ -351,20 +357,25 @@ var order=await OrderBid.findOne({_id:orderid}).populate({path:'sellbid'}).popul
       gateway.transaction.refund(transactionid, function (err, result) {
         if(result.success==true){
          order.payment= result;
+         order.status=status;
           order.save();
+          res.json({status:'success',message:'Refund Proccess Initiated '});
         }
+       
          }); 
     }
-
   });
 }else{
+  if(order.payment.transaction.status=='voided'){
+    res.json({status:'error',message:'Can not Accept Order Already canceled '});
+  }else{
   var sender_batch_id = Math.random().toString(36).substring(9);
   var sellerPaypal=order.seller.paypalEmail;
   var bidprice=order.sellbid.bidprice;
   var sellerCharges=order.sellbid.TotalCharges;
   var sellerPayout=bidprice-sellerCharges;
   var sender_item_id=order.product._id;
-  order.save();
+ 
       var create_payout_json = {
           "sender_batch_header": {
               "sender_batch_id": sender_batch_id,
@@ -384,7 +395,6 @@ var order=await OrderBid.findOne({_id:orderid}).populate({path:'sellbid'}).popul
           ]
       };
       var sync_mode = 'false';
-
         paypal.payout.create(create_payout_json, sync_mode, function (error, payout) {
             if (error) {
                 console.log(error.response);
@@ -392,22 +402,42 @@ var order=await OrderBid.findOne({_id:orderid}).populate({path:'sellbid'}).popul
             } else {
                 console.log("Create Single Payout Response");
                 console.log(payout);
+                order.status=status;
+                console.log(status)
+                order.save();
+                res.json({status:'success',message:'Order Accepted and Payout Send to Seller'});
             }
         });
     }
-
-  // });
-    // gateway.transaction.sale({
-    //   paymentMethodToken: "theToken",
-    //   amount: sellercahrges
-    // }, function (err, result) {
-    // });
-   // if (err) return next(err);
-    res.json({status:'ok',message:'status updATED',order:order});
-//});20/1/20
+  }
+}   
 }
 exports.viewTransaction = function (req,res,next) {
-  
+  var query = {};
+  Promise.all([
+    OrderBid.find({ }).populate({path:'product'}).populate({path:'sellbid'}),
+    SellBid.find(query).sort({bidprice:-1}),
+  ]).then( ([orders,buybids])=>{
+     var count= orders.length;
+    res.render('pages/admin/transaction', {
+      buybids: buybids,
+      orders:orders,
+      layout:'admin-layout'
+    })         
+  })     
+}
+
+exports.transactionStatus = async function (req,res,next)
+{
+  var orderid =req.body.orderid.replace(" ","");
+  var order=await OrderBid.findOne({_id:orderid});
+  var transactionid=order.payment.transaction.id;
+  gateway.transaction.find(transactionid, function (err, transaction) {
+    order.payment= {transaction:transaction};
+    order.save();
+  res.json({status:"success",data:{},message:'fsadfasfd'})
+
+  });
 }
 exports.statusWebhook = function (req, res) {
   gateway.webhookNotification.parse(

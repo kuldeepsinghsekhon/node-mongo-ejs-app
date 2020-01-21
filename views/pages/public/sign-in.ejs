@@ -1,6 +1,8 @@
 <div class="page_wrapper">
         <% include ../../partials/messages %>
         <div id="logreg-forms">
+            <div id="success_msg"></div>
+            <div id="message_error" class="danger"></div>
        <form action="#" method="POST" class="form-signin">
            <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Sign in</h1>
            <div class="social-login">
@@ -52,9 +54,11 @@
 			success: function (response) {
                 console.log(response);
 				if(response.status=='success'){
-                    $(location).attr('href', '/user/profile');
+                    $('#success_msg').html( '<div class="alert alert-success">Sign In successfully.</div>');        
+                    $(location).attr('href', response.data.url).delay(2000);
                 }else{
-                    alert(response);
+                    $('#message_error').html( '<div class="alert alert-success">'+response.message+'</div>');        
+
                 }
 				
 			}

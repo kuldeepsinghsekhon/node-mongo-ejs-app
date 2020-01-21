@@ -181,16 +181,16 @@ exports.fbSignUpSignin=function (req,res,next) {
 exports.signIn=function(req, res, next){
   let errors=[];
         if(req.user.role=='Admin'){
-          res.json({status:'success',userid:req.user._id,username:req.user.username,email:req.user.email,validate:true,role:req.user.role});
+          res.json({status:'success',data:{userid:req.user._id,username:req.user.username,email:req.user.email,validate:true,role:req.user.role,url:'admin'},message:'Welcome Admin'});
 
          // res.redirect('/admin/');
         }else if(req.user.role=='User'){
           if(req.session.oldUrl){
              var oldUrl=req.session.oldUrl;
             req.session.oldUrl=null;
-            res.json({status:'success',data:{userid:req.user._id,username:req.user.username,email:req.user.email,validate:true,url:req.user.oldUrl},message:''});
+            res.json({status:'success',data:{userid:req.user._id,username:req.user.username,email:req.user.email,validate:true,url:oldUrl},message:''});
            }else{
-            res.json({status:'success',data:{userid:req.user._id,username:req.user.username,email:req.user.email,validate:true},message:''});
+            res.json({status:'success',data:{userid:req.user._id,username:req.user.username,email:req.user.email,validate:true,url:'user/profile'},message:''});
 
            }
          
@@ -330,6 +330,7 @@ exports.forgetPasswordReset = function(req,res,next){
       })
 
     }
+  
   exports.updateforgetresetpassword = function(req,res,next) {
     var token=req.body.token;
     const user_id=req.body.userid;
