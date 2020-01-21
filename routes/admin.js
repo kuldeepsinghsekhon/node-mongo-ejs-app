@@ -93,4 +93,6 @@ router.get('/brand/:id',ensureAuthenticated, permit('Admin'), admin_controller.l
   router.get('/category/:id/delete',ensureAuthenticated, permit('Admin'), admin_controller.deleteCategory);
   router.get('/transaction/',ensureAuthenticated, permit('Admin'),admin_controller.viewTransaction);
   router.post('/transcation_status',ensureAuthenticated,permit('Admin'),admin_controller.transactionStatus);
+  router.get('/order/:id',ensureAuthenticated, permit('Admin'),admin_controller.orderDetail);
+
 module.exports = router;

@@ -45,7 +45,7 @@
                               %>
                               
                                 <tr><td><%= orders[i].product.name %></td>
-                                   <td><%= orders[i]._id %></td>
+                                   <td><a href="/admin/order/<%= orders[i]._id %>"><%= orders[i]._id %></a></td>
                                    <td><%= d %></td>
                                    <td><%= orders[i].netprice %></td>
                                    <!-- <td><%= orders[i].status %></td> -->

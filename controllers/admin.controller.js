@@ -19,6 +19,8 @@ const BuyBid = require('../models/BuyBid');
 const Attribute = require('../models/Attribute');
 const OrderBid = require('../models/OrderBid');
 const Product = require('../models/Product');
+const Address = require('../models/Address');
+
 var mongoose = require('mongoose');
 /*brand controller */
 const Brand = require('../models/Brand');
@@ -437,6 +439,29 @@ exports.transactionStatus = async function (req,res,next)
   res.json({status:"success",data:{},message:'fsadfasfd'})
 
   });
+}
+
+
+exports.orderDetail =async function (req,res,next) {
+  var orderid =req.params.id.replace(" ","");
+var order=await OrderBid.findOne({_id:orderid}).populate({path:'sellbid'}).populate({path:'buybid'}).populate({path:'seller'}).populate({path:'product'});  
+var seller=order.seller;
+console.log('seller'+seller)
+var sellerinfo= await Address.findOne({user:seller, address_type:'seller'}); 
+
+console.log(order);
+console.log('sellerinfo');
+console.log(sellerinfo);
+console.log('----------------------shipping------------------');
+console.log(order.payment.transaction.shipping);
+  if(order){
+    res.render('pages/admin/order-detail', {
+      order:order,
+      sellerinfo:sellerinfo,
+      layout:'admin-layout'
+    })
+  }
+         
 }
 exports.statusWebhook = function (req, res) {
   gateway.webhookNotification.parse(
