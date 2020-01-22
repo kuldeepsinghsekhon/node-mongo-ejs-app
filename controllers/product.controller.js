@@ -196,16 +196,19 @@ exports.sellProductVariantNowPay=function(req, res, next) {
     })
 }
 exports.sellCalculateCharges=async function(req, res, next) {
-   var productId=req.body.id;
-   
+   var productId=req.body.id.replace(" ","");
+   var attrv=req.body.attr_val.replace(" ","");
+   console.log(attrv);
+   console.log(productId);
    Promise.all([
     Product.findOne({ _id: productId }).populate({path:'attrs'}),
-    BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1),
-    SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1),
-
+    BuyBid.findOne({productid:productId,status:'buybid',attr_val:attrv}).sort({bidprice:-1}).limit(1),
+    SellBid.findOne({productid:productId,status:'ask',attr_val:attrv}).sort({bidprice:+1}).limit(1),
   ]).then( ([product,highbid,lowestask])=>{
+    console.log(highbid);
     var askprice=0; 
       if(!req.body.askprice){
+        if(highbid)
         askprice=highbid.bidprice;
         
        }else{
@@ -611,10 +614,11 @@ exports.placeBuyBid=async function name(req,res,next) {
   
 }
 exports.calculateBuyCharges=function name(req,res,next) {
-  var productId=req.body.id;
+  var productId=req.body.id.replace(" ","");
+   var attrv=req.body.attr_val.replace(" ","");
   Promise.all([
     Product.findOne({ _id: productId }).populate({path:'attrs'}),
-    SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1),
+    SellBid.findOne({productid:productId,status:'ask',attr_val:attrv}).sort({bidprice:+1}).limit(1),
   ]).then( ([product,lowestask])=>{
     var askprice=0; 
        if(req.body.bidType=='buy'){
@@ -933,7 +937,7 @@ exports.editProduct=function(req, res, next) {
     exports.findProductAjax=function(req, res, next) {
       var productId=req.body.productid;
       var attr_val=req.body.attr_val;
-      req.session.oldUrl='/products/'+productId;
+     // req.session.oldUrl='/products/'+productId;
       Promise.all([
         Product.findOne({ _id: productId }).populate({path:'attrs'}),
         SellBid.findOne({productid:productId,status:'ask',attr_val:attr_val}).sort({bidprice:+1}).limit(1),

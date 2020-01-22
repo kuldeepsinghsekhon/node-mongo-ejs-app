@@ -275,14 +275,20 @@
 		<script>
 		//$(function(){
 			$("#menu2btn").on('click',function(){
-				var id ="<%=product.id %>";// $("#id-manuf-name").val();
-				//alert('sdfsd');
 				$(".nextPay").attr("disabled",false);
+				// $("#id-manuf-name").val();
+				//alert('sdfsd');
+				gethighstbidCharges();
+			});			
+		//})
+		function gethighstbidCharges(){
+			var id ="<%=product.id %>";
 				$("#bid-type").val("buy");
 				var bidType=$("#bid-type").val();
-				console.log(bidType);
-				var size='5';
-				var sendInfo = {id: id, bidType:bidType};
+				//console.log(bidType);
+				var attrv=$('#attr-selector-attr').text();
+				
+				var sendInfo = {id: id, bidType:bidType , attr_val:attrv};
 				$.ajax({
 					method:'post',
 					url:"/products/calcbuy/",
@@ -298,8 +304,7 @@
 				   error:function(err){  //console.log(err);  
 				}	
 				});	
-			});			
-		//})
+		}
 		$("#menu1btn").on('click',function(){
 			$(".nextPay").attr("disabled",true);
 			$("#bid-type").val("buybid");
@@ -326,9 +331,10 @@
 			var id ="<%=product.id %>";
 				var bidprice=$("#bid-price-input").val();
 				var expiry=$('.dropdown-toggle').text();
-				var size=$('#attr-selector-attr').text();
+				var attrv=$('#attr-selector-attr').text();
+				
 				//console.log('ssssssssssssssss'+size +product.attrs.name);
-				var sendInfo = {id: id, bidprice:bidprice, expiry:expiry };
+				var sendInfo = {id: id, bidprice:bidprice, expiry:expiry ,attr_val:attrv };
 				$.ajax({
 					method:'post',
 					url:"/products/calcbuy/",
@@ -350,6 +356,7 @@
 	getbidCharges();   
 })
 $( function(){
+
 	var attrs="<%=(product.attrs?product.attrs.attrs.length:0)%>";
 	if(attrs>0){
 		$('.bidsel-pane').hide(); //attr-selector-select
@@ -382,6 +389,7 @@ $( function(){
 							$('.lowask').text('--');
 							$('#lowask-input').val('');
 						}
+						gethighstbidCharges();		
 					},
 					error:function(err){
 						console.log('some error occoured');
@@ -391,6 +399,7 @@ $( function(){
 		$('#attr-selector-attr').html(attrv);
 		$('.attr-selector-pane').hide();
 		$('.bidsel-pane').show();	
+		//getbidCharges();   
 		});	
 		$('.attr-selector-select').on('click',function(){
 		$('.attr-selector-pane').show();
@@ -409,6 +418,7 @@ $( function(){
 	
 	$('.pay-shipping-bt').on('click',function(){
 		//alert('dfsf')
+		
 		var formdata = {id: '<%=product.id %>'};
 		$.ajax({
 			method:'post',
@@ -477,5 +487,6 @@ $('.paymethod-submit').on('click',function(){
 });
 
 //shippingInfotext
+
 
 		</script>

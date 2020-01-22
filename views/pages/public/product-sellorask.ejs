@@ -150,9 +150,8 @@
 			<div class="ask-input" data-tour="bid-education">
 			   <div class="amount-input vertical">
 				  <div class="decoration">$</div>
-				  <% if(highbid){ %> <input id="highbid-input" placeholder="" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="<%=highbid.bidprice%>">
-				  <% }else{ %> <input data-testid="product-bid-input" placeholder="" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="">
-				  <% } %>
+				  <input id="highbid-input" placeholder="" readonly class="amount" name="ask-amount" type="tel" maxlength="11" value="<%=(highbid ? highbid.bidprice : '') %>">
+				  
 			   </div>
 			</div>
 			<div class="bid-warning "><span class="warning-text">You are about to sell at the highest Bid price</span></div>			
@@ -228,10 +227,15 @@
 		//$(function(){
 			$("#menu2btn").on('click',function(){
 				$(".nextPay").attr("disabled",false);
-				var id ="<%=product.id %>";// $("#id-manuf-name").val();
+				gethighestbidCharges();
+			});			
+		//})
+		function gethighestbidCharges(){
+			var id ="<%=product.id %>";// $("#id-manuf-name").val();
 				$("#bid-type").val("sale");
-				var size='5';
-				var sendInfo = {id: id};
+				var attr_val=$('#attr-selector-attr').text();
+				console.log(attr_val);
+				var sendInfo = {id:id, attr_val:attr_val };
 				$.ajax({
 					method:'post',
 					url:"/products/cal/",
@@ -246,11 +250,10 @@
 					$("#totalpayout").text('$'+json_data['data'].totalpayout);
 					$('.warning-text').text('You are about to sell at the highest Bid price');
 				   },
-				   error:function(err){  //console.log(err);  
+				   error:function(err){  console.log(err);  
 				}	
 				});	
-			});			
-		//})
+		}
 		$("#menu1btn").on('click',function(){
 			$("#bid-type").val("ask");
 			$(".nextPay").attr("disabled",true);
@@ -267,8 +270,9 @@
 			var id ="<%=product.id %>";
 				var askprice=$("#bid-price-input").val();
 				var expiry=$('.dropdown-toggle').text();
-				var size=$('#attr-selector-attr1').text();
-				var sendInfo = {id: id, askprice:askprice , expiry: expiry };
+				var attr_val=$('#attr-selector-attr').text();
+				console.log(attr_val);
+				var sendInfo = {id: id, askprice:askprice , expiry:expiry , attr_val:attr_val };
 				$.ajax({
 					method:'post',
 					url:"/products/cal/",
@@ -330,6 +334,7 @@ $( function(){
 							$('.lowask').text('--');
 							
 						}
+						gethighestbidCharges();
 					},
 					error:function(err){
 						console.log('some error occoured');
@@ -339,12 +344,13 @@ $( function(){
 		$('#attr-selector-attr').html(attrv);
 		$('.attr-selector-pane').hide();
 		$('.bidsel-pane').show();	
+		getbidCharges(); 
 		});	
 		$('.attr-selector-select').on('click',function(){
 		$('.attr-selector-pane').show();
 		$('.bidsel-pane').hide();	
 		});	
-
+		
 	}else{		
 		$('.attr-selector-pane').hide();
 	}
@@ -354,9 +360,9 @@ $( function(){
 		var bidType="ask";
 		 bidType=$("#bid-type").val();
 		 var expiry=$('.dropdown-toggle').text();
-				var size=$('#attr-selector-attr1').text();
+				var attr_val=$('#attr-selector-attr').text();
 		//alert(bidType)
-		var formdata = {id: '<%=product.id %>' ,bidType:bidType , expiry:expiry , size:size };
+		var formdata = {id: '<%=product.id %>' ,bidType:bidType , expiry:expiry , attr_val:attr_val };
 		
 		$.ajax({
 			method:'post',
