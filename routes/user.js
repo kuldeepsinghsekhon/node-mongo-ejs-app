@@ -7,6 +7,7 @@ const { permit } = require('../config/role-auth');
 
   router.get('/selling',ensureAuthenticated,permit('User'), settings_controller.productsSelling);
   router.get('/buying',ensureAuthenticated,permit('User'), settings_controller.productsBuying);
+ 
   router.get('/portfolio',ensureAuthenticated,permit('User'),settings_controller.productsPortfolio);
   router.get('/following',ensureAuthenticated,permit('User'), settings_controller.followingProducts);
   router.get('/settings/profile',ensureAuthenticated,permit('User'),settings_controller.editProfile);
