@@ -71,14 +71,25 @@ exports.products = function(req, res, next) {
     Promise.all([
       Product.findOne({ _id: productId }).populate({path:'attrs'}),
       SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1),
+      OrderBid.find({product:productId}),
       BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1),
       OrderBid.find({ product: productId }).sort({orderdate:-1}).limit(10),
       OrderBid.findOne({ product: productId }).sort({netprice:+1}).limit(1),
       OrderBid.findOne({ product: productId }).sort({netprice:-1}).limit(1),
+      Product.findOne({ _id: productId }),
       OrderBid.count({ product: productId}),
       Product.find({ }).limit(10),
-    ]).then( ([ product, sellbid,highbid,lastsale,lowest_netprice,heigh_netprice,ordercount,relatedproducts]) => {
-       console.log(lowest_netprice.netprice);
+    ]).then( ([ product, sellbid,sellBid_avg,highbid,lastsale,lowest_netprice,heigh_netprice,product_details,ordercount,relatedproducts]) => {
+      // console.log(product_details.price);
+      var avg_retail_price = ((product_details.price/sellbid.bidprice)*100).toFixed(2);
+     // console.log(sellBid_avg[0].netprice); 
+      var addtotal = 0 ;
+      for(var i = 0; i< sellBid_avg.length ; i++ ) {
+        var addtotal = addtotal+sellBid_avg[i].netprice;
+       }
+       
+         var avg = parseInt(addtotal/sellBid_avg.length);
+         console.log(avg);
       var allsales=lastsale;
       var spchange=0;
      var highsale;
@@ -97,6 +108,9 @@ exports.products = function(req, res, next) {
         highbid:highbid,
         lowest_netprice:lowest_netprice,
         heigh_netprice:heigh_netprice,
+        product_details:product_details,
+        avg_retail_price:avg_retail_price,
+        avg:avg,
         layout:'layout',
         spchange:spchange,
         lastsale:highsale,

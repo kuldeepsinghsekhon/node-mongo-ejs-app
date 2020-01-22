@@ -315,7 +315,7 @@
 							 <ul class="row list-unstyled">
 								<li class="ft-high-low-col ">
 								   <img src="/assets/images/maker1.png"><span>52 Week </span>
-								   <div class="value-container"><span>High $238</span><span> | Low $135</span></div>
+								   <div class="value-container"><span>High <%if(heigh_netprice){%>$<%=Math.ceil(heigh_netprice.netprice)%><%}else{ %>--<%}%></span><span> |<%if(lowest_netprice){%>$<%=Math.ceil(lowest_netprice.netprice)%><%}else{ %>--<%}%></span></div>
 								</li>
 								<li class="ds-range-col market-up">
 								   <img src="/assets/images/maker2.png" alt="chart"><span>Trade Range (12 Mos.)</span>
@@ -347,7 +347,7 @@
 											<div>
 											   <div class="tile Tile-oazi1d-0 bbbEOC" data-testid="product-tile">
 												  <a style="color: black;" href="/uploads/products/<%= relatedproducts[i].image %>">
-													 <div class="TileImage-wau2e8-0 cqDtuD" style="position: relative; padding-top: 58%;"><img alt="Jordan 1 Mid SE Light Bone" src="/uploads/products/<%= relatedproducts[i].image %>" class="LazyImage__StyledImage-sc-153p075-0 MEhRc"></div>
+													 <div class="TileImage-wau2e8-0 cqDtuD" style="position: relative; padding-top: 58%;"><img style="width: 130px; height: 180px;" alt="Jordan 1 Mid SE Light Bone" src="/uploads/products/<%= relatedproducts[i].image %>" class="LazyImage__StyledImage-sc-153p075-0 MEhRc"></div>
 													 <div class="TileBody-x9tqoz-0 jscJze">
 														<div style="height: 38px;  margin-bottom: 6px;" size="16" class="PrimaryText-sc-1x1p394-0 hbRDwP">
 														   <div><%= relatedproducts[i].name %></div>
@@ -365,17 +365,10 @@
 											   </div>
 											</div>
 											<% } %>
-										
-											
-										
-										
 										 </ul>
 									  </div>
 								   </div>
 								</div>
-								
-								
-								
 								
 								<div class="graph_sec">
 								<div class="container">
@@ -400,9 +393,9 @@
 											  <thead>
 												 
 												 <tr>
-													<th class="col-sm-2 col-xs-3">SNo.</th>
-													<th class="col-sm-3 col-xs-3">Sale Price</th>
-													<th class="col-sm-4 col-xs-6">Date Time</th>
+													<th class="col-sm-2 col-xs-3" style="width:auto;">SNo.</th>
+													<th class="col-sm-3 col-xs-3" style="width:auto;">Sale Price</th>
+													<th class="col-sm-4 col-xs-6" style="width:auto;">Date Time</th>
 													
 												 </tr>
 												
@@ -411,8 +404,8 @@
 												<%if(allsales.length>0){
 													for (var i = 0; i < allsales.length; i++) { %>
 												 <tr>
-													<td><%=i%></td>
-													<td>$<%=Math.ceil(allsales[i].netprice)%></td>
+													<td style="width: auto"><%=i%></td>
+													<td style="width:auto">$<%=Math.ceil(allsales[i].netprice)%></td>
 													<td><%=allsales[i].orderdate%></td>
 													
 												 </tr>
@@ -443,43 +436,48 @@
 													Price Premium
 													<div class="historical-detail">(Over Original Retail Price)</div>
 												 </div>
-												 <div class="gauge-value">13.8%</div>
+												 <div class="gauge-value"><%= avg_retail_price%>%</div>
 											  </div>
 											  <div class="gauge-container">
 												 <div class="gauge"></div>
 												 <div class="gauge-title">Average Sale Price</div>
-												 <div class="gauge-value">$161</div>
+												 <div class="gauge-value">$ <%= avg%> </div>
 											  </div>
 										   </div>
 										</div>
-	
-	
 								</div>
 								</div>
 								</div>
-	
-	
-	
 				</div>
 				 <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
+
+				 
+  <div class="modal" id="myModal" role="dialog">
     <div class="modal-dialog">
-    
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-			<div id="example-table"></div>
-        </div>
+        	<div class="modal-header">
+         		 <h4 class="modal-title">Modal Header</h4>
+			</div> 
+			<div class="modal-body">
+				<form >
+					<div class="panel panel-default">
+						<div class="panel-body">
+								<div class="form-group">                              
+									<div>
+										<div id="example-table"></div>
+									</div>
+								</div>  
+						</div>
+					</div>
+				</form>
+			</div>
+        
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
-      
-    </div>
+	</div>
   </div>
   
 				<script>
@@ -491,6 +489,7 @@
 				console.log(id);
 				$("#myModal").modal()
 				var table = new Tabulator("#example-table", {
+					layout:"fitColumns",
 					productId:id,	
 					ajaxURL:"/products/bids/"+id, //ajax URL
 						ajaxConfig:{
@@ -500,10 +499,16 @@
 								"Content-type": 'application/json; charset=utf-8', //set specific content type
 							},
 						},
+						
 							columns:[
 							{title:"Attribute", field:"attr_val"},
 							{title:"title", field:"title"},	
-							{title:"price", field:"bidprice"} ] // send parameters to the server as a JSON encoded string
+							{title:"price", field:"bidprice"},
+							// {title:"price",field:"bidprice"},
+							// {title:"price",field:"bidprice"},
+							// {title:"price",field:"bidprice"}
+						
+						] // send parameters to the server as a JSON encoded string
 					});
 				// $.ajax({
 				// 	url: "/products/bids/",
@@ -525,6 +530,7 @@
 				console.log(id);
 				$("#myModal").modal()
 				var table = new Tabulator("#example-table", {
+					layout:"fitColumns",
 					productId:id,	
 					ajaxURL:"/products/asks/"+id, //ajax URL
 						ajaxConfig:{
@@ -534,10 +540,12 @@
 								"Content-type": 'application/json; charset=utf-8', //set specific content type
 							},
 						},
-							columns:[
+							columns:
+							[
 							{title:"Attribute", field:"attr_val"},	
 							{title:"title", field:"title"},	
-							{title:"price", field:"bidprice"}] // send parameters to the server as a JSON encoded string
+							{title:"price", field:"bidprice"}
+							] // send parameters to the server as a JSON encoded string
 					});
 	});
 
@@ -549,6 +557,7 @@
 				console.log(id);
 				$("#myModal").modal()
 				var table = new Tabulator("#example-table", {
+					layout:"fitColumns",
 					productId:id,	
 					ajaxURL:"/products/asks/"+id, //ajax URL
 						ajaxConfig:{

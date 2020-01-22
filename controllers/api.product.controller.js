@@ -9,6 +9,155 @@ const OrderBid = require('../models/OrderBid');
 const path = require('path');
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
+const gateway = braintree.connect({
+  environment: braintree.Environment.Sandbox,
+  merchantId: "dwt5m34ppngz6s7k",       //merchant id
+  publicKey: "g2d976m7dxpt6bx5",        //public key
+  privateKey: "117df9268ade2b95fc3f526966441059" //private key
+});
+exports.braintreeClientToken = function (req, res) {
+  var userid = req.body.userid;
+  gateway.clientToken.generate({}, function (err, response) {
+    var clientToken = response.clientToken;
+  res.json({status:'success',data:{clientToken:clientToken},message:'Client token generated success'});
+  });
+  }
+
+exports.place_buy=async function name(req,res,next) {
+  const buyBid = new BuyBid();
+  var bidprice=0;
+  const productId= req.body.productid;
+  var attr_val= req.body.attr_val;
+  var first_name_shipping = req.body.first_name_shipping;
+  var last_name_shipping = req.body.last_name_shipping;
+  var address_shipping= req.body.address_shipping;
+  var address2_shipping = req.body.address2_shipping;
+  var city_shipping = req.body.city_shipping;
+  var state_shipping = req.body.state_shipping;
+  var country_code_shipping = req.body.country_code_shipping;
+  var postalCode_shipping = req.body.postalCode_shipping;
+  var telephone_shipping = req.body.telephone_shipping;
+  var first_name_billing = req.body.first_name_billing;
+  var last_name_billing = req.body.last_name_billing;
+  var address_billing = req.body.address_billing;
+  var address2_billing = req.body.address2_billing;
+  var city_billing = req.body.city_billing;
+  var state_billing = req.body.state_billing;
+  var country_code_billing = req.body.country_code_billing;
+  var postalCode_billing = req.body.postalCode_billing;
+  var telephone_billing = req.body.telephone_billing;
+  var sellask=await SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1);
+  var highestbid=await BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1);
+
+  var prod=await Product.findById(productId).populate('buybids');
+  if(highestbid){
+    buyBid.highestbid = highestbid.bidprice;
+  }
+  if(sellask){
+    buyBid.lowestask = sellask.bidprice;
+  }
+  buyBid.productid = req.body.productid;
+  buyBid.bidprice = req.body.bidprice;
+  buyBid.attr_val=attr_val;
+
+  buyBid.user = req.user
+  buyBid.biddate=Date.now();//Date.now() + ( 3600 * 1000 * 24)
+  var expiry=req.body.expiry;
+        expiry=expiry.split("Days").map(Number);  
+        var expire= parseInt(expiry[0])    
+  buyBid.expire=Date.now() + ( 3600 * 1000 * 24*expire)
+  buyBid.title=prod.name;
+  
+  if(req.body.bidType=='buy'){
+    buyBid.status="buy";   
+    bidprice=sellask.bidprice;
+  }else{
+    buyBid.status="buybid";
+    bidprice=parseInt(req.body.bidprice);
+  }
+  buyBid.bidprice = bidprice;
+   
+  var processingFee=bidprice*0.09;
+     var authenticationFee=bidprice*0.03;
+     var shipping=30;
+     var totalpay=bidprice+(processingFee+authenticationFee+shipping);
+  var totalcharges=Math.ceil(totalpay);
+//  console.log('total chrges'+totalcharges);
+ // console.log('bidprice'+bidprice);
+  //let buybids=[];
+//  var prod=await Product.findById(productId).populate('buybids');
+//  prod.buybids.push(buyBid);
+//   prod.save();
+ // console.log(prod);
+ // console.log(buyBid);
+  //console.log('buyBid');
+  var nonceFromTheClient = req.body.paymentMethodNonce;
+  var newTransaction = gateway.transaction.sale({
+    amount: totalcharges,
+    paymentMethodNonce: nonceFromTheClient,
+    billing: {
+      firstName: first_name_billing,
+      lastName: last_name_billing,
+      company: "",
+      streetAddress: address_billing,
+      extendedAddress: address2_billing,
+      locality: city_billing,
+      region: state_billing,
+      postalCode: postalCode_billing,
+      countryCodeAlpha2: country_code_billing
+    },
+    shipping: {
+      firstName: first_name_shipping,
+      lastName: last_name_shipping,
+      company: "",
+      streetAddress: address_shipping,
+      extendedAddress: address2_shipping,
+      locality: city_shipping,
+      region: state_shipping,
+      postalCode: postalCode_shipping,
+      countryCodeAlpha2: country_code_shipping
+    },
+    options: {
+      // This option requests the funds from the transaction
+      // once it has been authorized successfully
+      submitForSettlement: true
+    }
+  }, function(error, result) {
+      if (result) {
+       if(req.body.bidType=='buy'){  
+        const order=new OrderBid();    
+        sellask.status="sale";
+        bidprice=sellask.bidprice;
+        order.sellbid=sellask;
+        order.seller=sellask.user;
+        //buyBid.sellbid=sellask;
+        order.buybid=buyBid;
+        order.buyer=req.user;
+        order.netprice=totalpay;
+        order.product=prod;
+        order.status='Order Placed';
+        order.payment = result;
+        order.orderdate=Date.now();
+        order.save();
+        sellask.save();      
+      }     
+        buyBid.save();       
+          prod.buybids.push(buyBid);
+           prod.save();
+         
+        res.json({status:'success', data:{result}, message:'Buying Info Saved Success'});
+      } else {
+        res.status(500).send(error);
+      }
+
+  });
+  
+}
+
+
+
+
+
 exports.products = function(req, res, next) {
     var perPage = 9;
     var page = req.body.page || 1;
@@ -57,6 +206,31 @@ exports.products = function(req, res, next) {
             })
         })
   }
+  exports.ajaxproductBuying=function(req, res, next) {
+    // var perPage = 9;
+    // var page = req.params.page || 1;
+    var userid = req.body.user;
+    var status = req.body.status;
+    console.log(userid);
+    console.log(status);
+    var query = { user: userid,status:status}; 
+    Promise.all([
+      OrderBid.find({ buyer: userid,status:{$in: ['Won Bid', 'Order Placed']} }).populate({path:'product'}),
+      BuyBid.find(query).sort({bidprice:-1}).limit(10), 
+      OrderBid.find({ buyer:userid ,status:{$in: ['accepeted', 'canceled']} }).populate({path:'product'}),
+      Category.find(),
+    ]).then( ([orders,buybids,history,category])=>{
+      console.log(buybids);
+      res.json({status:'success', data: {
+        buybids: buybids,
+        orders:orders,
+        category:category,
+        history:history}  
+         })
+         
+         }).catch((error) => console.log(error));
+        }
+
   exports.productsByCategory = function(req, res, next) {
     var perPage = 9;
     var category_slug=req.params.category_slug;
@@ -199,12 +373,7 @@ exports.sellLowestBid=function name(req,res,next) {
 }
 
 /*********** Product Sell Or Ask  ***************/
-const gateway = braintree.connect({
-  environment: braintree.Environment.Sandbox,
-  merchantId: "dwt5m34ppngz6s7k",       //merchant id
-  publicKey: "g2d976m7dxpt6bx5",        //public key
-  privateKey: "117df9268ade2b95fc3f526966441059" //private key
-});
+
 exports.sellProductVariantNowPay=function(req, res, next) {
   var productId=req.params.id;
     product=Product.findById(productId,function(err,product){
