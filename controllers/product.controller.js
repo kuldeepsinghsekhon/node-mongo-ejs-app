@@ -1,4 +1,3 @@
-const braintree = require("braintree");
 const Product = require('../models/Product');
 const SellBid = require('../models/SellBid');
 const BuyBid = require('../models/BuyBid');
@@ -12,6 +11,20 @@ const User = require('../models/User');
 const path = require('path');
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
+const braintree = require("braintree");
+var paypal = require('paypal-rest-sdk');
+const gateway = braintree.connect({
+  environment: braintree.Environment.Sandbox,
+  merchantId: process.env.BraintreeMerchantId,       //merchant id 
+  publicKey: process.env.BraintreePublicKey,        //public key
+  privateKey: process.env.BraintreePrivateKey //private key 
+});
+paypal.configure({
+  'mode': 'sandbox', //sandbox or live
+  'client_id': process.env.PaypalClientId,
+  'client_secret': process.env.PaypalClientSecret
+});
+
 exports.products = function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
@@ -194,12 +207,12 @@ exports.sellLowestBid=function name(req,res,next) {
 }
 
 /*********** Product Sell Or Ask  ***************/
-const gateway = braintree.connect({
-  environment: braintree.Environment.Sandbox,
-  merchantId: "dwt5m34ppngz6s7k",       //merchant id
-  publicKey: "g2d976m7dxpt6bx5",        //public key
-  privateKey: "117df9268ade2b95fc3f526966441059" //private key
-});
+// const gateway = braintree.connect({
+//   environment: braintree.Environment.Sandbox,
+//   merchantId: "dwt5m34ppngz6s7k",       //merchant id
+//   publicKey: "g2d976m7dxpt6bx5",        //public key
+//   privateKey: "117df9268ade2b95fc3f526966441059" //private key
+// });
 exports.sellProductVariantNowPay=function(req, res, next) {
   var productId=req.params.id;
     product=Product.findById(productId,function(err,product){

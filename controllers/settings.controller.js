@@ -8,7 +8,19 @@ const Country = require('../models/Country');
 const Category = require('../models/Category');
 const UserNotification = require('../models/UserNotification');
 const utils_controller = require('../controllers/utils.controller');
-
+const braintree = require("braintree");
+var paypal = require('paypal-rest-sdk');
+const gateway = braintree.connect({
+  environment: braintree.Environment.Sandbox,
+  merchantId: process.env.BraintreeMerchantId,       //merchant id 
+  publicKey: process.env.BraintreePublicKey,        //public key
+  privateKey: process.env.BraintreePrivateKey //private key 
+});
+paypal.configure({
+  'mode': 'sandbox', //sandbox or live
+  'client_id': process.env.PaypalClientId,
+  'client_secret': process.env.PaypalClientSecret
+});
 
 const OrderBid = require('../models/OrderBid');
 

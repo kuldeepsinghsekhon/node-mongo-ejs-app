@@ -3,15 +3,20 @@ const braintree = require("braintree");
 var paypal = require('paypal-rest-sdk');
 const gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
-  merchantId: "dwt5m34ppngz6s7k",       //merchant id
-  publicKey: "g2d976m7dxpt6bx5",        //public key
-  privateKey: "117df9268ade2b95fc3f526966441059" //private key
+  merchantId: process.env.BraintreeMerchantId,       //merchant id 
+  publicKey: process.env.BraintreePublicKey,        //public key
+  privateKey: process.env.BraintreePrivateKey //private key 
 });
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
-  'client_id': 'AaquuDYgEqVLAHr-Iu6CSpJqlQQr7IFFej2VZtVP1MQE7OCof1x4xP-5mL7qMqK5r2BzDEd88f51O8sH',
-  'client_secret': 'EKF17WWFkiFCgraQdUsr5XrzKHPr9J5oA73CB17fpDcOLenDks1fE9IqAvf2lZCRz7Yo_c12iuP3ANMK'
+  'client_id': process.env.PaypalClientId,
+  'client_secret': process.env.PaypalClientSecret
 });
+// paypal.configure({
+//   'mode': 'sandbox', //sandbox or live
+//   'client_id': 'AaquuDYgEqVLAHr-Iu6CSpJqlQQr7IFFej2VZtVP1MQE7OCof1x4xP-5mL7qMqK5r2BzDEd88f51O8sH',
+//   'client_secret': 'EKF17WWFkiFCgraQdUsr5XrzKHPr9J5oA73CB17fpDcOLenDks1fE9IqAvf2lZCRz7Yo_c12iuP3ANMK'
+// });
 const fs = require('fs');
 const path = require('path');
 const SellBid = require('../models/SellBid');
@@ -258,6 +263,7 @@ exports.productsSellBids=function(req, res, next) {
 }
 
 exports.allOrders=function(req, res, next) {
+  console.log(process.env.PaypalClientId);
     var perPage = 9;
     var query = {}; 
     Promise.all([
