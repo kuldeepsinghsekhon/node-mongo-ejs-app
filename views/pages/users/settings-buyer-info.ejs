@@ -7,8 +7,7 @@
                   <div class="selection-subtitle">billing Info</div>
                   <div id="success_msg"></div>
                   <div id="message_error"></div>
-                 <form action="#"  accept-charset="UTF-8" method="POST" id="formSubmit"  >
-
+      <form action="#"  accept-charset="UTF-8" method="POST" id="formSubmit"  >
                   <div class='form-row'>
                     <div class='col-xs-12 form-group card required card_sec'>
                     <label class='control-label'>Card Number</label>
@@ -18,18 +17,21 @@
                      </div>	  </div>
                   </div>
                   <div class='form-row'>
-                    <div class='col-md-4 form-group cvc required card_sec'>
-                    <label class='control-label'>CVC</label>
-                        <div class="form-control" id="cc-cvv"></div>
-                                     <div class="invalid-feedback">
-                                      Security code required
-                                    </div>	  </div>
-                    <div class='col-md-4 form-group expiration required'>
-                    <label class='control-label'>Expiration</label>
-                    <div class="form-control" id="cc-expiration"></div>
-                    <div class="invalid-feedback">
-                     Expiration date required
-                     </div>	  </div>
+                      <div class='col-md-4 form-group cvc required card_sec'>
+                       <label class='control-label'>CVC</label>
+                          <div class="form-control" id="cc-cvv"></div>
+                               <div class="invalid-feedback">
+                                  Security code required
+                               </div>	 
+                      </div>
+                      <div class='col-md-4 form-group expiration required'>
+                        <label class='control-label'>Expiration</label>
+                      <div class="form-control" id="cc-expiration">
+                      </div>
+                        <div class="invalid-feedback">
+                          Expiration date required
+                        </div>	 
+                      </div>
                 
                   </div>
                   <!-- <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓" />
@@ -65,39 +67,38 @@
                  </div>-->
                  <div class="address-form fs-block">
                     <% include ../../partials/messages %>
-                    <input data-testid="user-firstName" name="name" type="text" value="<% if(address){%><%=address.name%><% } %>" required="" placeholder="Full Name" autocomplete="true" class="field " >
-                    <input data-testid="user-lastName" name="lastname" type="text" value="<% if(address){%><%=address.lastname%><% } %>" required="" placeholder="Last Name" autocomplete="true" class="field " v>
-                    <div class="field   field-select cntry">
-                      <select name="country" required="" placeholder="Country">
-                          
+                    <input data-testid="user-firstName" id="first_name_billing" name="name" type="text" value="<% if(address){%><%=address.name%><% } %>" required="" placeholder="Full Name" autocomplete="true" class="field " >
+                    <input data-testid="user-lastName" id="last_name_billing" name="lastname" type="text" value="<% if(address){%><%=address.lastname%><% } %>" required="" placeholder="Last Name" autocomplete="true" class="field " v>
+                    <div class="field field-select cntry">
+                      <select name="country" id="country_code_billing" required="" placeholder="Country">
                         <option value="">Select Country</option>
-                        <% countries.forEach((country) =>                 
-                        {
-                           if(country.Code==address.country){%>
-                              <option selected value="<%= country.Code %>"><%= country.Name %></option>
-                          <% }else{ %>
-                              <option value="<%= country.Code %>"><%= country.Name %></option>
-                           <%}
-                        })%>
+                          <% countries.forEach((country) =>                 
+                            {
+                               if(country.Code==address.country){%>
+                                   <option selected value="<%= country.Code %>"><%= country.Name %></option>
+                               <% }else{ %>
+                                   <option value="<%= country.Code %>"><%= country.Name %></option>
+                               <%}
+                            })%>
                         </select>
                     </div>
                     <div>
-                       <div class="GPlacesACField__Container-sc-1xqqpdz-0 iUshPx">
-                         <input data-testid="user-streetAddress" name="address1" value="<% if(address){%><%=address.address1%><% } %>" type="text" required="" placeholder="Address " autocomplete="true" class="field  " value=""></div>
+                        <div class="GPlacesACField__Container-sc-1xqqpdz-0 iUshPx">
+                         <input data-testid="user-streetAddress" id="address_billing" name="address1" value="<% if(address){%><%=address.address1%><% } %>" type="text" required="" placeholder="Address " autocomplete="true" class="field  " value="">
+                        </div>
                     </div> 
-                    <input data-testid="user-extendedAddress" name="address2" type="text" value="<% if(address){%><%=address.address2%><% } %>" placeholder="Address 2" autocomplete="true" class="field">
-                   
-                    <div class="inner-flex between"><input data-testid="user-region" name="state" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value="<% if(address){%><%=address.state%><% } %>">
-                  
-                    <input data-testid="user-locality" name="city" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="<% if(address){%><%=address.city%><% } %>">
-                        <input data-testid="user-postalCode" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value="<% if(address){%><%=address.postalCode%><% } %>"></div>
-                    <input data-testid="user-telephone" name="phone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field  " value="<% if(address){%><%=address.phone%><% } %>">
-                 </div>
+                       <input data-testid="user-extendedAddress" id="address2_billing" name="address2" type="text" value="<% if(address){%><%=address.address2%><% } %>" placeholder="Address 2" autocomplete="true" class="field">
+                    <div class="inner-flex between">
+                      <input data-testid="user-region" id="state_billing" name="state" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value="<% if(address){%><%=address.state%><% } %>">
+                      <input data-testid="user-locality" id="city_billing" name="city" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="<% if(address){%><%=address.city%><% } %>">
+                      <input data-testid="user-postalCode" id="postalCode_billing" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value="<% if(address){%><%=address.postalCode%><% } %>"></div>
+                      <input data-testid="user-telephone" id="telephone_billing" name="phone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field  " value="<% if(address){%><%=address.phone%><% } %>">
+                    </div>
                  <div class="cncl_btn">
-                       <button type="button " class="btn flT_lft">Cancel</button>
-                       <button type="submit" class="btn flT_right color_rd ">Save Shipping</button>
-                       </div>  
-                      </form>
+                      <button type="button " class="btn flT_lft">Cancel</button>
+                      <button type="submit" id="submit-button" class="btn flT_right color_rd ">Save Shipping</button>
+                  </div>  
+         </form>
               </div>
            </div>
         </div>
@@ -115,43 +116,224 @@ thoroughfare => Street address
 premise => Apartment, Suite, Box number, etc.
 const Address = mongoose.model('Address', UserSchema); -->
 <script>
- $("#formSubmit").on('submit', function(event){
-   event.preventDefault();
+//  $("#formSubmit").on('submit', function(event){
+//    event.preventDefault();
 				//var id ="";// $("#id-manuf-name").val();
 				//$("#bid-type").val("sale");
 				//var size='5';
 				//var sendInfo = {id: id};
-				$.ajax({
-					method:'post',
-					url:"buyer-info",
-					dataType: "json",
-               data:$(this).serialize(),
+			// 	$.ajax({
+			// 		method:'post',
+			// 		url:"buyer-info",
+			// 		dataType: "json",
+      //          data:$(this).serialize(),
                
-         		success: function (res) {
-               var data = res;
-                console.log(res);
-                if(res.status='success'){
+      //    		success: function (res) {
+      //          var data = res;
+      //           console.log(res);
+      //           if(res.status='success'){
+      //             $('#success_msg').html( '<div class="alert alert-success">Shipping info saved successfully.</div>');
+      //             $(location).attr('href','/user/setting').delay(5000);
+      //           }else
+      //             {
+      //                $('#message_error').html('<div class="alert alert-danger">*Please input data in All fileds.</div>')
+      //             }
+			// 	   }
+			// 	  // error:function(err){  //console.log(err);  
+					
+			// 	});	
+			// });		
+</script>
+
+<script src="https://js.braintreegateway.com/web/3.55.0/js/client.min.js"></script>
+ 
+<!-- Load Hosted Fields component. -->
+<script src="https://js.braintreegateway.com/web/3.55.0/js/hosted-fields.min.js"></script>
+<script>
+var form = $('form');
+
+braintree.client.create({
+authorization: 'sandbox_tvb37t33_dwt5m34ppngz6s7k'
+},
+function(err, clientInstance) {
+if (err) {
+ console.error(err);
+ return;
+}
+
+braintree.hostedFields.create({
+ client: clientInstance,
+ styles: {
+   input: {
+     // change input styles to match
+     // bootstrap styles
+     'font-size': '1rem',
+     color: '#495057'
+   }
+ },
+ fields: {
+   number: {
+     selector: '#cc-number',
+     placeholder: '4111 1111 1111 1111'
+   },
+   cvv: {
+     selector: '#cc-cvv',
+     placeholder: '123'
+   },
+   expirationDate: {
+     selector: '#cc-expiration',
+     placeholder: 'MM / YY'
+   }
+ }
+}, function(err, hostedFieldsInstance) {
+ if (err) {
+   console.error(err);
+   return;
+ }
+ function createInputChangeEventListener(element) {
+   return function () {
+     validateInput(element);
+   }
+ }
+
+ function setValidityClasses(element, validity) {
+   if (validity) {
+     element.removeClass('is-invalid');
+     element.addClass('is-valid');  
+   } else {
+     element.addClass('is-invalid');
+     element.removeClass('is-valid');  
+   }    
+ }
+ 
+ function validateInput(element) {
+   // very basic validation, if the
+   // fields are empty, mark them
+   // as invalid, if not, mark them
+   // as valid
+
+   if (!element.val().trim()) {
+     setValidityClasses(element, false);
+
+     return false;
+   }
+
+   setValidityClasses(element, true);
+
+   return true;
+ }
+ var fName = $('#fName');
+ var lName = $('#lName');
+ 
+         hostedFieldsInstance.on('validityChange', function(event) {
+   var field = event.fields[event.emittedBy];
+
+   // Remove any previously applied error or warning classes
+   $(field.container).removeClass('is-valid');
+   $(field.container).removeClass('is-invalid');
+
+   if (field.isValid) {
+     $(field.container).addClass('is-valid');
+   } else if (field.isPotentiallyValid) {
+     // skip adding classes if the field is
+     // not valid, but is potentially valid
+   } else {
+     $(field.container).addClass('is-invalid');
+   }
+ });
+
+ hostedFieldsInstance.on('cardTypeChange', function(event) {
+   var cardBrand = $('#card-brand');
+   var cvvLabel = $('[for="cc-cvv"]');
+
+   if (event.cards.length === 1) {
+     var card = event.cards[0];
+
+     // change pay button to specify the type of card
+     // being used
+     cardBrand.text(card.niceType);
+     // update the security code label
+     cvvLabel.text(card.code.name);
+   } else {
+     // reset to defaults
+     cardBrand.text('Card');
+     cvvLabel.text('CVV');
+   }
+ });
+ 
+ form.submit(function(event) {
+  var first_name_billing=$('#first_name_billing').val()
+var last_name_billing=$('#last_name_billing').val();
+var address_billing=$('#address_billing').val();
+var address2_billing=$("#address2_billing").val();
+var state_billing=$("#state_billing").val();
+var country_code_billing=$("#country_code_billing").val();
+var postalCode_billing=$("#postalCode_billing").val();
+var city_billing=$("#city_billing").val();
+var telephone_billing=$("#telephone_billing").val();
+   var formIsInvalid = false;
+   var state = hostedFieldsInstance.getState();
+
+   Object.keys(state.fields).forEach(function(field) {
+     if (!state.fields[field].isValid) {
+       $(state.fields[field].container).addClass('is-invalid');
+       formIsInvalid = true;
+     }
+   });
+
+   if (formIsInvalid) {
+     return;
+   }
+
+   hostedFieldsInstance.tokenize({
+     //cardholderName: $('#cc-name').val()
+   }, function(err, payload) {
+     if (err) {
+       console.error(err);
+       return;
+     }
+     console.log(payload);
+     // var button = document.querySelector('#hosted-submit-button');
+     // button.addEventListener('click', function () {
+     $.ajax({
+            type: 'POST',
+            url:"buyer-info",
+            data: {
+              first_name_billing:first_name_billing,
+              last_name_billing:last_name_billing,
+              address_billing:address_billing,
+              address2_billing:address2_billing,
+              city_billing:city_billing,
+              state_billing:state_billing,
+              country_code_billing:country_code_billing,
+              postalCode_billing:postalCode_billing,
+              telephone_billing:telephone_billing,   
+              paymentMethodNonce: payload.nonce
+            }
+         }).done(function(result) {
+         //  form.trigger("reset");
+           if(result.status='success'){
                   $('#success_msg').html( '<div class="alert alert-success">Shipping info saved successfully.</div>');
                   $(location).attr('href','/user/setting').delay(5000);
                 }else
                   {
                      $('#message_error').html('<div class="alert alert-danger">*Please input data in All fileds.</div>')
                   }
-				   }
-				  // error:function(err){  //console.log(err);  
-					
-				});	
-			});		
+         });
+       
+      // });
+    });
+ });
+});
+});
 </script>
 
 
 
 
 
-
-
-<!-- <script>
-  var form = $('form');
+<!--  //<script>
+  //var form = $('form');
   
   braintree.client.create({
     authorization: 'sandbox_tvb37t33_dwt5m34ppngz6s7k'

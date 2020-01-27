@@ -57,13 +57,25 @@ exports.settings=function(req, res, next) {
    
     const user=req.user;
     let address_type='buyer';
-    const { name, lastname, country,address1,address2, state, city,postalCode,phone} = req.body;
+   // const { name, lastname, country,address1,address2, state, city,postalCode,phone} = req.body;
+    const name = req.body.first_name_billing;
+    var lastname = req.body.last_name_billing;
+    var address1 = req.body.address_billing;
+    var address2 = req.body.address2_billing;
+    var city = req.body.city_billing;
+    var state = req.body.state_billing;
+    var country = req.body.country_code_billing;
+    var postalCode = req.body.postalCode_billing;
+    var phone = req.body.telephone_billing;
+    var paymentMethodNonce = req.body.paymentMethodNonce;
+    console.log(paymentMethodNonce.length);
     let errors = [];
-  
+    console.log(name);  
+  console.log(req.body.first_name_billing);
    if (!name || !country || !state || !city||!address1||!phone||!postalCode) {
      errors.push({ msg: 'Please enter all fields' });
    }
-   if (name.length < 6) {
+   if ( name.length < 6) {
     errors.push({ msg: 'name must be at least 6 characters' });
   }
    if (country.length < 2) {
@@ -84,9 +96,11 @@ exports.settings=function(req, res, next) {
   }
     const update={name,lastname,country,state,city,address1,address2,phone,user,address_type,postalCode};
     const  filter={user:user,address_type:address_type};
+    //console.log(update);
+    console.log(errors.length);
    if (errors.length > 0) {
        res.json({status:'error',data:{errors:errors,address:update},message:'Address updated successfully'});
-
+   
   } else {
    let address=await  Address.findOneAndUpdate(filter, update, {
         new: true,
