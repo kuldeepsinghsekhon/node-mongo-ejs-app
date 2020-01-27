@@ -89,20 +89,24 @@ exports.products = function(req, res, next) {
       OrderBid.find({ product: productId }).sort({orderdate:-1}).limit(10),
       OrderBid.findOne({ product: productId }).sort({netprice:+1}).limit(1),
       OrderBid.findOne({ product: productId }).sort({netprice:-1}).limit(1),
-      Product.findOne({ _id: productId }),
+     // Product.findOne({ _id: productId }),
       OrderBid.count({ product: productId}),
       Product.find({ }).limit(10),
-    ]).then( ([ product, sellbid,sellBid_avg,highbid,lastsale,lowest_netprice,heigh_netprice,product_details,ordercount,relatedproducts]) => {
-      // console.log(product_details.price);
-      var avg_retail_price = ((product_details.price/sellbid.bidprice)*100).toFixed(2);
-     // console.log(sellBid_avg[0].netprice); 
+    ]).then( ([ product, sellbid,sellBid_avg,highbid,lastsale,lowest_netprice,heigh_netprice,ordercount,relatedproducts]) => {
+      console.log(lastsale[0].netprice);
+      var avg_retail_price=0;
+      if(lastsale)
+      var pricepremium=lastsale[0].netprice-product.price;
+      //console.log(pricepremium);
+      var avg_retail_price = ((pricepremium/product.price)*100).toFixed(2);
+    // console.log(avg_retail_price); 
       var addtotal = 0 ;
       for(var i = 0; i< sellBid_avg.length ; i++ ) {
         var addtotal = addtotal+sellBid_avg[i].netprice;
        }
        
          var avg = parseInt(addtotal/sellBid_avg.length);
-         console.log(avg);
+         //console.log(avg);
       var allsales=lastsale;
       var spchange=0;
      var highsale;
@@ -121,7 +125,7 @@ exports.products = function(req, res, next) {
         highbid:highbid,
         lowest_netprice:lowest_netprice,
         heigh_netprice:heigh_netprice,
-        product_details:product_details,
+        //product_details:product_details,
         avg_retail_price:avg_retail_price,
         avg:avg,
         layout:'layout',
@@ -362,8 +366,9 @@ if(lowestask!=null){
   sellBid.expire=Date.now() + ( 3600 * 1000 * 24*expire)
   if(req.body.bidType=='sale'){
     sellBid.status="sale";
-    
-    bidprice=buybid.bidprice;
+    if(buybid){
+      bidprice=buybid.bidprice;
+    }
   }else{
     sellBid.status="ask";
     bidprice=req.body.bidprice;
@@ -392,7 +397,6 @@ if(lowestask!=null){
  prod.sellbids.push(sellBid);
   var nonceFromTheClient = req.body.paymentMethodNonce;
   var braintreeid=req.user.braintreeid;
-  
   if(!braintreeid){
     customer=  await gateway.customer.create({
       firstName: name,
@@ -631,7 +635,7 @@ exports.placeBuyBid=async function name(req,res,next) {
         buyBid.save();       
           prod.buybids.push(buyBid);
            prod.save();
-         
+         console.log(result);
         res.send(result);
       } else {
         res.status(500).send(error);

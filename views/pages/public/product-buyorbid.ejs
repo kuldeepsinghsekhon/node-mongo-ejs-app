@@ -299,7 +299,10 @@
 					$("#authenticationFee").text('$'+json_data['authenticationFee']);
 					$("#shipping").text('$'+json_data['shipping']);
 					$("#discountcode").text('$'+json_data['discountcode']);
-					$("#totalpay").text('$'+json_data['totalpay']);	  
+					$("#totalpay").text('$'+json_data['totalpay']);	
+					if(json_data['totalpay'].totalpayout>0){
+					$(".nextPay").attr("disabled",false);
+					}
 				   },
 				   error:function(err){  //console.log(err);  
 				}	

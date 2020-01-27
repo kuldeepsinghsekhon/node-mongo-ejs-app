@@ -160,10 +160,10 @@
 			   <div>
 				  <div class="item-row">
 					 <div>Transaction Fee (9.5%)</div>
-					 <div id="TransactionFee">-$5.00</div>
+					 <div id="TransactionFee">-$0.00</div>
 				  </div>
 				  <div class="item-row">
-					  <div>Payment Proc. (3%)</div><div data-testid="bid-total" id="Proc">-$1.29</div>
+					  <div>Payment Proc. (3%)</div><div data-testid="bid-total" id="Proc">-$0.0</div>
 				  </div>				  
 				    <div class="item-row">
 					 <div>Shipping</div><div data-testid="bid-total" id="Shipping">-$0.0</div>
@@ -226,13 +226,12 @@
 		<script>
 		//$(function(){
 			$("#menu2btn").on('click',function(){
-				$(".nextPay").attr("disabled",false);
+				$("#bid-type").val("sale");
 				gethighestbidCharges();
 			});			
 		//})
 		function gethighestbidCharges(){
-			var id ="<%=product.id %>";// $("#id-manuf-name").val();
-				$("#bid-type").val("sale");
+			var id ="<%=product.id %>";// $("#id-manuf-name").val();				
 				var attr_val=$('#attr-selector-attr').text();
 				console.log(attr_val);
 				var sendInfo = {id:id, attr_val:attr_val };
@@ -242,13 +241,15 @@
 					dataType: "json",
 					data:sendInfo,
          		  	success: function (json_data) {
-						   console.log(json_data);
+						  // console.log(json_data);
 					$("#TransactionFee").text('-$'+json_data['data'].TransactionFee);
 					$("#Proc").text('-$'+json_data['data'].Proc);
 					$("#Shipping").text('-$'+json_data['data'].Shipping);
 					$("#discountcode").text('-$'+json_data['data'].discountcode);
 					$("#totalpayout").text('$'+json_data['data'].totalpayout);
 					$('.warning-text').text('You are about to sell at the highest Bid price');
+					if(json_data['data'].totalpayout>0)
+					$(".nextPay").attr("disabled",false);
 				   },
 				   error:function(err){  console.log(err);  
 				}	

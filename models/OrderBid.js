@@ -10,6 +10,7 @@ const OrderSchema = new mongoose.Schema({
  // payment: {type: Object, required: true},
   orderdate:{type: Date},
   netprice:Number,
+  price:Number,
   status: String,
   ordertype: String,
   updated:Date,
