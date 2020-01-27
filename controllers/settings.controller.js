@@ -68,10 +68,10 @@ exports.settings=function(req, res, next) {
     var postalCode = req.body.postalCode_billing;
     var phone = req.body.telephone_billing;
     var paymentMethodNonce = req.body.paymentMethodNonce;
-    console.log(paymentMethodNonce.length);
+    //console.log(paymentMethodNonce);
     let errors = [];
-    console.log(name);  
-  console.log(req.body.first_name_billing);
+    //console.log(name);  
+  //console.log(req.body.first_name_billing);
    if (!name || !country || !state || !city||!address1||!phone||!postalCode) {
      errors.push({ msg: 'Please enter all fields' });
    }
@@ -90,30 +90,75 @@ exports.settings=function(req, res, next) {
   if (address1.length < 3) {
     errors.push({ msg: 'address1 must be at least 3 characters' });
   }
-  
+//  var braintreeid=req.user.braintreeid;
+  //  console.log(braintreeid);
   if (phone.length < 10) {
     errors.push({ msg: 'phone must be at least 10 characters' });
   }
     const update={name,lastname,country,state,city,address1,address2,phone,user,address_type,postalCode};
     const  filter={user:user,address_type:address_type};
     //console.log(update);
-    console.log(errors.length);
+    console.log(update);
    if (errors.length > 0) {
        res.json({status:'error',data:{errors:errors,address:update},message:'Address updated successfully'});
    
   } else {
-   let address=await  Address.findOneAndUpdate(filter, update, {
+    var braintreeid=req.user.braintreeid;
+    if(!braintreeid){
+      customer=  await gateway.customer.create({
+        firstName: name,
+        lastName: lastname,
+        email: email,
+      }).catch((error)=>console.log(error))
+      var c=customer.customer;
+      braintreeid=customer.customer.id;//408993133;
+          User.findByIdAndUpdate(req.user._id, {$set:{braintreeid:braintreeid}},{new: true}, function (err, user) {
+               });
+    }
+    var billingAddress={
+        firstName: name,
+        lastName: lastname,
+        company: "",
+        streetAddress: address1,
+        locality: city,
+        region: state,
+        postalCode: postalCode,
+        options: { updateExisting: true}
+      }
+    email = req.user.email;
+    var creditCard={}; 
+    var cardtoken=req.user.cardtoken;
+    if(!cardtoken){
+      creditCard={billingAddress:billingAddress };
+    }else{
+      creditCard={
+         options: { updateExistingToken: cardtoken },
+        billingAddress:billingAddress
+       };
+    }
+    var nonceFromTheClient = req.body.paymentMethodNonce;
+    var newTransaction = gateway.customer.update(braintreeid,{
+      //amount: totalcharges,
+      paymentMethodNonce: nonceFromTheClient,
+      email: email,
+      creditCard:creditCard,
+     
+    }, function(error, result) {
+      let address=  Address.findOneAndUpdate(filter, update, {
         new: true,
         upsert: true // Make this update into an upsert
-      });
-      res.json({status:'success',data:{address:address},message:'Address updated successfully'});
-     // res.redirect('/user/setting');
-     // console.log(address);
+      }).catch((err)=>console.log(err));
+
+     cardtoken=result.customer.paymentMethods[0].token;
+       User.findByIdAndUpdate(req.user._id, {$set:{cardtoken:cardtoken}},{new: true}, function (err, user) {       
+        });
+       res.json({status:'success',data:{address:address},message:'Address updated successfully'});
+    }); 
       }
   }
     exports.sellerInfo=function(req, res, next) {
       var address_type='seller';
-      console.log(address_type);
+     // console.log(address_type);
       Promise.all([
         Address.findOne({user:req.user, address_type:address_type}),   
         Country.find(),
@@ -131,9 +176,8 @@ exports.settings=function(req, res, next) {
     var address_type=req.body.address_type;
     if(!address_type){
       res.json({status:'error',data:{address:[]},message:'Please Provide Address Type'});
-
     }
-    console.log(address_type);
+    //console.log(address_type);
     Promise.all([
       Address.findOne({user:req.user, address_type:address_type}),   
       Country.find(),
@@ -145,7 +189,8 @@ exports.settings=function(req, res, next) {
      },message:''})
     }).catch((error)=>{
       res.json({status:'error',data:{address:[]},message:'Address Not Found'});
-      console.log(error)});
+      //console.log(error);
+    });
 }
 exports.profileInfo=function(req, res, next) {
   shoesizes=[3,3.5,4,4.5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12,12.5,13,13.5,14,14.5,15,16,17,18];
@@ -159,7 +204,8 @@ exports.profileInfo=function(req, res, next) {
    },message:''})
   }).catch((error)=>{
     res.json({status:'error',data:{user:[]},message:'User Not Found'});
-    console.log(error)});
+    //console.log(error)
+  });
 }
     
     // const doc = Address.findOne().exec(
@@ -235,6 +281,7 @@ if (phone.length < 10) {
      res.json({status:'error',data:{errors:errors,address:update},message:'Address updated Failed'});
 
 } else {
+  
  let address=await  Address.findOneAndUpdate(filter, update, {
       new: true,
       upsert: true // Make this update into an upsert

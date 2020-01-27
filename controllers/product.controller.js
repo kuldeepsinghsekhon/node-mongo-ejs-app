@@ -93,7 +93,7 @@ exports.products = function(req, res, next) {
       OrderBid.count({ product: productId}),
       Product.find({ }).limit(10),
     ]).then( ([ product, sellbid,sellBid_avg,highbid,lastsale,lowest_netprice,heigh_netprice,ordercount,relatedproducts]) => {
-      console.log(lastsale[0].netprice);
+      //console.log(lastsale[0].netprice);
       var avg_retail_price=0;
       if(lastsale)
       var pricepremium=lastsale[0].netprice-product.price;
@@ -229,14 +229,14 @@ exports.sellProductVariantNowPay=function(req, res, next) {
 exports.sellCalculateCharges=async function(req, res, next) {
    var productId=req.body.id.replace(" ","");
    var attrv=req.body.attr_val.replace(" ","");
-   console.log(attrv);
-   console.log(productId);
+   //console.log(attrv);
+  // console.log(productId);
    Promise.all([
     Product.findOne({ _id: productId }).populate({path:'attrs'}),
     BuyBid.findOne({productid:productId,status:'buybid',attr_val:attrv}).sort({bidprice:-1}).limit(1),
     SellBid.findOne({productid:productId,status:'ask',attr_val:attrv}).sort({bidprice:+1}).limit(1),
   ]).then( ([product,highbid,lowestask])=>{
-    console.log(highbid);
+    //console.log(highbid);
     var askprice=0; 
       if(!req.body.askprice){
         if(highbid)
@@ -311,7 +311,7 @@ exports.sellProductOrAsk=function(req, res, next) {
               clientToken:clientToken,
               layout:'layout'
           })
-            console.log(err);
+           // console.log(err);
           });      
         }
       })
@@ -335,11 +335,10 @@ exports.sellProductPay=function(req,res){
 
 exports.sellAsk=async  function(req, res,next){
   var name =req.body.name;
-    var lastname=req.body.lastname;
-    var email=req.user.email;
+  var lastname=req.body.lastname;
+  var email=req.user.email;
   var sellBid = new SellBid();
   var transaction = new Transaction();
-
   var attr_val= req.body.attr_val;
   const productId= req.body.productid;
   var bidprice=0;//req.body.bidprice;
@@ -347,7 +346,6 @@ exports.sellAsk=async  function(req, res,next){
  var lowestask=await SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1);
   var prod=await Product.findById(productId).populate('selbids');
   sellBid.productid = req.body.productid;
- 
   sellBid.user = req.user;//Date.now()
   sellBid.biddate=Date.now();
   sellBid.title=prod.name;
@@ -355,9 +353,9 @@ exports.sellAsk=async  function(req, res,next){
   if(buybid!=null){
     sellBid.highestbid=buybid.bidprice;
   }
-if(lowestask!=null){
+  if(lowestask!=null){
   sellBid.lowestask=lowestask.bidprice;
-}
+  }
 
   var expiry=req.body.expiry;
   expiry=expiry.split("Days").map(Number);  
@@ -402,16 +400,11 @@ if(lowestask!=null){
       firstName: name,
       lastName: lastname,
       email: email,
-    }).catch((error)=>console.log(error))
+    }).catch((error)=>console.log(error));
     var c=customer.customer;
     braintreeid=customer.customer.id;//408993133;
      User.findByIdAndUpdate(req.user._id, {$set:{braintreeid:braintreeid}},{new: true}, function (err, user) {
-              //  if (err) {
-              //    res.status(200).json({status:"error",message:"failed to update"})
-              //  }else{
-              //    res.status(200).json({status:"ok",message:"paypal email updated successfully", paypalEmail: user.paypalEmail})
-              //  } 
-         });
+      });
   }
 
   var billingAddress={streetAddress: "New Street Address",
@@ -423,34 +416,19 @@ if(lowestask!=null){
   }else{
     creditCard={
        options: { updateExistingToken: cardtoken },
-      billingAddress:billingAddress
+       billingAddress:billingAddress
      };
   }
 
-
- // if(!cardtoken){
-  // var  customer= await  gateway.customer.update(braintreeid,{
-  //     paymentMethodNonce: nonceFromTheClient,
-  //     email: email,
-  //   creditCard: creditCard,
-  //   });
- // }
-//  console.log(customer);
-//    cardtoken=customer.customer.paymentMethods[0].token;
-//   console.log('braintreeid'+braintreeid);
-//   console.log('cardtoken'+cardtoken);
   var newTransaction = gateway.customer.update(braintreeid,{
     //amount: totalcharges,
     paymentMethodNonce: nonceFromTheClient,
     email: email,
-  creditCard:creditCard,
-    // options: {
-    //   makeDefault: true
-    //   // This option requests the funds from the transaction
-    //   // once it has been authorized successfully
-    //  // submitForSettlement: true
-    // }
+    creditCard:creditCard,
+    
   }, function(error, result) {
+    cardtoken=result.customer.paymentMethods[0].token;
+     console.log(cardtoken+'fsadfasdfsad');
       if (result) {
         if(req.body.bidType=='sale'){
           const order=new OrderBid();
@@ -466,19 +444,16 @@ if(lowestask!=null){
         order.SellerTransaction=transaction;
         order.save();
         buybid.save();
+        
         }
         transaction.save();
         sellBid.save();
        
         prod.save();
-        cardtoken=result.customer.paymentMethods;
+        cardtoken=result.customer.paymentMethods[0].token;
+       // console.log(result.customer.paymentMethods);
         User.findByIdAndUpdate(req.user._id, {$set:{cardtoken:cardtoken}},{new: true}, function (err, user) {
-              //  if (err) {
-              //    res.status(200).json({status:"error",message:"failed to update"})
-              //  }else{
-              //    res.status(200).json({status:"ok",message:"paypal email updated successfully", paypalEmail: user.paypalEmail})
-              //  } 
-              //  con   
+               
          });
 
         res.send(result);
@@ -635,7 +610,7 @@ exports.placeBuyBid=async function name(req,res,next) {
         buyBid.save();       
           prod.buybids.push(buyBid);
            prod.save();
-         console.log(result);
+        // console.log(result);
         res.send(result);
       } else {
         res.status(500).send(error);
@@ -949,7 +924,7 @@ exports.editProduct=function(req, res, next) {
       BuyBid.find({productid:productId}).select({ "title": 1, "_id": 0,'bidprice': 1,'attr_val':1}).exec(function(err,bids){
         BuyBid.count().exec(function(err,count){
           if(err)return next(err);
-          console.log(bids);
+        //  console.log(bids);
           res.json(bids)
         });
       });
