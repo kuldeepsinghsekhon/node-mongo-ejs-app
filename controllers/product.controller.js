@@ -94,9 +94,11 @@ exports.products = function(req, res, next) {
       Product.find({ }).limit(10),
     ]).then( ([ product, sellbid,sellBid_avg,highbid,lastsale,lowest_netprice,heigh_netprice,ordercount,relatedproducts]) => {
       //console.log(lastsale[0].netprice);
+      console.log(lastsale[0]);
       var avg_retail_price=0;
-      if(lastsale)
-      var pricepremium=lastsale[0].netprice-product.price;
+      if(lastsale.length>0){
+        var pricepremium=lastsale[0].netprice-product.price;
+      }
       //console.log(pricepremium);
       var avg_retail_price = ((pricepremium/product.price)*100).toFixed(2);
     // console.log(avg_retail_price); 
@@ -432,7 +434,7 @@ exports.sellAsk=async  function(req, res,next){
       if (result) {
         if(req.body.bidType=='sale'){
           const order=new OrderBid();
-          buybid.status='buy';
+        buybid.status='buy';
         order.seller=req.user;
         order.buyer=buybid.user;
         order.buybid=buybid;
@@ -444,7 +446,6 @@ exports.sellAsk=async  function(req, res,next){
         order.SellerTransaction=transaction;
         order.save();
         buybid.save();
-        
         }
         transaction.save();
         sellBid.save();
