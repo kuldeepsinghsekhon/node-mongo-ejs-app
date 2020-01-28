@@ -40,7 +40,7 @@
                             <td> <%= users[i].email %> </td>
                             <td>
                                   <label class="switch">
-                                     <input id="user_status" data-uid="<%= users[i].id%>" type="checkbox" data-id="2" name="status" class="usersatusbtn" value="true" <% if(users[i].status){if(users[i].status){ %> checked <% }} %>>
+                                     <input id="user_status" data-uid="<%= users[i].id%>" type="checkbox" onclick="return confirm('Aru You Sure to Want Change Status ?')" data-id="2" name="status" class="usersatusbtn" value="true" <% if(users[i].status){if(users[i].status){ %> checked <% }} %>>
                                      <span class="slider round"></span>
                                   </label>
                             </td>

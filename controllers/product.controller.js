@@ -6,6 +6,7 @@ const Attribute = require('../models/Attribute');
 const Category = require('../models/Category');
 const OrderBid = require('../models/OrderBid');
 const Country = require('../models/Country');
+const Brand = require('../models/Brand');
 const Transaction = require('../models/Transaction');
 const User = require('../models/User');
 const path = require('path');
@@ -25,6 +26,14 @@ paypal.configure({
   'client_secret': process.env.PaypalClientSecret
 });
 
+exports.viewAddProduct = function(req, res, next) {
+  Promise.all([
+  Brand.find({}),
+  Category.find({}),
+  ]).then( ([ brand,category]) => {
+    res.render('pages/admin/add-product', {layout:'admin-layout', brand:brand,category:category}); 
+    });
+  }
 exports.products = function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
@@ -725,12 +734,13 @@ exports.saveProduct=function(req, res, next) {
     product.sku = req.body.product_sku;
     product.price = req.body.product_price; 
     product.style = req.body.style; 
+    product.brands = req.body.brand_name;
+    console.log(req.body.brand_name)
     product.active = 'false';
     if(req.body.status)
     {
       product.active = req.body.status;
     }
-
     let attributes;
     if(req.body.attributename){
 
@@ -748,7 +758,7 @@ exports.saveProduct=function(req, res, next) {
     }
   
     let errors = [];
-    if (!req.body.category_name || !req.body.product_description || !req.body.product_name 
+    if (!req.body.category_name || !req.body.product_description || !req.body.brand_name || !req.body.product_name 
       || !req.body.product_price||!req.files|| Object.keys(req.files).length=== 0  ) {
       errors.push({ msg: 'Please enter all Required fields' });
      
@@ -756,8 +766,6 @@ exports.saveProduct=function(req, res, next) {
         errors.push({ msg: 'Please upload image' });
       }
     }
-  
-  
     if (errors.length > 0) {
     
        Category.find({},function(err,category){

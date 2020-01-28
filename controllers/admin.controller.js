@@ -110,7 +110,7 @@ exports.saveBrand=function(req, res, next) {
       'success_msg',
       'Product Addded Successfully'
     );
-    res.redirect('/admin/brand/1');
+    res.redirect('/admin/brand/');
   }
     
 }
@@ -144,7 +144,7 @@ exports.saveBrand=function(req, res, next) {
     }
     Brand.findByIdAndUpdate(brandId, {$set:brod}, function (err, brand) {
             if (err) return next(err);
-            res.redirect('/admin/brand/1');
+            res.redirect('/admin/brand/');
         });
       }
       exports.deleteBrand= async function name(req, res, next) {
@@ -152,7 +152,7 @@ exports.saveBrand=function(req, res, next) {
         const del = await Brand.deleteOne({ _id: productId});
         // `1` if MongoDB deleted a doc, `0` if no docs matched the filter `{ name: ... }`
         del.deletedCount;
-        res.redirect('/admin/brand/1');
+        res.redirect('/admin/brand/');
       }
 module.saveAttribute=function name(req,res) {
     

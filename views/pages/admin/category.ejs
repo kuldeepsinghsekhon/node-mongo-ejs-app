@@ -37,13 +37,11 @@
                     <tbody>
 
                       <% for (var i = 0; i < brands.length; i++) { %>
-                    <tr class="data-row">
-                        </td>
-                        <td class="name" data-item-name="<%=brands[i].name%>" ><%= brands[i].name %></td>
+                    <tr class="data-row"> 
+                        <td class="name" data-item-name="<%=brands[i].name%>" ><%=brands[i].name %></td>
                         
                         <td>
-                            <button class="btn btn-primary btn-rounded btn-icon"   id="edit-item" data-item-id="<%=brands[i]._id %>" >
-                              <i class="ti-pencil btn-icon-append"></i> 
+                            <button class="btn btn-primary btn-rounded btn-icon"   id="edit-item" data-item-id="<%=brands[i]._id %>" > <i class="ti-pencil btn-icon-append"></i> 
                             </button>
                         </td> 
                         <td>
@@ -123,7 +121,7 @@
  
   <!-- Attachment edit  Modal -->
 <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="edit-modal-label" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="edit-modal-label">Edit Category</h5>
@@ -131,27 +129,22 @@
           </button>
         </div>
         <div class="modal-body" id="attachment-body-content">
+
           <form id="edit-brand" class="form-horizontal" method="POST" action="/admin/category/update"  enctype="multipart/form-data">
               <div class="card-body">
-                <!-- id -->
                 <div class="form-group">
                   <input type="hidden" name="brandid" class="form-control" id="modal-input-id" required>
                 </div>
-                <!-- /id -->
-                <!-- name -->
                 <div class="form-group">
                   <label class="col-form-label" for="modal-input-name">Name</label>
                   <input type="text" name="brand_name" class="form-control" id="modal-input-name"  value="" required autofocus>
                 </div>
-                <!-- /name -->
-                <!-- description -->
                 <div class="form-group">
                   <input type="hidden" class="form-control" id="modal-input-image">
                 </div>
-  
                 <div class="form-group">
-                        <input type="submit"  class="form-control" value="submit" required>
-                      </div>
+                  <input type="submit"  class="form-control" value="submit" required>
+                </div>
                 <!-- /description -->
               </div>
           
