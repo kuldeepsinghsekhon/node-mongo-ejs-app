@@ -30,4 +30,6 @@ router.post('/settings/shipping-info',passport.authenticate('local', { session :
 router.post('/settings/buyer-info',passport.authenticate('local', { session : false }), settings_controller.saveBuyerInfo);
 router.post('/settings/address-info',passport.authenticate('local', { session : false }), settings_controller.addressInfo);
 router.post('/sign-in',passport.authenticate(['local']),auth_controller.signIn);
+router.get('/brand',forwardAuthenticated, utils_controller.brand);
+router.post('/products/detail',forwardAuthenticated, product_controller.findProductAjax );
 module.exports = router;

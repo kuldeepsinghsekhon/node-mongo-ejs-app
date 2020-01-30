@@ -25,7 +25,7 @@ const Attribute = require('../models/Attribute');
 const OrderBid = require('../models/OrderBid');
 const Product = require('../models/Product');
 const Address = require('../models/Address');
-
+const Banner = require('../models/Banner');
 var mongoose = require('mongoose');
 /*brand controller */
 const Brand = require('../models/Brand');
@@ -484,3 +484,14 @@ exports.statusWebhook = function (req, res) {
   );
   res.status(200).send();
 }
+exports.viewBanner = function (req, res){
+//   Banner.find({}).exec(function(err, banner) {
+//                 if (err) return next(err)
+//                 // res.json({status:'success',data:{
+//                 //   banner: banner},message:''})
+//                 res.render('pages/admin/banner', {
+//                     banner: banner,
+//                     layout:'admin-layout'
+//                 })  
+//                 })
+ }
