@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const Country = require('../models/Country');
+const Brand = require('../models/Brand');
 
 exports.sendmymail=function(mailOptions){
     const transporter = nodemailer.createTransport({
@@ -55,5 +56,12 @@ exports.allCurrency=function(req,res,next) {
       })
   })
 }
-
+exports.brand=function(req,res,next) {
+  Brand.find({}).select({ "name": 1, "_id": 0}).exec(function(err, brands) {
+          console.log(brands);
+          if (err) return next(err)
+          res.json({status:'success',data:{
+            brands: brands},message:''})
+  })
+}
 

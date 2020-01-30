@@ -957,7 +957,7 @@ exports.editProduct=function(req, res, next) {
         Product.findOne({ _id: productId }).populate({path:'attrs'}),
         SellBid.findOne({productid:productId,status:'ask',attr_val:attr_val}).sort({bidprice:+1}).limit(1),
         BuyBid.findOne({productid:productId,status:'buybid',attr_val:attr_val}).sort({bidprice:-1}).limit(1),
-        OrderBid.find({ product: productId }).sort({orderdate:-1}).limit(10),
+        OrderBid.find({ product: productId }).sort({orderdate:-1}).limit(3),
         OrderBid.count({ product: productId}),
         Product.find({ }).limit(10),
       ]).then( ([ product, lowask,highbid,lastsale,ordercount,relatedproducts]) => {
