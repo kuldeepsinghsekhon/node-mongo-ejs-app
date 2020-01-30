@@ -84,5 +84,4 @@ router.get('/', ensureAuthenticated,permit('Admin'), admin_controller.dashboard)
   router.get('/transaction/',ensureAuthenticated, permit('Admin'),admin_controller.viewTransaction);
   router.post('/transcation_status',ensureAuthenticated,permit('Admin'),admin_controller.transactionStatus);
   router.get('/order/:id',ensureAuthenticated, permit('Admin'),admin_controller.orderDetail);
-
 module.exports = router;
