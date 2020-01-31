@@ -38,12 +38,12 @@
                     </thead>
                     <tbody>
                         <% for (var i = 0; i < brands.length; i++) { %>
-                      <tr class="data-row">    <input value="<%= brands[i].image; %>" type="hidden"class="image">
+                      <tr class="data-row">   
+                         <input value="<%= brands[i].image; %>" type="hidden"class="image">
                         <td >
                           <img class="image" src="/uploads/brands/<%= brands[i].image; %> " value="<%= brands[i].image; %>" alt="image" data-item-image="<%=brands[i].image %>"/>
                         </td>
                         <td class="name" data-item-name="<%=brands[i].name %>"><%= brands[i].name %></td>
-                        
                         <td>
                             <button class=" btn btn-primary btn-rounded btn-icon"   id="edit-item" data-item-id="<%=brands[i]._id %>" >
                               <i class="ti-pencil btn-icon-append"></i> 
@@ -115,24 +115,23 @@
          
               <div class="card-body">
                 <!-- id -->
-                <div class="form-group">
-                  <input type="hidden" name="brandid" class="form-control" id="modal-input-id" required>
-                </div>
-                <!-- /id -->
-                <!-- name -->
+                  <div class="form-group">
+                    <input type="hidden" name="brandid" class="form-control" id="modal-input-id" required>
+                  </div>
+                
                 <div class="form-group">
                   <label class="col-form-label" for="modal-input-name">Name</label>
                   <input type="text" name="brand_name" class="form-control" id="modal-input-name"  value="" required autofocus>
                 </div>
-                <!-- /name -->
-                <!-- description -->
+                
                 <div class="form-group">
                   <input type="hidden" class="form-control" id="modal-input-image">
                 </div>
                 <div class="form-group">
                    <label class="col-form-label" for="modal-input-description">Image</label>
-                   <input type="file" name="brandImage" class="form-control"required>
+                   <input type="file" name="brandImage" class="form-control" required>
                 </div>
+                
                 <div class="form-group">
                     <input type="submit"  class="form-control" value="submit" required>
                 </div>

@@ -7,7 +7,7 @@ const OrderSchema = new mongoose.Schema({
   sellbid:{type: Schema.Types.ObjectId, ref: 'SellBid'},
   buybid:{type: Schema.Types.ObjectId, ref: 'BuyBid'},
   //paymentId: {type: String, required: true},
- // payment: {type: Object, required: true},
+ // payment: {type: Object, required: true},sellerPayout
   orderdate:{type: Date},
   netprice:Number,
   price:Number,
@@ -15,6 +15,7 @@ const OrderSchema = new mongoose.Schema({
   ordertype: String,
   updated:Date,
   payment: {type: Object, required: true},
+  sellerPayout: {type: Object},
   SellerTransaction: {type: Schema.Types.ObjectId, ref: 'Transaction'},
   BuyerTransaction: {type: Schema.Types.ObjectId, ref: 'Transaction'},
 });

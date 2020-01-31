@@ -56,28 +56,20 @@ exports.listBrands=function(req, res, next) {
 exports.saveBrand=function(req, res, next) {
     var brand = new Brand();
     var imgname='default.jpg';
-    
     brand.name = req.body.brand_name;
-
     let errors = [];
     if (!req.body.brand_name  ) {
       errors.push({ msg: 'Please enter all Required fields' });
-    }
-  
-    // if (password != password2) {
-    //   errors.push({ msg: 'Passwords do not match' });
-    // }
-  
+    }  
     if (errors.length > 0) {
       res.render('pages/admin/brands', {
         errors ,
         layout:'admin-layout'
       });
     } else {
-  
-    var imgpath=appRoot+'//public//uploads//brands//';
-    var mask=777;
-      fs.mkdir(imgpath, mask, function(err) {
+       var imgpath=appRoot+'//public//uploads//brands//';
+       var mask=777;
+       fs.mkdir(imgpath, mask, function(err) {
         if (err) {
             if (err.code == 'EEXIST') console.log(null); // ignore the error if the folder already exists
             else console.log(err); // something else went wrong
@@ -408,11 +400,23 @@ var order=await OrderBid.findOne({_id:orderid}).populate({path:'sellbid'}).popul
                 console.log(error.response);
                 throw error;
             } else {
-                console.log("Create Single Payout Response");
-                console.log(payout);
-                order.status=status;
-                console.log(status)
-                order.save();
+              order.status=status;
+              var payoutId = payout.batch_header.payout_batch_id;//"R3LFR867ESVQY";
+                     paypal.payout.get(payoutId, function (error, payout1) {
+                         if (error) {
+                             console.log(error);
+                             throw error;
+                         } else {
+                           order.sellerPayout=payout1;
+                             console.log("Get Payout Response");
+                             console.log(payout1);
+                            // console.log(payout1.items[0].payout_item_id);
+                             console.log(payout1.items[0].payout_item_fee);
+                             console.log(payout1.items[0].payout_item);
+                             var payoutItemId =payout1.items[0].payout_item_id;
+                             }
+                             order.save();
+                     });
                 res.json({status:'success',message:'Order Accepted and Payout Send to Seller'});
             }
         });
@@ -485,13 +489,52 @@ exports.statusWebhook = function (req, res) {
   res.status(200).send();
 }
 exports.viewBanner = function (req, res){
-//   Banner.find({}).exec(function(err, banner) {
-//                 if (err) return next(err)
-//                 // res.json({status:'success',data:{
-//                 //   banner: banner},message:''})
-//                 res.render('pages/admin/banner', {
-//                     banner: banner,
-//                     layout:'admin-layout'
-//                 })  
-//                 })
+  Banner.find({}).exec(function(err, banner) {
+                if (err) return next(err)
+                // res.json({status:'success',data:{
+                //   banner: banner},message:''})
+                res.render('pages/admin/banner', {
+                    banner: banner,
+                    layout:'admin-layout'
+                })  
+                })
  }
+ exports.addBanner = function(req,res){
+  var banner = new Banner();
+  var imgname='default.jpg';
+  banner.url = req.body.banner_url;
+  banner.status = req.body.banner_status;
+   var img='';
+  var imgpath=appRoot+'//public//uploads//banner//';
+       var mask=777;
+       fs.mkdir(imgpath, mask, function(err) {
+        if (err) {
+            if (err.code == 'EEXIST') console.log(null); // ignore the error if the folder already exists
+            else console.log(err); // something else went wrong
+        } else console.log(null); // successfully created folder
+    });
+  var brod={url:req.body.banner_url };
+  if (!req.files || Object.keys(req.files).length=== 0) {
+
+  }else{  
+    let banner_image = req.files.banner_image;
+      imgname=Date.now()+path.extname(req.files.banner_image.name);
+      banner_image.mv(imgpath+'//'+imgname, function(err) { 
+        if (err) throw err
+      });  
+      banner.image = imgname;   
+      banner.save(function(err,banner) {
+        if (err){
+          throw err
+        } else{
+             // console.log(product);         
+        }      
+    });
+    req.flash(
+      'success_msg',
+      'banner Uploaded Successfully'
+    );
+         res.redirect('/admin/banner'); 
+
+ }
+}

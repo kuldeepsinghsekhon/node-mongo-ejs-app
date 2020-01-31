@@ -19,40 +19,57 @@
                   Manage <code>Banner</code>
                 </p>
                 <div class="table-responsive">
-                  <table id="data">
+                    <table class="table table-striped" id="brand-data">
                     <thead>
                       <tr>
                         <th>
-                          Name
+                          Image
                         </th>
                         <th>
-                           Edit
+                           Url
                           </th>
                           <th>
-                            Delete
+                            Edit
+                           </th>
+                           <th>
+                            Status
                           </th>
+                           <th>
+                             Delete
+                           </th>
                       </tr>
                     </thead>
                     <tbody>
 
                       <% for (var i = 0; i < banner.length; i++) { %>
                     <tr class="data-row"> 
-                        <td class="name" data-item-name="<%=brands[i].name%>" ><%=banner[i].name %></td>
-                        
+                        <input value="<%= banner[i].image; %>" type="hidden"class="image">
+                        <td >
+                           <img class="image" src="/uploads/banner/<%= banner[i].image; %> " value="<%= banner[i].image; %>" alt="image" data-item-image="<%=banner[i].image %>"/>
+                        </td>
+                        <td class="name" data-item-name="<%=banner[i].url %>"><%= banner[i].url %>
+                        </td>
                         <td>
-                            <button class="btn btn-primary btn-rounded btn-icon"   id="edit-item" data-item-id="<%=banner[i]._id %>" > <i class="ti-pencil btn-icon-append"></i> 
+                            <button class=" btn btn-primary btn-rounded btn-icon"   id="edit_banner" data-item-id="<%=banner[i]._id %>" >
+                              <i class="ti-pencil btn-icon-append"></i> 
                             </button>
                         </td> 
                         <td>
-                            <a class=" btn btn-primary btn-rounded btn-icon" onclick="return confirm('Are you sure for Delete Category?')" href="/admin/banner/<%=banner[i]._id %>/delete" >
+                            <label class="switch">
+                               <input id="banner_status" data-uid="<%= banner[i].id%>" type="checkbox" onclick="return confirm('Aru You Sure to Want Change Status ?')" data-id="2" name="status" class="usersatusbtn" value="true" <% if(banner[i].status){if(banner[i].status){ %> checked <% }} %>>
+                               <span class="slider round"></span>
+                            </label>
+                         </td>
+                        
+                        <td>
+                            <a class=" btn btn-primary btn-rounded btn-icon" onclick="return confirm('Are You Sure to Delete This brand ?')" href="/admin/brand/<%=banner[i]._id %>/delete" >
                               <i class="ti-trash btn-icon-append"></i> 
                             </a>
-                        </td> 
-                        
+                        </td>
                       </tr>
                      <% } %>
                     </tbody>
-                  </table i>
+                  </table >
                 </div>
               </div>
             </div>
@@ -70,12 +87,22 @@
           
         </div>
         <div class="modal-body">
-            <form method="post" action="/admin/add-category" enctype="multipart/form-data">
+            <form method="post" action="/admin/banner" enctype="multipart/form-data">
                 <div class="panel panel-default">
                     <div class="panel-body">
                             <div class="form-group">                              
-                                    <input type="text" id="brand_name" class="form-control" name="brand_name" placeholder="New Category Name">
-                            </div>                             
+                                <input type="text" id="banner_url" class="form-control" name="banner_url" placeholder="Provide Url">
+                            </div>
+                            <div class="form-group">
+                                <label class="switch">
+                                    <input type="checkbox" data-id="2" name="banner_status" class="emailsettings" value="true">
+                                    <!-- <input type="checkbox" data-id="2" name="status" class="emailsettings" value="false"> -->
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="form-group">                              
+                                <input type="file" id="banner_image" class="form-control" name="banner_image" placeholder="">
+                            </div>                            
                         <button type="submit" class="btn btn-success">Add New Banner</button>
                     </div>
                 </div>
@@ -90,7 +117,7 @@
   </div>
  
   <!-- Attachment edit  Modal -->
-<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="edit-modal-label" aria-hidden="true">
+<div class="modal fade" id="edit_banner" tabindex="-1" role="dialog" aria-labelledby="edit-modal-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">

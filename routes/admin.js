@@ -85,5 +85,5 @@ router.get('/', ensureAuthenticated,permit('Admin'), admin_controller.dashboard)
   router.post('/transcation_status',ensureAuthenticated,permit('Admin'),admin_controller.transactionStatus);
   router.get('/order/:id',ensureAuthenticated, permit('Admin'),admin_controller.orderDetail);
   router.get('/banner', ensureAuthenticated, permit('Admin'),admin_controller.viewBanner);
-
+  router.post('/banner',ensureAuthenticated, permit('Admin'), admin_controller.addBanner);
 module.exports = router;
