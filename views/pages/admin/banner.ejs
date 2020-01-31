@@ -19,6 +19,8 @@
                   Manage <code>Banner</code>
                 </p>
                 <div class="table-responsive">
+                  <div id="bannerAction"></div>
+                  <div id="bannerDelete"></div>
                     <table class="table table-striped" id="brand-data">
                     <thead>
                       <tr>
@@ -47,22 +49,23 @@
                         <td >
                            <img class="image" src="/uploads/banner/<%= banner[i].image; %> " value="<%= banner[i].image; %>" alt="image" data-item-image="<%=banner[i].image %>"/>
                         </td>
-                        <td class="name" data-item-name="<%=banner[i].url %>"><%= banner[i].url %>
+                        <td  class="banner_url" data-item-name="<%=banner[i].url %>"><%= banner[i].url %>
                         </td>
+                        
                         <td>
-                            <button class=" btn btn-primary btn-rounded btn-icon"   id="edit_banner" data-item-id="<%=banner[i]._id %>" >
+                            <button class=" btn btn-primary btn-rounded btn-icon" id="edit_banner" data-item-id="<%= banner[i]._id %>" >
                               <i class="ti-pencil btn-icon-append"></i> 
                             </button>
                         </td> 
                         <td>
                             <label class="switch">
-                               <input id="banner_status" data-uid="<%= banner[i].id%>" type="checkbox" onclick="return confirm('Aru You Sure to Want Change Status ?')" data-id="2" name="status" class="usersatusbtn" value="true" <% if(banner[i].status){if(banner[i].status){ %> checked <% }} %>>
+                              <input id="banner_status" class="banner_status" data-uid="<%= banner[i].id%>" type="checkbox" onclick="return confirm('Aru You Sure to Want Change Status ?')" name="status" value="true" <% if(banner[i].status){if(banner[i].status){ %> checked <% }} %>>
                                <span class="slider round"></span>
                             </label>
                          </td>
                         
                         <td>
-                            <a class=" btn btn-primary btn-rounded btn-icon" onclick="return confirm('Are You Sure to Delete This brand ?')" href="/admin/brand/<%=banner[i]._id %>/delete" >
+                            <a class="bannerDelete btn btn-primary btn-rounded btn-icon" data-uid="<%= banner[i].id %>" onclick="return confirm('Are You Sure to Delete This brand ?')">
                               <i class="ti-trash btn-icon-append"></i> 
                             </a>
                         </td>
@@ -75,67 +78,63 @@
             </div>
           </div>        
 </div>
- <!-- pop up brand -->
- <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Add New Banner</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          
-        </div>
-        <div class="modal-body">
-            <form method="post" action="/admin/banner" enctype="multipart/form-data">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                            <div class="form-group">                              
-                                <input type="text" id="banner_url" class="form-control" name="banner_url" placeholder="Provide Url">
-                            </div>
-                            <div class="form-group">
-                                <label class="switch">
-                                    <input type="checkbox" data-id="2" name="banner_status" class="emailsettings" value="true">
-                                    <!-- <input type="checkbox" data-id="2" name="status" class="emailsettings" value="false"> -->
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                            <div class="form-group">                              
-                                <input type="file" id="banner_image" class="form-control" name="banner_image" placeholder="">
-                            </div>                            
-                        <button type="submit" class="btn btn-success">Add New Banner</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Add New Banner</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        
       </div>
-      
+      <div class="modal-body">
+          <form method="post" action="/admin/addbanner" enctype="multipart/form-data">
+              <div class="panel panel-default">
+                  <div class="panel-body">
+                          <div class="form-group">                              
+                            <input type="text" name="banner_url" class="form-control" id="banner_url" value="" required autofocus>
+                          </div>
+                          <div class="form-group">                              
+                              <input type="file" id="banner_image" class="form-control" name="banner_image" class="banner_image" placeholder="">
+                          </div>                            
+                      <button type="submit" class="btn btn-success">Add New Banner</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
     </div>
+    
   </div>
- 
+</div>
+
   <!-- Attachment edit  Modal -->
-<div class="modal fade" id="edit_banner" tabindex="-1" role="dialog" aria-labelledby="edit-modal-label" aria-hidden="true">
+<div class="modal fade" id="edit_banner_modal" tabindex="-1" role="dialog" aria-labelledby="edit-modal-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="edit-modal-label">Edit Category</h5>
+          <h5 class="modal-title" id="edit-modal-label">Edit Banner</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body" id="attachment-body-content">
-
-          <form id="edit-brand" class="form-horizontal" method="POST" action="/admin/category/update"  enctype="multipart/form-data">
+          <form id="edit-brand" class="form-horizontal" method="POST" action="/admin/banner/update"  enctype="multipart/form-data">
               <div class="card-body">
                 <div class="form-group">
-                  <input type="hidden" name="brandid" class="form-control" id="modal-input-id" required>
+                  <input type="hidden" name="bannerid" class="form-control" id="banner_id" required>
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label" for="modal-input-name">Name</label>
-                  <input type="text" name="brand_name" class="form-control" id="modal-input-name"  value="" required autofocus>
+                  <label class="col-form-label" for="modal-input-name">Url</label>
+                  <input type="text" name="banner_url" class="form-control" id="banner_url_edit"  value="" required autofocus>
                 </div>
+                <div class="form-group">
+                  <label class="col-form-label" for="modal-input-description">Image</label>
+                  <input type="file" id="banner_image" name="banner_image" class="form-control" required>
+               </div>
                 <div class="form-group">
                   <input type="hidden" class="form-control" id="modal-input-image">
                 </div>
@@ -147,10 +146,6 @@
           
           </form>
         </div>
-        <!-- <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Update</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div> -->
       </div>
     </div>
   </div>

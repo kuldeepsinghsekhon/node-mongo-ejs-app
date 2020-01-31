@@ -974,3 +974,36 @@ exports.editProduct=function(req, res, next) {
         })
          
      }
+
+     exports.findSingleProduct=function(req, res, next) {
+      var productId=req.body.productid;
+      var attr_val=req.body.attr_val;
+      var buybid_query= {productid:productId,status:'buybid'};
+      var sellask_query= {productid:productId,status:'ask'};
+      if(attr_val){
+     buybid_query= {productid:productId,status:'buybid',attr_val:attr_val};
+     sellask_query= {productid:productId,status:'ask',attr_val:attr_val};
+      }
+      Promise.all([
+        Product.findOne({ _id: productId }).select({ "name": 1,"brand":1, "description":1,"category":1,"condition":1,
+        "attrs":1,"releasedate":1,  "_id": 1,image:1}).populate({path:'attrs'}),
+        SellBid.findOne(sellask_query).sort({bidprice:+1}).limit(1),
+        BuyBid.findOne(buybid_query).sort({bidprice:-1}).limit(1),
+        OrderBid.findOne({ product: productId }).select({"_id":0,"netprice":1}).sort({orderdate:-1}).limit(1), //.sort({orderdate:1})
+        OrderBid.findOne({ product: productId }).sort({netprice:-1}).limit(1),
+        OrderBid.findOne({ product: productId }).sort({netprice:+1}).limit(1),
+
+      ]).then( ([ product, lowask,highbid,lastsale,heigh_saleprice,lowest_saleprice]) => {
+        var highprice=null;
+        var lowestprice=null;
+        if(!lowask)lowask={};
+        if(!highbid)highbid={};
+        if(!lastsale)lastsale={};
+        if(heigh_saleprice){highprice= Math.ceil(heigh_saleprice.netprice)}
+        if(lowest_saleprice){lowestprice= Math.ceil(lowest_saleprice.netprice)}
+
+        if(lastsale){lastsaleprice= Math.ceil(lastsale.netprice)}
+
+               res.json( {status:'success',data:{product: product,lowask:lowask,highbid:highbid,lastsale:lastsaleprice,heigh_saleprice:highprice,lowest_saleprice:lowestprice},message:''});
+        }).catch((error) => console.log(error));
+      }

@@ -52,10 +52,10 @@
                                    <td><%= orders[i].payment.transaction.id%></td>
                                    <td><%= orders[i].payment.transaction.status%></td>
                                    <td>
-                                       <select data-id="<%= orders[i]._id %>" class="action" > 
+                                       <select class="select_option" data-id="<%= orders[i]._id %>" class="action" > 
                                             <option value="">Selcet Action</option>
-                                           <option  value="accepeted" <% if(orders[i].status=='accepeted'){ %> selected<% } %> >Accepeted</option>
-                                            <option value="canceled" <% if(orders[i].status=='canceled'){ %> selected<% } %> >Canceled</option>
+                                            <option   value="accepeted" <% if(orders[i].status=='accepeted'){ %> selected<% } %> >Accepeted</option>
+                                            <option  value="canceled" <% if(orders[i].status=='canceled'){ %> selected<% } %> >Canceled</option>
                                       </select>
                                       <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
                                           
@@ -103,6 +103,27 @@
 </div>
 <script>
 
+    var prev_val;
+$('.select_option').focus(function() {
+    prev_val = $(this).val();
+}).change(function() {
+     $(this).blur() // Firefox fix as suggested by AgDude
+    var success = confirm('Are you sure you want to change the Dropdown?');
+    if(success)
+    {
+        alert('changed');
+        // Other changed code would be here...
+    }  
+    else
+    {
+        $(this).val(prev_val);
+        return false; 
+    }
+});
+
+</script>
+
+<script>
   $(document).ready(function(){
     var confirm_status = null;
     confirm_status = $('#confirm_status').val();

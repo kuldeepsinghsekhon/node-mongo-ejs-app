@@ -111,7 +111,6 @@ function education_fields() {
 	   $('.removeclass'+rid).remove();
    }
     </script>
-   <!-- https://bootsnipp.com/snippets/AXVrV-->
     <script>
       $(document).ready(function() {
    /**
@@ -151,6 +150,36 @@ function education_fields() {
      $("#edit-form").trigger("reset");
    })
  })
+
+
+
+
+ $(document).ready(function() {
+   $(document).on('click', "#edit_banner", function() {
+     $(this).addClass('edit_banner_trigger'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
+     var options = {
+       'backdrop': 'static'
+     };
+     $('#edit_banner_modal').modal(options)
+   })
+ 
+   // on modal show
+   $('#edit_banner_modal').on('show.bs.modal', function() {
+     var el = $(".edit_banner_trigger"); // See how its usefull right here? 
+     var row = el.closest(".data-row");
+     var id = el.data('item-id');
+     var url = row.children(".banner_url").text();
+     $("#banner_id").val(id);
+     $("#banner_url_edit").val(url);
+    
+ 
+   })
+   $('#edit_banner_modal').on('hide.bs.modal', function() {
+     $('.edit_banner_trigger').removeClass('edit_banner_trigger')
+     $("#edit-form").trigger("reset");
+   })
+ })
+
 
 
 
@@ -194,6 +223,44 @@ $(document).ready(function() {
               success: function (response) {
             if(response){
               $('#userAction').html('<div class="alert alert-success">User Status Changed successfully</div>');
+            }
+            }
+            });
+          })
+
+
+
+          $('.banner_status').on('click', function(){
+            var uid=$(this).data('uid');
+            var status = '';
+            if($(this).prop("checked") == true){
+               status = 'true';
+            }else{
+              status = 'false';
+            }
+            $.ajax({
+              type: 'POST',
+              url:'/admin/banner/',
+              data: {uid:uid,status:status},
+              success: function (response) {
+            if(response){
+              $('#bannerAction').html('<div class="alert alert-success">Banner Status Changed successfully</div>');
+            }
+            }
+            });
+          })
+
+
+          $('.bannerDelete').on('click', function(){
+            var uid=$(this).data('uid');
+            $.ajax({
+              alert(uid);,
+              type: 'POST',
+              url:'/admin/banner/delete/',
+              data: {uid:uid},
+              success: function (response) {
+            if(response){
+              $('#bannerDelete').html('<div class="alert alert-success">Banner Deleted successfully</div>');
             }
             }
             });

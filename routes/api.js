@@ -31,5 +31,5 @@ router.post('/settings/buyer-info',passport.authenticate('local', { session : fa
 router.post('/settings/address-info',passport.authenticate('local', { session : false }), settings_controller.addressInfo);
 router.post('/sign-in',passport.authenticate(['local']),auth_controller.signIn);
 router.get('/brand',forwardAuthenticated, utils_controller.brand);
-router.post('/products/detail',forwardAuthenticated, product_controller.findProductAjax );
+router.post('/products/detail',forwardAuthenticated, product_controller.findSingleProduct );
 module.exports = router;

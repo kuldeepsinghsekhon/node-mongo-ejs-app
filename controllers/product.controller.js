@@ -547,6 +547,7 @@ exports.placeBuyBid=async function name(req,res,next) {
   if(req.body.bidType=='buy'){
     buyBid.status="buy";   
     bidprice=sellask.bidprice;
+   
   }else{
     buyBid.status="buybid";
     bidprice=parseInt(req.body.bidprice);

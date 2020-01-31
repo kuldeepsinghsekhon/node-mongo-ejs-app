@@ -4,13 +4,13 @@ const Schema = mongoose.Schema;
 const prodSchema = new mongoose.Schema({
  name: String,
  department:String,
- brand: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Brand'
-  }, 
+//  brand: { 
+//     type: mongoose.Schema.Types.ObjectId, 
+//     ref: 'Brand'
+//   }, 
  description: String,
  category: String, //sneekers/addidas/yeezee/model
- brands : String,
+ brand : String,
  sku: String,
  releasedate:Date,
  price: Number,

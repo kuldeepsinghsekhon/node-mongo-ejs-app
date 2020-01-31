@@ -34,15 +34,14 @@
                         <tbody>
                             <% for (var i = 0; i < users.length; i++) { %>
                           <tr>
-                          
                             <td class="py-1"><img src="/assets/images/defaultuser.png " alt="image"/></td>
                             <td><%= users[i].name %></td>
                             <td> <%= users[i].email %> </td>
                             <td>
-                                  <label class="switch">
-                                     <input id="user_status" data-uid="<%= users[i].id%>" type="checkbox" onclick="return confirm('Aru You Sure to Want Change Status ?')" data-id="2" name="status" class="usersatusbtn" value="true" <% if(users[i].status){if(users[i].status){ %> checked <% }} %>>
-                                     <span class="slider round"></span>
-                                  </label>
+                                <label class="switch">
+                                    <input id="user_status" data-uid="<%= users[i].id%>" type="checkbox" onclick="return confirm('Aru You Sure to Want Change Status ?')" data-id="2" name="status" class="usersatusbtn" value="true" <% if(users[i].status){if(users[i].status){ %> checked <% }} %>>
+                                    <span class="slider round"></span>
+                                </label>
                             </td>
                           </tr>
                          <% } %>
@@ -52,33 +51,4 @@
                   </div>
                 </div>
               </div>
-              <!-- <% /*if (pages > 0) { %>
-                <ul class="pagination text-center">
-                    <% if (current == 1) { %>
-                        <li class="disabled"><a class="page-link">First</a></li>
-                    <% } else { %>
-                        <li  class="page-item"><a class="page-link" href="/admin/users/1">First</a></li>
-                    <% } %>
-                    <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
-                    <% if (i !== 1) { %>
-                        <li class="page-item disabled"><a class="page-link">...</a></li>
-                    <% } %>
-                    <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
-                        <% if (i == current) { %>
-                            <li class="page-item active"><a class="page-link"><%= i %></a></li>
-                        <% } else { %>
-                            <li class="page-item"><a class="page-link" href="/admin/users/<%= i %>"><%= i %></a></li>
-                        <% } %>
-                        <% if (i == Number(current) + 4 && i < pages) { %>
-                            <li class="page-item disabled" ><a class="page-link">...</a></li>
-                        <% } %>
-                    <% } %>
-                    <% if (current == pages) { %>
-                        <li class="disabled"><a class="page-link">Last</a></li>
-                    <% } else { %>
-                        <li><a  class="page-link" href="/admin/users/<%= pages %>">Last</a></li>
-                    <% } %>
-                </ul>
-            <% } */%> */-->
-            
-</div>
+              </div>

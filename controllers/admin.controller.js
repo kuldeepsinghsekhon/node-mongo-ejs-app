@@ -336,7 +336,7 @@ var order=await OrderBid.findOne({_id:orderid}).populate({path:'sellbid'}).popul
  // var sellercahrges=  order.SellerTransaction.TotalPayout;
 
   var transactionid=order.payment.transaction.id;
-  if(order.status=='canceled'){
+  if(order.status=='canceled'||order.status=='accepeted'){
     res.json({status:'error',message:'Can not Accept/Cancel Order Already canceled '});
   }else{
 
@@ -431,6 +431,7 @@ exports.viewTransaction = function (req,res,next) {
     SellBid.find(query).sort({bidprice:-1}),
   ]).then( ([orders,buybids])=>{
      var count= orders.length;
+     //console.log(orders);
     res.render('pages/admin/transaction', {
       buybids: buybids,
       orders:orders,
@@ -537,4 +538,55 @@ exports.viewBanner = function (req, res){
          res.redirect('/admin/banner'); 
 
  }
+}
+exports.updateBanner = function (req,res,next) {
+  var url = req.body.banner_url ;
+  
+  var bannerId=req.body.bannerid;
+    var banner = new Banner();
+    var imgname='default.jpg';
+    var imgpath=appRoot+'//public//uploads//banner//';
+    var img='';
+    var brod={name:req.body.banner_url };
+    if (!req.files || Object.keys(req.files).length=== 0) {
+
+    }else{  
+      let bannerImage = req.files.banner_image;
+        imgname=Date.now()+path.extname(req.files.banner_image.name);
+        bannerImage.mv(imgpath+'//'+imgname, function(err) { 
+          if (err) throw err
+        });  
+        brod={url:req.body.banner_url,image:imgname};     
+}
+Banner.findByIdAndUpdate(bannerId, {$set:brod}, function (err, banner) {
+  if (err) return next(err);
+  res.redirect('/admin/banner/');
+});
+}
+
+exports.updateBannerStatus = function(req,res,next){
+ var bannerId = req.body.uid ;
+  var status = req.body.status;
+  console.log(status);
+  console.log(bannerId);
+  var prod = {status : status};
+  Banner.findByIdAndUpdate(bannerId, {$set:prod}, function (err, banner) {
+      if (err) return next(err);
+      res.json({status:'success',data:{banner:banner},message:'Banner Action success'});
+  });
+}
+// exports.deleteBanner= async function (req, res, next) {
+//   var bannerId=req.body.uid;
+//   console.log(bannerId);
+//    Banner.deleteOne({ _id: bannerId}, function (err, banner) {
+//      if(err) return next(err);
+//      res.redirect('/admin/banner');
+//    });
+  
+// }
+exports.deleteBanner= async function name(req, res, next) {
+  var bannerId=req.body.uid;   
+  console.log(bannerId);
+  // const del = await Banner.deleteOne({ _id: bannerId});
+  // res.redirect('/admin/banner/');
 }
