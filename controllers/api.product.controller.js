@@ -1046,16 +1046,31 @@ exports.editProduct=function(req, res, next) {
       }
 
       exports.allBid = function (req,res,next){
-        var productId = req.body.productId ; 
+        var productId = req.body.productid ; 
+        console.log(productId);
         var attr_val = req.body.attr_val;
         asks_query = {productid:productId,status:'buy'} ; 
+        console.log(asks_query);
         if(attr_val){
           asks_query = {productid:productId,status:'buy', attr_val:attr_val};
         }
-        BuyBid.find(asks_query).sort({bidprice:-1}).exec(function(err,bids){
+        BuyBid.find(asks_query).sort({bidprice:-1}).select({"_id":0, "attr_val":1, "title":1,"bidprice":1}).exec(function(err,bids){
           BuyBid.count().exec(function(err,count){
             if(err)return next(err);
             res.json({status:'success', data:{bids:bids},message:''});
           })
+        });
+      }
+      exports.allSale = function (req,res,next){
+        var productId = req.body.productid ; 
+        var attr_val = req.body.attr_val;
+        sale_query = {productid:productId,status:'sale'} ; 
+        if(attr_val){
+          sale_query = {productid:productId,status:'sale', attr_val:attr_val};
+        }
+        SellBid.find(sale_query).select({"_id":0, "attr_val":1, "title":1,"bidprice":1}).exec(function(err,sale){
+          if(err)return next(err);
+          console.log(sale);
+          res.json({status:'success', data:{sale:sale},message:''});
         });
       }

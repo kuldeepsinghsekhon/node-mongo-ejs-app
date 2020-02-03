@@ -946,6 +946,7 @@ exports.editProduct=function(req, res, next) {
        SellBid.count().exec(function(err,count){
          if(err)return next(err);
          res.json(asks)
+         
        });
      });
  
