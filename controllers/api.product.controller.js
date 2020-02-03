@@ -5,6 +5,7 @@ const Address = require('../models/Address');
 const Attribute = require('../models/Attribute');
 const Category = require('../models/Category');
 const OrderBid = require('../models/OrderBid');
+const Banner = require('../models/Banner');
 const path = require('path');
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
@@ -986,14 +987,15 @@ exports.editProduct=function(req, res, next) {
       }
       Promise.all([
         Product.findOne({ _id: productId }).select({ "name": 1,"brand":1, "description":1,"category":1,"condition":1,
-        "attrs":1,"releasedate":1,  "_id": 1,image:1}).populate({path:'attrs'}),
+        "attrs":1,"releasedate":1,"price":1,  "_id": 1,image:1}).populate({path:'attrs'}),
         SellBid.findOne(sellask_query).sort({bidprice:+1}).limit(1),
         BuyBid.findOne(buybid_query).sort({bidprice:-1}).limit(1),
-        OrderBid.findOne({ product: productId }).select({"_id":0,"netprice":1}).sort({orderdate:-1}).limit(1), //.sort({orderdate:1})
+        OrderBid.find({ product: productId }).select({"_id":0,"netprice":1}).sort({orderdate:-1}).limit(2), //.sort({orderdate:1})
         OrderBid.findOne({ product: productId }).sort({netprice:-1}).limit(1),
         OrderBid.findOne({ product: productId }).sort({netprice:+1}).limit(1),
 
       ]).then( ([ product, lowask,highbid,lastsale,heigh_saleprice,lowest_saleprice]) => {
+        console.log(lastsale);
         var highprice=null;
         var lowestprice=null;
         if(!lowask)lowask={};
@@ -1002,8 +1004,58 @@ exports.editProduct=function(req, res, next) {
         if(heigh_saleprice){highprice= Math.ceil(heigh_saleprice.netprice)}
         if(lowest_saleprice){lowestprice= Math.ceil(lowest_saleprice.netprice)}
 
-        if(lastsale){lastsaleprice= Math.ceil(lastsale.netprice)}
-
-               res.json( {status:'success',data:{product: product,lowask:lowask,highbid:highbid,lastsale:lastsaleprice,heigh_saleprice:highprice,lowest_saleprice:lowestprice},message:''});
+       // if(lastsale){lastsaleprice= Math.ceil(lastsale.netprice)}
+               res.json( {status:'success',data:{product: product,lowask:lowask,highbid:highbid,lastsale:lastsale,heigh_saleprice:highprice,lowest_saleprice:lowestprice},message:''});
         }).catch((error) => console.log(error));
+      }
+
+      exports.viewBanner = function (req, res){
+        Banner.find({"status":true}).select({"_id":0,"url":1,"image":1}).exec(function(err, banner) {
+                      if (err) return next(err)
+                       res.json({status:'success',data:{banner: banner},message:''});
+                      })
+       }
+       exports.allAsks =function(req,res,next){
+        var productId= req.body.productId;
+        var attr_val = req.body.attr_val;
+        var asks_query = {productid:productId};
+        if(attr_val)
+        {
+          var asks_query = {productid:productId,attr_val: attr_val};
+        }
+       SellBid.find(asks_query).select({ "title": 1, "_id": 0,'bidprice': 1,'attr_val':1}).exec(function(err,asks){
+         SellBid.count().exec(function(err,count){
+           if(err)return next(err);
+           res.json({status:'success',data:{asks:asks},message:'' })
+         });
+       });
+      } 
+      exports.newLowestAsk = function (req,res,next) {
+        var productId= req.body.productId;
+        var attr_val = req.body.attr_val;
+        asks_query = {productid:productId,status:'ask'} ; 
+        if(attr_val){
+          asks_query = {productid:productId,status:'ask', attr_val:attr_val};
+        }
+        SellBid.find(asks_query).sort({bidprice:+1}).limit(10).exec(function(err,asks){
+          SellBid.count().exec(function(err,count){
+            if(err)return next(err);
+            res.json({status:'success',data:{asks:asks},message:'' })
+          });
+        })
+      }
+
+      exports.allBid = function (req,res,next){
+        var productId = req.body.productId ; 
+        var attr_val = req.body.attr_val;
+        asks_query = {productid:productId,status:'buy'} ; 
+        if(attr_val){
+          asks_query = {productid:productId,status:'buy', attr_val:attr_val};
+        }
+        BuyBid.find(asks_query).sort({bidprice:-1}).exec(function(err,bids){
+          BuyBid.count().exec(function(err,count){
+            if(err)return next(err);
+            res.json({status:'success', data:{bids:bids},message:''});
+          })
+        });
       }

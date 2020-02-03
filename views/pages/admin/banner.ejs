@@ -20,7 +20,7 @@
                 </p>
                 <div class="table-responsive">
                   <div id="bannerAction"></div>
-                  <div id="bannerDelete"></div>
+                  <div id="bannerDeleteAction"></div>
                     <table class="table table-striped" id="brand-data">
                     <thead>
                       <tr>
@@ -59,7 +59,7 @@
                         </td> 
                         <td>
                             <label class="switch">
-                              <input id="banner_status" class="banner_status" data-uid="<%= banner[i].id%>" type="checkbox" onclick="return confirm('Aru You Sure to Want Change Status ?')" name="status" value="true" <% if(banner[i].status){if(banner[i].status){ %> checked <% }} %>>
+                              <input data-uid="<%= banner[i].id%>" type="checkbox"  data-id="2" name="status" class="bannerstatusbtn" onclick ="return confirm('Are you sure to change banner status.!')" value="true" <% if(banner[i].status){if(banner[i].status){ %> checked <% }} %>>
                                <span class="slider round"></span>
                             </label>
                          </td>

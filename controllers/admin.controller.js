@@ -497,8 +497,8 @@ exports.viewBanner = function (req, res){
                 res.render('pages/admin/banner', {
                     banner: banner,
                     layout:'admin-layout'
-                })  
-                })
+        })
+      })
  }
  exports.addBanner = function(req,res){
   var banner = new Banner();
@@ -584,9 +584,9 @@ exports.updateBannerStatus = function(req,res,next){
 //    });
   
 // }
-exports.deleteBanner= async function name(req, res, next) {
-  var bannerId=req.body.uid;   
-  console.log(bannerId);
-  // const del = await Banner.deleteOne({ _id: bannerId});
-  // res.redirect('/admin/banner/');
+exports.deleteBanner= function name(req, res, next) {
+  var bannerId=req.body.uid;
+  Banner.deleteOne({ _id: bannerId}, function (err, banner) {
+  res.json({status:'success', data:{},message:'Banner Deleted Success'});
+})
 }

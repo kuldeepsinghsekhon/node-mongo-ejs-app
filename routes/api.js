@@ -32,4 +32,8 @@ router.post('/settings/address-info',passport.authenticate('local', { session : 
 router.post('/sign-in',passport.authenticate(['local']),auth_controller.signIn);
 router.get('/brand',forwardAuthenticated, utils_controller.brand);
 router.post('/products/detail',forwardAuthenticated, product_controller.findSingleProduct );
+router.post('/banner',forwardAuthenticated,product_controller.viewBanner);
+router.post('/asks',forwardAuthenticated,product_controller.allAsks);
+router.post('/lowestask', forwardAuthenticated, product_controller.newLowestAsk);
+router.post('/allbids',forwardAuthenticated, product_controller.allBid);
 module.exports = router;

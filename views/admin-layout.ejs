@@ -223,14 +223,16 @@ $(document).ready(function() {
               success: function (response) {
             if(response){
               $('#userAction').html('<div class="alert alert-success">User Status Changed successfully</div>');
+              location.reload().delay(10000);
             }
             }
             });
           })
-
-
-
-          $('.banner_status').on('click', function(){
+</script>
+<script>  
+        $(document).ready(function(){
+          $('.switch .bannerstatusbtn').on('change',function(){
+            banner_status = $('.switch .bannerstatusbtn').val();
             var uid=$(this).data('uid');
             var status = '';
             if($(this).prop("checked") == true){
@@ -245,22 +247,24 @@ $(document).ready(function() {
               success: function (response) {
             if(response){
               $('#bannerAction').html('<div class="alert alert-success">Banner Status Changed successfully</div>');
+              location.reload().delay(50000);
             }
             }
             });
-          })
+          });
+        });
 
 
           $('.bannerDelete').on('click', function(){
             var uid=$(this).data('uid');
             $.ajax({
-              alert(uid);,
               type: 'POST',
               url:'/admin/banner/delete/',
               data: {uid:uid},
               success: function (response) {
             if(response){
-              $('#bannerDelete').html('<div class="alert alert-success">Banner Deleted successfully</div>');
+              $('#bannerDeleteAction').html('<div class="alert alert-danger">Banner Deleted successfully</div>');
+              location.reload().delay(1000000);
             }
             }
             });
