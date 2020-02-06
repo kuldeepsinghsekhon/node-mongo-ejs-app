@@ -729,7 +729,7 @@ exports.saveProduct=function(req, res, next) {
     product.sku = req.body.product_sku;
     product.price = req.body.product_price; 
     product.style = req.body.style; 
-    product.brands = req.body.brand_name;
+    product.brand = req.body.brand_name;
     product.active = 'false';
     if(req.body.status)
     {

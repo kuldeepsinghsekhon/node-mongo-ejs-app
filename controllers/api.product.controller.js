@@ -1104,3 +1104,21 @@ exports.editProduct=function(req, res, next) {
             
         }).catch(err => console.log(err));
       }
+
+      exports.relatedproducts=function name(req,res,next) {
+        var productId=req.body.id;
+        console.log(productId);
+         var attrv=req.body.attr_val;
+         Product.find({_id:productId}).exec(function(err,product){
+          if(err)return next(err);
+         var category = (product[0].category);
+         console.log(category);
+          Product.find({category:category,active:'true'}).exec(function(err,relatedproducts){
+            if(err)return next(err);
+            console.log(relatedproducts);
+            res.json({status:'success',data:{relatedproducts:relatedproducts},message:''});
+         });
+        });
+      }
+
+      
