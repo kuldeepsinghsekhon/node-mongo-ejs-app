@@ -1120,5 +1120,31 @@ exports.editProduct=function(req, res, next) {
          });
         });
       }
+exports.mostPopular = async function name(req,res,next) {
 
+  const most_popular=await OrderBid.aggregate([
+    {
+     $group:{
+     "_id":"$product",
+       count :{ $sum :1},
+      }
       
+    },
+    {$limit:10},
+    {$sort:{'count':-1}},
+    {
+      $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "produt_details"
+         
+      }
+    }
+    ]);
+    var details =[] ;
+    most_popular.forEach(productDetails => { 
+      details.push(productDetails);
+    }); 
+    res.json({status:'success', data:{details:details},message:''});
+}
