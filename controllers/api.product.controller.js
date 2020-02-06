@@ -57,6 +57,7 @@ exports.place_buy=async function name(req,res,next) {
   var highestbid=await BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1);
 
   var prod=await Product.findById(productId).populate('buybids');
+  console.log(prod);
   if(highestbid){
     buyBid.highestbid = highestbid.bidprice;
   }
@@ -73,7 +74,7 @@ exports.place_buy=async function name(req,res,next) {
         expiry=expiry.split("Days").map(Number);  
         var expire= parseInt(expiry[0])    
   buyBid.expire=Date.now() + ( 3600 * 1000 * 24*expire)
-  buyBid.title=prod.name;
+ // buyBid.title=prod.name;
   
   if(req.body.bidType=='buy'){
     buyBid.status="buy";   
@@ -735,7 +736,7 @@ exports.calculateBuyCharges=function name(req,res,next) {
      var shipping=30;
      var totalpay=askprice+(processingFee+authenticationFee+shipping);
      //console.log(askprice);
-      res.json({ processingFee: processingFee.toFixed(2) ,authenticationFee:authenticationFee.toFixed(2),shipping:shipping.toFixed(2),discountcode:'',totalpay:Math.ceil(totalpay) });
+      res.json({status : 'success',data:{processingFee: processingFee.toFixed(2) ,authenticationFee:authenticationFee.toFixed(2),shipping:shipping.toFixed(2),discountcode:'',totalpay:Math.ceil(totalpay)},message : ''});
       
   })
   // product=Product.findById(productId,function(err,product){
@@ -1073,4 +1074,33 @@ exports.editProduct=function(req, res, next) {
           console.log(sale);
           res.json({status:'success', data:{sale:sale},message:''});
         });
+      }
+
+      exports.buyPorductCharge=function name(req,res,next) {
+        var productId=req.body.id.replace(" ","");
+         var attrv=req.body.attr_val.replace(" ","");
+        Promise.all([
+          Product.findOne({ _id: productId }).populate({path:'attrs'}),
+          SellBid.findOne({productid:productId,status:'ask',attr_val:attrv}).sort({bidprice:+1}).limit(1),
+        ]).then( ([product,lowestask])=>{
+          
+          var askprice=0; 
+             if(req.body.bidType=='buy'){
+                if(lowestask){
+                  askprice=lowestask.bidprice;
+                }else{
+                  askprice=0;
+                }         
+             }else{
+              askprice=parseInt(req.body.bidprice);
+              var expiry=req.body.expiry;
+             // expiry=expiry.split("Days").map(Number);       
+             }
+           var processingFee=askprice*0.09;
+           var authenticationFee=askprice*0.03;
+           var shipping=0;
+           var totalpay=askprice+(processingFee+authenticationFee+shipping);
+            res.json({status:'success',data:{ processingFee: processingFee.toFixed(2) ,authenticationFee:authenticationFee.toFixed(2),shipping:shipping.toFixed(2),discountcode:'',totalpay:Math.ceil(totalpay)},message:''});
+            
+        }).catch(err => console.log(err));
       }

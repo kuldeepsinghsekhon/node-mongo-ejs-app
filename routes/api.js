@@ -37,4 +37,5 @@ router.post('/asks',forwardAuthenticated,product_controller.allAsks);
 router.post('/lowestask', forwardAuthenticated, product_controller.newLowestAsk);
 router.post('/allbids',forwardAuthenticated, product_controller.allBid);
 router.post('/allsale',forwardAuthenticated, product_controller.allSale);
+router.post('/buyproduct_charge',forwardAuthenticated,product_controller.buyPorductCharge);
 module.exports = router;

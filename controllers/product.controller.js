@@ -37,17 +37,12 @@ exports.viewAddProduct = function(req, res, next) {
 exports.products = function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1;
-    Product
-        .find({})
-        .skip((perPage * page) - perPage)
-        .populate({path:'sellbids', //20/1/20
+    Product.find({active:'true'}).skip((perPage * page) - perPage).populate({path:'sellbids', //20/1/20
         match: { status: 'ask' }
         ,options: {
           limit: 1,
           sort: { bidprice: +1}        
-     } })
-     .limit(perPage)
-        .exec(function(err, products) {
+     } }).limit(perPage).exec(function(err, products) {
             Product.count().exec(function(err, count) {
                 if (err) return next(err)
                 res.render('pages/public/home', {
@@ -65,7 +60,7 @@ exports.products = function(req, res, next) {
 
     var page = req.params.page || 1;
     Product
-        .find({category:category_slug})
+        .find({category:category_slug, status:'true'})
         .skip((perPage * page) - perPage)
         .populate({path:'sellbids',
         match: { status: 'ask' }
@@ -100,10 +95,10 @@ exports.products = function(req, res, next) {
       OrderBid.findOne({ product: productId }).sort({netprice:-1}).limit(1),
      // Product.findOne({ _id: productId }),
       OrderBid.count({ product: productId}),
-      Product.find({ }).limit(10),
+      Product.find({active:'true' }).limit(10),
     ]).then( ([ product, sellbid,sellBid_avg,highbid,lastsale,lowest_netprice,heigh_netprice,ordercount,relatedproducts]) => {
       //console.log(lastsale[0].netprice);
-      console.log(lastsale[0]);
+      //console.log(lastsale[0]);
       var avg_retail_price=0;
       if(lastsale.length>0){
         var pricepremium=lastsale[0].netprice-product.price;
@@ -345,7 +340,7 @@ exports.sellProductPay=function(req,res){
 }
 
 exports.sellAsk=async  function(req, res,next){
-  var name =req.body.name;
+  var name = req.body.name;
   var lastname=req.body.lastname;
   var email=req.user.email;
   var sellBid = new SellBid();
@@ -439,7 +434,7 @@ exports.sellAsk=async  function(req, res,next){
     
   }, function(error, result) {
     cardtoken=result.customer.paymentMethods[0].token;
-     console.log(cardtoken+'fsadfasdfsad');
+     //console.log(cardtoken+'fsadfasdfsad');
       if (result) {
         if(req.body.bidType=='sale'){
           const order=new OrderBid();
@@ -677,7 +672,6 @@ exports.buyBillingShipping=function(req,res){
   var productId=req.body.id;
   Promise.all([
     Product.findOne({ _id: productId }).populate({path:'attrs'}),
-    
     Address.findOne({address_type:'shipping',user:req.user}).limit(1),
     Address.findOne({address_type:'billing',user:req.user}).limit(1),
     Country.find()
@@ -736,7 +730,6 @@ exports.saveProduct=function(req, res, next) {
     product.price = req.body.product_price; 
     product.style = req.body.style; 
     product.brands = req.body.brand_name;
-    console.log(req.body.brand_name)
     product.active = 'false';
     if(req.body.status)
     {
@@ -884,11 +877,6 @@ exports.editProduct=function(req, res, next) {
           for(i=0;i<lastsale.length;i++){
             resarr.push([lastsale[i].orderdate,lastsale[i].netprice]);  
           }
-          //   var spchange=0;
-          // var highsale;
-          //   if(lastsale.length>0){
-          // spchange=lastsale[0].netprice-lastsale[1].netprice;
-          // highsale=lastsale[0];
           res.json(resarr);//.toJSON();
   
         });
@@ -906,7 +894,7 @@ exports.editProduct=function(req, res, next) {
      exports.sellProductSearchReasult=async function(req, res, next) {
       //var productId=req.body.id;
       Product
-        .find({})
+        .find({active:'true'})
         //.skip((perPage * page) - perPage)
        // .populate({path:'sellbids'
         //,options: {
