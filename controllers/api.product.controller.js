@@ -1126,12 +1126,15 @@ exports.mostPopular = async function name(req,res,next) {
     {
      $group:{
      "_id":"$product",
-       count :{ $sum :1},
+    //  product:{
+		// 	$push:"$$ROOT"
+		// },
+     //  count :{ $sum :1},
       }
-      
     },
     {$limit:10},
     {$sort:{'count':-1}},
+  
     {
       $lookup: {
           from: "products",
@@ -1142,9 +1145,9 @@ exports.mostPopular = async function name(req,res,next) {
       }
     }
     ]);
-    var details =[] ;
-    most_popular.forEach(productDetails => { 
-      details.push(productDetails);
+    var products =[] ;
+    most_popular.forEach(order => { 
+      products.push(order.produt_details[0]);
     }); 
-    res.json({status:'success', data:{details:details},message:''});
+    res.json({status:'success', data:{products:products},message:''});
 }
