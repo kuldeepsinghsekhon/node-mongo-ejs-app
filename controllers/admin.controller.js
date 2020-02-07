@@ -223,7 +223,7 @@ exports.productsBuyBids=function(req, res, next) {
     var query = {}; 
     Promise.all([
       OrderBid.find({  }).populate({path:'product'}),
-      BuyBid.find(query).sort({bidprice:-1}).limit(10),
+      BuyBid.find(query).sort({bidprice:-1}),
     ]).then( ([orders,buybids])=>{
       res.render('pages/admin/buying', {
         buybids: buybids,
