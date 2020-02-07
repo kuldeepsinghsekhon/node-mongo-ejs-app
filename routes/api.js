@@ -40,4 +40,8 @@ router.post('/allsale',forwardAuthenticated, product_controller.allSale);
 router.post('/buyproduct_charge',forwardAuthenticated,product_controller.buyPorductCharge);
 router.post('/releted_product', forwardAuthenticated, product_controller.relatedproducts);
 router.post('/most_Popular',forwardAuthenticated, product_controller.mostPopular);
+router.post('/sellCalculateCharges',forwardAuthenticated,product_controller.sellCalculateCharges);
+router.post('/sell_product_Ask',forwardAuthenticated,product_controller.sell_product_Ask);
+router.post('/saleschart',forwardAuthenticated,product_controller.ChartfindById);
+router.post('/buyproduct',forwardAuthenticated,product_controller.buyPorduct);
 module.exports = router;

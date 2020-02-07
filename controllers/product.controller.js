@@ -15,11 +15,22 @@ const fileUpload = require('express-fileupload');
 const braintree = require("braintree");
 var paypal = require('paypal-rest-sdk');
 const gateway = braintree.connect({
+  
   environment: braintree.Environment.Sandbox,
   merchantId: process.env.BraintreeMerchantId,       //merchant id 
   publicKey: process.env.BraintreePublicKey,        //public key
   privateKey: process.env.BraintreePrivateKey //private key 
 });
+const BuyProcessingFee= process.env.BuyProcessingFee;
+const BuyAuthenticationFee = process.env.BuyAuthenticationFee;
+const BuyShipping = process.env.BuyShipping;
+
+const TransactionFeeCharge=process.env.TransactionFeeCharge;
+console.log(TransactionFeeCharge);
+const  SellProcessingCharge=process.env.SellProcessingCharge;
+console.log(SellProcessingCharge);
+const SellShipping=process.env.SellShipping;
+console.log(SellShipping);
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id': process.env.PaypalClientId,
@@ -253,15 +264,14 @@ exports.sellCalculateCharges=async function(req, res, next) {
         var expiry=req.body.expiry;
         expiry=expiry.split("Days").map(Number);       
        }
-      
-     var TransactionFee=askprice*0.09;
-     var Proc=askprice*0.03;
-     var Shipping=0;
+     var TransactionFee=askprice*TransactionFeeCharge;
+     var Proc=(askprice*SellProcessingCharge);
+     var Shipping=SellShipping;
      var totalpayout=askprice-(TransactionFee+Proc+Shipping);
      var price=product.price;
      var message='You must meet the minimum Ask of '+price;
     if(product.pricetrigger && askprice<=price){
-      res.json({status:'error',data:{ TransactionFee: TransactionFee.toFixed(2) ,Proc:Proc.toFixed(2),Shipping:Shipping.toFixed(2),discountcode:'',totalpayout:Math.ceil(totalpayout)},message:message });
+      res.json({status:'error',data:{ TransactionFee: TransactionFee.toFixed(2) ,Proc:Proc.toFixed(2),Shipping:Shipping,discountcode:'',totalpayout:Math.ceil(totalpayout)},message:message });
     }else{
       var lowestaskprice=(lowestask!=null?lowestask.bidprice:0);
       var hightestbidprice=(highbid!=null? highbid.bidprice:0);
@@ -644,11 +654,11 @@ exports.calculateBuyCharges=function name(req,res,next) {
         var expiry=req.body.expiry;
         expiry=expiry.split("Days").map(Number);       
        }
-     var processingFee=askprice*0.09;
-     var authenticationFee=askprice*0.03;
-     var shipping=0;
+     var processingFee=askprice*BuyProcessingFee;
+     var authenticationFee=askprice*BuyAuthenticationFee;
+     var shipping=BuyShipping;
      var totalpay=askprice+(processingFee+authenticationFee+shipping);
-      res.json({ processingFee: processingFee.toFixed(2) ,authenticationFee:authenticationFee.toFixed(2),shipping:shipping.toFixed(2),discountcode:'',totalpay:Math.ceil(totalpay) });
+      res.json({ processingFee: processingFee.toFixed(2) ,authenticationFee:authenticationFee.toFixed(2),shipping:shipping,discountcode:'',totalpay:Math.ceil(totalpay)});
       
   }).catch(err => console.log(err));
   // product=Product.findById(productId,function(err,product){

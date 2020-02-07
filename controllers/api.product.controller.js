@@ -17,6 +17,12 @@ const gateway = braintree.connect({
   publicKey: process.env.BraintreePublicKey,        //public key
   privateKey: process.env.BraintreePrivateKey //private key 
 });
+const BuyProcessingFee= process.env.BuyProcessingFee;
+const BuyAuthenticationFee = process.env.BuyAuthenticationFee;
+const BuyShipping = process.env.BuyShipping;
+const TransactionFeeCharge=process.env.TransactionFeeCharge;
+const SellProcessingCharge=process.env.SellProcessingCharge;
+const SellShipping=process.env.SellShipping;
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id': process.env.PaypalClientId,
@@ -205,7 +211,7 @@ exports.products = function(req, res, next) {
     var perPage = 9;
     var page = req.body.page || 1;
     Product
-        .find({})
+        .find({active:'true'})
         .skip((perPage * page) - perPage)
         .populate({path:'sellbids',
         match: { status: 'ask' }
@@ -229,7 +235,7 @@ exports.products = function(req, res, next) {
     var perPage = 9;
     var page = req.body.page || 1;
     Product
-        .find({})
+        .find({active:'true'})
         .skip((perPage * page) - perPage)
         .populate({path:'buybids',
         match: { status: 'buybid' }
@@ -280,7 +286,7 @@ exports.products = function(req, res, next) {
 
     var page = req.params.page || 1;
     Product
-        .find({category:category_slug})
+        .find({category:category_slug,active:'true'})
         .skip((perPage * page) - perPage)
         .populate({path:'sellbids',
         match: { status: 'ask' }
@@ -306,7 +312,7 @@ exports.products = function(req, res, next) {
     var productId=req.params.id;
     req.session.oldUrl='/products/'+productId;
     Promise.all([
-      Product.findOne({ _id: productId }).populate({path:'attrs'}),
+      Product.findOne({ _id: productId , active:'true'}).populate({path:'attrs'}),
       SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1),
       BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1),
       OrderBid.find({ product: productId }).sort({orderdate:-1}).limit(10),
@@ -426,52 +432,52 @@ exports.sellProductVariantNowPay=function(req, res, next) {
       });
     })
 }
-exports.sellCalculateCharges=async function(req, res, next) {
-   var productId=req.body.id;
+// exports.sellCalculateCharges=async function(req, res, next) {
+//    var productId=req.body.id;
    
-   Promise.all([
-    Product.findOne({ _id: productId }).populate({path:'attrs'}),
-    BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1),
-  ]).then( ([product,highbid])=>{
-    var askprice=0; 
-      if(!req.body.askprice){
-        askprice=highbid.bidprice;
+//    Promise.all([
+//     Product.findOne({ _id: productId }).populate({path:'attrs'}),
+//     BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1),
+//   ]).then( ([product,highbid])=>{
+//     var askprice=0; 
+//       if(!req.body.askprice){
+//         askprice=highbid.bidprice;
         
-       }else{
-        askprice=parseInt(req.body.askprice);
-        var expiry=req.body.expiry;
-        expiry=expiry.split("Days").map(Number);       
-       // console.log(expiry[0]);
-       }
-     var TransactionFee=askprice*0.09;
-     var Proc=askprice*0.03;
-     var Shipping=30;
-     var totalpayout=askprice-(TransactionFee+Proc+Shipping);
-     //console.log(askprice);
-      res.json({ TransactionFee: TransactionFee.toFixed(2) ,Proc:Proc.toFixed(2),Shipping:Shipping.toFixed(2),discountcode:'',totalpayout:Math.ceil(totalpayout) });
+//        }else{
+//         askprice=parseInt(req.body.askprice);
+//         var expiry=req.body.expiry;
+//         expiry=expiry.split("Days").map(Number);       
+//        // console.log(expiry[0]);
+//        }
+//      var TransactionFee=askprice*0.09;
+//      var Proc=askprice*0.03;
+//      var Shipping=30;
+//      var totalpayout=askprice-(TransactionFee+Proc+Shipping);
+//      //console.log(askprice);
+//       res.json({ TransactionFee: TransactionFee.toFixed(2) ,Proc:Proc.toFixed(2),Shipping:Shipping.toFixed(2),discountcode:'',totalpayout:Math.ceil(totalpayout) });
       
-  })
+//   })
 
-    // product=Product.findById(productId,function(err,product){
-    //   var askprice=0; 
+//     // product=Product.findById(productId,function(err,product){
+//     //   var askprice=0; 
      
-    //   if(!req.body.askprice){
-    //     askprice=product.price;
-    //    }else{
-    //     askprice=req.body.askprice;
-    //     var expiry=req.body.expiry;
-    //     expiry=expiry.split("Days").map(Number);       
-    //    // console.log(expiry[0]);
-    //    }
-    //  var TransactionFee=askprice*0.09;
-    //  var Proc=askprice*0.03;
-    //  var Shipping=30;
-    //  var totalpayout=askprice-(TransactionFee+Proc+Shipping);
-    //   res.json({ TransactionFee: TransactionFee ,Proc:Proc,Shipping:Shipping,discountcode:'',totalpayout:totalpayout });
+//     //   if(!req.body.askprice){
+//     //     askprice=product.price;
+//     //    }else{
+//     //     askprice=req.body.askprice;
+//     //     var expiry=req.body.expiry;
+//     //     expiry=expiry.split("Days").map(Number);       
+//     //    // console.log(expiry[0]);
+//     //    }
+//     //  var TransactionFee=askprice*0.09;
+//     //  var Proc=askprice*0.03;
+//     //  var Shipping=30;
+//     //  var totalpayout=askprice-(TransactionFee+Proc+Shipping);
+//     //   res.json({ TransactionFee: TransactionFee ,Proc:Proc,Shipping:Shipping,discountcode:'',totalpayout:totalpayout });
      
-  // })
-  //res.json({ username: 'Flavio' });
-}
+//   // })
+//   //res.json({ username: 'Flavio' });
+// }
 exports.sellProductOrAsk=function(req, res, next) {
   var productId=req.params.id;
   req.session.oldUrl='/products/'+productId;
@@ -1004,7 +1010,7 @@ exports.editProduct=function(req, res, next) {
         if(!lastsale)lastsale={};
         if(heigh_saleprice){highprice= Math.ceil(heigh_saleprice.netprice)}
         if(lowest_saleprice){lowestprice= Math.ceil(lowest_saleprice.netprice)}
-
+console.log(lastsale);
        // if(lastsale){lastsaleprice= Math.ceil(lastsale.netprice)}
                res.json( {status:'success',data:{product: product,lowask:lowask,highbid:highbid,lastsale:lastsale,heigh_saleprice:highprice,lowest_saleprice:lowestprice},message:''});
         }).catch((error) => console.log(error));
@@ -1076,9 +1082,53 @@ exports.editProduct=function(req, res, next) {
         });
       }
 
+      exports.ChartfindById = function(req, res, next) {
+        var productId = req.body.productid; 
+        Promise.all([
+         OrderBid.find({ product: productId }).select({ orderdate: 1, netprice: 1, _id:0 }).sort({orderdate:-1}),  
+        ]).then( ([lastsale]) => {
+          var resarr=[];
+          for(i=0;i<lastsale.length;i++){
+            resarr.push([lastsale[i].orderdate,lastsale[i].netprice]);  
+          }
+          res.json({status:'success',data:{resarr:resarr}, message:''});//.toJSON();
+        });
+     }  
+
+     exports.buyPorduct=function name(req,res,next) {
+      var productId=req.body.id.replace(" ","");
+       var attrv=req.body.attr_val.replace(" ","");
+      Promise.all([
+        Product.findOne({ _id: productId }).populate({path:'attrs'}),
+        SellBid.findOne({productid:productId,status:'ask',attr_val:attrv}).sort({bidprice:+1}).limit(1),
+      ]).then( ([product,lowestask])=>{
+        
+        var askprice=0; 
+           if(req.body.bidType=='buy'){
+              if(lowestask){
+                askprice=lowestask.bidprice;
+              }else{
+                askprice=0;
+              }         
+           }else{
+            askprice=parseInt(req.body.bidprice);
+            var expiry=req.body.expiry;
+           // expiry=expiry.split("Days").map(Number);       
+           }
+         var processingFee=askprice*0.09;
+         var authenticationFee=askprice*0.03;
+         var shipping=0;
+         var totalpay=askprice+(processingFee+authenticationFee+shipping);
+          res.json({status:'success',data:{ processingFee: processingFee.toFixed(2) ,authenticationFee:authenticationFee.toFixed(2),shipping:shipping.toFixed(2),discountcode:'',totalpay:Math.ceil(totalpay)},message:''});
+          
+      }).catch(err => console.log(err));
+    }
+
       exports.buyPorductCharge=function name(req,res,next) {
+      
         var productId=req.body.id.replace(" ","");
          var attrv=req.body.attr_val.replace(" ","");
+         if(productId){
         Promise.all([
           Product.findOne({ _id: productId }).populate({path:'attrs'}),
           SellBid.findOne({productid:productId,status:'ask',attr_val:attrv}).sort({bidprice:+1}).limit(1),
@@ -1092,22 +1142,24 @@ exports.editProduct=function(req, res, next) {
                   askprice=0;
                 }         
              }else{
-              askprice=parseInt(req.body.bidprice);
-              var expiry=req.body.expiry;
-             // expiry=expiry.split("Days").map(Number);       
+              askprice=parseInt(req.body.bidprice);     
              }
            var processingFee=askprice*0.09;
            var authenticationFee=askprice*0.03;
            var shipping=0;
            var totalpay=askprice+(processingFee+authenticationFee+shipping);
-            res.json({status:'success',data:{ processingFee: processingFee.toFixed(2) ,authenticationFee:authenticationFee.toFixed(2),shipping:shipping.toFixed(2),discountcode:'',totalpay:Math.ceil(totalpay)},message:''});
+            res.json({status:'success',data:{ processingFee: Math.ceil(processingFee.toFixed(2)) ,authenticationFee:Math.ceil(authenticationFee.toFixed(2)),shipping:Math.ceil(shipping.toFixed(2)),discountcode:'',totalpay:Math.ceil(totalpay)},message:''});
             
         }).catch(err => console.log(err));
+      }
+      else{
+        res.json({status:'error',data:{},message:'Please Provide Requested Field.'});
+      }
       }
 
       exports.relatedproducts=function name(req,res,next) {
         var productId=req.body.id;
-        console.log(productId);
+        if(productId){
          var attrv=req.body.attr_val;
          Product.find({_id:productId}).exec(function(err,product){
           if(err)return next(err);
@@ -1115,10 +1167,15 @@ exports.editProduct=function(req, res, next) {
          console.log(category);
           Product.find({category:category,active:'true'}).exec(function(err,relatedproducts){
             if(err)return next(err);
-            console.log(relatedproducts);
+            //console.log(relatedproducts);
             res.json({status:'success',data:{relatedproducts:relatedproducts},message:''});
          });
         });
+      }
+      else
+      {
+        res.json({status:'error', data:{},message:'Please Provide Requested field'});
+      }
       }
 exports.mostPopular = async function name(req,res,next) {
 
@@ -1151,3 +1208,165 @@ exports.mostPopular = async function name(req,res,next) {
     }); 
     res.json({status:'success', data:{products:products},message:''});
 }
+
+exports.sellCalculateCharges=async function(req, res, next) {
+  var productId=req.body.id;
+  var attrv=req.body.attr_val;
+  if(productId){
+  Promise.all([
+   Product.findOne({ _id: productId,active:'true' }).populate({path:'attrs'}),
+   BuyBid.findOne({productid:productId,status:'buybid',attr_val:attrv}).sort({bidprice:-1}).limit(1),
+   SellBid.findOne({productid:productId,status:'ask',attr_val:attrv}).sort({bidprice:+1}).limit(1),
+ ]).then( ([product,highbid,lowestask])=>{
+  //  console.log(highbid);
+  //  console.log(lowestask);
+   var askprice=0; 
+   console.log(highbid.bidprice);
+  var askprice = 0 ;
+   if(req.body.bidType=='sale'){
+    if(highbid){
+      askprice=highbid.bidprice;
+    }else{
+      res.json({status:'error', data:{},message:'Ask Not avaliable on this product Can not Buy'});
+    }         
+ }else{
+  askprice=req.body.askprice;     
+ }
+    var TransactionFee=askprice*TransactionFeeCharge;
+    var SellProcessing=askprice*SellProcessingCharge;
+    var Shipping=parseInt(SellShipping);
+    var totalpayout=askprice-(TransactionFee+SellProcessing+Shipping);
+    var price=product.price;
+    res.json({status:'success',data:{ TransactionFee: TransactionFee.toFixed(2) ,SellProcessing:SellProcessing.toFixed(2),Shipping:Shipping,discountcode:'',totalpayout:Math.ceil(totalpayout)},message:'' });
+ })
+}else
+{
+  res.json({status:'error',data:{},message:'Please Provide Requested Field'});
+}
+}
+
+
+exports.sell_product_Ask=async  function(req, res,next){
+  var name = req.body.name;
+  var lastname=req.body.lastname;
+  var email=req.user.email;
+  var sellBid = new SellBid();
+  var transaction = new Transaction();
+  var attr_val= req.body.attr_val;
+  const productId= req.body.productid;
+  var bidprice=0;//req.body.bidprice;
+  var buybid=await BuyBid.findOne({productid:productId,status:'buybid'}).sort({bidprice:-1}).limit(1);
+ var lowestask=await SellBid.findOne({productid:productId,status:'ask'}).sort({bidprice:+1}).limit(1);
+  var prod=await Product.findById(productId).populate('selbids');
+  sellBid.productid = req.body.productid;
+  sellBid.user = req.user;//Date.now()
+  sellBid.biddate=Date.now();
+  sellBid.title=prod.name;
+  sellBid.attr_val=attr_val;
+  if(buybid!=null){
+    sellBid.highestbid=buybid.bidprice;
+  }
+  if(lowestask!=null){
+  sellBid.lowestask=lowestask.bidprice;
+  }
+
+  if(req.body.bidType=='sale'){
+    sellBid.status="sale";
+    if(buybid){
+      bidprice=buybid.bidprice;
+    }
+  }else{
+    sellBid.status="ask";
+    bidprice=req.body.bidprice;
+  }
+  sellBid.bidprice = bidprice;
+  //sellBid.save();
+  let sellbids=[];
+  var TransactionFee=bidprice*0.09;
+  var Proc=bidprice*0.03;
+  var Shipping=0;
+  var totalcharges=Math.ceil(TransactionFee+Proc+Shipping);
+  transaction.TransactionFee=TransactionFee;
+  transaction.processingFee=Proc;
+  transaction.ShippingFee=Shipping;
+  transaction.TotalCharges=totalcharges;
+  //transaction.TradeDate=Date.now;
+  transaction.user=req.user;
+  transaction.status='NotStarted';
+  transaction.BidType='ask';
+  ////////////
+  sellBid.TransactionFee=TransactionFee;
+  sellBid.processingFee=Proc;
+  sellBid.ShippingFee=Shipping;
+  sellBid.TotalCharges=totalcharges;
+  ////////////////
+ prod.sellbids.push(sellBid);
+  var nonceFromTheClient = req.body.paymentMethodNonce;
+  var braintreeid=req.user.braintreeid;
+  if(!braintreeid){
+    customer=  await gateway.customer.create({
+      firstName: name,
+      lastName: lastname,
+      email: email,
+    }).catch((error)=>console.log(error));
+    var c=customer.customer;
+    braintreeid=customer.customer.id;//408993133;
+     User.findByIdAndUpdate(req.user._id, {$set:{braintreeid:braintreeid}},{new: true}, function (err, user) {
+      });
+  }
+
+  var billingAddress={streetAddress: "New Street Address",
+  postalCode: "60622",options: { updateExisting: true }};
+  var creditCard={}; 
+  var cardtoken=req.user.cardtoken;
+  if(!cardtoken){
+    creditCard={billingAddress:billingAddress };
+  }else{
+    creditCard={
+       options: { updateExistingToken: cardtoken },
+       billingAddress:billingAddress
+     };
+  }
+
+  var newTransaction = gateway.customer.update(braintreeid,{
+    //amount: totalcharges,
+    paymentMethodNonce: nonceFromTheClient,
+    email: email,
+    creditCard:creditCard,
+    
+  }, function(error, result) {
+    cardtoken=result.customer.paymentMethods[0].token;
+     //console.log(cardtoken+'fsadfasdfsad');
+      if (result) {
+        if(req.body.bidType=='sale'){
+          const order=new OrderBid();
+        buybid.status='buy';
+        order.seller=req.user;
+        order.buyer=buybid.user;
+        order.buybid=buybid;
+        order.sellbid=sellBid;
+        order.product=prod;
+        order.status='Won Bid';
+        order.netprice=bidprice;//need to add buying charges
+        transaction.sellbid=sellBid;
+        order.SellerTransaction=transaction;
+        order.save();
+        buybid.save();
+        }
+        transaction.save();
+        sellBid.save();
+       
+        prod.save();
+        cardtoken=result.customer.paymentMethods[0].token;
+       // console.log(result.customer.paymentMethods);
+        User.findByIdAndUpdate(req.user._id, {$set:{cardtoken:cardtoken}},{new: true}, function (err, user) {
+               
+         });
+console.log(result);
+        res.json({status:'success',data:{result:result},message:''});//result);
+       
+      } else {
+        res.status(500).send(error);
+      }
+  });
+  }
