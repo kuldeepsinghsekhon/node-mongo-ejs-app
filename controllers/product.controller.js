@@ -26,11 +26,11 @@ const BuyAuthenticationFee = process.env.BuyAuthenticationFee;
 const BuyShipping = process.env.BuyShipping;
 
 const TransactionFeeCharge=process.env.TransactionFeeCharge;
-console.log(TransactionFeeCharge);
+
 const  SellProcessingCharge=process.env.SellProcessingCharge;
-console.log(SellProcessingCharge);
+
 const SellShipping=process.env.SellShipping;
-console.log(SellShipping);
+
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id': process.env.PaypalClientId,
@@ -282,7 +282,7 @@ exports.sellCalculateCharges=async function(req, res, next) {
       }else if(askprice<=hightestbidprice&&hightestbidprice!=0){
         message='You are about to sell at the highest Bid price';
       }    
-      res.json({status:'success',data:{TransactionFee: TransactionFee.toFixed(2) ,Proc:Proc.toFixed(2),Shipping:Shipping.toFixed(2),discountcode:'',totalpayout:Math.ceil(totalpayout)},message:message });
+      res.json({status:'success',data:{TransactionFee: TransactionFee.toFixed(2) ,Proc:Proc.toFixed(2),Shipping:Shipping,discountcode:'',totalpayout:Math.ceil(totalpayout)},message:message });
     }
       
   })
@@ -390,10 +390,11 @@ exports.sellAsk=async  function(req, res,next){
   sellBid.bidprice = bidprice;
   //sellBid.save();
   let sellbids=[];
-  var TransactionFee=bidprice*0.09;
-  var Proc=bidprice*0.03;
-  var Shipping=0;
+  var TransactionFee=bidprice*TransactionFeeCharge;
+  var Proc=bidprice*SellProcessingCharge;
+  var Shipping=SellShipping;
   var totalcharges=Math.ceil(TransactionFee+Proc+Shipping);
+  console.log(totalcharges);
   transaction.TransactionFee=TransactionFee;
   transaction.processingFee=Proc;
   transaction.ShippingFee=Shipping;
