@@ -1210,41 +1210,44 @@ exports.mostPopular = async function name(req,res,next) {
 }
 
 
+
+
 exports.mostPopular_Brand = async function name(req,res,next) {
 
-  const most_popular=await OrderBid.aggregate([
+  const most_popular=await BuyBid.aggregate([
     {
      $group:{
-     "_id":"brand",
+     "_id":"$brand",
     //  product:{
 		// 	$push:"$$ROOT"
 		// },
-     //  count :{ $sum :1},
+     count :{ $sum :1},
       }
     },
     {$limit:10},
     {$sort:{'count':-1}},
   
-    // {
-    //   $lookup: {
-    //       from: "products",
-    //       localField: "_id",
-    //       foreignField: "_id",
-    //       as: "produt_details"
+  //   {
+  //     $lookup: {
+  //         from: "products",
+  //         localField: "productid",
+  //         foreignField: "_id",
+  //         as: "produt_details"
          
-    //   }
-   // }
+  //     }
+  //  }
     ]);
+var brnadlength = (most_popular.length);
+console.log(most_popular[1]._id);
     var products =[] ;
-    most_popular.forEach(order => { 
-      products.push(order.produt_details[0]);
-    }); 
-    console.log(products);
+   for(var i=0 ; i< brnadlength; i++)
+   {
+    var product_data = await Product.findOne({brand:most_popular[1]._id}).limit(1);
+      products.push(product_data);
+   }
+   console.log(products);
     res.json({status:'success', data:{products:products},message:''});
 }
-
-
-
 
 exports.sellCalculateCharges=async function(req, res, next) {
   var productId=req.body.id;
