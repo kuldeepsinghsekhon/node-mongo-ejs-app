@@ -394,7 +394,6 @@ exports.sellAsk=async  function(req, res,next){
   var Proc=bidprice*SellProcessingCharge;
   var Shipping=SellShipping;
   var totalcharges=Math.ceil(TransactionFee+Proc+Shipping);
-  console.log(totalcharges);
   transaction.TransactionFee=TransactionFee;
   transaction.processingFee=Proc;
   transaction.ShippingFee=Shipping;
@@ -408,6 +407,8 @@ exports.sellAsk=async  function(req, res,next){
   sellBid.processingFee=Proc;
   sellBid.ShippingFee=Shipping;
   sellBid.TotalCharges=totalcharges;
+  sellBid.brand = prod.brand;
+  console.log(sellBid.brand);
   ////////////////
  prod.sellbids.push(sellBid);
   var nonceFromTheClient = req.body.paymentMethodNonce;
@@ -453,12 +454,14 @@ exports.sellAsk=async  function(req, res,next){
         order.seller=req.user;
         order.buyer=buybid.user;
         order.buybid=buybid;
+        order.brand = prod.brand;
         order.sellbid=sellBid;
         order.product=prod;
         order.status='Won Bid';
         order.netprice=bidprice;//need to add buying charges
         transaction.sellbid=sellBid;
         order.SellerTransaction=transaction;
+        
         order.save();
         buybid.save();
         }
@@ -468,8 +471,7 @@ exports.sellAsk=async  function(req, res,next){
         prod.save();
         cardtoken=result.customer.paymentMethods[0].token;
        // console.log(result.customer.paymentMethods);
-        User.findByIdAndUpdate(req.user._id, {$set:{cardtoken:cardtoken}},{new: true}, function (err, user) {
-               
+        User.findByIdAndUpdate(req.user._id, {$set:{cardtoken:cardtoken}},{new: true}, function (err, user) {    
          });
 
         res.send(result);
@@ -541,6 +543,8 @@ exports.placeBuyBid=async function name(req,res,next) {
   buyBid.productid = req.body.productid;
   buyBid.bidprice = req.body.bidprice;
   buyBid.attr_val=attr_val;
+  buyBid.brand = prod.brand;
+  console.log(buyBid.brand);
 
   buyBid.user = req.user
   buyBid.biddate=Date.now();//Date.now() + ( 3600 * 1000 * 24)
@@ -560,11 +564,12 @@ exports.placeBuyBid=async function name(req,res,next) {
   }
   buyBid.bidprice = bidprice;
    
-  var processingFee=bidprice*0.09;
-     var authenticationFee=bidprice*0.03;
-     var shipping=30;
-     var totalpay=bidprice+(processingFee+authenticationFee+shipping);
-  var totalcharges=Math.ceil(totalpay);
+  var processingFee=bidprice*BuyProcessingFee;
+     var authenticationFee=bidprice*BuyAuthenticationFee;
+     var shipping=BuyShipping;
+     var totalpay=parseInt(bidprice)+(parseInt(processingFee)+parseInt(authenticationFee)+parseInt(shipping));
+     console.log(totalpay);
+  var totalcharges=(totalpay);
 //  console.log('total chrges'+totalcharges);
  // console.log('bidprice'+bidprice);
   //let buybids=[];

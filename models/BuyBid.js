@@ -5,6 +5,7 @@ const BidSchema = new mongoose.Schema({
   title:String,
   bidprice:Number,
   status: String,
+  brand: String,
   biddate:{type: Date},
   expire:Date,
   updated:Date,

@@ -263,6 +263,7 @@ exports.allOrders=function(req, res, next) {
       //.skip((perPage * page) - perPage).limit(perPage),
       SellBid.find(query).sort({bidprice:-1}).limit(10),
     ]).then( ([orders,buybids])=>{
+      console.log(orders[0].payment);
        var count= orders.length;
       res.render('pages/admin/orders', {
         buybids: buybids,

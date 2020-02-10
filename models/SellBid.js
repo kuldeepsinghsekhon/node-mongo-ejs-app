@@ -8,6 +8,7 @@ const BidSchema = new mongoose.Schema({
   status: String,
   biddate:{type: Date},
   updated:Date,
+  brand:String,
   expire:Date,
   lowestask:Number,
   highestbid:Number,

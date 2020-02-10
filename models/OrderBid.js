@@ -12,6 +12,7 @@ const OrderSchema = new mongoose.Schema({
   netprice:Number,
   price:Number,
   status: String,
+  brand:String,
   ordertype: String,
   updated:Date,
   payment: {type: Object, required: true},

@@ -1179,7 +1179,7 @@ console.log(lastsale);
       }
 exports.mostPopular = async function name(req,res,next) {
 
-  const most_popular=await OrderBid.aggregate([
+  const most_popular = await OrderBid.aggregate([
     {
      $group:{
      "_id":"$product",
@@ -1208,6 +1208,43 @@ exports.mostPopular = async function name(req,res,next) {
     }); 
     res.json({status:'success', data:{products:products},message:''});
 }
+
+
+exports.mostPopular_Brand = async function name(req,res,next) {
+
+  const most_popular=await OrderBid.aggregate([
+    {
+     $group:{
+     "_id":"brand",
+    //  product:{
+		// 	$push:"$$ROOT"
+		// },
+     //  count :{ $sum :1},
+      }
+    },
+    {$limit:10},
+    {$sort:{'count':-1}},
+  
+    // {
+    //   $lookup: {
+    //       from: "products",
+    //       localField: "_id",
+    //       foreignField: "_id",
+    //       as: "produt_details"
+         
+    //   }
+   // }
+    ]);
+    var products =[] ;
+    most_popular.forEach(order => { 
+      products.push(order.produt_details[0]);
+    }); 
+    console.log(products);
+    res.json({status:'success', data:{products:products},message:''});
+}
+
+
+
 
 exports.sellCalculateCharges=async function(req, res, next) {
   var productId=req.body.id;
