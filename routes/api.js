@@ -10,7 +10,7 @@ const utils_controller = require('../controllers/utils.controller');
 router.post('/products/',forwardAuthenticated,product_controller.products);
 router.post('/latestBids/',forwardAuthenticated,product_controller.latestBids);
 router.post('/buying/',forwardAuthenticated,product_controller.ajaxproductBuying);
-router.post('/buying_product/',forwardAuthenticated,product_controller.place_buy);
+router.post('/buying_product/',passport.authenticate('basic', { session : false }),product_controller.place_buy);
 router.post("/client_token", product_controller.braintreeClientToken);
 router.get('/products/:id',forwardAuthenticated, product_controller.findById );
 router.get('/products/sell/:id',passport.authenticate('basic', { session : false }), product_controller.sellProductVariant );
