@@ -40,8 +40,8 @@
                 <div class="widget widget-newsletter">
                    <h4 class="widget-title">Subscribe newsletter</h4>
                    <p>Get all the latest information on Events,Sales and Offers. Sign up for newsletter today</p>
-                   <form action="admin/subscribe_email" method="post" enctype="multipart/form-data">
-                      <input type="email" class="form-control" name="name" placeholder="Email address" required="">
+                   <form action="" class="form-email-signup" method="post" enctype="multipart/form-data">
+                      <input type="email" class="form-control" name="subscribe_email" id="subscribe_email" placeholder="Email address" required="">
                       <button type="submit"  class="btn">Subscribe</button>
                    </form>
                 </div>
@@ -83,3 +83,28 @@
     </div>
     <!-- End .containr -->
  </footer>
+ <script>
+   $('.form-email-signup').on('submit',function(event){
+       event.preventDefault();
+      //alert('dfsf')
+      var subscribe_email = $("#subscribe_email").val();
+      var formdata = {subscribe_email:subscribe_email};
+      $.ajax({
+          method:'post',
+          url:"admin/subscribe_email",
+          //dataType: "json",
+          data:formdata,
+          success: function (response) {
+              //console.log(response);
+              if(response.status=='success'){
+               alert(response.msg);
+               var url= '/';    
+                  //var url= '/validation-form/'+response.data.userid;                   
+                         $(location).attr('href', url);  
+              }else{
+                  alert(response.msg);
+              }
+          }
+      })
+  });
+   </script>

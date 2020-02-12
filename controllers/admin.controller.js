@@ -1,6 +1,7 @@
 //let c= await Address.countDocuments(filter);
 const braintree = require("braintree");
 var paypal = require('paypal-rest-sdk');
+const Subscriber = require('../models/Subscriber');
 const dotenv = require('dotenv');
 const gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
@@ -596,11 +597,44 @@ exports.deleteBanner= function name(req, res, next) {
 
 exports.subscribe_email = function name(req, res, next)
 {
-  var email = req.body.name;
-  console.log(email);
 
+  var subscriber = new Subscriber();
+  subscriber.email = req.body.subscribe_email;
+
+  if (!subscriber.email){
+    res.json({status:'error', data:'', msg: 'Please Input a valid Email'});
+  }
+   else if(subscriber.email){
+    Subscriber.findOne({ email: subscriber.email }).then(user => {
+      if (user) {
+        res.json({status:'error', data:{}, msg: 'You Have already Subscribed'});
+      } 
+    });
+   } else {
+  subscriber.save(function(err,user) {
+      if (err){
+        throw err
+      }
+  });
+ 
+//   res.redirect('/');
+ }
+ res.json({status:'success', data:{}, msg: 'Thank You for Subscribe Our New latter'});
 }
 
+
+exports.subscriber_list = function name(req, res, next)
+{
+  Subscriber.find({}).select({'_id': 0, __v: 0}).exec(function(err, subscriber) {
+ 
+    if (err) return next(err)
+    res.render('page/admin/subscriber', {
+      subscriber: subscriber,
+      layout:'admin-layout'
+})
+});
+
+}
 
 exports.charge_env = function name(req,res,next){
   const fs = require('fs')
