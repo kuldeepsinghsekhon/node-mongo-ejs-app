@@ -264,16 +264,16 @@ exports.products = function(req, res, next) {
     console.log(status);
     var query = { user: userid,status:status}; 
     Promise.all([
-      OrderBid.find({ buyer: userid,status:{$in: ['Won Bid', 'Order Placed']} }).populate({path:'product'}),
-      BuyBid.find(query).sort({bidprice:-1}).limit(10), 
-      OrderBid.find({ buyer:userid ,status:{$in: ['accepeted', 'canceled']} }).populate({path:'product'}),
-      Category.find(),
-    ]).then( ([orders,buybids,history,category])=>{
-      console.log(buybids);
+      OrderBid.find({ buyer: userid,status:{$in: ['Won Bid', 'Order Placed']} }).select({payment:0}).populate({path:'product'}),
+      BuyBid.find(query).sort({bidprice:-1}).limit(1), 
+      OrderBid.find({ buyer:userid ,status:{$in: ['accepeted', 'canceled']} }).populate({path:'product'}).limit(1),
+     
+    ]).then( ([orders,buybids,history])=>{
+      console.log(orders);
       res.json({status:'success', data: {
         buybids: buybids,
         orders:orders,
-        category:category,
+        
         history:history}  
          })
          

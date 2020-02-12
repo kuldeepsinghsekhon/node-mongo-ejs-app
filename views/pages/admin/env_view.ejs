@@ -1,0 +1,118 @@
+<div class="row">
+        <div class="col-md-12 grid-margin">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h4 class="font-weight-bold mb-0">Env Data Mangement</h4>
+              </div>
+              <div>
+                  <button type="button" class="btn btn-primary btn-icon-text btn-rounded" data-toggle="modal" data-target="#myModal">
+                    <i class="ti-link btn-icon-prepend"></i>Add New field 
+                  </button>
+              </div>
+            </div>
+        </div>
+    <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">All Env Data</h4>
+                <p class="card-description">
+                  Manage <code>Information</code>
+                </p>
+                <div class="table-responsive">
+                  <div id="bannerAction"></div>
+                  <div id="bannerDeleteAction"></div>
+                    <table class="table table-striped" id="brand-data">
+                    <thead>
+                      <tr>
+                        <th>Filed Name</th>
+                        <th>Filed Data</th>
+                        <th>Edit</th>
+                        <th>Delete </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <% for (var i = 0; i < data.length; i++) { %>
+                    <tr class="data-row">
+                         <td><%= data[i] %></td> 
+                      </tr>
+                     <% } %>
+                    </tbody>
+                  </table >
+                </div>
+              </div>
+            </div>
+          </div>        
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Add New Banner</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        
+      </div>
+      <div class="modal-body">
+          <form method="post" action="/admin/addbanner" enctype="multipart/form-data">
+              <div class="panel panel-default">
+                  <div class="panel-body">
+                          <div class="form-group">                              
+                            <input type="text" name="banner_url" class="form-control" id="banner_url" value="" required autofocus>
+                          </div>
+                          <div class="form-group">                              
+                              <input type="file" id="banner_image" class="form-control" name="banner_image" class="banner_image" placeholder="">
+                          </div>                            
+                      <button type="submit" class="btn btn-success">Add New Banner</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+  <!-- Attachment edit  Modal -->
+<!-- <div class="modal fade" id="edit_banner_modal" tabindex="-1" role="dialog" aria-labelledby="edit-modal-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="edit-modal-label">Edit Banner</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="attachment-body-content">
+          <form id="edit-brand" class="form-horizontal" method="POST" action="/admin/banner/update"  enctype="multipart/form-data">
+              <div class="card-body">
+                <div class="form-group">
+                  <input type="hidden" name="bannerid" class="form-control" id="banner_id" required>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label" for="modal-input-name">Url</label>
+                  <input type="text" name="banner_url" class="form-control" id="banner_url_edit"  value="" required autofocus>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label" for="modal-input-description">Image</label>
+                  <input type="file" id="banner_image" name="banner_image" class="form-control" required>
+               </div>
+                <div class="form-group">
+                  <input type="hidden" class="form-control" id="modal-input-image">
+                </div>
+                <div class="form-group">
+                  <input type="submit"  class="form-control" value="submit" required>
+                </div>
+                <!-- /description -->
+              </div>
+          
+          </form>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  

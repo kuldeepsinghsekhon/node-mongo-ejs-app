@@ -40,9 +40,9 @@
                 <div class="widget widget-newsletter">
                    <h4 class="widget-title">Subscribe newsletter</h4>
                    <p>Get all the latest information on Events,Sales and Offers. Sign up for newsletter today</p>
-                   <form action="#">
-                      <input type="email" class="form-control" placeholder="Email address" required="">
-                      <button type="submit" class="btn">Subscribe<i class="icon-angle-right"></i></button>
+                   <form action="admin/subscribe_email" method="post" enctype="multipart/form-data">
+                      <input type="email" class="form-control" name="name" placeholder="Email address" required="">
+                      <button type="submit"  class="btn">Subscribe</button>
                    </form>
                 </div>
                 <!-- End .widget -->

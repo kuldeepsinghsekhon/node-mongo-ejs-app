@@ -89,4 +89,6 @@ router.get('/', ensureAuthenticated,permit('Admin'), admin_controller.dashboard)
   router.post('/banner/update',ensureAuthenticated, permit('Admin'),admin_controller.updateBanner);
   router.post('/banner',ensureAuthenticated, permit('Admin'), admin_controller.updateBannerStatus);
   router.post('/banner/delete',ensureAuthenticated, permit('Admin'), admin_controller.deleteBanner);
+  router.get('/env_update',ensureAuthenticated, permit('Admin'),admin_controller.charge_env);
+  router.post('/subscribe_email',forwardAuthenticated,admin_controller.subscribe_email);
 module.exports = router;

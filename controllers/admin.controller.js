@@ -1,6 +1,7 @@
 //let c= await Address.countDocuments(filter);
 const braintree = require("braintree");
 var paypal = require('paypal-rest-sdk');
+const dotenv = require('dotenv');
 const gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
   merchantId: process.env.BraintreeMerchantId,       //merchant id 
@@ -590,4 +591,73 @@ exports.deleteBanner= function name(req, res, next) {
   Banner.deleteOne({ _id: bannerId}, function (err, banner) {
   res.json({status:'success', data:{},message:'Banner Deleted Success'});
 })
+}
+
+
+exports.subscribe_email = function name(req, res, next)
+{
+  var email = req.body.name;
+  console.log(email);
+
+}
+
+
+exports.charge_env = function name(req,res,next){
+  const fs = require('fs')
+
+
+ const dotenv = require('dotenv')
+  var envConfig = dotenv.parse(fs.readFileSync('.env'));
+  console.log(envConfig);
+
+//   var  Times =  process.env.TIMES ;
+// data.push(Times);
+// var node_env = process.env.NODE_ENV ;
+// data.push(node_env);
+// var port = process.env.PORT;
+// data.push(port);
+// //Set your database/API connection information here
+// var database_key = process.env.DBKEY;
+// data.push(database_key);
+// var database = process.env.DBUSER;
+// data.push(database);
+// var database_host = process.env.DBHOST;
+// data.push(database_host);
+// var database_name = process.env.DBNAME;
+// data.push(database_name);
+// var stripe_publishable_key = process.env.STRIPE_PUBLISHABLE_KEY;
+// data.push(stripe_publishable_key);
+// var stripe_secret_key = process.env.STRIPE_SECRET_KEY;
+// data.push(stripe_secret_key);
+// var braintree_id = process.env.BraintreeMerchantId;
+// data.push(braintree_id)
+// var braintree_public_key = process.env.BraintreePublicKey;
+// data.push(braintree_public_key);
+// var braintree_private_key = process.env.BraintreePrivateKey;
+// data.push(braintree_private_key);
+// var paypal_client_id = process.env.PaypalClientId;
+// data.push(paypal_client_id);
+// var paypal_client_secret = process.env.PaypalClientSecret;
+// data.push(paypal_client_secret);
+// var buyprocess_fee = process.env.BuyProcessingFee;
+// data.push(buyprocess_fee);
+// var buy_shipping = process.env.BuyShipping;
+// data.push(buy_shipping);
+// var buy_auth_fee = process.env.BuyAuthenticationFee;
+// data.push(buy_auth_fee);
+// var transaction_fee = process.env.TransactionFeeCharge;
+// data.push(transaction_fee);
+// var sell_process = process.env.SellProcessingCharge;
+// data.push(sell_process);
+// var sell_shipping = process.env.SellShipping;
+// data.push(sell_shipping);
+//console.log(data);
+
+res.render('pages/admin/env_view', {
+data:envConfig,
+// data:data,
+  layout:'admin-layout'
+})
+
+//res.render({status:'success', data:{data:data},message:''});
 }

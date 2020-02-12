@@ -505,7 +505,7 @@ exports.productsBuying=function(req, res, next) {
     Category.find(),
   ]).then( ([orders,buybids,history,category])=>{
    // console.log(historyorders);
-   // console.log(req.user);
+    console.log(history);
     res.render('pages/users/buying', {
       buybids: buybids,
       orders:orders,
