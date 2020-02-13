@@ -1,152 +1,175 @@
 <div class="row">
-        <div class="col-md-12 grid-margin">
-                <div class="d-flex justify-content-between align-items-center">
-                  <div>
-                    <h4 class="font-weight-bold mb-0">Product Templates Mangement</h4>
-                  </div>
-                  <!-- <div>
-                      <button type="button" class="btn btn-primary btn-icon-text btn-rounded">
-                        <i class="ti-clipboard btn-icon-prepend"></i>AddProduct</button>
-                  </div> -->
-                </div>
-        </div>
-        
-        <div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">All Orders</h4>
-                    <p class="card-description">
-                      List <code>Orders Templates</code>
-                    </p>
-                    <div id="success_msg"></div>
-        <div id="message_error" class="danger"></div>
-                    <div class="table-responsive">
+  <div class="col-md-12 grid-margin">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h4 class="font-weight-bold mb-0">Product Templates Mangement</h4>
+            </div>
+            <!-- <div>
+                <button type="button" class="btn btn-primary btn-icon-text btn-rounded">
+                  <i class="ti-clipboard btn-icon-prepend"></i>AddProduct</button>
+            </div> -->
+          </div>
+  </div>
+  
+  <div class="col-lg-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">All Orders</h4>
+              <p class="card-description">
+                List <code>Orders Templates</code>
+              </p>
+              <div id="success_msg"></div>
+  <div id="message_error"></div>
+              <div class="table-responsive">
 
-                      <table class="table table-striped" id="orders-data">
-                        <thead>
-                         <tr class="headers">
-                            <th class="col-lg-3 col-sm-4 col-xs-6 sortable undefined">Item </th>
-                            <th class="col-lg-2 hidden-md hidden-sm hide-xs undefined">Order Number </th>
-                            <th class="col-lg-2 col-sm-2 col-xs-3 sortable  dropdown">Sale Date </th>
-                            <th class="col-sm-1 col-xs-2 sortable undefined">Price </th>
-                            <th class="col-sm-1 col-xs-2 sortable undefined">Transcation </th>
-                            <th class="col-sm-1 col-xs-2 sortable undefined">Transcation Status </th>
+                <table class="table table-striped" id="orders-data">
+                  <thead>
+                   <tr class="headers">
+                      <th class="col-lg-3 col-sm-4 col-xs-6 sortable undefined">Item </th>
+                      <th class="col-lg-2 hidden-md hidden-sm hide-xs undefined">Order Number </th>
+                      <th class="col-lg-2 col-sm-2 col-xs-3 sortable  dropdown">Sale Date </th>
+                      <th class="col-sm-1 col-xs-2 sortable undefined">Price </th>
+                      <th class="col-sm-1 col-xs-2 sortable undefined">Transcation </th>
+                      <th class="col-sm-1 col-xs-2 sortable undefined">Transcation Status </th>
 
-                            <th class="col-lg-2 col-sm-3 col-xs-2 hide-xs sortable undefined">Status </th>
-                            
-                         </tr>
-                        </thead>
-                        <tbody>
-                          <% if(orders){ %>
-                             <% for (var i = 0; i < orders.length; i++) {
-                              let s = orders[i].orderdate;
-                              let d = new Date(s); 
-                              d = d.toUTCString()
-                              %>
-                              
-                                <tr><td><%= orders[i].product.name %></td>
-                                   <td><a href="/admin/order/<%= orders[i]._id %>"><%= orders[i]._id %></a></td>
-                                   <td><%= d %></td>
-                                   <td><%= orders[i].netprice %></td>
-                                   <!-- <td><%= orders[i].status %></td> -->
-                                   <td><%= orders[i].payment.transaction.id %></td>
-                                   <td><%= orders[i].payment.transaction.status%></td>
-                                   <td>
-                                       <select class="select_option" data-id="<%= orders[i]._id %>" class="action" > 
-                                            <option value="">Selcet Action</option>
-                                            <option   value="accepeted" <% if(orders[i].status=='accepeted'){ %> selected<% } %> >Accepeted</option>
-                                            <option  value="canceled" <% if(orders[i].status=='canceled'){ %> selected<% } %> >Canceled</option>
-                                      </select>
-                                      <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-                                          
-                                  </td>
-                               </tr>
-                                <% } }else{ %>
-                                   <tr> <td colspan="5" class="no-pis"><em>No Results.</em></td></tr>
-                                   <% } %> 
+                      <th class="col-lg-2 col-sm-3 col-xs-2 hide-xs sortable undefined">Status </th>
+                      
+                   </tr>
+                  </thead>
+                  <tbody>
+                    <% if(orders){ %>
+                       <% for (var i = 0; i < orders.length; i++) {
+                        let s = orders[i].orderdate;
+                        let d = new Date(s); 
+                        d = d.toUTCString()
+                        %>
                         
-                        </tbody>
-                       </table>
-                    </div>
-                    <!-- <% /*if (pages > 0) { %>
-                      <ul class="pagination text-center">
-                          <% if (current == 1) { %>
-                              <li class=" page-item disabled"><a class="page-link">First</a></li>
-                          <% } else { %>
-                              <li class="page-item"><a class="page-link" href="/admin/template-products/1">First</a></li>
-                          <% } %>
-                          <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
-                          <% if (i !== 1) { %>
-                              <li class="page-item disabled"><a class="page-link">...</a></li>
-                          <% } %>
-                          <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
-                              <% if (i == current) { %>
-                                  <li class="page-item active"><a class="page-link"><%= i %></a></li>
-                              <% } else { %>
-                                  <li  class="page-item"><a class="page-link" href="/admin/template-products/<%= i %>"><%= i %></a></li>
-                              <% } %>
-                              <% if (i == Number(current) + 4 && i < pages) { %>
-                                  <li class="page-item disabled"><a class="page-link">...</a></li>
-                              <% } %>
-                          <% } %>
-                          <% if (current == pages) { %>
-                              <li class="page-item disabled"><a class="page-link">Last</a></li>
-                          <% } else { %>
-                              <li class="page-item" ><a class="page-link" href="/admin/template-products/<%= pages %>">Last</a></li>
-                          <% } %>
-                      </ul>
-                  <% }*/ %> -->
-                  </div>
-                </div>
+                          <tr><td><%= orders[i].product.name %></td>
+                             <td><a href="/admin/order/<%= orders[i]._id %>"><%= orders[i]._id %></a></td>
+                             <td><%= d %></td>
+                             <td><%= orders[i].netprice %></td>
+                             <!-- <td><%= orders[i].status %></td> -->
+                             <td><%= orders[i].payment.transaction.id %></td>
+                             <td><%= orders[i].payment.transaction.status%></td>
+                             <td>
+                                 <select class="select_option action" data-id="<%= orders[i]._id %>" > 
+                                      <option value="">Selcet Action</option>
+                                      <option   value="accepeted" <% if(orders[i].status=='accepeted'){ %> selected<% } %> >Accepeted</option>
+                                      <option  value="canceled" <% if(orders[i].status=='canceled'){ %> selected<% } %> >Canceled</option>
+                                      <option  value="cancel_n_charge" <% if(orders[i].status=='cancel_n_charge'){ %> selected<% } %> >cancel_n_charge</option>
+                                </select>
+                                <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+                                    
+                            </td>
+                         </tr>
+                          <% } }else{ %>
+                             <tr> <td colspan="5" class="no-pis"><em>No Results.</em></td></tr>
+                             <% } %> 
+                  
+                  </tbody>
+                 </table>
               </div>
-            
+              <!-- <% /*if (pages > 0) { %>
+                <ul class="pagination text-center">
+                    <% if (current == 1) { %>
+                        <li class=" page-item disabled"><a class="page-link">First</a></li>
+                    <% } else { %>
+                        <li class="page-item"><a class="page-link" href="/admin/template-products/1">First</a></li>
+                    <% } %>
+                    <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                    <% if (i !== 1) { %>
+                        <li class="page-item disabled"><a class="page-link">...</a></li>
+                    <% } %>
+                    <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                        <% if (i == current) { %>
+                            <li class="page-item active"><a class="page-link"><%= i %></a></li>
+                        <% } else { %>
+                            <li  class="page-item"><a class="page-link" href="/admin/template-products/<%= i %>"><%= i %></a></li>
+                        <% } %>
+                        <% if (i == Number(current) + 4 && i < pages) { %>
+                            <li class="page-item disabled"><a class="page-link">...</a></li>
+                        <% } %>
+                    <% } %>
+                    <% if (current == pages) { %>
+                        <li class="page-item disabled"><a class="page-link">Last</a></li>
+                    <% } else { %>
+                        <li class="page-item" ><a class="page-link" href="/admin/template-products/<%= pages %>">Last</a></li>
+                    <% } %>
+                </ul>
+            <% }*/ %> -->
+            </div>
+          </div>
+        </div>
+      
 </div>
 <script>
 
-    var prev_val;
-$('.select_option').focus(function() {
-    prev_val = $(this).val();
-}).change(function() {
-     $(this).blur() // Firefox fix as suggested by AgDude
-    var success = confirm('Are you sure you want to change the Dropdown?');
-    if(success)
-    {
-        alert('changed');
-        // Other changed code would be here...
-    }  
-    else
-    {
-        $(this).val(prev_val);
-        return false; 
-    }
+var prev_val = null;
+prev_val = $('.select_option').val();
+$('.select_option').change(function() {
+$(this).blur() // Firefox fix as suggested by AgDude
+var success = confirm('Are you sure you want to change the Status Of Order?');
+if(success)
+{
+prev_val = $(this).val();
+  var id=$(this).data('id');
+  console.log(id);
+    var SelectedAction = $(this).children("option:selected").val();
+    console.log(SelectedAction);
+    var sendInfo = {status:SelectedAction};
+    $.ajax({
+    method:'post',
+    url:"/admin/update-order/"+id,
+    dataType: "json",
+    data:sendInfo,
+     success: function (json_data) {
+       if(json_data.status=='error'){
+        $('#message_error').html( '<div class="alert alert-danger">'+json_data['message']+'.</div>');
+        location.reload(5000);
+       }
+  else{
+  console.log(json_data['message']);
+  $('#success_msg').html( '<div class="alert alert-success">'+json_data['message']+'.</div>'); 
+    location.reload(5000);
+  }
+     },
+     error:function(err){  //console.log(err);  
+  }	
+  });	
+}  
+else
+{
+  $(this).val(prev_val);
+  return false; 
+}
 });
 
 </script>
 
 <script>
-  $(document).ready(function(){
-    var confirm_status = null;
-    confirm_status = $('#confirm_status').val();
-      $("select.action").change(function(){
-       // var success = (confirm('Are you sure want to change the status ????')) ? true : false; 
-        var id=$(this).data('id');
-          var SelectedAction = $(this).children("option:selected").val();
-          // alert("You have selected Action - " + SelectedAction);
-          var sendInfo = {status:SelectedAction};
-          $.ajax({
-					method:'post',
-					url:"/admin/update-order/"+id,
-					dataType: "json",
-					data:sendInfo,
-         	success: function (json_data) {
-				//	$("#processingFee").text('$'+json_data['order']);
-        console.log(json_data['message']);
-        $('#success_msg').html( '<div class="alert alert-success">'+json_data['message']+'.</div>');        
+// $(document).ready(function(){
+//   var confirm_status = null;
+//   confirm_status = $('#confirm_status').val();
+//     $("select.action").change(function(){
+//      // var success = (confirm('Are you sure want to change the status ????')) ? true : false; 
+//       var id=$(this).data('id');
+//         var SelectedAction = $(this).children("option:selected").val();
+//         // alert("You have selected Action - " + SelectedAction);
+//         var sendInfo = {status:SelectedAction};
+//         $.ajax({
+// 				method:'post',
+// 				url:"/admin/update-order/"+id,
+// 				dataType: "json",
+// 				data:sendInfo,
+//        	success: function (json_data) {
+// 			//	$("#processingFee").text('$'+json_data['order']);
+//       console.log(json_data['message']);
+//       $('#success_msg').html( '<div class="alert alert-success">'+json_data['message']+'.</div>');        
 
-				   },
-				   error:function(err){  //console.log(err);  
-				}	
-				});	
-      });
-  });
-  </script>
+// 			   },
+// 			   error:function(err){  //console.log(err);  
+// 			}	
+// 			});	
+//     });
+// });
+</script>

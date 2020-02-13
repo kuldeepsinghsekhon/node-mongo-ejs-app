@@ -134,7 +134,7 @@ exports.saveBrand=function(req, res, next) {
           //res.send('File uploaded!');}
         });  
         brod={name:req.body.brand_name,image:imgname};     
-     console.log(brod);
+     //console.log(brod);
     }
     Brand.findByIdAndUpdate(brandId, {$set:brod}, function (err, brand) {
             if (err) return next(err);
@@ -257,7 +257,7 @@ exports.productsSellBids=function(req, res, next) {
 }
 
 exports.allOrders=function(req, res, next) {
-  console.log(process.env.PaypalClientId);
+  //console.log(process.env.PaypalClientId);
     var perPage = 9;
     var query = {}; 
     Promise.all([
@@ -265,7 +265,7 @@ exports.allOrders=function(req, res, next) {
       //.skip((perPage * page) - perPage).limit(perPage),
       SellBid.find(query).sort({bidprice:-1}).limit(10),
     ]).then( ([orders,buybids])=>{
-      console.log(orders[0].payment);
+     // console.log(orders[0].payment);
        var count= orders.length;
       res.render('pages/admin/orders', {
         buybids: buybids,
@@ -339,12 +339,12 @@ var order=await OrderBid.findOne({_id:orderid}).populate({path:'sellbid'}).popul
  // var sellercahrges=  order.SellerTransaction.TotalPayout;
 
   var transactionid=order.payment.transaction.id;
-  if(order.status=='canceled'||order.status=='accepeted'){
+  if(order.status=='canceled'||order.status=='accepeted' || order.status=='canceled_n_charge'){
     res.json({status:'error',message:'Can not Accept/Cancel Order Already canceled '});
   }else{
-
   if(status=='canceled' ){
-    console.log(status)
+    
+  //  console.log(status)
   gateway.transaction.find(transactionid, function (err, transaction) {
     if(transaction.status=='submitted_for_settlement'||transaction.status=='settlement_pending'){
       gateway.transaction.void(transactionid, function (err, result) {
@@ -364,11 +364,51 @@ var order=await OrderBid.findOne({_id:orderid}).populate({path:'sellbid'}).popul
           order.save();
           res.json({status:'success',message:'Refund Proccess Initiated '});
         }
-       
-         }); 
+     });   
     }
   });
-}else{
+}
+else if(status=='cancel_n_charge'){
+  var totalcharges = order.sellbid.TotalCharges;
+  // console.log(totalcharges);
+   var braintreeid=order.seller.braintreeid;
+   var cardtoken=order.seller.cardtoken;
+   var totalcharges=Math.ceil(55);
+    gateway.transaction.sale({
+    amount: totalcharges,
+     customerId: braintreeid,
+     //paymentMethodToken:cardtoken,
+     options: {
+       submitForSettlement: true
+     }
+   }, function(error, result) {
+       if (result.success==true) {
+         console.log('cancel and Charge is processed');
+         gateway.transaction.find(transactionid, function (err, transaction) {
+           if(transaction.status=='submitted_for_settlement'||transaction.status=='settlement_pending'){
+             gateway.transaction.void(transactionid, function (err, result) {
+               if(result.success==true){
+                 order.payment= result;
+                 order.status=status;
+                 order.save();
+                 res.json({status:'success',message:'Payment Voided Refund Proccess Initiated '});
+               }
+                });
+           }else{
+             gateway.transaction.refund(transactionid, function (err, result) {
+               if(result.success==true){
+                order.payment= result;
+                order.status=status;
+                 order.save();
+                 res.json({status:'success',message:'Refund Proccess Initiated '});
+               }
+                }); 
+           }
+       })
+       }
+     });
+ }
+else{
   if(order.payment.transaction.status=='voided'){
     res.json({status:'error',message:'Can not Accept Order Already canceled '});
   }else{
@@ -400,7 +440,7 @@ var order=await OrderBid.findOne({_id:orderid}).populate({path:'sellbid'}).popul
       var sync_mode = 'false';
         paypal.payout.create(create_payout_json, sync_mode, function (error, payout) {
             if (error) {
-                console.log(error.response);
+                //console.log(error.response);
                 throw error;
             } else {
               order.status=status;
@@ -411,11 +451,11 @@ var order=await OrderBid.findOne({_id:orderid}).populate({path:'sellbid'}).popul
                              throw error;
                          } else {
                            order.sellerPayout=payout1;
-                             console.log("Get Payout Response");
+                             //console.log("Get Payout Response");
                              console.log(payout1);
                             // console.log(payout1.items[0].payout_item_id);
-                             console.log(payout1.items[0].payout_item_fee);
-                             console.log(payout1.items[0].payout_item);
+                            // console.log(payout1.items[0].payout_item_fee);
+                            // console.log(payout1.items[0].payout_item);
                              var payoutItemId =payout1.items[0].payout_item_id;
                              }
                              order.save();
@@ -467,8 +507,8 @@ var sellerinfo= await Address.findOne({user:seller, address_type:'seller'});
 // console.log(order);
 // console.log('sellerinfo');
 // console.log(sellerinfo);
- console.log('----------------------shipping------------------');
-console.log(order.buybid);
+// console.log('----------------------shipping------------------');
+//console.log(order.buybid);
   if(order){
     res.render('pages/admin/order-detail', {
       order:order,
@@ -483,11 +523,11 @@ exports.statusWebhook = function (req, res) {
     req.body.bt_signature,
     req.body.bt_payload,
     function (err, webhookNotification) {
-      console.log("[Webhook Received " + webhookNotification.timestamp + "] | Kind: " + webhookNotification.kind);
+     // console.log("[Webhook Received " + webhookNotification.timestamp + "] | Kind: " + webhookNotification.kind);
 
       // Example values for webhook notification properties
-      console.log(webhookNotification.kind); // "subscriptionWentPastDue"
-      console.log(webhookNotification.timestamp); // Sun Jan 1 00:00:00 UTC 2012
+     // console.log(webhookNotification.kind); // "subscriptionWentPastDue"
+    //  console.log(webhookNotification.timestamp); // Sun Jan 1 00:00:00 UTC 2012
     }
   );
   res.status(200).send();
@@ -570,8 +610,8 @@ Banner.findByIdAndUpdate(bannerId, {$set:brod}, function (err, banner) {
 exports.updateBannerStatus = function(req,res,next){
  var bannerId = req.body.uid ;
   var status = req.body.status;
-  console.log(status);
-  console.log(bannerId);
+  //console.log(status);
+  //console.log(bannerId);
   var prod = {status : status};
   Banner.findByIdAndUpdate(bannerId, {$set:prod}, function (err, banner) {
       if (err) return next(err);
@@ -625,10 +665,13 @@ exports.subscribe_email = function name(req, res, next)
 
 exports.subscriber_list = function name(req, res, next)
 {
-  Subscriber.find({}).select({'_id': 0, __v: 0}).exec(function(err, subscriber) {
+  
+  Subscriber.find({}).exec(function(err, subscriber) {
  
     if (err) return next(err)
-    res.render('page/admin/subscriber', {
+    //subscribers.push(subscriber);
+   //console.log(subscriber.length);
+    res.render('pages/admin/subscribe', {
       subscriber: subscriber,
       layout:'admin-layout'
 })
@@ -642,7 +685,7 @@ exports.charge_env = function name(req,res,next){
 
  const dotenv = require('dotenv')
   var envConfig = dotenv.parse(fs.readFileSync('.env'));
-  console.log(envConfig);
+ // console.log(envConfig);
 
 //   var  Times =  process.env.TIMES ;
 // data.push(Times);

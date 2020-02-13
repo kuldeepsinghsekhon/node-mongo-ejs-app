@@ -259,22 +259,22 @@ exports.products = function(req, res, next) {
     // var perPage = 9;
     // var page = req.params.page || 1;
     var userid = req.body.user;
-    var status = req.body.status;
     console.log(userid);
-    console.log(status);
+    var status = req.body.status;
     var query = { user: userid,status:status}; 
     Promise.all([
-      OrderBid.find({ buyer: userid,status:{$in: ['Won Bid', 'Order Placed']} }).select({payment:0}).populate({path:'product'}),
+      OrderBid.find({ buyer: userid,status:{$in: ['Won Bid', 'Order Placed']} }).select({payment:0}).populate({path:'product'}).limit(1),
       BuyBid.find(query).sort({bidprice:-1}).limit(1), 
       OrderBid.find({ buyer:userid ,status:{$in: ['accepeted', 'canceled']} }).populate({path:'product'}).limit(1),
      
     ]).then( ([orders,buybids,history])=>{
-      console.log(orders);
+      console.log(buybids);
+      console.log(history);
       res.json({status:'success', data: {
         buybids: buybids,
         orders:orders,
-        
-        history:history}  
+        history:history
+      }  
          })
          
          }).catch((error) => console.log(error));

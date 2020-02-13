@@ -56,7 +56,7 @@ exports.settings=function(req, res, next) {
   exports.saveBuyerInfo=async function(req,res){
    
     const user=req.user;
-    let address_type='buyer';
+    let address_type='billing';
    // const { name, lastname, country,address1,address2, state, city,postalCode,phone} = req.body;
     const name = req.body.first_name_billing;
     var lastname = req.body.last_name_billing;
