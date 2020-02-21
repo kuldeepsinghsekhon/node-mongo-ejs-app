@@ -80,7 +80,7 @@ exports.place_buy=async function name(req,res,next) {
         expiry=expiry.split("Days").map(Number);  
         var expire= parseInt(expiry[0])    
   buyBid.expire=Date.now() + ( 3600 * 1000 * 24*expire)
- // buyBid.title=prod.name;
+  buyBid.title=prod.name;
   
   if(req.body.bidType=='buy'){
     buyBid.status="buy";   
