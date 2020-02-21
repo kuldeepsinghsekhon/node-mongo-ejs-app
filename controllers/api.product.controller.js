@@ -256,17 +256,13 @@ exports.products = function(req, res, next) {
         })
   }
   exports.ajaxproductBuying=function(req, res, next) {
-    // var perPage = 9;
-    // var page = req.params.page || 1;
-    var userid = req.body.user;
     console.log(userid);
     var status = req.body.status;
-    var query = { user: userid,status:status}; 
+    var query = { user: req.user._id ,status:'buybid'}; 
     Promise.all([
-      OrderBid.find({ buyer: userid,status:{$in: ['Won Bid', 'Order Placed']} }).select({payment:0}).populate({path:'product'}).limit(1),
-      BuyBid.find(query).sort({bidprice:-1}).limit(1), 
-      OrderBid.find({ buyer:userid ,status:{$in: ['accepeted', 'canceled']} }).populate({path:'product'}).limit(1),
-     
+      OrderBid.find({ buyer: req.user._id,status:{$in: ['Won Bid', 'Order Placed']} }).populate({path:'product'}),
+    BuyBid.find(query).sort({bidprice:-1}).limit(10).populate({path:'product'}), 
+    OrderBid.find({ buyer: req.user._id,status:{$in: ['accepeted', 'canceled']} }).populate({path:'product'}),
     ]).then( ([orders,buybids,history])=>{
       console.log(buybids);
       console.log(history);
