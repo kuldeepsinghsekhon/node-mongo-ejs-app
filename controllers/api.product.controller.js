@@ -256,8 +256,7 @@ exports.products = function(req, res, next) {
         })
   }
   exports.ajaxproductBuying=function(req, res, next) {
-    console.log(userid);
-    var status = req.body.status;
+        var status = req.body.status;
     var query = { user: req.user._id ,status:'buybid'}; 
     Promise.all([
       OrderBid.find({ buyer: req.user._id,status:{$in: ['Won Bid', 'Order Placed']} }).populate({path:'product'}),
