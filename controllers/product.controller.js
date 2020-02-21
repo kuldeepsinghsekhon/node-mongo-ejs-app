@@ -266,7 +266,7 @@ exports.sellCalculateCharges=async function(req, res, next) {
        }
      var TransactionFee=askprice*TransactionFeeCharge;
      var Proc=(askprice*SellProcessingCharge);
-     var Shipping=SellShipping;
+     var Shipping=parseInt(SellShipping);
      var totalpayout=askprice-(TransactionFee+Proc+Shipping);
      var price=product.price;
      var message='You must meet the minimum Ask of '+price;
@@ -390,9 +390,9 @@ exports.sellAsk=async  function(req, res,next){
   sellBid.bidprice = bidprice;
   //sellBid.save();
   let sellbids=[];
-  var TransactionFee=bidprice*TransactionFeeCharge;
-  var Proc=bidprice*SellProcessingCharge;
-  var Shipping=SellShipping;
+  var TransactionFee=bidprice*parseInt(TransactionFeeCharge);
+  var Proc=bidprice*parseInt(SellProcessingCharge);
+  var Shipping=parseInt(SellShipping);
   var totalcharges=Math.ceil(TransactionFee+Proc+Shipping);
   transaction.TransactionFee=TransactionFee;
   transaction.processingFee=Proc;

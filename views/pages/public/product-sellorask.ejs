@@ -224,13 +224,15 @@
 		</div>
 		
 		<script>
+			var bidType="ask";
 		//$(function(){
 			$("#menu2btn").on('click',function(){
-				$("#bid-type").val("sale");
+				
 				gethighestbidCharges();
 			});			
 		//})
 		function gethighestbidCharges(){
+			$("#bid-type").val("sale");
 			var id ="<%=product.id %>";// $("#id-manuf-name").val();				
 				var attr_val=$('#attr-selector-attr').text();
 				console.log(attr_val);
@@ -256,7 +258,6 @@
 				});	
 		}
 		$("#menu1btn").on('click',function(){
-			$("#bid-type").val("ask");
 			$(".nextPay").attr("disabled",true);
 			getbidCharges();			
 			});	
@@ -268,6 +269,7 @@
 				getbidCharges();			
 			});		
 		function getbidCharges(){
+			$("#bid-type").val("ask");
 			var id ="<%=product.id %>";
 				var askprice=$("#bid-price-input").val();
 				var expiry=$('.dropdown-toggle').text();
@@ -358,7 +360,7 @@ $( function(){
 	$('.pane-payment').hide();
 	$('.nextPay').on('click',function(){
 		//alert('Hello');
-		var bidType="ask";
+		
 		 bidType=$("#bid-type").val();
 		 var expiry=$('.dropdown-toggle').text();
 				var attr_val=$('#attr-selector-attr').text();

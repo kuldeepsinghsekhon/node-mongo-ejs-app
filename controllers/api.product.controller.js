@@ -66,6 +66,8 @@ exports.place_buy=async function name(req,res,next) {
   console.log(prod);
   if(highestbid){
     buyBid.highestbid = highestbid.bidprice;
+  }else{
+    buyBid.highestbid ='';
   }
   if(sellask){
     buyBid.lowestask = sellask.bidprice;

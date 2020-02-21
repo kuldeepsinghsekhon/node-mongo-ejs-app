@@ -16,6 +16,7 @@ const BidSchema = new mongoose.Schema({
   ShippingFee  : Number,
   DiscountCode :String,
   TotalCharges :Number,
+  payment: {type: Object},
   user:{type: Schema.Types.ObjectId, ref: 'User'},
   sellbid:{type: Schema.Types.ObjectId, ref: 'SellBid'},
   attr_val:String,
