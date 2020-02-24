@@ -113,9 +113,13 @@
                               <div class="col-6 col-md-4">
                                  <div class="product">
                                     <figure class="product-image-container">
+                                       <%   var arrayofImage = (products[i].image).split(",") ; 
+                                          for(var j = 0; j < 1; j++) {
+                                       %>
                                        <a href="/products/<%= products[i]._id %>" class="product-image">
                                        <img src="/uploads/products/<%= products[i].image %>" alt="product">
                                        </a>
+                                       <%} %>
                                        <a href="/products/<%= products[i]._id %>" class="btn-quickview">Quick View</a>
                                     </figure>
                                     <div class="product-details">

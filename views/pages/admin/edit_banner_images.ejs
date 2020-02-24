@@ -1,0 +1,116 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">All Product</h4>
+        <p class="card-description">
+          Manage <code>Product Templates</code>
+        </p>
+        <div class="table-responsive">
+          <table class="table table-striped" data-target="template-data">
+            <thead>
+              <tr>
+                <th>
+                   Image
+                </th>
+                <th>
+                    Edit
+                </th>
+                <th>
+                    Delete
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+    
+               <%
+               var inc = 0 ;
+               product.images.forEach(img => {
+                   var productid = product.id ;
+                var imgsrc= "/uploads/products/"+productid+"/"+img;  
+                
+                %>
+              <tr class="data-row">
+                <td>
+               <!--   <img src="../../images/faces/face6.jpg" alt="image"/>-->
+                  <img src="<%=imgsrc%>" alt="image" class="value_image" id="img_<%=inc%>"/>
+                </td>
+        
+                    <td>
+                        <button type="button" onclick='change_img("<%=inc%>")' class="btn btn-primary edit_image" data-toggle="modal" data-target="#edit_image">
+                          <i class="ti-pencil btn-icon-append"></i> 
+                        </button>
+                    </td>  
+                    <td>
+                </td>
+                <td>
+
+                </td>
+                </tr>
+               <% inc++; });%>
+            </tbody>
+            </table>
+            </div>
+            </div>
+            </div>
+            </div>
+
+            <script>
+                     $(document).ready(function() {
+                //    var imgpath = ($('.value_image').find('img').attr('src'));
+                //    $('#imdd').prop('src',imgpath);
+                //    var imgname = imgpath.split("/").pop();
+                //    $('#img_name').prop('name',imgname);
+
+                //    $('.edit_image').click(() => {
+                //        alert($('.edit_image').attr('inc'));
+                //     //    alert($('td #img_'+$('td .edit_image').attr('inc')).attr('src'));
+                //    });
+                });
+                
+                function change_img(inc)
+                {
+                    // alert(inc);
+                    var imgpath = $('td #img_'+inc).attr('src');
+                    $('#imdd').prop('src',imgpath);
+                    var imgname = imgpath.split("/").pop();
+                    $('#img_name').prop('value',imgname);
+                }
+             </script>
+            <div class="modal" id="edit_image">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+              
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">Update Image</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form method="POST" src="admin/product/:id/editBannerImg" enctype="multipart/form-data">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <img src="" id="imdd" height="100" width="100">  
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="filename" value="" id="img_name">
+                                        <input type="file" class="form-control" name="newImage">
+
+                                        <input type="hidden" name="productid" value="<%=product.id%>">
+                                   <!--<input type="file"  name="newimage">-->
+                                    </td>
+                                </tr>
+                               
+                            </table>
+                        </br>
+                            <input type="submit" value="Update Image">
+                        </form>
+                    </div>
+                  </div>
+                </div>
+              </div>

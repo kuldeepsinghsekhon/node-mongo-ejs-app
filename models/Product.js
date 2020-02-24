@@ -16,16 +16,14 @@ const prodSchema = new mongoose.Schema({
  price: Number,
  style:String,
  image: String,
+ imagepath:String,
 //specs: Map,
 condition:String,
 size:Number,
  attrs:{type: Schema.Types.ObjectId,
   ref: 'Attribute'
 },
-  images:[{ 
-   type: Schema.Types.ObjectId, 
-     ref: 'Image' //multiple image 
-  }],
+  images:[String],
 shipping : {
     dimensions: {
         height: mongoose.Decimal128,

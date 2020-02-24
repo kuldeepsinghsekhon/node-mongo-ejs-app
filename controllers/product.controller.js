@@ -12,6 +12,8 @@ const User = require('../models/User');
 const path = require('path');
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
+var uniqueFilename = require('unique-filename');
+const uniqueString = require('unique-string');
 const braintree = require("braintree");
 var paypal = require('paypal-rest-sdk');
 const gateway = braintree.connect({
@@ -42,7 +44,8 @@ exports.viewAddProduct = function(req, res, next) {
   Brand.find({}),
   Category.find({}),
   ]).then( ([ brand,category]) => {
-    res.render('pages/admin/add-product', {layout:'admin-layout', brand:brand,category:category}); 
+    
+    res.render('pages/admin/add-product', { layout:'admin-layout', brand:brand,category:category}); 
     });
   }
 exports.products = function(req, res, next) {
@@ -109,7 +112,7 @@ exports.products = function(req, res, next) {
       Product.find({active:'true' }).limit(10),
     ]).then( ([ product, sellbid,sellBid_avg,highbid,lastsale,lowest_netprice,heigh_netprice,ordercount,relatedproducts]) => {
       //console.log(lastsale[0].netprice);
-      //console.log(lastsale[0]);
+      //console.log(product);
       var avg_retail_price=0;
       if(lastsale.length>0){
         var pricepremium=lastsale[0].netprice-product.price;
@@ -135,7 +138,7 @@ exports.products = function(req, res, next) {
 
         highsale=lastsale[0];
          }
-         //console.log(highsale);
+         console.log(product.id);
       res.render('pages/public/product-detail', {
         product: product,
         lowbid:sellbid,
@@ -736,6 +739,8 @@ exports.adminProducts=function(req, res, next) {
 
 /* admin can add Product */
 exports.saveProduct=function(req, res, next) {
+//  var testdata = req.files.productImage[0];
+//   console.log(testdata);
     var product = new Product();
     var imgname='default.jpg';
     product.category = req.body.category_name;
@@ -746,6 +751,7 @@ exports.saveProduct=function(req, res, next) {
     product.price = req.body.product_price; 
     product.style = req.body.style; 
     product.brand = req.body.brand_name;
+    console.log(product.brand);
     product.active = 'false';
     if(req.body.status)
     {
@@ -771,21 +777,21 @@ exports.saveProduct=function(req, res, next) {
     if (!req.body.category_name || !req.body.product_description || !req.body.brand_name || !req.body.product_name 
       || !req.body.product_price||!req.files|| Object.keys(req.files).length=== 0  ) {
       errors.push({ msg: 'Please enter all Required fields' });
-     
       if(!req.files){
         errors.push({ msg: 'Please upload image' });
       }
     }
     if (errors.length > 0) {
-    
        Category.find({},function(err,category){
-        
          res.render('pages/admin/add-product',{layout:'admin-layout',category:category,errors:errors}); 
 
         });
     } else {
-  
-    var imgpath=appRoot+'//public//uploads//products//';
+     // console.log(brand[0].name);
+    
+      
+      var imgpath=appRoot+'//public//uploads//products//';
+      console.log(imgpath);
     var mask=777;
       fs.mkdir(imgpath, mask, function(err) {
         if (err) {
@@ -793,14 +799,55 @@ exports.saveProduct=function(req, res, next) {
             else console.log(err); // something else went wrong
         } else console.log(null); // successfully created folder
     });
-      let productImage1 = req.files.productImage;
-      imgname=Date.now()+path.extname(req.files.productImage.name);
-      productImage1.mv(imgpath+'//'+imgname, function(err) { 
-        if (err) throw err
-        //return res.status(500).send(err);
-        //res.send('File uploaded!');}
-      });        
-    product.image = imgname;
+    
+   
+      let sampleFile = req.files.productImage;
+      imgname=Date.now()+path.extname(sampleFile.name);
+      sampleFile.mv(imgpath+'//'+imgname, function(err) {
+          if (err){
+            console.log(err);
+          }else{
+            console.log(null);
+          }
+        });
+product.image = imgname ;
+console.log(product.image);
+  //     if(sampleFile instanceof Array){
+  //       console.log(sampleFile.length);
+  //     var file_info = [];
+  //     var count = 0;
+  //     var imagename = [];
+  //     sampleFile.forEach(function(ele, key) {
+
+
+  //       imgname=Date.now()+path.extname(sampleFile.name);
+  //       console.log(ele);
+  //       file_info.push(imgname);
+
+  //       ele.mv(imgpath+'//'+imgname, function(err) {
+  //         if (err){
+  //           console.log(err);
+  //         }else{
+  //           file_info.push(imgname);
+  //         }
+  //         count++;
+         
+  //         if(sampleFile.length == count){
+            
+  //         }
+  //       });
+      
+  //     });
+  //     var info = file_info.toString();
+  //         //  console.log(info);
+  // }
+  
+  //     // imgname=Date.now()+path.extname(req.files.productImage.name);
+  //     // productImage1.mv(imgpath+'//'+imgname, function(err) { 
+  //     //   if (err) throw err
+  //     //   //return res.status(500).send(err);
+  //     //   //res.send('File uploaded!');}
+  //     // });        
     product.save(function(err,product) {
         if (err){
           throw err
@@ -815,8 +862,77 @@ exports.saveProduct=function(req, res, next) {
   }
   
 }
+
+exports.addimagesmultiple =   function(req, res, next)
+{
+   var productId = req.params.id;
+  Product.findOne({ _id:productId}).exec(function(err,product)
+  {
+    var imgpath=appRoot+'//public//uploads//products//'+product.id;
+    var mask = 777 ;
+    fs.mkdir(imgpath, mask, function(err) {
+      if (err) {
+          if (err.code == 'EEXIST') console.log(null); // ignore the error if the folder already exists
+          else console.log(err); // something else went wrong
+      } else console.log(null); // successfully created folder
+  });
+var images_count = 0 ;
+
+  if(images_count){
+     var  images_count=  product.images.count;
+  }
+
+             
+   let files = (req.files.file);
+   console.log(files.length);  
+   var imgupdatepath = [];
+
+  files.forEach(function(ele, key){
+  //var  imgname=Date.now()+path.extname(ele.name);
+  var imgname =  'img'+images_count+'.png';;
+    ele.mv(imgpath+'//'+imgname, function(err) { 
+          if (err) throw err
+         });
+         imgupdatepath.push(imgname);
+         images_count++ ; 
+  });
+  
+  Product.findByIdAndUpdate(productId, {$set:{images:imgupdatepath}},{new: true},function(err,product){
+    if (err) return next(err);
+    res.redirect('/admin/template-products/');
+});
+  // prod={image:imgname};
+  // // (product.image).push(imgupdatepath);//(imgupdatepath);
+  // res.redirect('/admin/product/edit_image/'+productId);
+});
+}
+
+exports.editImage = function name(req,res,next)
+{
+
+  
+  var productId = req.params.id ;
+  Product.findOne({_id:productId}).exec(function(err,product){
+    //console.log(product.image);
+
+
+  });
+
+}
+
+exports.addimages=function name(req,res,next) { 
+  var productId = req.params.id;
+  Product.findOne({_id:productId}).exec(function(err,product)
+  {
+    res.render('pages/admin/addimage', {
+      product: product,
+      layout:'admin-layout'
+  })
+});
+}
+
 /* View Page for admin can edit Product*/
-exports.editProduct=function(req, res, next) {
+exports.editProduct=function(req, res, next) {  
     var productId=req.params.id;
         product=Product.findById(productId)
         .populate({path:'attrs'}).exec(function(err,product)
@@ -827,6 +943,18 @@ exports.editProduct=function(req, res, next) {
           })
       });
   }
+
+  exports.deleteProduct=function(req, res, next) {
+    var productId=req.params.id;
+    Product.findByIdAndDelete({_id: productId }) .exec(function(err, products) {
+      if(err) console.log(err)
+    res.redirect('/admin/template-products/1');
+  });
+}
+
+
+
+
   /* Admin can update Product */
   exports.updateProduct=function (req, res,next) {
     var productId=req.params.id.replace(" ", "");
@@ -881,7 +1009,7 @@ exports.editProduct=function(req, res, next) {
     }
     Product.findByIdAndUpdate(productId, {$set:prod}, function (err, product) {
             if (err) return next(err);
-            res.redirect('/admin/template-products/1');
+            res.redirect('/admin/template-products/');
         });
       }
       exports.findByIdChart=function(req, res, next) {
@@ -991,3 +1119,47 @@ exports.editProduct=function(req, res, next) {
          })
         }).catch((error) => console.log(error));
       }
+    
+      exports.editBannerImg = function (req,res,next){
+
+        var productId = req.params.id;
+        Product.findOne({_id:productId},{images:'true'}).exec(function(err,product){
+          if(err)return next(err);
+          res.render('pages/admin/edit_banner_images', {
+            product: product,
+            layout:'admin-layout'
+
+        });
+
+      });
+    }
+    exports.updateeditBannerImg = function (req,res,next){
+      
+      productid = req.body.productid;
+      Product.findOne({_id:productid},{images:'true'}).exec(function(err,product){
+
+        var imgupdatepath = [];
+
+        product.images.forEach(function(imgName_database, key){
+          console.log(imgName_database);
+          let imagename = req.files.newImage;
+          var filename = req.body.filename;
+        if(imgName_database==filename)
+        {
+          var imgpath=appRoot+'//public//uploads//products//'+product.id;
+          imagename.mv(imgpath+'//'+filename, function(err) { 
+                if (err) throw err
+               });
+               imgupdatepath.push(filename);
+          }else{
+            imgupdatepath.push(imgName_database);
+          }
+          
+      });
+      console.log(imgupdatepath);
+      Product.findByIdAndUpdate(productid, {$set:{images:imgupdatepath}},{new: true},function(err,product){
+        if (err) return next(err);
+        res.redirect('/admin/template-products/');
+    });
+    });
+  }

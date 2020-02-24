@@ -40,13 +40,22 @@
                                 Style
                               </th>
                               <th>
-                                Action
+                                Add More Images
+                              </th>
+                              <th>
+                                Edit Slider Images
+                              </th>
+                              <th>
+                                Edit Product
+                              </th>
+                              <th>
+                                Delete
                               </th>
                           </tr>
                         </thead>
                         <tbody>
                             <% for (var i = 0; i < products.length; i++) { %>
-                          <tr>
+                          <tr class="data-row">
                             <td class="py-1">
                            <!--   <img src="../../images/faces/face6.jpg" alt="image"/>-->
                               <img src="/uploads/products/<%= products[i].image %>" alt="image"/>                            
@@ -62,12 +71,32 @@
                             </td>  
                             <td>
                                 <%= products[i].style %>
-                            </td>  
+                            </td> 
+                            
+                            <td>
+                              <a class=" btn btn-primary btn-rounded btn-icon" href="/admin/product/<%=products[i]._id %>/addimage" >
+                                <i class="ti-clip btn-icon-append"></i> 
+                              </a>
+                          </td>  
+
+                          <td>
+                            <a class=" btn btn-primary btn-rounded btn-icon" href="/admin/product/<%=products[i]._id %>/editBannerImg" >
+                              <i class="ti-pencil btn-icon-append"></i> 
+                            </a>
+                        </td>  
+
                             <td>
                                 <a class=" btn btn-primary btn-rounded btn-icon" href="/admin/product/<%=products[i]._id %>/edit" >
                                   <i class="ti-pencil btn-icon-append"></i> 
                                 </a>
-                            </td>                          
+                            </td>  
+
+
+
+                            <td >
+                              <a class=" btn btn-primary btn-rounded btn-icon" onclick="return confirm('Are you sure for Delete Product?')" href="/admin/product/<%=products[i]._id %>/delete" >
+                                <i class="ti-trash btn-icon-append"></i> 
+                            </td>                        
                           </tr>
                           <% } %>
                          

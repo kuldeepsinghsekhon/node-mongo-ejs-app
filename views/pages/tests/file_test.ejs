@@ -1,0 +1,27 @@
+<form class="forms-sample" id="submit_form" enctype="multipart/form-data">
+    <div class="form-group">
+        <input type="file" id="productImage" class="form-control" id="image_upload" name="productImage" placeholder="Product Image" multiple>
+    </div> 
+    <button type="submit" class="btn btn-success">Add New Product</button>
+    </form>
+    <script>
+        $( "#submit_form" ).submit(function( event ) {
+        var data = new FormData();
+       $.each($('#image_upload')[0].files, function(i, file) {
+           data.append('productImage', file);
+       });
+       
+       $.ajax({
+           url: '/tests/send_message',
+           data: data,
+           cache: false,
+           contentType: false,
+           processData: false,
+           method: 'POST',
+           type: 'POST',
+           success: function(data){
+             console.log(data);
+           }
+       });
+      });
+       </script>

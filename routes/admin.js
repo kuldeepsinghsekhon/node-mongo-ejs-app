@@ -60,15 +60,21 @@ router.get('/', ensureAuthenticated,permit('Admin'), admin_controller.dashboard)
 
 // (req, res) => res.render('pages/admin/dashboard',{ layout:'admin-layout' }));
  router.get('/add-product',permit('Admin'),product_controller.viewAddProduct );
+ router.get('/product/:id/addimage',permit('Admin'), product_controller.addimages);
+ router.post('/product/:id/addimage',permit('Admin'), product_controller.addimagesmultiple);
   router.get('/product/:id/edit', product_controller.editProduct);
+  router.get('/product/:id/editBannerImg',permit('Admin'),  product_controller.editBannerImg);
+  router.post('/product/:id/editBannerImg', permit('Admin'), product_controller.updateeditBannerImg);
+  router.get('/product/:id/delete', product_controller.deleteProduct);
   router.post('/product/:id/update',ensureAuthenticated, permit('Admin'),product_controller.updateProduct);
   router.post('/add-product',ensureAuthenticated,permit('Admin'),product_controller.saveProduct);
   router.get('/buying',ensureAuthenticated, permit('Admin'),admin_controller.productsBuyBids);
   router.get('/selling',ensureAuthenticated, permit('Admin'),admin_controller.productsSellBids);
+  router.get('/product/edit_image/:id',ensureAuthenticated, permit('Admin'),product_controller.editImage);
 //router.get('/admin/', ensureAuthenticated, (req, res) => res.render('pages/admin/dashboard',{ layout:'admin-layout' }));
 //router.get('/admin/users', ensureAuthenticated, (req, res) => res.render('pages/admin/users',{ layout:'admin-layout' }));
 //router.get('/admin/template-products', ensureAuthenticated, (req, res) => res.render('pages/admin/template-products',{ layout:'admin-layout' }));
-  router.get('/template-products/:page',ensureAuthenticated, permit('Admin'), product_controller.adminProducts);
+  router.get('/template-products/',ensureAuthenticated, permit('Admin'), product_controller.adminProducts);
   router.get('/users',ensureAuthenticated, permit('Admin'),users_controller.listUsers);
   router.post('/users',ensureAuthenticated, permit('Admin'),users_controller.updateUserStatus);
   router.get('/orders/',ensureAuthenticated, permit('Admin'),admin_controller.allOrders);
@@ -92,4 +98,5 @@ router.get('/', ensureAuthenticated,permit('Admin'), admin_controller.dashboard)
   router.get('/env_update',ensureAuthenticated, permit('Admin'),admin_controller.charge_env);
   router.post('/subscribe_email',forwardAuthenticated,admin_controller.subscribe_email);
   router.get('/subscriber',ensureAuthenticated, permit('Admin'), admin_controller.subscriber_list);
+  
 module.exports = router;

@@ -267,10 +267,15 @@
 				 <div class="product-media">
 				   <div class="full " style="position: relative;">
 					  <div class="container">
-						 <div class="image-container"><img data-testid="product-detail-image" alt="Jordan 1 Mid SE Fearless Blue the Great" src="/uploads/products/<%= product.image %>" draggable="false" ) 400px"></div>
-						 <div class="photo_3d">
-						
-						 </div>
+						  <% if(product.images.length)
+						  {%>
+							<div class="photo_3d">
+								<img src="/uploads/products/<%= product.image%>" id="slideImage" style="width: 400px; height:450px;" />
+								<div id="slider-range"></div>
+							 </div>
+							<% } else {%>
+						 <div class="image-container"><img data-testid="product-detail-image" alt="Image Not Avaliable" src="/uploads/products/<%= product.image %>" draggable="false" ) 400px"></div>
+						<%}%>
 					  </div>
 				   </div>
 				   <div class="product-gallery hidden-xs"></div>
@@ -648,3 +653,31 @@
 				  }
 				);
 				</script>
+				<script>
+					var c="<%=product.images.length%>";
+					
+				 $( function() {
+					//console.log(c);
+					var  imgno,i =0;
+					$( "#slider-range" ).slider({
+						min: 0,
+						  max: parseInt(c-1),
+						
+					  slide: function( event, ui ) {
+					   
+						if(ui.value<=c&& ui.value>=1){	
+							 imgno = (ui.value);
+							  if(imgno){
+								   $( "#slideImage" ).attr('src',"/uploads/products/<%=product.id%>/img"+imgno+".png");
+							    }
+							//else{
+							// 	  $( "img" ).attr('src',"https://stockx-360.imgix.net/Air-Jordan-1-Retro-High-UNC-Chicago-Leather-W/Images/Air-Jordan-1-Retro-High-UNC-Chicago-Leather-W/Lv2/img"+imgno+".jpg");
+							//    }
+						 }   
+					   
+					  }
+					});
+					$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+					  " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+				  } );
+				  </script>
