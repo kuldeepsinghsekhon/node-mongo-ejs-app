@@ -269,7 +269,7 @@ exports.sellCalculateCharges=async function(req, res, next) {
        }
      var TransactionFee=askprice*TransactionFeeCharge;
      var Proc=(askprice*SellProcessingCharge);
-     var Shipping=SellShipping;
+     var Shipping=parseInt(SellShipping);
      var totalpayout=askprice-(TransactionFee+Proc+Shipping);
      var price=product.price;
      var message='You must meet the minimum Ask of '+price;
@@ -393,9 +393,9 @@ exports.sellAsk=async  function(req, res,next){
   sellBid.bidprice = bidprice;
   //sellBid.save();
   let sellbids=[];
-  var TransactionFee=bidprice*TransactionFeeCharge;
-  var Proc=bidprice*SellProcessingCharge;
-  var Shipping=SellShipping;
+  var TransactionFee=bidprice*parseInt(TransactionFeeCharge);
+  var Proc=bidprice*parseInt(SellProcessingCharge);
+  var Shipping=parseInt(SellShipping);
   var totalcharges=Math.ceil(TransactionFee+Proc+Shipping);
   transaction.TransactionFee=TransactionFee;
   transaction.processingFee=Proc;
@@ -647,6 +647,7 @@ exports.placeBuyBid=async function name(req,res,next) {
 exports.calculateBuyCharges=function name(req,res,next) {
   var productId=req.body.id.replace(" ","");
    var attrv=req.body.attr_val.replace(" ","");
+   console.log('bid type'+req.body.bidType);
   Promise.all([
     Product.findOne({ _id: productId }).populate({path:'attrs'}),
     SellBid.findOne({productid:productId,status:'ask',attr_val:attrv}).sort({bidprice:+1}).limit(1),
@@ -662,10 +663,10 @@ exports.calculateBuyCharges=function name(req,res,next) {
         askprice=parseInt(req.body.bidprice);
         var expiry=req.body.expiry;
         expiry=expiry.split("Days").map(Number);       
-       }
+       }    
      var processingFee=askprice*BuyProcessingFee;
      var authenticationFee=askprice*BuyAuthenticationFee;
-     var shipping=BuyShipping;
+     var shipping=parseInt(BuyShipping);
      var totalpay=askprice+(processingFee+authenticationFee+shipping);
       res.json({ processingFee: processingFee.toFixed(2) ,authenticationFee:authenticationFee.toFixed(2),shipping:shipping,discountcode:'',totalpay:Math.ceil(totalpay)});
       

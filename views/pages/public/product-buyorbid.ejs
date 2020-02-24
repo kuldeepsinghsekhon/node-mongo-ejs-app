@@ -273,21 +273,16 @@
 		</div>
 		
 		<script>
-		//$(function(){
+			var bidType='buybid';
 			$("#menu2btn").on('click',function(){
 				$(".nextPay").attr("disabled",false);
-				// $("#id-manuf-name").val();
-				//alert('sdfsd');
 				gethighstbidCharges();
 			});			
-		//})
 		function gethighstbidCharges(){
 			var id ="<%=product.id %>";
 				$("#bid-type").val("buy");
-				var bidType=$("#bid-type").val();
-				//console.log(bidType);
-				var attrv=$('#attr-selector-attr').text();
-				
+				 bidType='buy';
+				var attrv=$('#attr-selector-attr').text();	
 				var sendInfo = {id: id, bidType:bidType , attr_val:attrv};
 				$.ajax({
 					method:'post',
@@ -304,16 +299,15 @@
 					$(".nextPay").attr("disabled",false);
 					}
 				   },
-				   error:function(err){  //console.log(err);  
+				   error:function(err){   
 				}	
 				});	
 		}
 		$("#menu1btn").on('click',function(){
 			$(".nextPay").attr("disabled",true);
+			bidType='buybid';
 			$("#bid-type").val("buybid");
-			var bidType=$("#bid-type").val();
-			console.log(bidType)
-			getbidCharges(bidType);
+			getbidCharges();
 			});	
 			$(".nextPay").attr("disabled",true);
 		$("#bid-price-input").on('keyup',function(){
@@ -327,16 +321,14 @@
 				$('.warning-text').text('bid Amount must be greater than 15');
 				
 			}
-			
-			//console.log('sdfds');
 			});		
 		function getbidCharges(){
+			$("#bid-type").val("buybid");
+			bidType='buybid';
 			var id ="<%=product.id %>";
 				var bidprice=$("#bid-price-input").val();
 				var expiry=$('.dropdown-toggle').text();
 				var attrv=$('#attr-selector-attr').text();
-				
-				//console.log('ssssssssssssssss'+size +product.attrs.name);
 				var sendInfo = {id: id, bidprice:bidprice, expiry:expiry ,attr_val:attrv };
 				$.ajax({
 					method:'post',
@@ -350,7 +342,7 @@
 					$("#discountcode-ask").text('$'+json_data['discountcode']);
 					$("#totalpay-bid").text('$'+json_data['totalpay']);	  
 				   },
-				   error:function(err){  //console.log(err);  
+				   error:function(err){
 				}	
 				});			
 		}
@@ -362,12 +354,11 @@ $( function(){
 
 	var attrs="<%=(product.attrs?product.attrs.attrs.length:0)%>";
 	if(attrs>0){
-		$('.bidsel-pane').hide(); //attr-selector-select
+		$('.bidsel-pane').hide();
 		$('.attr-selector-pane').show();
 		$('.attr-selector-cell').on('click',function(){
 			var attrv='';
 			var attrv=$(this).find(".tile-value:first").text();	
-			//ajax to get lowest ask and highest bidprice of this attribute 
 			var productid="<%=product.id%>";
 			var reqdata = {attr_val:attrv,productid:productid};
 			$.ajax({
@@ -376,10 +367,7 @@ $( function(){
 					dataType: "json",
 					data:reqdata,
 					success: function (response) {
-						//console.log(paypalEmail);
 						console.log(response);
-						// $('.pane-payment').hide();	
-						// $('.bidsel-pane').hide();
 						if(response.data.highbid){
 							$('.HighestBid').text('$'+response.data.highbid.bidprice);
 						}else{
@@ -401,8 +389,7 @@ $( function(){
 				});	
 		$('#attr-selector-attr').html(attrv);
 		$('.attr-selector-pane').hide();
-		$('.bidsel-pane').show();	
-		//getbidCharges();   
+		$('.bidsel-pane').show();	 
 		});	
 		$('.attr-selector-select').on('click',function(){
 		$('.attr-selector-pane').show();
@@ -415,24 +402,18 @@ $( function(){
 	$('.pane-payment').hide();
 	$('.pay-billing-shipping-bt').on('click',function(){
 		showBilling();
-		//alert('dfsf')
-
 	});
 	
-	$('.pay-shipping-bt').on('click',function(){
-		//alert('dfsf')
-		
+	$('.pay-shipping-bt').on('click',function(){		
 		var formdata = {id: '<%=product.id %>'};
 		$.ajax({
 			method:'post',
 			url:"/products/buy/shipping/shippingform",
-			//dataType: "json",
 			data:formdata,
 			success: function (response) {
 				$('.attr-selector-pane').hide();
 				$('.bidsel-pane').hide();	
 				$('.make-payment').html(response);
-				//console.log(response);
 			}
 		})
 	});
@@ -443,13 +424,11 @@ function showBilling(){
 		$.ajax({
 			method:'post',
 			url:"/products/buy/billingshiping/form",
-			//dataType: "json",
 			data:formdata,
 			success: function (response) {
 				$('.attr-selector-pane').hide();
 				$('.bidsel-pane').hide();	
 				$('.make-payment').html(response);
-				//console.log(response);
 			}
 		})	
 }
@@ -476,8 +455,6 @@ $('.paymethod-submit').on('click',function(){
 			dataType: "json",
 			data:fdata,
 			success: function (response) {
-				//console.log(paypalEmail);
-				//console.log(response);
 				$('.pane-payment').hide();	
 				$('.bidsel-pane').show();
 				$('.paypalEmailtext').text(response.paypalEmail);
@@ -488,8 +465,4 @@ $('.paymethod-submit').on('click',function(){
 			}
 		});
 });
-
-//shippingInfotext
-
-
-		</script>
+</script>

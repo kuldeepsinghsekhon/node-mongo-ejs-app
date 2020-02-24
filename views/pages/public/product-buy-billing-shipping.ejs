@@ -41,7 +41,7 @@
      <input data-testid="user-lastName"  id="last_name_billing" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=billingAddress.lastname%><%}%>">
 	   <div class="field field-select">
       <% include ../../partials/messages %>
-      <select name="country" required="" placeholder="Country">
+      <select name="country" required="" id="country_code_billing" placeholder="Country">
                           
         <option value="">Select Country</option>
          <% countries.forEach((country) =>{%>
@@ -69,7 +69,7 @@
      <input id="first_name_shipping" name="firstName" type="text" required="" placeholder="First Name" autocomplete="true" class="field  " value="<%if(shippingAddress){%><%=shippingAddress.name %><%}%>">
      <input id="last_name_shipping" name="lastName" type="text" required="" placeholder="Last Name" autocomplete="true" class="field  " value="<%if(shippingAddress){%><%=shippingAddress.lastname %><%}%>">
 	   <div class="field   field-select">
-		  <select name="country" required="" placeholder="Country">
+		  <select name="country" id="country_code_shipping" required="" placeholder="Country">
                           
         <option value="">Select Country</option>
          <% countries.forEach((country) => {  %>
@@ -274,7 +274,7 @@ braintree.client.create({
           var address_shipping=$("#address_shipping").val();
           var address2_shipping=$("#address2_shipping").val();
           var telephone_shipping=$("#telephone_shipping").val();
-          var country_code_shipping=$("#country_code_shipping").val();
+          var country_code_shipping=$("#country_code_shipping option:selected").val();
           var city_shipping=$("#city_shipping").val();
           var state_shipping=$("#state_shipping").val();
           var postalCode_shipping=$("#postalCode_shipping").val();
@@ -284,7 +284,7 @@ braintree.client.create({
           var address_billing=$('#address_billing').val();
           var address2_billing=$("#address2_billing").val();
           var telephone_billing=$("#telephone_billing").val();
-          var country_code_billing=$("#country_code_billing").val();
+          var country_code_billing=$("#country_code_billing option:selected").val();
           var postalCode_billing=$("#postalCode_billing").val();
           var state_billing=$("#state_billing").val();
           var city_billing=$("#city_billing").val();
@@ -355,15 +355,16 @@ braintree.client.create({
 <script>
 
   $("#differentShipping").on('change',function(){
-    $('.shipping-form').toggle();
+    //$('.shipping-form').toggle();
 		//nodemon i 	getbidCharges();
     if ($(this).is(':checked')) {
+     // alert($('#country_code_billing option:selected').val());
       $('#first_name_shipping').val($('#first_name_billing').val());
       $('#last_name_shipping').val($('#last_name_billing').val());
       $('#address_shipping').val($('#address_billing').val());
       $('#address2_shipping').val($('#address2_billing').val());
       $('#telephone_shipping').val($('#telephone_billing').val());
-      $('#country_code_shipping').val($('#country_code_billing').val());
+      $('#country_code_shipping').val($('#country_code_billing option:selected').val());
       $('#city_shipping').val($('#city_billing').val());
       $('#state_shipping').val($('#state_billing').val());
       $('#postalCode_shipping').val($('#postalCode_billing').val());
