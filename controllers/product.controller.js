@@ -71,30 +71,93 @@ exports.products = function(req, res, next) {
   exports.productsByCategory = function(req, res, next) {
     var perPage = 9;
     var category_slug=req.params.category_slug;
-
+console.log(category_slug);
     var page = req.params.page || 1;
-    Product
-        .find({category:category_slug, status:'true'})
-        .skip((perPage * page) - perPage)
-        .populate({path:'sellbids',
-        match: { status: 'ask' }
-        ,options: {
-          limit: 1,
-          sort: { bidprice: +1}        
-     } })
-     .limit(perPage)
-        .exec(function(err, products) {
-            Product.count().exec(function(err, count) {
-                if (err) return next(err)
-                res.render('pages/public/products', {
-                    products: products,
-                    current: page,
-                    pages: Math.ceil(count / perPage),
-                    layout:'layout'
-                })
-            })
-        })
+    Promise.all([
+      Product.find({category:category_slug, active:'true'}) 
+      .skip((perPage * page) - perPage) 
+      .populate({path:'sellbids',
+      match: { status: 'ask' }
+      ,options: {
+        limit: 1,
+        sort: { bidprice: +1}  ,
+   } }),
+      Brand.find({}),
+     ]).then( ([ products,brand,]) => {
+      Product.count().exec(function(err, count) {
+       if (err) return next(err)
+      res.render('pages/public/products', {
+        products: products,
+        current: page,
+        pages: Math.ceil(count / perPage),
+        brand:brand,
+        layout:'layout'
+        
+    })
+  })
+
+  })
+    // Product.find({category:category_slug, active:'true'})
+    //     .skip((perPage * page) - perPage)
+    //     .populate({path:'sellbids',
+    //     match: { status: 'ask' }
+    //     ,options: {
+    //       limit: 1,
+    //       sort: { bidprice: +1}  ,
+            
+    //  } })
+    //  .limit(perPage)
+    //     .exec(function(err, products) {
+    //         Product.count().exec(function(err, count) {
+    //             if (err) return next(err)
+    //             console.log(products);
+    //             res.render('pages/public/products', {
+                  
+    //                 products: products,
+    //                 current: page,
+    //                 pages: Math.ceil(count / perPage),
+    //                 layout:'layout'
+    //             })
+    //         })
+    //     })
   }
+
+
+exports.category_product = function(req,res,next){
+  var category_filter = JSON.parse(req.body.category_filter);
+  var brand_filter = JSON.parse(req.body.brand_filter) ;
+  console.log(category_filter);
+  console.log(brand_filter)
+  // console.log(typeof brand_filter);
+  // var brandObj = new Object();
+  // brand_filter.forEach(function(item){
+  //   brandObj.brand = item;
+  // });
+  // console.log(brandObj.brand);
+  var query={};
+  if((brand_filter.length>0) && (category_filter.length>0)){
+    query={brand:brand_filter,category:category_filter};
+    console.log(brand_filter.length);
+    console.log(category_filter.length);
+    console.log('Both Brand And Category');
+  }else if(brand_filter.length>0)
+  {
+    query = {brand:brand_filter};
+    console.log('Only Brand');
+  }else
+  {
+    query = {category:category_filter};
+    console.log('Only Category');
+}
+  Product.find(query).exec(function(err, product){  
+    if(err) return next(err)
+    console.log("Check Brand");
+    console.log(product);
+    // res.json(product);
+   res.json(JSON.stringify(product))
+  })
+  // console.log(category_filter);
+}
 
   exports.findById=function(req, res, next) {
     var productId=req.params.id;
@@ -1164,3 +1227,19 @@ exports.editProduct=function(req, res, next) {
     });
     });
   }
+
+  exports.searchTest = function (req,res,next)
+  {
+    var search = req.body.check;
+    console.log(search);
+    Product.find( { name: { $regex: search, $options: "i" } } ).exec(function(err,docs){
+      console.log(docs)
+      res.json(docs);
+    })
+    // Product.find({ name: { $regex: search, $options: "i" }, active:'true' }, function(err, docs) {
+    //   console.log("Partial Search Begins"); 
+    //   console.log(docs);
+    //   });
+  }
+ 
+ 

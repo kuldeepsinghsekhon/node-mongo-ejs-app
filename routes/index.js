@@ -114,5 +114,6 @@ router.get('/add-to-cart/:id', forwardAuthenticated,(req, res,next) => {
   router.get('/sign-in/reset_password',auth_controller.forgetresetPassword);
   router.post('/sign-in/reset_password',auth_controller.updateforgetresetpassword);
   router.post('/statuswebhook',admin_controller.statusWebhook);
-
+  router.post('/searchTest', forwardAuthenticated, product_controller.searchTest);
+  router.post('/category_product', forwardAuthenticated, product_controller.category_product);
 module.exports = router;

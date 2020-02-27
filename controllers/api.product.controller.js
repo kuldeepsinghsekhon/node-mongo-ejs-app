@@ -1242,7 +1242,7 @@ console.log(most_popular[1]._id);
     var product_data = await Product.findOne({brand:most_popular[1]._id}).limit(1);
       products.push(product_data);
    }
-   console.log(products);
+  // console.log(products);
     res.json({status:'success', data:{products:products},message:''});
 }
 

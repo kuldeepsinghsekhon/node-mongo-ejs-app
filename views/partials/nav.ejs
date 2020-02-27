@@ -1,3 +1,4 @@
+
 <div class="header">
   <div class="header-top">
      <div class="container">
@@ -65,16 +66,15 @@
               <a href="#" class="search-toggle" role="button"><i class="fa fa-search"></i></a>
               <form action="#" method="get">
                  <div class="header-search-wrapper">
-                    <input type="search" class="form-control form-control " name="q" id="top-search" placeholder="Search..." required="">
-                    
-                    <div class="select-custom">
+                  <input type="search" class="form-control form-control " name="q" id="product_search" placeholder="Search...">
+                    <!-- <div class="select-custom">
                        <select id="cat" name="cat">
                           <option value="">All Categories</option>
                           <option value="4">Fashion</option>
                           <option value="12">- Women</option>
                           <option value="13">- Men</option>
                        </select>
-                    </div>
+                    </div> -->
                     <div class="col-md-2">
 
 						</div>
@@ -82,6 +82,9 @@
                     <button class="btn" type="submit"><i class="fa fa-search"></i></button>
                  </div>
                  <!-- End .header-search-wrapper -->
+                  <div id="result_list"> 
+                     
+                  </div>
               </form>
            </div>
            <!-- End .header-search -->
@@ -120,7 +123,6 @@
                                     <% if(category){ for(var i = 0; i < category.length; i++) { %>
                                        <li><a href="/category/<%=category[i].name %>"><%=category[i].name %></a></li>
                                       <%} }%>
-
                                    </ul>                      
                     </div>
                     <!-- End .megamenu -->
@@ -259,3 +261,42 @@
   <!-- End .mobile-menu-wrapper -->
 </div>
 <!-- End .mobile-menu-container -->
+
+<script>
+   $('#product_search').keyup(function(){
+      var check = $(this).val();
+      if(check.length>2)
+      {
+      $.ajax({
+               type: 'POST',
+              url: '/searchTest/',
+             data: {check:check},
+              
+             success:function(docs){
+               
+                if(docs){
+                  var daa = '';
+                 docs.forEach((item)=>{
+                 
+                  daa += '<a href="/products/'+item._id+'"><img src="/uploads/products/'+item.image+'" width="50" height="50">'+item.name+'</a>';
+                
+               });
+               
+               $("#result_list").html(daa);
+               // $('#result_list').html(daa);
+               // console.log(docs);
+             }
+            }
+            });
+         }
+           //{
+   //             data('ui-autocomplete')._renderItem = function(ul, item){
+   //   return $("<div class='prdct_list'></div>")
+   //     .data("item.autocomplete", item)
+   //     .append('<div class="left_one_img"><img alt="Jordan 1 Mid SE Light Bone" src="/uploads/products/'+item.image+'" ></div><div class="rgt_one_txt"><h1>'+item.name+'</h1><span></span></div></div>')
+   //     .appendTo(ul);
+            
+   //          })     
+   });
+
+</script>
