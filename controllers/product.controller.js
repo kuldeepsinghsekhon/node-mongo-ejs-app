@@ -527,7 +527,7 @@ exports.sellAsk=async  function(req, res,next){
         order.netprice=bidprice;//need to add buying charges
         transaction.sellbid=sellBid;
         order.SellerTransaction=transaction;
-        
+        order.payment= buybid.payment;
         order.save();
         buybid.save();
         }
@@ -694,7 +694,10 @@ exports.placeBuyBid=async function name(req,res,next) {
         order.orderdate=Date.now();
         order.save();
         sellask.save();      
-      }     
+      }else{
+        buyBid.payment = result;
+      }   
+       
         buyBid.save();       
           prod.buybids.push(buyBid);
            prod.save();

@@ -227,6 +227,7 @@ exports.productsBuyBids=function(req, res, next) {
       OrderBid.find({ active:'true' }).populate({path:'product'}),
       BuyBid.find(query).sort({bidprice:-1}),
     ]).then( ([orders,buybids])=>{
+      console.log(buybids);
       res.render('pages/admin/buying', {
         buybids: buybids,
         orders:orders,
@@ -265,7 +266,7 @@ exports.allOrders=function(req, res, next) {
       //.skip((perPage * page) - perPage).limit(perPage),
       SellBid.find(query).sort({bidprice:-1}).limit(10),
     ]).then( ([orders,buybids])=>{
-     // console.log(orders[0].payment);
+      //console.log(orders[0]);
        var count= orders.length;
       res.render('pages/admin/orders', {
         buybids: buybids,
@@ -505,8 +506,8 @@ var sellerinfo= await Address.findOne({user:seller, address_type:'seller'});
 // var buyerinfo = await Address.findOne({user:buyer,address_type:'buyer'});
 // console.log(buyerinfo);
 // console.log(order);
-// console.log('sellerinfo');
-// console.log(sellerinfo);
+ //console.log('sellerinfo');
+ console.log(sellerinfo.organisation_name);
 // console.log('----------------------shipping------------------');
 //console.log(order.buybid);
   if(order){

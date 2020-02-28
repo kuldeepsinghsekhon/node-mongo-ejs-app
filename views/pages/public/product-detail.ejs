@@ -442,8 +442,11 @@
 													Price Premium
 													<div class="historical-detail">(Over Original Retail Price)</div>
 												 </div>
-												 <div class="gauge-value"><%= avg_retail_price%>%</div>
+												 <%if(avg_retail_price) {%>
+												 <div class="gauge-value">$ <%= avg_retail_price%>%</div>
 											  </div>
+											  <%}%>
+											  
 											  <div class="gauge-container">
 												 <div class="gauge"></div>
 												 <div class="gauge-title">Average Sale Price</div>

@@ -22,6 +22,7 @@
                      <thead>
                       <tr class="headers">
                          <th class="col-sm-2 col-xs-2 sortable undefined">Item</th>
+                         <th class="col-sm-2 col-xs-2 sortable undefined">Transcation ID</th>
                          <th class="col-sm-2 col-xs-2 sortable undefined">Bid Price</th>
                          <th class="col-sm-2 col-xs-2 sortable undefined">Highest Bid</th>
                          <th class="col-sm-2 col-xs-2 sortable undefined">Lowest Ask</th>
@@ -37,6 +38,7 @@
                               d = d.toUTCString()
                               %>
                                <tr><td><%= buybids[i].title %></td>
+                                  <td><%= buybids[i].payment.transaction.id%></td>
                                   <td><%= buybids[i].bidprice %></td>
                                   <td><%= buybids[i].highestbid %></td>
                                   <td><%= buybids[i].lowestask %></td>
