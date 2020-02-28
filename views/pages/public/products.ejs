@@ -28,7 +28,8 @@
                         <li class="breadcrumb-item active" aria-current="page">Accessories</li>
                     </ol>
                 </div><!-- End .container -->
-            </nav> <div class="container">
+            </nav>
+             <div class="container">
 				<div class="row">
 				<aside class="sidebar-shop col-lg-3 order-lg-first">
                     <h3>Category</h3>
@@ -190,9 +191,9 @@
 
                           
                         </nav>
-
-                        <div class="row row-sm">
-                            <div id="product_cont">
+                        <div id="product_cont">
+                        <div class="row row-sm" id="productCont">
+                           <% console.log(products);%>
                                 <% for (var i = 0; i < products.length; i++) { %>
                               <div class="col-4 col-md-4">
                                  <div class="product">
@@ -229,23 +230,10 @@
                                  </div>
                                  <!-- End .product -->
                               </div>
-                               
-							
-							  
-							  
                              <% } %> 
                             </div>
-							  
-							  
-							  
                            </div>
                            <!-- End .row -->
-
-
-
-
-
-
                         <nav class="toolbox toolbox-pagination">
                             <div class="toolbox-item toolbox-show">
                                 <label>Showing <%= pages*10 %> results</label>
@@ -278,7 +266,6 @@
                                     <% } %>
                                 </ul>
                             <% } %>
-                           
                         </nav>
                     </div>
                     </div>
@@ -290,10 +277,15 @@
         $(document).ready(function(){
             $('.category, .brand').on('change', function(){
                     $('.booking-list').html('<div id="loading">Loading .....</div>');
-                        var category_filter = get_selected('category');
+                    var category_filter = get_selected('category');
                     var brand_filter = get_selected('brand');
-                    console.log(brand_filter);
-                    console.log(category_filter);
+                //    if(brand_filter.length<1&&category_filter<1){
+                //     location.reload(true);
+                //     alert('hello'); 
+                //     window.stop();
+                //    }
+                if(brand_filter!=''||category_filter!=''){
+                  console.log('test This data');
                     $.ajax({
                     url:"/category_product",
                     method:"post",
@@ -301,52 +293,52 @@
                     data:{category_filter:JSON.stringify(category_filter), brand_filter:JSON.stringify(brand_filter)},
                     beforeSend: function()
                     {
-                        $('#product_cont').text('Loading...');
+                        $('#productCont').text('Loading...');
                     },
                     success:function(res){
                         var products = JSON.parse(res);
                         console.log('Products');
                         console.log(products);
-                        var productData = null;
+                        var productData = '';
                         products.forEach((product) => {
                             productData += '<div class="col-4 col-md-4">'+
-                                 +'<div class="product">'+
-                                    +'<figure class="product-image-container">'+
-                                       +'<a href="/products/'+product._id+'" class="product-image">'+
-                                       +'<img src="/uploads/products/'+product.image+'" alt="product">'+
-                                       +'</a>'+
-                                       +'<a href="/products/'+product._id+'" class="btn-quickview">Quick View</a>'+
-                                    +'</figure>'+
-                                    +'<div class="product-details">'+
-                                       +'<h2 class="product-title">'+
-                                          +'<a href="/products/'+product._id+'">'+product.name+'</a>'+
-                                       +'</h2>'+
-                                       +'<p class="product-title">Lowest Ask</p>'+
-                                       +'<div class="price-box">';
-                                           if(products[i].sellbids.length>0){
+                                 '<div class="product">'+
+                                    '<figure class="product-image-container">'+
+                                       '<a href="/products/'+product._id+'" class="product-image">'+
+                                       '<img src="/uploads/products/'+product.image+'" alt="product">'+
+                                       '</a>'+
+                                       '<a href="/products/'+product._id+'" class="btn-quickview">Quick View</a>'+
+                                    '</figure>'+
+                                    '<div class="product-details">'+
+                                       '<h2 class="product-title">'+
+                                          '<a href="/products/'+product._id+'">'+product.name+'</a>'+
+                                       '</h2>'+
+                                       '<p class="product-title">Lowest Ask</p>'+
+                                       '<div class="price-box">';
+                                           if(product.sellbids.length>0){
                                             productData += '<span class="product-price">$'+product.sellbids[0].bidprice+'</span>';
                                           }else{
                                             productData += '<span class="product-price">--</span>';
                                              }
                                         productData += '</div>'+
-                                        +'<div class="product-action">'+
-                                          +'<a href="/products/'+product._id+'" class="paction add-cart" title="Add to Cart">'+
-                                          +'<span>Add to Cart</span>'+
-                                          +'</a>'+
-                                       +'</div>'+
-                                    +'</div>'+
-                                 +'</div>'+
-                              +'</div>';
+                                       
+                                    '</div>'+
+                                 '</div>'+
+                              '</div>';
                         });
-
-                        $('#product_cont').html(productData);
+                        if(productData){
+                        $('#productCont').html(productData);
+                    }else{
+                        $('#productCont').text('No Product Found');
+                    }
                     }
                 });
+                
+            }
+            else{
+                window.location.reload();
+            }
             });
-           
-           
-
-
             function get_selected(className) {
 	             var filter =[];
 	             $('.'+className+':checked').each(function(){
@@ -355,27 +347,7 @@
 	         return filter;
             }
         })
-    //     $(document).ready(function() {
-    //     $('.category').on('change', function() {
-    //         if($(this).prop("checked") == true)
-    //     {
-    //          console.log($(this).val());
-    //         }
-    //         else
-    //         {
-    //             console.log('This is test');
-    //         }
-    //     });
-    // $('input[name=brand]').on('change', function() {
-    //         if($(this).prop("checked") == true){
-    //          var hello = ($(this).val());
-    //         }
-    //         else
-    //         {
-    //             console.log(hello);
-    //         }
-    // });
-    // });
+        
             
     </script>
      <script>

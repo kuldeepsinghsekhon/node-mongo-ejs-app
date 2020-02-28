@@ -86,6 +86,7 @@ console.log(category_slug);
      ]).then( ([ products,brand,]) => {
       Product.count().exec(function(err, count) {
        if (err) return next(err)
+      console.log(count);
       res.render('pages/public/products', {
         products: products,
         current: page,
@@ -137,26 +138,25 @@ exports.category_product = function(req,res,next){
   var query={};
   if((brand_filter.length>0) && (category_filter.length>0)){
     query={brand:brand_filter,category:category_filter};
-    console.log(brand_filter.length);
-    console.log(category_filter.length);
-    console.log('Both Brand And Category');
   }else if(brand_filter.length>0)
   {
     query = {brand:brand_filter};
-    console.log('Only Brand');
   }else
   {
     query = {category:category_filter};
-    console.log('Only Category');
-}
-  Product.find(query).exec(function(err, product){  
+  }
+  if(query){
+  Product.find(query).populate({path:'sellbids'}).exec(function(err, product){  
     if(err) return next(err)
-    console.log("Check Brand");
-    console.log(product);
-    // res.json(product);
    res.json(JSON.stringify(product))
   })
-  // console.log(category_filter);
+}else{
+  Product.find({}).populate({path:'sellbids'}).exec(function(err, product){  
+    if(err) return next(err)
+   res.json(JSON.stringify(product))
+  })
+
+}
 }
 
   exports.findById=function(req, res, next) {
