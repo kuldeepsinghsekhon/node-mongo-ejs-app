@@ -69,35 +69,62 @@ exports.products = function(req, res, next) {
         })
   }
   exports.productsByCategory = function(req, res, next) {
+
     var perPage = 9;
     var category_slug=req.params.category_slug;
-console.log(category_slug);
+    
     var page = req.params.page || 1;
-    Promise.all([
-      Product.find({category:category_slug, active:'true'}) 
-      .skip((perPage * page) - perPage) 
-      .populate({path:'sellbids',
-      match: { status: 'ask' }
-      ,options: {
-        limit: 1,
-        sort: { bidprice: +1}  ,
-   } }),
-      Brand.find({}),
-     ]).then( ([ products,brand,]) => {
-      Product.count().exec(function(err, count) {
-       if (err) return next(err)
-      console.log(count);
-      res.render('pages/public/products', {
-        products: products,
-        current: page,
-        pages: Math.ceil(count / perPage),
-        brand:brand,
-        layout:'layout'
-        
-    })
-  })
+    Product.find({category:category_slug,active:'true'}).skip((perPage * page) - perPage).populate({path:'sellbids', //20/1/20
+        match: { status: 'ask' }
+        ,options: {
+          limit: 1,
+          sort: { bidprice: +1}        
+     } }).limit(perPage).exec(function(err, products) {
+            Product.count().exec(function(err, count) {
+                if (err) return next(err)
+                Brand.find({}).exec(function(err,brand){
+                res.render('pages/public/products', {
+                    products: products,
+                    current: page,
+                    category_slug:category_slug,
+                    brand:brand,
+                    pages: Math.ceil(count / perPage),
+                    layout:'layout'
+                })
+            })
+          })
+        })
 
-  })
+
+    //     var perPage = 9;
+//     var category_slug=req.params.category_slug;
+// console.log(category_slug);
+//     var page = req.params.page || 1;
+//     Promise.all([
+//       Product.find({category:category_slug, active:'true'}) 
+//       .skip((perPage * page) - perPage) 
+//       .populate({path:'sellbids',
+//       match: { status: 'ask' }
+//       ,options: {
+//         limit: 1,
+//         sort: { bidprice: +1}  ,
+//    } }),
+//       Brand.find({}),
+//      ]).then( ([ products,brand,]) => {
+//       Product.count().exec(function(err, count) {
+//        if (err) return next(err)
+//       console.log(count);
+//       res.render('pages/public/products', {
+//         products: products,
+//         current: page,
+//         pages: Math.ceil(count / perPage),
+//         brand:brand,
+//         layout:'layout'
+        
+//     })
+//   })
+
+//   })
     // Product.find({category:category_slug, active:'true'})
     //     .skip((perPage * page) - perPage)
     //     .populate({path:'sellbids',

@@ -668,16 +668,12 @@ exports.subscriber_list = function name(req, res, next)
 {
   
   Subscriber.find({}).exec(function(err, subscriber) {
- 
     if (err) return next(err)
-    //subscribers.push(subscriber);
-   //console.log(subscriber.length);
     res.render('pages/admin/subscribe', {
       subscriber: subscriber,
       layout:'admin-layout'
-})
 });
-
+});
 }
 
 exports.charge_env = function name(req,res,next){

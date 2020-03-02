@@ -59,23 +59,18 @@
                       Last Name is required
                     </div>
                     <div class="field   field-select">
-                       <select name="countryCodeAlpha2" required="" placeholder="Country">
-                          <option value="" disabled="">Country</option>
-                          <option value="">Select Country or Region</option>
-                          <option value="US">United States</option>
-                          <option value="AU">Australia</option>
-                          <option value="CA">Canada</option>
-                          <option value="FR">France</option>
-                          <option value="DE">Germany</option>
-                          <option value="HK">Hong Kong SAR</option>
-                          <option value="IT">Italy</option>
-                          <option value="JP">Japan</option>
-                          <option value="SG">Singapore</option>
-                          <option value="AE">United Arab Emirates</option>
-                          <option value="GB">United Kingdom</option>
-                          <option disabled="">------</option>
-                          <option value="AL">Albania</option>                 
-                       </select>                      
+                      <select name="country" required="" placeholder="Country">
+                          
+                        <option value="">Select Country</option>
+                        <% countries.forEach((country) =>                 
+                        {
+                           if(country.Code==address.country){%>
+                              <option selected value="<%= country.Code %>"><%= country.Name %></option>
+                          <% }else{ %>
+                              <option value="<%= country.Code %>"><%= country.Name %></option>
+                           <%}
+                        })%>
+                        </select>              
                     </div>
                     <div>
                        <div class="GPlacesACField__Container-sc-1xqqpdz-0 iUshPx"><input data-testid="user-streetAddress" name="streetAddress" type="text" required="" placeholder="Address" autocomplete="true" class="field  " value=""></div>

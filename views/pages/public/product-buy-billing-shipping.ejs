@@ -57,7 +57,7 @@
      <input id="city_billing" name="locality" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=billingAddress.city%><%}%>">
 	   <div class="inner-flex between">
        <input id="state_billing" name="region" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value="<%if(billingAddress){%><%=billingAddress.state%><%}%>">
-       <input id="postalCode_billing" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value="<%if(billingAddress){%><%=billingAddress.postalCode%><%}%>"></div>
+       <input id="postalCode_billing" name="postalCode" type="text" maxlength="6" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value="<%if(billingAddress){%><%=billingAddress.postalCode%><%}%>"></div>
 	   <input id="telephone_billing" name="telephone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field" value="<%if(billingAddress){%><%=billingAddress.phone%><%}%>">
   </div>
   <div class="billingCheckbox">
@@ -84,8 +84,8 @@
      <input id="city_shipping" name="locality" type="text" required="" placeholder="City" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=shippingAddress.city %><%}%>">
      <div class="inner-flex between">
        <input id="state_shipping" name="region" type="text" placeholder="State/Province/Region" autocomplete="true" class="field field-full " value="<%if(billingAddress){%><%=billingAddress.state %><%}%>">
-      <input id="postalCode_shipping" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full " value="<%if(billingAddress){%><%=billingAddress.postalCode %><%}%>"></div>
-	   <input id="telephone_shipping" name="telephone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field  " value="<%if(billingAddress){%><%=billingAddress.phone %><%}%>">
+      <input id="postalCode_shipping" name="postalCode" type="text" required="" placeholder="Zip/Postal Code" autocomplete="true" class="field field-full" maxlength="6" value="<%if(billingAddress){%><%=billingAddress.postalCode %><%}%>"></div>
+	   <input id="telephone_shipping" name="telephone" type="tel" required="" placeholder="Phone Number" autocomplete="true" class="field"  maxlength="10" value="<%if(billingAddress){%><%=billingAddress.phone %><%}%>">
 	</div>
 <div class="nxt_btn">
     <button type="button " class="btn flT_lft">Cancel</button>
@@ -93,8 +93,26 @@
 	   </div>
 </form>
 <script>
-var form = $('form');
+$(document).ready(function () {
+  $("#telephone_shipping, #telephone_billing").keypress(function (e) {
+     //if the letter is not digit then display error and don't type anything
+     if ((e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57))) {
+        //display error message
+               return false;
+    }
+   });
+   $('#postalCode_shipping, #postalCode_billing').keypress(function(e){
+    if ((e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57))) {
+        //display error message
+               return false;
+    }
 
+   })
+});
+
+</script>
+<script>
+var form = $('form');
 braintree.client.create({
   authorization: 'sandbox_tvb37t33_dwt5m34ppngz6s7k'
 },
