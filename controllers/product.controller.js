@@ -83,15 +83,23 @@ exports.products = function(req, res, next) {
             Product.count().exec(function(err, count) {
                 if (err) return next(err)
                 Brand.find({}).exec(function(err,brand){
+                  SellBid.find({}).populate({path:'products',  match: { category:category_slug,active:'true' }
+                }).sort({bidprice:+1}).limit(1).exec(function(err, LowestAsk) {
+                  SellBid.find({}).populate({path:'products',  match: { category:category_slug,active:'true' }
+                }).sort({bidprice:-1}).limit(1).exec(function(err, HeighAsk){
                 res.render('pages/public/products', {
                     products: products,
                     current: page,
+                    LowestAsk:LowestAsk,
+                    HeighAsk:HeighAsk,
                     category_slug:category_slug,
                     brand:brand,
                     pages: Math.ceil(count / perPage),
                     layout:'layout'
                 })
+              });
             })
+          });
           })
         })
 
@@ -152,16 +160,19 @@ exports.products = function(req, res, next) {
 
 
 exports.category_product = function(req,res,next){
+  var min_price = req.body.min_price ;
+  var max_price = req.body.max_price ;
   var category_filter = JSON.parse(req.body.category_filter);
   var brand_filter = JSON.parse(req.body.brand_filter) ;
-  console.log(category_filter);
-  console.log(brand_filter)
-  // console.log(typeof brand_filter);
-  // var brandObj = new Object();
-  // brand_filter.forEach(function(item){
-  //   brandObj.brand = item;
-  // });
-  // console.log(brandObj.brand);
+  var page = req.body.page;
+  var perPage = 9 ;
+  
+
+  
+
+  //Product.find({category:category_slug}).populate({path:sellbids}, )
+
+
   var query={};
   if((brand_filter.length>0) && (category_filter.length>0)){
     query={brand:brand_filter,category:category_filter};
@@ -173,7 +184,7 @@ exports.category_product = function(req,res,next){
     query = {category:category_filter};
   }
   if(query){
-  Product.find(query).populate({path:'sellbids'}).exec(function(err, product){  
+  Product.find(query).populate({path:'sellbids'}).skip((perPage * page) - perPage).limit(9).exec(function(err, product){  
     if(err) return next(err)
    res.json(JSON.stringify(product))
   })

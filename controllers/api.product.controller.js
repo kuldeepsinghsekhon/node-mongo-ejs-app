@@ -213,7 +213,7 @@ exports.products = function(req, res, next) {
     var perPage = 9;
     var page = req.body.page || 1;
     Product
-        .find({active:'true'})
+        .find({active:'true'}).select({"images":0})
         .skip((perPage * page) - perPage)
         .populate({path:'sellbids',
         match: { status: 'ask' }
@@ -990,7 +990,7 @@ exports.editProduct=function(req, res, next) {
      sellask_query= {productid:productId,status:'ask',attr_val:attr_val};
       }
       Promise.all([
-        Product.findOne({ _id: productId }).select({ "name": 1,"brand":1, "description":1,"category":1,"condition":1,
+        Product.findOne({ _id: productId }).select({ 'images':1,  "name": 1,"brand":1, "description":1,"category":1,"condition":1,
         "attrs":1,"releasedate":1,"price":1,  "_id": 1,image:1}).populate({path:'attrs'}),
         SellBid.findOne(sellask_query).sort({bidprice:+1}).limit(1),
         BuyBid.findOne(buybid_query).sort({bidprice:-1}).limit(1),
