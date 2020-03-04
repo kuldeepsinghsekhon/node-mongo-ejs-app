@@ -1,367 +1,501 @@
 	 
-          <style>
-            label {
-            display: block;
-            padding-left: 10px;
-        }
-        input {
-            margin-right: 10px;
-        }
-        form input {
-    display: inline-block;
-    width: 25%;
-    border-radius: 5px;
-    border: 1px solid #ededed;
-    text-align: center;
-    margin-right: 2px;
-}
-        </style>
-        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-        
-          <div class="container">
-		 
-		   <nav aria-label="breadcrumb" class="breadcrumb-nav">
-                <div class="container">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Men</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Accessories</li>
-                    </ol>
-                </div><!-- End .container -->
-            </nav>
-             <div class="container">
-				<div class="row">
-				<aside class="sidebar-shop col-lg-3 order-lg-first">
-                    <h3>Category</h3>
-                    <% if(category){ for(var i = 0; i < category.length; i++) { %> 
-                       <label><input type="checkbox" value="<%=category[i].name %>" class="category" name="category"><%=category[i].name %></label> 
-                        <%} }%>
-                      <br>
-                      <h3>Brand:</h3>
-                      <%if(brand){ for(var i = 0; i < brand.length; i++)  {%>
-                      <label><input type="checkbox" value="<%=brand[i].name%>" class="brand" name="brand"><%=brand[i].name%></label>
-                      <%} }%>
-                    <!--  <h3>Price</h3>
-                       <form>
-                        <input type="text" name="minprice" value="" id="min_price" placeholder="Min">
-                        <input type="text" name="maxprice" value="" id="max_price" placeholder="Max">
-                        <input type="submit" value="Go">
-                    </form> -->
-                   
-                      <!--  <div class="pin-wrapper" style="height: 1035.4px;"><div class="sidebar-wrapper sticky-active sticky-absolute sticky-transition" style="width: 270px; position: absolute; ">
-                            <div class="widget">
-                                <h3 class="widget-title">
-                                    <a data-toggle="collapse" href="#widget-body-2" role="button" aria-expanded="true" aria-controls="widget-body-2">Men</a>
-                                </h3>
 
-                                <div class="collapse show" id="widget-body-2">
-                                    <div class="widget-body">
-                                        <ul class="cat-list">
-                                            <li><a href="#">Accessories</a></li>
-                                            <li><a href="#">Watch Fashion</a></li>
-                                            <li><a href="#">Tees, Knits &amp; Polos</a></li>
-                                            <li><a href="#">Pants &amp; Denim</a></li>
-                                        </ul>
-                                    </div> End .widget-body 
-                                </div> End .collapse 
-                            </div> End .widget 
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-                            <div class="widget">
-                                <h3 class="widget-title">
-                                    <a data-toggle="collapse" href="#widget-body-3" role="button" aria-expanded="true" aria-controls="widget-body-3">Price</a>
-                                </h3>
-
-                                <div class="collapse show" id="widget-body-3">
-                                    <div class="widget-body">
-                                        <form action="#">
-                                            <div class="price-slider-wrapper">
-                                                <div id="price-slider" class="noUi-target noUi-ltr noUi-horizontal"><div class="noUi-base"><div class="noUi-connects"><div class="noUi-connect" style="transform: translate(20%) scale(0.5, 1);"></div></div><div class="noUi-origin" style="transform: translate(-80%); z-index: 5;"><div class="noUi-handle noUi-handle-lower" data-handle="0" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0.0" aria-valuemax="60.0" aria-valuenow="20.0" aria-valuetext="200.00"></div></div><div class="noUi-origin" style="transform: translate(-30%); z-index: 4;"><div class="noUi-handle noUi-handle-upper" data-handle="1" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="30.0" aria-valuemax="100.0" aria-valuenow="70.0" aria-valuetext="700.00"></div></div></div></div><!-- End #price-slider
-                                            </div> End .price-slider-wrapper 
-
-                                            <div class="filter-price-action">
-                                                <button type="submit" class="btn btn-primary">Filter</button>
-
-                                                <div class="filter-price-text">
-                                                    Price:
-                                                    <span id="filter-price-range">$200.00 - $700.00</span>
-                                                </div> End .filter-price-text 
-                                            </div> End .filter-price-action 
-                                        </form>
-                                    </div> End .widget-body 
-                                </div> End .collapse 
-                            </div> End .widget 
-
-                            <div class="widget">
-                                <h3 class="widget-title">
-                                    <a data-toggle="collapse" href="#widget-body-4" role="button" aria-expanded="true" aria-controls="widget-body-4">Size</a>
-                                </h3>
-
-                                <div class="collapse show" id="widget-body-4">
-                                    <div class="widget-body">
-                                        <ul class="cat-list">
-                                            <li><a href="#">Small</a></li>
-                                            <li><a href="#">Medium</a></li>
-                                            <li><a href="#">Large</a></li>
-                                            <li><a href="#">Extra Large</a></li>
-                                        </ul>
-                                    </div> End .widget-body 
-                                </div> End .collapse 
-                            </div> End .widget 
-
-                            <div class="widget">
-                                <h3 class="widget-title">
-                                    <a data-toggle="collapse" href="#widget-body-5" role="button" aria-expanded="true" aria-controls="widget-body-5">Brand</a>
-                                </h3>
-
-                                <div class="collapse show" id="widget-body-5">
-                                    <div class="widget-body">
-                                        <ul class="cat-list">
-                                            <li><a href="#">Adidas</a></li>
-                                            <li><a href="#">Calvin Klein (26)</a></li>
-                                            <li><a href="#">Diesel (3)</a></li>
-                                            <li><a href="#">Lacoste (8)</a></li>
-                                        </ul>
-                                    </div> End .widget-body 
-                                </div> End .collapse 
-                            </div> End .widget 
-
-                            <div class="widget">
-                                <h3 class="widget-title">
-                                    <a data-toggle="collapse" href="#widget-body-6" role="button" aria-expanded="true" aria-controls="widget-body-6">Color</a>
-                                </h3>
-
-                                <div class="collapse show" id="widget-body-6">
-                                    <div class="widget-body">
-                                        <ul class="config-swatch-list">
-                                            <li class="active">
-                                                <a href="#">
-                                                    <span class="color-panel" style="background-color: #1645f3;"></span>
-                                                    <span>Blue</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <span class="color-panel" style="background-color: #f11010;"></span>
-                                                    <span>Red</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <span class="color-panel" style="background-color: #fe8504;"></span>
-                                                    <span>Orange</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <span class="color-panel" style="background-color: #2da819;"></span>
-                                                    <span>Green</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div> End .widget-body 
-                                </div> End .collapse
-                            </div> End .widget 
-                        </div></div> End .sidebar-wrapper -->
-                    </aside>
-				
-				
-				
-				<div class="col-lg-8">
-                        <nav class="toolbox">
-                            <div class="toolbox-left">
-                                <div class="toolbox-item toolbox-sort">
-                                    <div class="select-custom">
-                                        <select name="orderby" class="form-control">
-                                            <option value="menu_order" selected="selected">Default sorting</option>
-                                            <option value="popularity">Sort by popularity</option>
-                                            <option value="rating">Sort by average rating</option>
-                                            <option value="date">Sort by newness</option>
-                                            <option value="price">Sort by price: low to high</option>
-                                            <option value="price-desc">Sort by price: high to low</option>
-                                        </select>
-                                    </div><!-- End .select-custom -->
-
-                                    <a href="#" class="sorter-btn" title="Set Ascending Direction"><span class="sr-only">Set Ascending Direction</span></a>
-                                </div><!-- End .toolbox-item -->
-                            </div><!-- End .toolbox-left -->
-
-                            <div class="toolbox-item toolbox-show">
-                                <label>Showing 1–9 of 60 results</label>
-                            </div><!-- End .toolbox-item -->
-
-                          
-                        </nav>
-                        <div id="product_cont">
-                        <div class="row row-sm" id="productCont">
-                           <% console.log(products);%>
-                                <% for (var i = 0; i < products.length; i++) { %>
-                              <div class="col-4 col-md-4">
-                                 <div class="product">
-                                    <figure class="product-image-container">
-                                       <a href="/products/<%= products[i]._id %>" class="product-image">
-                                       <img src="/uploads/products/<%= products[i].image %>" alt="product">
-                                       </a>
-                                       <a href="/products/<%= products[i]._id %>" class="btn-quickview">Quick View</a>
-                                    </figure>
-                                    <div class="product-details">
-                                      
-                                       <!-- End .product-container -->
-                                       <h2 class="product-title">
-                                          <a href="/products/<%= products[i]._id %>"> <%= products[i].name %></a>
-                                       </h2>
-                                       <p class="product-title">Lowest Ask</p>
-                                       <div class="price-box">
-                                           <%if(products[i].sellbids.length>0){%>
-                                            <span class="product-price">$<%= products[i].sellbids[0].bidprice %></span>
-                                          <% }else{%>
-                                            <span class="product-price">--</span>
-   
-                                            <% }%>
-                                       </div>
-                                       <!-- End .price-box -->
-                                       <!-- <div class="product-action">
-                                          <a href="/products/<%= products[i]._id %>" class="paction add-cart" title="Add to Cart">
-                                          <span>Add to Cart</span>
-                                          </a>
-                                       </div> -->
-                                       <!-- End .product-action -->
-                                    </div>
-                                    <!-- End .product-details -->
-                                 </div>
-                                 <!-- End .product -->
-                              </div>
-                             <% } %> 
-                            </div>
-                           </div>
-                           <!-- End .row -->
-                        <nav class="toolbox toolbox-pagination">
-                            <div class="toolbox-item toolbox-show">
-                                <label>Showing <%= pages*10 %> results</label>
-                            </div><!-- End .toolbox-item -->
-                            <% if (pages > 0) { %>
-                                <ul class="pagination text-center">
-                                    <% if (current == 1) { %>
-                                        <li class="disabled"><a class="page-link">First</a></li>
-                                    <% } else { %>
-                                        <li  class="page-item"><a class="page-link" href="/admin/products/1">First</a></li>
-                                    <% } %>
-                                    <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
-                                    <% if (i !== 1) { %>
-                                        <li class="page-item disabled"><a class="page-link">...</a></li>
-                                    <% } %>
-                                    <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
-                                        <% if (i == current) { %>
-                                            <li class="page-item active"><a class="page-link"><%= i %></a></li>
-                                        <% } else { %>
-                                            <li class="page-item"><a class="page-link" href="/admin/products/<%= i %>"><%= i %></a></li>
-                                        <% } %>
-                                        <% if (i == Number(current) + 4 && i < pages) { %>
-                                            <li class="page-item disabled" ><a class="page-link">...</a></li>
-                                        <% } %>
-                                    <% } %>
-                                    <% if (current == pages) { %>
-                                        <li class="disabled"><a class="page-link">Last</a></li>
-                                    <% } else { %>
-                                        <li><a  class="page-link" href="/admin/products/<%= pages %>">Last</a></li>
-                                    <% } %>
-                                </ul>
-                            <% } %>
-                        </nav>
-                    </div>
-                    </div>
-                    </div>
-        </div>
+<script>
     
+$( function() {
+   
 
-    <script>
-        $(document).ready(function(){
-            $('.category, .brand').on('change', function(){
-                    $('.booking-list').html('<div id="loading">Loading .....</div>');
-                    var category_filter = get_selected('category');
-                    var brand_filter = get_selected('brand');
-                //    if(brand_filter.length<1&&category_filter<1){
-                //     location.reload(true);
-                //     alert('hello'); 
-                //     window.stop();
-                //    }
-                if(brand_filter!=''||category_filter!=''){
-                  console.log('test This data');
-                    $.ajax({
-                    url:"/category_product",
-                    method:"post",
-                    dataType: "json",		
-                    data:{category_filter:JSON.stringify(category_filter), brand_filter:JSON.stringify(brand_filter)},
-                    beforeSend: function()
-                    {
-                        $('#productCont').text('Loading...');
-                    },
-                    success:function(res){
-                        var products = JSON.parse(res);
-                        console.log('Products');
-                        console.log(products);
-                        var productData = '';
-                        products.forEach((product) => {
-                            productData += '<div class="col-4 col-md-4">'+
-                                 '<div class="product">'+
-                                    '<figure class="product-image-container">'+
-                                       '<a href="/products/'+product._id+'" class="product-image">'+
-                                       '<img src="/uploads/products/'+product.image+'" alt="product">'+
-                                       '</a>'+
-                                       '<a href="/products/'+product._id+'" class="btn-quickview">Quick View</a>'+
-                                    '</figure>'+
-                                    '<div class="product-details">'+
-                                       '<h2 class="product-title">'+
-                                          '<a href="/products/'+product._id+'">'+product.name+'</a>'+
-                                       '</h2>'+
-                                       '<p class="product-title">Lowest Ask</p>'+
-                                       '<div class="price-box">';
-                                           if(product.sellbids.length>0){
-                                            productData += '<span class="product-price">$'+product.sellbids[0].bidprice+'</span>';
-                                          }else{
-                                            productData += '<span class="product-price">--</span>';
-                                             }
-                                        productData += '</div>'+
-                                       
-                                    '</div>'+
-                                 '</div>'+
-                              '</div>';
-                        });
-                        if(productData){
-                        $('#productCont').html(productData);
-                    }else{
-                        $('#productCont').text('No Product Found');
-                    }
+//  $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", (LowestAsk[0].bidprice) ) +
+//  " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+} );
+</script>
+<style>
+.ui-widget.ui-widget-content {
+border: 1px solid #c5c5c5;
+}
+.ui-widget-content {
+border: 1px solid #dddddd;
+background: #ffffff;
+color: #333333;
+}
+.ui-widget {
+font-family: Arial,Helvetica,sans-serif;
+font-size: 1em;
+}
+.ui-slider-horizontal {
+height: .8em;
+}
+.ui-slider {
+position: relative;
+text-align: left;
+}
+.ui-corner-all{
+border-bottom-right-radius: 3px;
+}
+.ui-slider-horizontal .ui-slider-range {
+top: 0;
+height: 100%;
+}
+
+.ui-slider .ui-slider-range {
+position: absolute;
+z-index: 1;
+font-size: .7em;
+display: block;
+border: 0;
+background-position: 0 0;
+outline: none;
+background: #e9e9e9;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
+border: 1px solid #c5c5c5;
+background: #f6f6f6;
+font-weight: normal;
+color: #454545;
+}
+.ui-slider-horizontal .ui-slider-handle {
+top: -.3em;
+margin-left: -.6em;
+}
+.ui-slider .ui-slider-handle {
+position: absolute;
+z-index: 2;
+width: 1.2em;
+height: 1.2em;
+cursor: default;
+-ms-touch-action: none;
+touch-action: none;
+}
+    .product-image img {
+      height: 200px;
+      object-fit: contain;
+      width: 100%;
+  }
+      label {
+              display: block;
+              padding-left: 10px;
+          }
+      input {
+              margin-right: 10px;
+          }
+      form input 
+          {
+          display: inline-block;
+          width: 25%;
+          border-radius: 5px;
+          border: 1px solid #ededed;
+          text-align: center;
+          margin-right: 2px;
+          }
+  </style>
+         
+            <div class="container">
+           
+             <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                  <div class="container">
+                      <ol class="breadcrumb">
+                          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                          <li class="breadcrumb-item"><a href="#">Men</a></li>
+                          <li class="breadcrumb-item active" aria-current="page">Accessories</li>
+                      </ol>
+                  </div><!-- End .container -->
+              </nav>
+               <div class="container">
+                  <div class="row">
+                  <aside class="sidebar-shop col-lg-3 order-lg-first">
+                      <h3>Category</h3>
+
+                      <!-- <%=(LowestAsk[0].bidprice);%> -->
+                      <% if(category){ for(var i = 0; i < category.length; i++) { %> 
+                         <label><input type="checkbox" value="<%=category[i].name %>" class="category" name="category"><%=category[i].name %></label> 
+                          <%} }%>
+                        <br>
+                        <h3>Brand:</h3>
+                        <%if(brand){ for(var i = 0; i < brand.length; i++)  {%>
+                        <label><input type="checkbox" value="<%=brand[i].name%>" class="brand" name="brand"><%=brand[i].name%></label>
+                        <%} }%>
+                       <h3> Price</h3>
+                        <p>
+                        <label for="amount">Price range:</label>
+                        <input type="text" id="amount" first_price="<%= (LowestAsk[0].bidprice)%>" last_price="<%= (HeighAsk[0].bidprice)%>" class="ui-widget-header" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    </p>    
+                        <div id="slider-range"></div>
+                        <!-- <form>
+                          <input type="text" name="minprice" value="" id="min_price" placeholder="Min">
+                          <input type="text" name="maxprice" value="" id="max_price" placeholder="Max">
+                          <input type="submit" value="Go">
+                      </form> -->
+                     
+                        <!--  <div class="pin-wrapper" style="height: 1035.4px;"><div class="sidebar-wrapper sticky-active sticky-absolute sticky-transition" style="width: 270px; position: absolute; ">
+                              <div class="widget">
+                                  <h3 class="widget-title">
+                                      <a data-toggle="collapse" href="#widget-body-2" role="button" aria-expanded="true" aria-controls="widget-body-2">Men</a>
+                                  </h3>
+  
+                                  <div class="collapse show" id="widget-body-2">
+                                      <div class="widget-body">
+                                          <ul class="cat-list">
+                                              <li><a href="#">Accessories</a></li>
+                                              <li><a href="#">Watch Fashion</a></li>
+                                              <li><a href="#">Tees, Knits &amp; Polos</a></li>
+                                              <li><a href="#">Pants &amp; Denim</a></li>
+                                          </ul>
+                                      </div> End .widget-body 
+                                  </div> End .collapse 
+                              </div> End .widget 
+  
+                              <div class="widget">
+                                  <h3 class="widget-title">
+                                      <a data-toggle="collapse" href="#widget-body-3" role="button" aria-expanded="true" aria-controls="widget-body-3">Price</a>
+                                  </h3>
+  
+                                  <div class="collapse show" id="widget-body-3">
+                                      <div class="widget-body">
+                                          <form action="#">
+                                              <div class="price-slider-wrapper">
+                                                  <div id="price-slider" class="noUi-target noUi-ltr noUi-horizontal"><div class="noUi-base"><div class="noUi-connects"><div class="noUi-connect" style="transform: translate(20%) scale(0.5, 1);"></div></div><div class="noUi-origin" style="transform: translate(-80%); z-index: 5;"><div class="noUi-handle noUi-handle-lower" data-handle="0" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0.0" aria-valuemax="60.0" aria-valuenow="20.0" aria-valuetext="200.00"></div></div><div class="noUi-origin" style="transform: translate(-30%); z-index: 4;"><div class="noUi-handle noUi-handle-upper" data-handle="1" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="30.0" aria-valuemax="100.0" aria-valuenow="70.0" aria-valuetext="700.00"></div></div></div></div><!-- End #price-slider
+                                              </div> End .price-slider-wrapper 
+  
+                                              <div class="filter-price-action">
+                                                  <button type="submit" class="btn btn-primary">Filter</button>
+  
+                                                  <div class="filter-price-text">
+                                                      Price:
+                                                      <span id="filter-price-range">$200.00 - $700.00</span>
+                                                  </div> End .filter-price-text 
+                                              </div> End .filter-price-action 
+                                          </form>
+                                      </div> End .widget-body 
+                                  </div> End .collapse 
+                              </div> End .widget 
+  
+                              <div class="widget">
+                                  <h3 class="widget-title">
+                                      <a data-toggle="collapse" href="#widget-body-4" role="button" aria-expanded="true" aria-controls="widget-body-4">Size</a>
+                                  </h3>
+  
+                                  <div class="collapse show" id="widget-body-4">
+                                      <div class="widget-body">
+                                          <ul class="cat-list">
+                                              <li><a href="#">Small</a></li>
+                                              <li><a href="#">Medium</a></li>
+                                              <li><a href="#">Large</a></li>
+                                              <li><a href="#">Extra Large</a></li>
+                                          </ul>
+                                      </div> End .widget-body 
+                                  </div> End .collapse 
+                              </div> End .widget 
+  
+                              <div class="widget">
+                                  <h3 class="widget-title">
+                                      <a data-toggle="collapse" href="#widget-body-5" role="button" aria-expanded="true" aria-controls="widget-body-5">Brand</a>
+                                  </h3>
+  
+                                  <div class="collapse show" id="widget-body-5">
+                                      <div class="widget-body">
+                                          <ul class="cat-list">
+                                              <li><a href="#">Adidas</a></li>
+                                              <li><a href="#">Calvin Klein (26)</a></li>
+                                              <li><a href="#">Diesel (3)</a></li>
+                                              <li><a href="#">Lacoste (8)</a></li>
+                                          </ul>
+                                      </div> End .widget-body 
+                                  </div> End .collapse 
+                              </div> End .widget 
+  
+                              <div class="widget">
+                                  <h3 class="widget-title">
+                                      <a data-toggle="collapse" href="#widget-body-6" role="button" aria-expanded="true" aria-controls="widget-body-6">Color</a>
+                                  </h3>
+  
+                                  <div class="collapse show" id="widget-body-6">
+                                      <div class="widget-body">
+                                          <ul class="config-swatch-list">
+                                              <li class="active">
+                                                  <a href="#">
+                                                      <span class="color-panel" style="background-color: #1645f3;"></span>
+                                                      <span>Blue</span>
+                                                  </a>
+                                              </li>
+                                              <li>
+                                                  <a href="#">
+                                                      <span class="color-panel" style="background-color: #f11010;"></span>
+                                                      <span>Red</span>
+                                                  </a>
+                                              </li>
+                                              <li>
+                                                  <a href="#">
+                                                      <span class="color-panel" style="background-color: #fe8504;"></span>
+                                                      <span>Orange</span>
+                                                  </a>
+                                              </li>
+                                              <li>
+                                                  <a href="#">
+                                                      <span class="color-panel" style="background-color: #2da819;"></span>
+                                                      <span>Green</span>
+                                                  </a>
+                                              </li>
+                                          </ul>
+                                      </div> End .widget-body 
+                                  </div> End .collapse
+                              </div> End .widget 
+                          </div></div> End .sidebar-wrapper -->
+                      </aside>
+                  
+                  
+                  
+                  <div class="col-lg-8">
+                          <nav class="toolbox">
+                              <div class="toolbox-left">
+                                  <div class="toolbox-item toolbox-sort">
+                                      <div class="select-custom">
+                                          <select name="orderby" class="form-control">
+                                              <option value="menu_order" selected="selected">Default sorting</option>
+                                              <option value="popularity">Sort by popularity</option>
+                                              <option value="rating">Sort by average rating</option>
+                                              <option value="date">Sort by newness</option>
+                                              <option value="price">Sort by price: low to high</option>
+                                              <option value="price-desc">Sort by price: high to low</option>
+                                          </select>
+                                      </div><!-- End .select-custom -->
+  
+                                      <a href="#" class="sorter-btn" title="Set Ascending Direction"><span class="sr-only">Set Ascending Direction</span></a>
+                                  </div><!-- End .toolbox-item -->
+                              </div><!-- End .toolbox-left -->
+  
+                              <div class="toolbox-item toolbox-show">
+                                  <label>Showing 1–9 of 60 results</label>
+                              </div><!-- End .toolbox-item -->
+  
+                            
+                          </nav>
+                          <div id="product_cont">
+                          <div class="row row-sm" id="productCont">
+                             <% console.log(products);%>
+                                  <% for (var i = 0; i < products.length; i++) { %>
+                                <div class="col-4 col-md-4">
+                                   <div class="product">
+                                      <figure class="product-image-container">
+                                         <a href="/products/<%= products[i]._id %>" class="product-image">
+                                         <img src="/uploads/products/<%= products[i].image %>" alt="product">
+                                         </a>
+                                         <a href="/products/<%= products[i]._id %>" class="btn-quickview">Quick View</a>
+                                      </figure>
+                                      <div class="product-details">
+                                        
+                                         <!-- End .product-container -->
+                                         <h2 class="product-title">
+                                            <a href="/products/<%= products[i]._id %>"> <%= products[i].name %></a>
+                                         </h2>
+                                         <p class="product-title">Lowest Ask</p>
+                                         <div class="price-box">
+                                             <%if(products[i].sellbids.length>0){%>
+                                              <span class="product-price">$<%= products[i].sellbids[0].bidprice %></span>
+                                            <% }else{%>
+                                              <span class="product-price">--</span>
+     
+                                              <% }%>
+                                         </div>
+                                         <!-- End .price-box -->
+                                         <!-- <div class="product-action">
+                                            <a href="/products/<%= products[i]._id %>" class="paction add-cart" title="Add to Cart">
+                                            <span>Add to Cart</span>
+                                            </a>
+                                         </div> -->
+                                         <!-- End .product-action -->
+                                      </div>
+                                      <!-- End .product-details -->
+                                   </div>
+                                   <!-- End .product -->
+                                </div>
+                               <% } %> 
+                              </div>
+                             </div>
+                             <!-- End .row -->
+                          <nav class="toolbox toolbox-pagination">
+                              <div class="toolbox-item toolbox-show">
+                                  <label>Showing <%= pages*10 %> results</label>
+                              </div><!-- End .toolbox-item -->
+                              <% if (pages > 0) { %>
+                                  <ul class="pagination text-center">
+                                      <% if (current == 1) { %>
+                                          <li style="display: block;" class="disabled page-link ">First</li>
+                                      <% } else { %>
+                                          <li style="display: block;" class="page-link page-item" class="page">First</li>
+                                      <% } %>
+                                      <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                                      <% if (i !== 1) { %>
+                                          <li class="page-link page-item disabled">...</li>
+                                      <% } %>
+                                      <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                                          <% if (i == current) { %>
+                                              <li style="display: block;" class="page-link page-item active page" value="<%= i %>"><%= i %></li>
+                                          <% } else { %>
+                                              <li style="display: block;" class="page-link page-item page" value="<%= i %>"><%= i %></li>
+                                          <% } %>
+                                          <% if (i == Number(current) + 4 && i < pages) { %>
+                                              <li style="display: block;" class="page-link page-item disabled page" >...</li>
+                                          <% } %>
+                                      <% } %>
+                                      <% if (current == pages) { %>
+                                          <li style="display: block;" class="page-link disabled page">Last</li>
+                                      <% } else { %>
+                                          <li style="display: block;" class="page-link">Last</li>
+                                      <% } %>
+                                  </ul>
+                              <% } %>
+                          </nav>
+                      </div>
+                      </div>
+                      </div>
+                    </div>
+      
+  
+      <script>
+          // Dynamic Price of Particular Category Minimun Or Maxmiam Price For Slider
+         $(document).ready(function(){
+          var low =  "<%= (LowestAsk[0].bidprice)%>";
+          var heigh = "<%= (HeighAsk[0].bidprice)%>";
+        
+            $( "#slider-range" ).slider({
+                    range: true,
+                    min: 10,
+                    max: heigh,
+                    values: [ low, heigh ],
+                    slide: function( event, ui ) {
+                        $( "#amount" ).val( "$" +ui.values[0] + " - $" + ui.values[1] );
+                        $( "#amount" ).attr('first_price', ui.values[0]);
+                        $( "#amount" ).attr('last_price', ui.values[1]);
                     }
                 });
-                
-            }
-            else{
-                window.location.reload();
-            }
-            });
-            function get_selected(className) {
-	             var filter =[];
-	             $('.'+className+':checked').each(function(){
-		         filter.push($(this).val());  
-	             });
-	         return filter;
-            }
-        })
-        
+                //Without Slider Update Valuer or If Price Not change
+                $( "#amount" ).val( "$" + low + " - $" + heigh) ;
+
+// Price Slider Mouseup or Drop of Mouse than MouseUp Functon Of jquery start
+            $('#slider-range').on('mouseup', function(){
+                var min_price = ($('#amount').attr('first_price'));
+                var max_price = ($('#amount').attr('last_price'));
+                var category_data = $.map($('.category:checked'), (cat) => {return cat.value;});
+                var brand_data = $.map($('.brand:checked'), (brand) => {return brand.value;});
+                 console.log('category_data start');
+                  console.log(category_data);
+                  console.log(brand_data);
+                //  console.log('category_data end');
+                //    get_selected();
+                category_data = (category_data.length > 0) ? category_data : window.location.href.split('/').pop() ; 
+                if(brand_data.length > 0 )
+                    filterSearch(category_data, brand_data, min_price, max_price);
+                else
+                    filterSearch(category_data, '', min_price, max_price);
+
+            })
+
+
+// For Next Page On Click Start For Next Page
+          $('.page').on('click', function() {
+                var page = $(this).val();
+                var min_price = ($('#amount').attr('first_price'));
+                var max_price = ($('#amount').attr('last_price'));
+                var category_data = $.map($('.category:checked'), (cat) => {return cat.value;});
+                var brand_data = $.map($('.brand:checked'), (brand) => {return brand.value;});
+                category_data = (category_data.length > 0) ? category_data : window.location.href.split('/').pop() ; 
+            if(brand_data.length > 0 )
+                filterSearch(category_data, brand_data, min_price, max_price, page);
+            else
+                    filterSearch(category_data, '', min_price, max_price, page);
             
-    </script>
-     <script>
-        $(document).ready(function () {
-      //called when key is pressed in textbox
-      $("#min_price").keypress(function (e) {
-         //if the letter is not digit then display error and don't type anything
-         if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) 
-         return false ;	
-       });
-       $("#max_price").keypress(function (e) {
-         //if the letter is not digit then display error and don't type anything
-         if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) 
-         return false ;	
-       });
-    });
-    </script>
+          });
+             $('.category, .brand ').on('change ', function(){
+                var min_price = ($('#amount').attr('first_price'));
+                var max_price = ($('#amount').attr('last_price'));
+                var category_data = $.map($('.category:checked'), (cat) => {return cat.value;});
+                var brand_data = $.map($('.brand:checked'), (brand) => {return brand.value;});
+                //  console.log('category_data start');
+                //   console.log(category_data);
+                //   console.log(brand_data);
+                //  console.log('category_data end');
+                //    get_selected();
+                category_data = (category_data.length > 0) ? category_data : window.location.href.split('/').pop() ; 
+                if(brand_data.length > 0 )
+                    filterSearch(category_data, brand_data, min_price, max_price);
+                else
+                    filterSearch(category_data, '', min_price, max_price);
+              });
+                 
+              //Function FilterSeacrh Start 
+              function filterSearch(category_filter,brand_filter='',  min_price, max_price, page = 1 ) {
+                      $('.booking-list').html('<div id="loading">Loading .....</div>');
+                      $.ajax({
+                      url:"/category_product",
+                      method:"post",
+                      dataType: "json",		
+                      data:{category_filter:JSON.stringify(category_filter),page:page, min_price:min_price, max_price:max_price, brand_filter:JSON.stringify(brand_filter)},
+                      beforeSend: function()
+                      {
+                          $('#productCont').text('Loading...');
+                      },
+                      success:function(res){
+                          var products = JSON.parse(res);
+                          console.log('Products');
+                          var productData = '';
+                          products.forEach((product) => {
+                              productData += '<div class="col-4 col-md-4">'+
+                                   '<div class="product">'+
+                                      '<figure class="product-image-container">'+
+                                         '<a href="/products/'+product._id+'" class="product-image">'+
+                                         '<img src="/uploads/products/'+product.image+'" alt="product">'+
+                                         '</a>'+
+                                         '<a href="/products/'+product._id+'" class="btn-quickview">Quick View</a>'+
+                                      '</figure>'+
+                                      '<div class="product-details">'+
+                                         '<h2 class="product-title">'+
+                                            '<a href="/products/'+product._id+'">'+product.name+'</a>'+
+                                         '</h2>'+
+                                         '<p class="product-title">Lowest Ask</p>'+
+                                         '<div class="price-box">';
+                                             if(product.sellbids.length>0){
+                                              productData += '<span class="product-price">$'+product.sellbids[0].bidprice+'</span>';
+                                            }else{
+                                              productData += '<span class="product-price">--</span>';
+                                               }
+                                          productData += '</div>'+
+                                         
+                                      '</div>'+
+                                   '</div>'+
+                                '</div>';
+                          });
+                          if(productData){
+                          $('#productCont').html(productData);
+                      }else{
+                          $('#productCont').text('No Product Found');
+                      }
+                      }
+                  });
+                  
+            //   }
+            //   else{
+            //       window.location.reload();
+            //   }
+           
+          }
+              
+          })
+      </script>
+       <script>
+          $(document).ready(function () {
+        //called when key is pressed in textbox
+        $("#min_price").keypress(function (e) {
+           //if the letter is not digit then display error and don't type anything
+           if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) 
+           return false ;	
+         });
+         $("#max_price").keypress(function (e) {
+           //if the letter is not digit then display error and don't type anything
+           if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) 
+           return false ;	
+         });
+      });
+      </script>
