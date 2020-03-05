@@ -9,6 +9,7 @@ const prodSchema = new mongoose.Schema({
 //     ref: 'Brand'
 //   }, 
  description: String,
+ subcategory:String, //shoes-> sneekers/yeezee like this 
  category: String, //sneekers/addidas/yeezee/model
  brand : String,
  sku: String,

@@ -30,6 +30,9 @@
                            Edit
                           </th>
                           <th>
+                            Add Sub-Category
+                          </th>
+                          <th>
                             Delete
                           </th>
                       </tr>
@@ -39,11 +42,17 @@
                       <% for (var i = 0; i < brands.length; i++) { %>
                     <tr class="data-row"> 
                         <td class="name" data-item-name="<%=brands[i].name%>" ><%=brands[i].name %></td>
-                        
+                       
                         <td>
-                            <button class="btn btn-primary btn-rounded btn-icon"   id="edit-item" data-item-id="<%=brands[i]._id %>" > <i class="ti-pencil btn-icon-append"></i> 
-                            </button>
-                        </td> 
+                          <button class="btn btn-primary btn-rounded btn-icon"   id="edit-item" data-item-id="<%=brands[i]._id %>" > <i class="ti-pencil btn-icon-append"></i> 
+                          </button>
+                      </td> 
+
+                      <td>
+                        <button class="btn btn-primary btn-rounded btn-icon"   id="add-subcategory" data-add-id="<%=brands[i]._id %>" > <i class="ti-pencil btn-icon-append"></i> 
+                        </button>
+                    </td>   
+
                         <td>
                             <a class=" btn btn-primary btn-rounded btn-icon" onclick="return confirm('Are you sure for Delete Category?')" href="/admin/category/<%=brands[i]._id %>/delete" >
                               <i class="ti-trash btn-icon-append"></i> 
@@ -97,7 +106,6 @@
         <div class="modal-header">
           <h4 class="modal-title">Add New Category</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          
         </div>
         <div class="modal-body">
             <form method="post" action="/admin/add-category" enctype="multipart/form-data">

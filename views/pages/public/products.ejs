@@ -120,7 +120,7 @@ touch-action: none;
                        <h3> Price</h3>
                         <p>
                         <label for="amount">Price range:</label>
-                        <input type="text" id="amount" first_price="<%= (LowestAsk[0].bidprice)%>" last_price="<%= (HeighAsk[0].bidprice)%>" class="ui-widget-header" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                        <input type="text" id="amount" first_price="<%= (LowestAsk[0].price)%>" last_price="<%= (HeighAsk[0].price)%>" class="ui-widget-header" readonly style="border:0; color:#f6931f; font-weight:bold;">
                     </p>    
                         <div id="slider-range"></div>
                         <!-- <form>
@@ -274,7 +274,7 @@ touch-action: none;
                           </nav>
                           <div id="product_cont">
                           <div class="row row-sm" id="productCont">
-                             <% console.log(products);%>
+                            
                                   <% for (var i = 0; i < products.length; i++) { %>
                                 <div class="col-4 col-md-4">
                                    <div class="product">
@@ -357,12 +357,13 @@ touch-action: none;
       <script>
           // Dynamic Price of Particular Category Minimun Or Maxmiam Price For Slider
          $(document).ready(function(){
-          var low =  "<%= (LowestAsk[0].bidprice)%>";
-          var heigh = "<%= (HeighAsk[0].bidprice)%>";
+                
+          var low =  "<%= (LowestAsk[0].price)%>";
+          var heigh = "<%= (HeighAsk[0].price)%>";
         
             $( "#slider-range" ).slider({
                     range: true,
-                    min: 10,
+                    min: 0,
                     max: heigh,
                     values: [ low, heigh ],
                     slide: function( event, ui ) {
@@ -397,8 +398,8 @@ touch-action: none;
 // For Next Page On Click Start For Next Page
           $('.page').on('click', function() {
                 var page = $(this).val();
-                var min_price = ($('#amount').attr('first_price'));
-                var max_price = ($('#amount').attr('last_price'));
+                var min_price = 0;
+                var max_price = 1000000;
                 var category_data = $.map($('.category:checked'), (cat) => {return cat.value;});
                 var brand_data = $.map($('.brand:checked'), (brand) => {return brand.value;});
                 category_data = (category_data.length > 0) ? category_data : window.location.href.split('/').pop() ; 
@@ -409,8 +410,8 @@ touch-action: none;
             
           });
              $('.category, .brand ').on('change ', function(){
-                var min_price = ($('#amount').attr('first_price'));
-                var max_price = ($('#amount').attr('last_price'));
+                var min_price = 0;
+                var max_price = 1000000;
                 var category_data = $.map($('.category:checked'), (cat) => {return cat.value;});
                 var brand_data = $.map($('.brand:checked'), (brand) => {return brand.value;});
                 //  console.log('category_data start');
@@ -438,10 +439,12 @@ touch-action: none;
                           $('#productCont').text('Loading...');
                       },
                       success:function(res){
-                          var products = JSON.parse(res);
-                          console.log('Products');
+                          var products = JSON.parse(res.product);
+                        //  console.log('Products');
+                          //console.log(products);
                           var productData = '';
                           products.forEach((product) => {
+                              console.log('product');
                               productData += '<div class="col-4 col-md-4">'+
                                    '<div class="product">'+
                                       '<figure class="product-image-container">'+
@@ -472,14 +475,29 @@ touch-action: none;
                       }else{
                           $('#productCont').text('No Product Found');
                       }
+                            
+                      var LowestAsk = JSON.parse(res.LowestAsk);
+                      var HeighAsk = JSON.parse(res.HeighAsk);
+
+                      var low =  (LowestAsk[0].price);
+                      var heigh = (HeighAsk[0].price);
+                    $( "#slider-range" ).slider({
+                            range: true,
+                         min: 0,
+                         max: heigh,
+                        values: [ low, heigh ],
+                        slide: function( event, ui ) {
+                        $( "#amount" ).val( "$" +ui.values[0] + " - $" + ui.values[1] );
+                        $( "#amount" ).attr('first_price', ui.values[0]);
+                        $( "#amount" ).attr('last_price', ui.values[1]);
+                    }
+                });
+                //Without Slider Update Valuer or If Price Not change
+                $( "#amount" ).val( "$" + low + " - $" + heigh) ;
+
+
                       }
                   });
-                  
-            //   }
-            //   else{
-            //       window.location.reload();
-            //   }
-           
           }
               
           })

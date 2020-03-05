@@ -83,10 +83,15 @@ exports.products = function(req, res, next) {
             Product.count().exec(function(err, count) {
                 if (err) return next(err)
                 Brand.find({}).exec(function(err,brand){
-                  SellBid.find({}).populate({path:'products',  match: { category:category_slug,active:'true' }
-                }).sort({bidprice:+1}).limit(1).exec(function(err, LowestAsk) {
-                  SellBid.find({}).populate({path:'products',  match: { category:category_slug,active:'true' }
-                }).sort({bidprice:-1}).limit(1).exec(function(err, HeighAsk){
+                  Product.find({category:category_slug,active:'true'})
+                  .sort({price:+1}).limit(1).exec(function(err, LowestAsk){
+                    Product.find({category:category_slug,active:'true'})
+                    .sort({price:-1}).limit(1).exec(function(err, HeighAsk){
+
+                //   SellBid.find({}).populate({path:'products',  match: { category:category_slug,active:'true' }
+                // }).sort({bidprice:+1}).limit(1).exec(function(err, LowestAsk) {
+                //   SellBid.find({}).populate({path:'products',  match: { category:category_slug,active:'true' }
+                // }).sort({bidprice:-1}).limit(1).exec(function(err, HeighAsk){
                 res.render('pages/public/products', {
                     products: products,
                     current: page,
@@ -159,7 +164,7 @@ exports.products = function(req, res, next) {
   }
 
 
-exports.category_product = function(req,res,next){
+exports.category_product =  function(req,res,next){
   var min_price = req.body.min_price ;
   var max_price = req.body.max_price ;
   var category_filter = JSON.parse(req.body.category_filter);
@@ -167,27 +172,44 @@ exports.category_product = function(req,res,next){
   var page = req.body.page;
   var perPage = 9 ;
   
-
-  
-
   //Product.find({category:category_slug}).populate({path:sellbids}, )
+
+// Product.find({}).populate({path:'sellbids', match : {bidprice: {$gte: min_price}}}).exec(function(err, product){
+//   if(err){
+//     return err
+//   }
+//   else{
+//     console.log(product+'Hello How Are You ?');
+//   }
+// })
 
 
   var query={};
   if((brand_filter.length>0) && (category_filter.length>0)){
-    query={brand:brand_filter,category:category_filter};
+    query={brand:brand_filter,category:category_filter, price : { $gte: min_price , $lte : max_price}};
   }else if(brand_filter.length>0)
   {
-    query = {brand:brand_filter};
+    query = {brand:brand_filter,price : { $gte: min_price , $lte : max_price}};
   }else
   {
-    query = {category:category_filter};
+    query = {category:category_filter,price : { $gte: min_price , $lte : max_price}};
   }
   if(query){
-  Product.find(query).populate({path:'sellbids'}).skip((perPage * page) - perPage).limit(9).exec(function(err, product){  
-    if(err) return next(err)
-   res.json(JSON.stringify(product))
+   Product.find(query).populate({  
+    path:'sellbids'
   })
+  .skip((perPage * page) - perPage).limit(9).exec(function(err, product){  
+    if(err) return next(err)
+    
+    Product.find(query)
+    .sort({price:+1}).limit(1).exec(function(err, LowestAsk){
+      Product.find(query)
+      .sort({price:-1}).limit(1).exec(function(err, HeighAsk){
+   res.json({product:JSON.stringify(product), LowestAsk:JSON.stringify(LowestAsk), HeighAsk:JSON.stringify(HeighAsk)})
+  
+})
+  })
+})
 }else{
   Product.find({}).populate({path:'sellbids'}).exec(function(err, product){  
     if(err) return next(err)
