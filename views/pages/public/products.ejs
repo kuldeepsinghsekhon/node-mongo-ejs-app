@@ -108,141 +108,24 @@ touch-action: none;
                   <aside class="sidebar-shop col-lg-3 order-lg-first">
                       <h3>Category</h3>
 
-                      <!-- <%=(LowestAsk[0].bidprice);%> -->
+                      
                       <% if(category){ for(var i = 0; i < category.length; i++) { %> 
                          <label><input type="checkbox" value="<%=category[i].name %>" class="category" name="category"><%=category[i].name %></label> 
                           <%} }%>
                         <br>
-                        <h3>Brand:</h3>
+                       
+                      </br>
+                        <h3>Brand</h3>
                         <%if(brand){ for(var i = 0; i < brand.length; i++)  {%>
                         <label><input type="checkbox" value="<%=brand[i].name%>" class="brand" name="brand"><%=brand[i].name%></label>
                         <%} }%>
                        <h3> Price</h3>
                         <p>
                         <label for="amount">Price range:</label>
-                        <input type="text" id="amount" first_price="<%= (LowestAsk[0].bidprice)%>" last_price="<%= (HeighAsk[0].bidprice)%>" class="ui-widget-header" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                        <input type="text" id="amount" first_price="<%= (LowestAsk[0].price)%>" last_price="<%= (HeighAsk[0].price)%>" class="ui-widget-header" readonly style="border:0; color:#f6931f; font-weight:bold;">
                     </p>    
                         <div id="slider-range"></div>
-                        <!-- <form>
-                          <input type="text" name="minprice" value="" id="min_price" placeholder="Min">
-                          <input type="text" name="maxprice" value="" id="max_price" placeholder="Max">
-                          <input type="submit" value="Go">
-                      </form> -->
-                     
-                        <!--  <div class="pin-wrapper" style="height: 1035.4px;"><div class="sidebar-wrapper sticky-active sticky-absolute sticky-transition" style="width: 270px; position: absolute; ">
-                              <div class="widget">
-                                  <h3 class="widget-title">
-                                      <a data-toggle="collapse" href="#widget-body-2" role="button" aria-expanded="true" aria-controls="widget-body-2">Men</a>
-                                  </h3>
-  
-                                  <div class="collapse show" id="widget-body-2">
-                                      <div class="widget-body">
-                                          <ul class="cat-list">
-                                              <li><a href="#">Accessories</a></li>
-                                              <li><a href="#">Watch Fashion</a></li>
-                                              <li><a href="#">Tees, Knits &amp; Polos</a></li>
-                                              <li><a href="#">Pants &amp; Denim</a></li>
-                                          </ul>
-                                      </div> End .widget-body 
-                                  </div> End .collapse 
-                              </div> End .widget 
-  
-                              <div class="widget">
-                                  <h3 class="widget-title">
-                                      <a data-toggle="collapse" href="#widget-body-3" role="button" aria-expanded="true" aria-controls="widget-body-3">Price</a>
-                                  </h3>
-  
-                                  <div class="collapse show" id="widget-body-3">
-                                      <div class="widget-body">
-                                          <form action="#">
-                                              <div class="price-slider-wrapper">
-                                                  <div id="price-slider" class="noUi-target noUi-ltr noUi-horizontal"><div class="noUi-base"><div class="noUi-connects"><div class="noUi-connect" style="transform: translate(20%) scale(0.5, 1);"></div></div><div class="noUi-origin" style="transform: translate(-80%); z-index: 5;"><div class="noUi-handle noUi-handle-lower" data-handle="0" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0.0" aria-valuemax="60.0" aria-valuenow="20.0" aria-valuetext="200.00"></div></div><div class="noUi-origin" style="transform: translate(-30%); z-index: 4;"><div class="noUi-handle noUi-handle-upper" data-handle="1" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="30.0" aria-valuemax="100.0" aria-valuenow="70.0" aria-valuetext="700.00"></div></div></div></div><!-- End #price-slider
-                                              </div> End .price-slider-wrapper 
-  
-                                              <div class="filter-price-action">
-                                                  <button type="submit" class="btn btn-primary">Filter</button>
-  
-                                                  <div class="filter-price-text">
-                                                      Price:
-                                                      <span id="filter-price-range">$200.00 - $700.00</span>
-                                                  </div> End .filter-price-text 
-                                              </div> End .filter-price-action 
-                                          </form>
-                                      </div> End .widget-body 
-                                  </div> End .collapse 
-                              </div> End .widget 
-  
-                              <div class="widget">
-                                  <h3 class="widget-title">
-                                      <a data-toggle="collapse" href="#widget-body-4" role="button" aria-expanded="true" aria-controls="widget-body-4">Size</a>
-                                  </h3>
-  
-                                  <div class="collapse show" id="widget-body-4">
-                                      <div class="widget-body">
-                                          <ul class="cat-list">
-                                              <li><a href="#">Small</a></li>
-                                              <li><a href="#">Medium</a></li>
-                                              <li><a href="#">Large</a></li>
-                                              <li><a href="#">Extra Large</a></li>
-                                          </ul>
-                                      </div> End .widget-body 
-                                  </div> End .collapse 
-                              </div> End .widget 
-  
-                              <div class="widget">
-                                  <h3 class="widget-title">
-                                      <a data-toggle="collapse" href="#widget-body-5" role="button" aria-expanded="true" aria-controls="widget-body-5">Brand</a>
-                                  </h3>
-  
-                                  <div class="collapse show" id="widget-body-5">
-                                      <div class="widget-body">
-                                          <ul class="cat-list">
-                                              <li><a href="#">Adidas</a></li>
-                                              <li><a href="#">Calvin Klein (26)</a></li>
-                                              <li><a href="#">Diesel (3)</a></li>
-                                              <li><a href="#">Lacoste (8)</a></li>
-                                          </ul>
-                                      </div> End .widget-body 
-                                  </div> End .collapse 
-                              </div> End .widget 
-  
-                              <div class="widget">
-                                  <h3 class="widget-title">
-                                      <a data-toggle="collapse" href="#widget-body-6" role="button" aria-expanded="true" aria-controls="widget-body-6">Color</a>
-                                  </h3>
-  
-                                  <div class="collapse show" id="widget-body-6">
-                                      <div class="widget-body">
-                                          <ul class="config-swatch-list">
-                                              <li class="active">
-                                                  <a href="#">
-                                                      <span class="color-panel" style="background-color: #1645f3;"></span>
-                                                      <span>Blue</span>
-                                                  </a>
-                                              </li>
-                                              <li>
-                                                  <a href="#">
-                                                      <span class="color-panel" style="background-color: #f11010;"></span>
-                                                      <span>Red</span>
-                                                  </a>
-                                              </li>
-                                              <li>
-                                                  <a href="#">
-                                                      <span class="color-panel" style="background-color: #fe8504;"></span>
-                                                      <span>Orange</span>
-                                                  </a>
-                                              </li>
-                                              <li>
-                                                  <a href="#">
-                                                      <span class="color-panel" style="background-color: #2da819;"></span>
-                                                      <span>Green</span>
-                                                  </a>
-                                              </li>
-                                          </ul>
-                                      </div> End .widget-body 
-                                  </div> End .collapse
-                              </div> End .widget 
-                          </div></div> End .sidebar-wrapper -->
+                    
                       </aside>
                   
                   
@@ -274,7 +157,7 @@ touch-action: none;
                           </nav>
                           <div id="product_cont">
                           <div class="row row-sm" id="productCont">
-                             <% console.log(products);%>
+                            
                                   <% for (var i = 0; i < products.length; i++) { %>
                                 <div class="col-4 col-md-4">
                                    <div class="product">
@@ -357,12 +240,13 @@ touch-action: none;
       <script>
           // Dynamic Price of Particular Category Minimun Or Maxmiam Price For Slider
          $(document).ready(function(){
-          var low =  "<%= (LowestAsk[0].bidprice)%>";
-          var heigh = "<%= (HeighAsk[0].bidprice)%>";
+                
+          var low =  "<%= (LowestAsk[0].price)%>";
+          var heigh = "<%= (HeighAsk[0].price)%>";
         
             $( "#slider-range" ).slider({
                     range: true,
-                    min: 10,
+                    min: 0,
                     max: heigh,
                     values: [ low, heigh ],
                     slide: function( event, ui ) {
@@ -397,8 +281,8 @@ touch-action: none;
 // For Next Page On Click Start For Next Page
           $('.page').on('click', function() {
                 var page = $(this).val();
-                var min_price = ($('#amount').attr('first_price'));
-                var max_price = ($('#amount').attr('last_price'));
+                var min_price = 0;
+                var max_price = 1000000;
                 var category_data = $.map($('.category:checked'), (cat) => {return cat.value;});
                 var brand_data = $.map($('.brand:checked'), (brand) => {return brand.value;});
                 category_data = (category_data.length > 0) ? category_data : window.location.href.split('/').pop() ; 
@@ -409,8 +293,8 @@ touch-action: none;
             
           });
              $('.category, .brand ').on('change ', function(){
-                var min_price = ($('#amount').attr('first_price'));
-                var max_price = ($('#amount').attr('last_price'));
+                var min_price = 0;
+                var max_price = 1000000;
                 var category_data = $.map($('.category:checked'), (cat) => {return cat.value;});
                 var brand_data = $.map($('.brand:checked'), (brand) => {return brand.value;});
                 //  console.log('category_data start');
@@ -438,10 +322,12 @@ touch-action: none;
                           $('#productCont').text('Loading...');
                       },
                       success:function(res){
-                          var products = JSON.parse(res);
-                          console.log('Products');
+                          var products = JSON.parse(res.product);
+                        //  console.log('Products');
+                          //console.log(products);
                           var productData = '';
                           products.forEach((product) => {
+                            
                               productData += '<div class="col-4 col-md-4">'+
                                    '<div class="product">'+
                                       '<figure class="product-image-container">'+
@@ -472,14 +358,29 @@ touch-action: none;
                       }else{
                           $('#productCont').text('No Product Found');
                       }
+                            
+                      var LowestAsk = JSON.parse(res.LowestAsk);
+                      var HeighAsk = JSON.parse(res.HeighAsk);
+
+                      var low =  (LowestAsk[0].price);
+                      var heigh = (HeighAsk[0].price);
+                    $( "#slider-range" ).slider({
+                            range: true,
+                         min: 0,
+                         max: heigh,
+                        values: [ low, heigh ],
+                        slide: function( event, ui ) {
+                        $( "#amount" ).val( "$" +ui.values[0] + " - $" + ui.values[1] );
+                        $( "#amount" ).attr('first_price', ui.values[0]);
+                        $( "#amount" ).attr('last_price', ui.values[1]);
+                    }
+                });
+                //Without Slider Update Valuer or If Price Not change
+                $( "#amount" ).val( "$" + low + " - $" + heigh) ;
+
+
                       }
                   });
-                  
-            //   }
-            //   else{
-            //       window.location.reload();
-            //   }
-           
           }
               
           })

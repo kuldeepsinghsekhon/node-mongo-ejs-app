@@ -1234,7 +1234,7 @@ exports.mostPopular_Brand = async function name(req,res,next) {
   //  }
     ]);
 var brnadlength = (most_popular.length);
-console.log(most_popular[1]._id);
+//console.log(most_popular[1]._id);
     var products =[] ;
    for(var i=0 ; i< brnadlength; i++)
    {

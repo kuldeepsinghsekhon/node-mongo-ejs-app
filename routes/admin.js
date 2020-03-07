@@ -86,6 +86,7 @@ router.get('/', ensureAuthenticated,permit('Admin'), admin_controller.dashboard)
   router.get('/category/',ensureAuthenticated, permit('Admin'), admin_controller.listCategory);
   router.post('/add-category/',ensureAuthenticated,permit('Admin'), admin_controller.saveCategory);
   router.post('/category/update',ensureAuthenticated, permit('Admin'),admin_controller.updateCategory);
+  router.post('/sub_category/update', ensureAuthenticated, permit('Admin'), admin_controller.saveSubcategory);
   router.get('/category/:id/delete',ensureAuthenticated, permit('Admin'), admin_controller.deleteCategory);
   router.get('/transaction/',ensureAuthenticated, permit('Admin'),admin_controller.viewTransaction);
   router.post('/transcation_status',ensureAuthenticated,permit('Admin'),admin_controller.transactionStatus);
@@ -98,5 +99,5 @@ router.get('/', ensureAuthenticated,permit('Admin'), admin_controller.dashboard)
   router.get('/env_update',ensureAuthenticated, permit('Admin'),admin_controller.charge_env);
   router.post('/subscribe_email',forwardAuthenticated,admin_controller.subscribe_email);
   router.get('/subscriber',ensureAuthenticated, permit('Admin'), admin_controller.subscriber_list);
-  
+  router.post('/find_subcategory', ensureAuthenticated, permit('Admin'), admin_controller.find_subcategory);
 module.exports = router;
