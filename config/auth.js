@@ -2,7 +2,7 @@ const Category = require('../models/Category');
 module.exports = {
   ensureAuthenticated: function(req, res, next) {
     Category.find({},function(error,category){
-      //console.log(category)
+     // console.log(category)
       res.locals.category = category;
       });
     if (req.isAuthenticated()) {
@@ -22,7 +22,7 @@ module.exports = {
   },
   forwardAuthenticated: function(req, res, next) {
     Category.find({},function(erro,category){
-     // console.log(category)
+     //console.log(category)
       res.locals.category = category;
       });
     if (!req.isAuthenticated()) {

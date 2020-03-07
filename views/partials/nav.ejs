@@ -116,15 +116,31 @@
            <nav class="main-nav">
               <ul class="menu sf-arrows sf-js-enabled" style="touch-action: pan-y;">
                  <li class="active"><a href="/">Home</a></li>
-                 <li class="">
+
+
+      
+
+               <li class="">
                     <a href="/products" class="sf-with-ul">Browse</a>
-                    <div class="megamenu megamenu-fixed-width" style="display: none;">
-                                   <ul>
+                 <!-- <div class="megamenu megamenu-fixed-width" style="display: none;">  -->
+                     <ul style="display: none;">
                                     <% if(category){ for(var i = 0; i < category.length; i++) { %>
-                                       <li><a href="/category/<%=category[i].name %>"><%=category[i].name %></a></li>
+                                       <li><a href="/category/<%=category[i].name %>" class="sf-with-ul"><%=category[i].name %></a>
+                                          
+                                             <%if(category[i].child.length>0){  %>
+                                                <ul style="display: none;">
+                                                   <%for(var j = 0; j < category[i].child.length; j++){%>
+                                                <li class="dropdown dropdown-submenu"><a href="/category/sub/<%=category[i].child[j] %>"><%=category[i].child[j]%></a></li>
+                                                <% } %>
+                                              </ul>
+                                                <%} %>
+                                          
+                                       
+                                       </li>
+
                                       <%} }%>
                                    </ul>                      
-                    </div>
+                    <!-- </div> -->
                     <!-- End .megamenu -->
                  </li>
                  <!-- <li class=""><a href="/news">News</a></li> -->
@@ -132,13 +148,13 @@
                  <li class=""><a href="/user/portfolio">Portfolio</a></li>
                  <li class=""><a href="/about">About</a></li>
                  <li class="">
-                 <!-- <a href="/about" class="sf-with-ul">About</a>
-                   <ul style="display: none;">
-                     <li><a href="/user/buying">buying</a></li>
-                     <li><a href="/user/selling">Selling</a></li>
-                     <li><a href="/user/profile">Profile</a></li>
-                  </ul>
-               </li> -->
+                                       <!-- <a href="/about" class="sf-with-ul">About</a>
+                                          <ul style="display: none;">
+                                             <li><a href="/user/buying">buying</a></li>
+                                             <li><a href="/user/selling">Selling</a></li>
+                                             <li><a href="/user/profile">Profile</a></li>
+                                          </ul>
+                                       </li> -->
                  <li class=""><a href="/help">Help</a></li>
 
                  <li class="float-right buy-effect"><a href="/sellsearch" target="_blank"><span>Sell </span></a></li>

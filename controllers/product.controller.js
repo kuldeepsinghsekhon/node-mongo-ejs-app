@@ -69,10 +69,8 @@ exports.products = function(req, res, next) {
         })
   }
   exports.productsByCategory = function(req, res, next) {
-
     var perPage = 9;
     var category_slug=req.params.category_slug;
-    
     var page = req.params.page || 1;
     Product.find({category:category_slug,active:'true'}).skip((perPage * page) - perPage).populate({path:'sellbids', //20/1/20
         match: { status: 'ask' }
@@ -108,8 +106,11 @@ exports.products = function(req, res, next) {
           })
         })
 
+      }
 
-    //     var perPage = 9;
+
+
+ //     var perPage = 9;
 //     var category_slug=req.params.category_slug;
 // console.log(category_slug);
 //     var page = req.params.page || 1;
@@ -161,7 +162,46 @@ exports.products = function(req, res, next) {
     //             })
     //         })
     //     })
-  }
+
+
+      exports.productBySubcategory = function(req,res, next){
+
+        var perPage = 9;
+        var category_slug=req.params.subcategory_slug;
+        console.log(category_slug)
+        var page = req.params.page || 1;
+        Product.find({subcategory:category_slug,active:'true'}).skip((perPage * page) - perPage).populate({path:'sellbids', //20/1/20
+            match: { status: 'ask' }
+            ,options: {
+              limit: 1,
+              sort: { bidprice: +1}        
+         } }).limit(perPage).exec(function(err, products) {
+                Product.count().exec(function(err, count) {
+                    if (err) return next(err)
+                    Brand.find({}).exec(function(err,brand){
+                      Product.find({subcategory:category_slug,active:'true'})
+                      .sort({price:+1}).limit(1).exec(function(err, LowestAsk){
+                        Product.find({subcategory:category_slug,active:'true'})
+                        .sort({price:-1}).limit(1).exec(function(err, HeighAsk){
+                    res.render('pages/public/products', {
+                        products: products,
+                        current: page,
+                        LowestAsk:LowestAsk,
+                        HeighAsk:HeighAsk,
+                        category_slug:category_slug,
+                        brand:brand,
+                        pages: Math.ceil(count / perPage),
+                        layout:'layout'
+                    })
+                  });
+                })
+              });
+              })
+            })
+    
+          }
+   
+
 
 
 exports.category_product =  function(req,res,next){
@@ -475,7 +515,7 @@ exports.sellProductPay=function(req,res){
       });
 }
 
-exports.sellAsk=async  function(req, res,next){
+exports.sellAsk = async  function(req, res,next){
   var name = req.body.name;
   var lastname=req.body.lastname;
   var email=req.user.email;
@@ -868,9 +908,13 @@ exports.adminProducts=function(req, res, next) {
 exports.saveProduct=function(req, res, next) {
 //  var testdata = req.files.productImage[0];
 //   console.log(testdata);
+var subcategory = req.body.subcategory_name;
+console.log(subcategory);
     var product = new Product();
     var imgname='default.jpg';
+    
     product.category = req.body.category_name;
+    product.subcategory =  req.body.subcategory_name;
     product.releasedate = req.body.releasedate;
     product.description = req.body.product_description;
     product.name = req.body.product_name;
@@ -878,7 +922,7 @@ exports.saveProduct=function(req, res, next) {
     product.price = req.body.product_price; 
     product.style = req.body.style; 
     product.brand = req.body.brand_name;
-    console.log(product.brand);
+    //console.log(product.brand);
     product.active = 'false';
     if(req.body.status)
     {
@@ -938,7 +982,7 @@ exports.saveProduct=function(req, res, next) {
           }
         });
 product.image = imgname ;
-console.log(product.image);
+//console.log(product.image);
   //     if(sampleFile instanceof Array){
   //       console.log(sampleFile.length);
   //     var file_info = [];
@@ -1011,7 +1055,7 @@ var images_count = 0 ;
 
              
    let files = (req.files.file);
-   console.log(files.length);  
+   //console.log(files.length);  
    var imgupdatepath = [];
 
   files.forEach(function(ele, key){
@@ -1107,7 +1151,6 @@ exports.editProduct=function(req, res, next) {
     //console.log(req.body.attributename);
     let attributes;
     if(req.body.attributevalues){
-
       const attributename=req.body.attributename;
       const attributevalues=req.body.attributevalues;
     //  for(var i = 0; i < attributename.length;i++){
@@ -1261,14 +1304,11 @@ exports.editProduct=function(req, res, next) {
       });
     }
     exports.updateeditBannerImg = function (req,res,next){
-      
       productid = req.body.productid;
       Product.findOne({_id:productid},{images:'true'}).exec(function(err,product){
-
         var imgupdatepath = [];
-
         product.images.forEach(function(imgName_database, key){
-          console.log(imgName_database);
+          //console.log(imgName_database);
           let imagename = req.files.newImage;
           var filename = req.body.filename;
         if(imgName_database==filename)
@@ -1283,7 +1323,7 @@ exports.editProduct=function(req, res, next) {
           }
           
       });
-      console.log(imgupdatepath);
+      //console.log(imgupdatepath);
       Product.findByIdAndUpdate(productid, {$set:{images:imgupdatepath}},{new: true},function(err,product){
         if (err) return next(err);
         res.redirect('/admin/template-products/');
@@ -1294,9 +1334,9 @@ exports.editProduct=function(req, res, next) {
   exports.searchTest = function (req,res,next)
   {
     var search = req.body.check;
-    console.log(search);
+    //console.log(search);
     Product.find( { name: { $regex: search, $options: "i" } } ).exec(function(err,docs){
-      console.log(docs)
+     // console.log(docs)
       res.json(docs);
     })
     // Product.find({ name: { $regex: search, $options: "i" }, active:'true' }, function(err, docs) {

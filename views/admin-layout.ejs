@@ -171,7 +171,43 @@ function education_fields() {
  })
 
 
+//Add Subcategory Call modal
 
+    $(document).on('click', "#add-subcategory", function() {
+     $(this).addClass('add-subcategory-trigger'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
+ 
+     var options = {
+       'backdrop': 'static'
+     };
+     $('#edit-modal-subcategory').modal(options)
+   })
+ 
+   // on modal show
+   $('#edit-modal-subcategory').on('show.bs.modal', function() {
+   
+     var el = $(".add-subcategory-trigger"); // See how its usefull right here? 
+     var row = el.closest(".data-row");
+    // alert(el.attr('class'));
+     // get the data
+     var id = el.data('add-id');
+     var name = row.children(".name").text();
+     name=name.replace(" ","");
+ 
+     // fill the data in the input fields
+     $("#modal-input-subcat-id").val(id);
+     $("#modal-subcat-name").val(name);
+ 
+  })
+ 
+   // on modal hide
+   $('#edit-modal-subcategory').on('hide.bs.modal', function() {
+     $('.add-subcategory-trigger').removeClass('add-subcategory-trigger')
+     $("#edit-form").trigger("reset");
+   })
+
+
+
+//Add Subcategory Modal end
 
  $(document).ready(function() {
    $(document).on('click', "#edit_banner", function() {
@@ -289,3 +325,4 @@ $(document).ready(function() {
             });
           })
             </script>
+

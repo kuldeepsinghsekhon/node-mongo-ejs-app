@@ -175,14 +175,11 @@ exports.listCategory=function(req, res, next) {
 /* admin can add Category */
 exports.saveCategory=function(req, res, next) {
   var category = new Category();
-  
   category.name = req.body.brand_name;
-
   let errors = [];
   if (!req.body.brand_name  ) {
     errors.push({ msg: 'Please enter all Required fields' });
   }
-
   if (errors.length > 0) {
     res.render('pages/admin/category', {
       errors ,
@@ -219,6 +216,57 @@ exports.updateCategory=function (req, res,next) {
       const del = await Category.deleteOne({ _id: productId});
       res.redirect('/admin/category/');
     }
+
+//Save Subcategory 
+
+exports.saveSubcategory = function(req, res, next)
+{
+var name = req.body.brand_name;
+var data =  req.body.subcatname;
+Category.findOne({name:name}).exec(function(err, category){
+  var childlength = category.child ;
+  console.log(childlength.length);
+   subcategory = [];
+   if(childlength.length>0){
+       category.child.forEach(function(data) {
+         console.log(data);
+       subcategory.push(data);
+     });
+     subcategory.push(req.body.subcatname);
+     var  updateData = {child:subcategory};
+  Category.findOneAndUpdate({name:name},{$set:updateData}).exec(function(){
+    console.log('update Success But failed');
+    if (err){
+      throw err
+    }    
+    req.flash(
+      'success_msg',
+      'Product Addded Successfully'
+    );
+  })
+  }else{
+
+var brod = {child:req.body.subcatname};
+Category.findOneAndUpdate({name:name},{$set:brod}).exec(function(){
+  if (err){
+    throw err
+  }    
+  req.flash(
+    'success_msg',
+    'Product Addded Successfully'
+  );
+})
+  }
+res.redirect('/admin/category/'); 
+}); 
+
+
+
+
+}
+
+
+
 exports.productsBuyBids=function(req, res, next) {
     var perPage = 9;
     var page = req.params.page || 1
@@ -734,4 +782,14 @@ data:envConfig,
 })
 
 //res.render({status:'success', data:{data:data},message:''});
+}
+
+exports.find_subcategory = function(req, res, next){
+var selectedCategory =  req.body.selectedCategory;
+Category.findOne({name:selectedCategory}).exec(function(err, subcategory){
+  
+  res.json(subcategory.child);
+
+});
+  
 }
