@@ -84,6 +84,8 @@ router.get('/', ensureAuthenticated,permit('Admin'), admin_controller.dashboard)
   router.get('/brand/:id/delete',ensureAuthenticated, permit('Admin'), admin_controller.deleteBrand);
   router.post('/update-order/:id',ensureAuthenticated,permit('Admin'), admin_controller.updateOrderStatus);
   router.get('/category/',ensureAuthenticated, permit('Admin'), admin_controller.listCategory);
+  router.get('/sort_category/',ensureAuthenticated, permit('Admin'), admin_controller.sortCategory);//save_menu
+  router.post('/save_menu/',ensureAuthenticated,permit('Admin'), admin_controller.saveCategoryMenu);
   router.post('/add-category/',ensureAuthenticated,permit('Admin'), admin_controller.saveCategory);
   router.post('/category/update',ensureAuthenticated, permit('Admin'),admin_controller.updateCategory);
   router.post('/sub_category/update', ensureAuthenticated, permit('Admin'), admin_controller.saveSubcategory);

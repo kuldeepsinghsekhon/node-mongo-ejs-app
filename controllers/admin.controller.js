@@ -171,11 +171,32 @@ exports.listCategory=function(req, res, next) {
           })
       })
 }
+exports.sortCategory=function(req, res, next) {
+  var perPage = 9;
+ // var page = req.params.page || 1;
+  Category
+      .find({})
+     //.skip((perPage * page) - perPage)
+     // .limit(perPage)
+      .exec(function(err, brand) {
+          Brand.count().exec(function(err, count) {
+              if (err) return next(err)
+              res.render('pages/admin/sort_category', {
+                  brands: brand,
+                 // current: page,
+                //  pages: Math.ceil(count / perPage),
+                  layout:'admin-layout'
+              })
+          })
+      })
+}
 
 /* admin can add Category */
 exports.saveCategory=function(req, res, next) {
   var category = new Category();
   category.name = req.body.brand_name;
+  //category.sort=req.body.sort;
+  //category.parent=req.body.parent;
   let errors = [];
   if (!req.body.brand_name  ) {
     errors.push({ msg: 'Please enter all Required fields' });
@@ -187,11 +208,7 @@ exports.saveCategory=function(req, res, next) {
     });
   } else {
 
-    category.save(function(err,category) {
-      if (err){
-        throw err
-      }    
-  });
+   
   req.flash(
     'success_msg',
     'Product Addded Successfully'
@@ -200,7 +217,34 @@ exports.saveCategory=function(req, res, next) {
 }
   
 }
-
+exports.saveCategoryMenu=function(req, res, next) {
+  var category = new Category();
+  category.name = req.body.label;
+  //category.sort=req.body.sort;
+  category.link=req.body.link;
+  let errors = [];
+  if (!req.body.label  ) {
+    errors.push({ msg: 'Please enter all Required fields' });
+  }
+  if (errors.length > 0) {
+    res.json({
+      errors ,
+      msg:'Error..!'
+    });
+  } else {
+    category.save(function(err,category) {
+      if (err){
+        throw err
+      }    
+  });
+    res.json({
+      errors ,
+      success:'Response Success'
+    });
+   
+}
+  
+}
 /* Admin can update  Category */
 exports.updateCategory=function (req, res,next) {
   var brandId=req.body.brandid;
